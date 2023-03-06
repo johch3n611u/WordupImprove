@@ -10,4 +10,16 @@ https://medium.com/@askiebaby/%E6%93%8A%E7%A0%B4%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%A
 
 advergaming
 
-## Webpack、Gulp、Vite
+## Webpack、Gulp、Vite ( Grunt、Parcel、Browserify、PUG、SASS、Babel ) etc...
+
+* Webpack
+
+1. 以 nodejs bundle
+
+https://ithelp.ithome.com.tw/articles/10214480
+
+https://www.stackchief.com/tutorials/4%20Easy%20Steps%20to%20Using%20Webpack%20with%20Your%20Node.js%20App
+
+https://askie.today/what-is-webpack/
+
+https://pjchender.dev/webpack/note-webpack/
