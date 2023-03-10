@@ -19,6 +19,17 @@
     "target": "ES2022",
     "module": "ES2022",
     "useDefineForClassFields": false,
+    "paths": {
+      // "ur-lib": [
+      //   "dist/ur-lib"
+      // ]
+      "ur-lib":[
+        "projects/ur-lib/public-api.ts"
+      ],
+      "ur-lib/*":[
+        "projects/ur-lib/*"
+      ]
+    },
     "lib": [
       "ES2022",
       "dom"
