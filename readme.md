@@ -91,19 +91,19 @@ ng generate library <library> --prefix <library>
 --prefix 會更改 app-xxx 為新前綴 library-xxx
 ```
 
-![prefix](./img/prefix.png)
+![prefix](./Img/prefix.png)
 
 如果要改 layout 需要同步修改配置檔的對應路徑
 
-![layout](./img/libraryLayoutPath.png)
+![layout](./Img/libraryLayoutPath.png)
 
 SecondaryExport
 
-![SecondaryExport](./img/secondaryExport.png)
+![SecondaryExport](./Img/secondaryExport.png)
 
 設定完 tsconfig.json 即可 HMR
 
-![HMR](./img/HMR.png)
+![HMR](./Img/HMR.png)
 
 ### 建立 React 元件庫
 

@@ -1,0 +1,12 @@
+{
+  "name": "workspasessample",
+  "private": true,
+  "workspaces": [
+    "project1/*",
+    "project2/*"
+  ],
+  "scripts": {
+    "project1": "node project1/index.js",
+    "project2": "node project2/index.js"
+  }
+}
