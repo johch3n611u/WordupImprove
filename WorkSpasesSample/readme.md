@@ -38,4 +38,4 @@
 1. 基本上跟不共用的知識點都相同
 2. yarn 也類似這種狀況只是用的方式不太同詳細可看 [[筆記] Yarn Workspaces 基礎教學](https://tokileecy.medium.com/%E7%AD%86%E8%A8%98-yarn-workspaces-%E5%9F%BA%E7%A4%8E%E6%95%99%E5%AD%B8-cbb16bb780ec)
 3. nohoist 補在 workspases 的 package.json 即可不讓子 workspases 的 package 版本提升
-4. 
+4. 子 workspase 互相引用本地子 workspase 。[How to specify an npm workspace as a dependency](https://stackoverflow.com/questions/72851445/how-to-specify-an-npm-workspace-as-a-dependency)
