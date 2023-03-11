@@ -1,0 +1,10 @@
+{
+  "name": "@workspasessample/projectB",
+  "version": "1.0.0",
+  "dependencies": {
+    "moment": "^2.29.1"
+  },
+  "scripts":{
+    "project": "node index.js"
+  }
+}

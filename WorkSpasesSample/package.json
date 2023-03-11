@@ -3,7 +3,8 @@
   "private": true,
   "workspaces": [
     "project1/*",
-    "project2/*"
+    "project2/*",
+    "projects/*"
   ],
   "scripts": {
     "project1": "node project1/index.js",
