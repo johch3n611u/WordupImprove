@@ -11,3 +11,9 @@ https://www.w3schools.com/howto/howto_js_accordion.asp
 https://github.com/ant-design/ant-design/blob/master/components/collapse/CollapsePanel.tsx
 
 https://github.com/react-component/collapse/tree/master/src
+
+https://github.com/react-component/collapse/blob/master/src/Collapse.tsx
+
+https://github.com/react-component/util/blob/master/src/hooks/useMergedState.ts
+
+https://juejin.cn/post/7178485530223444026
