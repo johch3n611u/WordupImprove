@@ -8,6 +8,8 @@
 4. advergaming 感覺是趨勢? 還是可能過時了
 5. [30js做成 components](https://github.com/wesbos/JavaScript30)
 6. [Angular 大師之路](https://ithelp.ithome.com.tw/users/20020617/ironman/1630)
+7. [understanding-angular-overview](https://angular.tw/guide/understanding-angular-overview)
+
 
 ## Node.js V8
 
