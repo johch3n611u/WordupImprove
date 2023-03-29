@@ -91,19 +91,21 @@ ng generate library <library> --prefix <library>
 --prefix 會更改 app-xxx 為新前綴 library-xxx
 ```
 
-![prefix](./Img/prefix.png)
+![prefix](https://github.com/UrWebApp/ComponentLibrary/blob/master/img/prefix.png)
 
 如果要改 layout 需要同步修改配置檔的對應路徑
 
-![layout](./Img/libraryLayoutPath.png)
+![layout](https://github.com/UrWebApp/ComponentLibrary/blob/master/img/libraryLayoutPath.png)
 
 SecondaryExport
 
-![SecondaryExport](./Img/secondaryExport.png)
+![SecondaryExport](https://github.com/UrWebApp/ComponentLibrary/blob/master/img/secondaryExport.png)
 
 設定完 tsconfig.json 即可 HMR
 
-![HMR](./Img/HMR.png)
+![HMR](https://github.com/UrWebApp/ComponentLibrary/blob/master/img/HMR.png)
+
+### [Angular StroyBook](https://storybook.js.org/tutorials/intro-to-storybook/angular/en/get-started/)
 
 ### 建立 React 元件庫
 
