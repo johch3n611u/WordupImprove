@@ -1,4 +1,4 @@
-# ReactComponentLibrary
+# ComponentLibrary
 
 > 元件資源
 
@@ -7,6 +7,9 @@
 3. [擊破前端面試的困難 / 或許可以做成 comopnent demo ?](https://medium.com/@askiebaby/%E6%93%8A%E7%A0%B4%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%A9%A6%E7%9A%84%E5%9B%B0%E9%9B%A3-%E7%B9%81%E4%B8%AD%E7%BF%BB%E8%AD%AF-5054500e9415)
 4. advergaming 感覺是趨勢? 還是可能過時了
 5. [30js做成 components](https://github.com/wesbos/JavaScript30)
+6. [Angular 大師之路](https://ithelp.ithome.com.tw/users/20020617/ironman/1630)
+7. [understanding-angular-overview](https://angular.tw/guide/understanding-angular-overview)
+
 
 ## Node.js V8
 
@@ -106,6 +109,14 @@ SecondaryExport
 ![HMR](https://github.com/UrWebApp/ComponentLibrary/blob/master/img/HMR.png)
 
 ### [Angular StroyBook](https://storybook.js.org/tutorials/intro-to-storybook/angular/en/get-started/)
+
+### Angula StoryBook
+
+https://ithelp.ithome.com.tw/users/20130417/ironman/3608
+
+### Jest
+
+https://ithelp.ithome.com.tw/users/20109645/ironman/5708
 
 ### 建立 React 元件庫
 
