@@ -7,8 +7,12 @@
 3. [擊破前端面試的困難 / 或許可以做成 comopnent demo ?](https://medium.com/@askiebaby/%E6%93%8A%E7%A0%B4%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%A9%A6%E7%9A%84%E5%9B%B0%E9%9B%A3-%E7%B9%81%E4%B8%AD%E7%BF%BB%E8%AD%AF-5054500e9415)
 4. advergaming 感覺是趨勢? 還是可能過時了
 5. [30js做成 components](https://github.com/wesbos/JavaScript30)
+6. [w3c how to](https://www.w3schools.com/howto/default.asp)
 6. [Angular 大師之路](https://ithelp.ithome.com.tw/users/20020617/ironman/1630)
 7. [understanding-angular-overview](https://angular.tw/guide/understanding-angular-overview)
+8. [ant design](https://ant.design/components/overview/)
+9. [angular design pattern](https://blogs.halodoc.io/commonly-used-design-patterns-in-angular/)
+10. [ng jest](https://ithelp.ithome.com.tw/articles/10308509)
 
 
 ## Node.js V8
@@ -108,25 +112,50 @@ SecondaryExport
 
 ![HMR](https://github.com/UrWebApp/ComponentLibrary/blob/master/img/HMR.png)
 
-### [Angular StroyBook](https://storybook.js.org/tutorials/intro-to-storybook/angular/en/get-started/)
-
 ### Angula StoryBook
 
-https://ithelp.ithome.com.tw/users/20130417/ironman/3608
+[Storybook for Angular tutorial](https://storybook.js.org/tutorials/intro-to-storybook/angular/en/get-started/)
+
+[玩轉 Storybook 系列](https://ithelp.ithome.com.tw/users/20130417/ironman/3608)
 
 ### Jest
 
-https://ithelp.ithome.com.tw/users/20109645/ironman/5708
+[今天我想來在 Angular 應用程式上加上測試保護 系列](https://ithelp.ithome.com.tw/users/20109645/ironman/5708)
 
 ### 建立 React 元件庫
 
+> `TL;DR` 綜合環境不好建置最好直接找現成的整合方案
+
 * [Create a React component library with Vite and Typescript](https://dev.to/nicolaserny/create-a-react-component-library-with-vite-and-typescript-1ih9)：此為使用 Vite 及 TypeScript 建立 React 元件庫的教學，可透過此教學了解如何建立一個可重複使用的 React 元件庫，並透過 Vite 進行開發、打包及發布等流程。
+  * Speedy Web Compiler：(SWC)是一個用Rust撰寫的線上程式碼編譯器，可視為Babel的替代品。它比Babel更快，可以單線程運行20倍，使用四個核心可以運行70倍。SWC目前被Next.js預設選擇作為compiler，也被Deno用來加速TypeScript的啟動速度，Vite 支援 SWC。
+  * Monorepo：你真的懂Monorepo？五分鐘帶你認識前端大型架構、為什麼前端工程越來越愛使用 Monorepo 架構
+  * Npm v7 Workspaces：它允許在同一個 repository 內的多個 package 中共用相同的 node_modules，搭配 Monorepo，方便地管理專案中的多個 packages，這樣可以更好地隔離不同的功能，減少相依性的問題，並且可以簡化專案的結構，使其更易於維護和開發
+  * vite-plugin-dts：是一個 Vite 插件，用於生成 TypeScript 宣告檔，方便其他 TypeScript 項目使用當前項目中的模組，如果引入你的组件项目是由TS构建的，但你却没有对项目打包自动生成文件声明，那么会出现组件引入的类型报错
+  * @types/node：因為 vite 針對 typescript 設定有用到 node core 環境變數所以需要安裝 @types/node
 
+```cmd
+yarn create vite <library>  --template react-ts
 
+yarn add --dev vite-plugin-dts -W
 
+npm install --save-dev @types/node
 
+npm i --save-dev @types/styled-components
 
+npm install --save-dev vite-plugin-dts
 
+// 確保 package.json xx-lib: file:路徑 ，才會是本地依賴
+
+npm link my-react-components-library
+
+yarn workspace @react-project/site add @react-project/lib@^0.0.0
+
+npm install ../my-library
+```
+
+### React Storybook 直接看官網的就簡單易懂了 ( 支援度最高的也是 React 還有中文 )
+
+[Storybook 教學：React 篇](https://storybook.js.org/tutorials/intro-to-storybook/react/zh-TW/get-started/)
 
 
 
