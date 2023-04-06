@@ -13,6 +13,8 @@
 8. [ant design](https://ant.design/components/overview/)
 9. [angular design pattern](https://blogs.halodoc.io/commonly-used-design-patterns-in-angular/)
 10. [ng jest](https://ithelp.ithome.com.tw/articles/10308509)
+11. [30 天擁有一套自己手刻的 React UI 元件庫](https://ithelp.ithome.com.tw/m/users/20111490/ironman/3999)
+12. [以經典小遊戲為主題之ReactJS應用練習](https://ithelp.ithome.com.tw/m/users/20111490/ironman/2007)
 
 
 ## Node.js V8
