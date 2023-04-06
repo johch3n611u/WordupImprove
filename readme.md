@@ -118,6 +118,10 @@ SecondaryExport
 
 [玩轉 Storybook 系列](https://ithelp.ithome.com.tw/users/20130417/ironman/3608)
 
+[Storybook | 說說元件的故事吧！](https://medium.com/%E6%89%8B%E5%AF%AB%E7%AD%86%E8%A8%98/storybook-tutorial-90189a4d0275)
+
+[PJCHENder [npm] Storybook](https://pjchender.dev/npm/npm-storybook/)
+
 ### Jest
 
 [今天我想來在 Angular 應用程式上加上測試保護 系列](https://ithelp.ithome.com.tw/users/20109645/ironman/5708)
@@ -157,7 +161,15 @@ npm install ../my-library
 
 [Storybook 教學：React 篇](https://storybook.js.org/tutorials/intro-to-storybook/react/zh-TW/get-started/)
 
+[在vite项目中使用storybook](https://zhuanlan.zhihu.com/p/387127953)
 
+`yarn add --dev @storybook/builder-vite`
 
+* storybook-builder-vite 與 @storybook/builder-vite 都是 Storybook 的 ViteJS 建構工具
+  * 它們之間的差異在於：storybook-builder-vite 是由社群開發的第三方建構工具，而 @storybook/builder-vite 則是由 Storybook 團隊開發和維護的官方建構工具。storybook-builder-vite 提供了更多自定義選項，例如配置 ViteJS 插件、自定義 Webpack 設定等等。而 @storybook/builder-vite 則提供了更多的默認設定和預設值，可以更快速地啟動 Storybook。@storybook/builder-vite 已經包含在最新版本的 Storybook 中，因此無需額外安裝，而 storybook-builder-vite 則需要單獨安裝和配置。總體而言，如果您需要更多自定義選項並且願意進行額外的配置，那麼 storybook-builder-vite 可能更適合您。但如果您想要更快速地啟動 Storybook，並希望使用官方支援的建構工具，那麼 @storybook/builder-vite 可能更適合您
+  * [Error: Cannot find module '@storybook/builder-storybook-builder-vite'](https://github.com/storybookjs/builder-vite/issues/4)
+  * [Error message "error:0308010C:digital envelope routines::unsupported"](https://stackoverflow.com/questions/69692842/error-message-error0308010cdigital-envelope-routinesunsupported)
+* workspace nomorepo 整合上與熱重載遇到許多問題，架構直接改為單一 repo 並利用 storybook 測試兼展示
+  * ![aa](https://github.com/UrWebApp/ComponentLibrary/blob/master/img/2node.png)
 
 
