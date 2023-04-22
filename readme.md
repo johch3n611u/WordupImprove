@@ -15,6 +15,7 @@
 10. [ng jest](https://ithelp.ithome.com.tw/articles/10308509)
 11. [30 天擁有一套自己手刻的 React UI 元件庫](https://ithelp.ithome.com.tw/m/users/20111490/ironman/3999)
 12. [以經典小遊戲為主題之ReactJS應用練習](https://ithelp.ithome.com.tw/m/users/20111490/ironman/2007)
+13. [awesome-angular-components](https://github.com/brillout/awesome-angular-components)
 
 
 ## Node.js V8
