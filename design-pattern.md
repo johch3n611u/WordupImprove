@@ -8,6 +8,7 @@ https://ithelp.ithome.com.tw/users/20112280/ironman/2093?page=1
 
 <details>
 <summary>code</summary>
+
 ```typescript
 import { Injectable } from '@angular/core';
 import { facadeFactory, StateUtils } from '@spartacus/core';
@@ -46,6 +47,7 @@ export abstract class FormFacade {
   ): Observable<boolean>;
 }
 ```
+  
 </details>
 
 ## loading-overlay
