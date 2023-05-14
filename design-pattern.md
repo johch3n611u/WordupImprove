@@ -7,7 +7,8 @@ https://ithelp.ithome.com.tw/users/20112280/ironman/2093?page=1
 根據這個假設，form.facade.ts 可能定義了一個表單相關的外觀模式類別，該類別可能封裝了表單相關的功能、方法和事件，以提供一個簡單且統一的介面供其他程式使用。然而，僅憑檔案名稱並無法確定程式的確切功能，因為命名慣例可能因不同的開發團隊或專案而有所不同。
 
 <details>
-<summeny>aaa</summeny>
+<summary>code</summary>
+  
 </details>
 
 ```typescript
@@ -78,3 +79,138 @@ export abstract class FormFacade {
 14. onProcessStateUpdate方法用于处理加载过程状态的更新。它接受一个result参数，表示加载过程的最终状态。在方法中，它首先检查result是否存在，如果不存在则直接返回。然后，它通过调用processEndState$的next方法将result作为下一个值发送给所有订阅了processEndState$的观察者。
 
 总体而言，E2LoadingOverlayService是一个用于管理和控制加载状态的服务。它提供了开始、结束和获取加载状态的方法，并使用rxjs的Observable来跟踪加载状态的变化。通过使用processLoadingMap$属性，它可以同时管理多个加载过程，并根据不同的进程ID来获取和更新加载状态。
+  
+<details>
+<summary>code</summary>
+ 
+ ```typescript 
+ import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { distinctUntilChanged, map, take, tap } from 'rxjs/operators';
+import { LogService } from '../-log';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class LoadingOverlayService {
+  logger = this.logService.getLogger('LoadingOverlayService');
+  private index = 0;
+
+  private readonly isLoading$: Observable<boolean>;
+
+  private processLoadingMap$: BehaviorSubject<Map<string, string>>;
+
+  processEndState$ = new BehaviorSubject(undefined);
+
+  constructor(protected logService: LogService) {
+    this.processLoadingMap$ = new BehaviorSubject<Map<string, string>>(
+      new Map()
+    );
+    this.isLoading$ = this.processLoadingMap$.pipe(
+      map(processLoadingMap => {
+        if (processLoadingMap) {
+          return new Map(
+            [...processLoadingMap].filter(
+              ([k, v]) => typeof v !== 'undefined' && v
+            )
+          );
+        } else {
+          return new Map();
+        }
+      }),
+      map((processes: Map<string, string>) => {
+        this.logger.debug('Loading processing count: ', processes.size);
+        this.logger.debug('Active processes:', [processes.keys()]);
+        return processes.size;
+      }),
+      distinctUntilChanged(),
+      map((count: number) => count > 0)
+    );
+  }
+
+  public getLoadingStatus(processId?: string): Observable<boolean> {
+    return !!!processId
+      ? this.isLoading$
+      : this.getProcessLoadingState(processId);
+  }
+
+  public startLoadingWithLock(
+    processId: string,
+    shouldReturnBooleanInsteadOfThrowingError?: boolean
+  ): boolean {
+    let isLoading = false;
+    this.getProcessLoadingState(processId)
+      .pipe(
+        take(1),
+        tap(isProcessing => {
+          isLoading = isProcessing;
+        })
+      )
+      .subscribe();
+    if (isLoading) {
+      if (shouldReturnBooleanInsteadOfThrowingError) {
+        return false;
+      } else {
+        throw new Error(`process is locked - processId: ${processId}`);
+      }
+    }
+    this.startLoading(processId);
+    return true;
+  }
+
+  public startLoading(processId?: string): string {
+    this.logger.debug('Loading started for process', processId);
+    if (!!!processId) {
+      processId = this.getNewProcessId();
+    }
+    this.setProcessLoadingState(processId);
+    return processId;
+  }
+
+  public endLoading(processId: string) {
+    this.logger.debug('Loading ended for process', processId);
+    const processLoadingMap = this.processLoadingMap$.getValue();
+    processLoadingMap.delete(processId);
+    this.processLoadingMap$.next(processLoadingMap);
+  }
+
+  public forceEndAllLoading() {
+    if (this.processLoadingMap$.getValue().size > 0) {
+      this.logger.warn(
+        `Requested to end all loading when there are still ${
+          this.processLoadingMap$.getValue().size
+        } process running`
+      );
+    }
+    this.processLoadingMap$.next(new Map<string, string>());
+  }
+
+  public getProcessLoadingState(processId: string): Observable<boolean> {
+    return this.processLoadingMap$.pipe(
+      map(processLoadingMap => !!processLoadingMap.get(processId))
+    );
+  }
+
+  private setProcessLoadingState(processId: string): void {
+    const processLoadingMap = this.processLoadingMap$.getValue();
+    processLoadingMap.set(processId, new Date().toUTCString());
+    this.processLoadingMap$.next(processLoadingMap);
+  }
+
+  private getNewProcessId(): string {
+    this.index++;
+    return this.index.toString();
+  }
+
+  onProcessStateUpdate(result: string) {
+    if (!result) {
+      return;
+    }
+    this.processEndState$.next(result);
+  }
+}
+
+ ``` 
+  
+</details> 
+  
