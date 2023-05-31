@@ -8,20 +8,6 @@
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
-    "paths": {
-      "lib": [
-        "projects/lib", "dist/lib"
-      ],
-      "lib/*": [
-        "projects/lib/*", "dist/lib/*"
-      ],
-      "test": [
-        "dist/test"
-      ],
-      "swiper_angular": [
-        "node_modules/swiper/angular"
-      ]
-    },
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
@@ -30,13 +16,10 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "ES2022",
-    "module": "ES2022",
-    "useDefineForClassFields": false,
-    "lib": [
-      "ES2022",
-      "dom"
-    ]
+    "target": "es2017",
+    "module": "es2020",
+    "strictPropertyInitialization": false,
+    "lib": ["es2020", "dom"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
