@@ -16,7 +16,6 @@
             color: #fff;
             display: flex;
             justify-content: center;
-            height: 40px;
             line-height: 40px;
             font-weight: 400;
             font-size: 1.6rem;
@@ -38,27 +37,34 @@
             font-size: 1.6rem;
         }
 
-        .leftNav,.rightNav{
+        .leftNav,
+        .rightNav {
             align-items: center;
             display: flex;
         }
 
-        .multilevelNavForWebSite:hover .level2Nav, .level2Nav a:hover {
-            display: block;
+        .multilevelNavForWebSite .leftNav:hover .level2Nav,
+        .multilevelNavForWebSite .rightNav:hover .level2Nav {
+            display: flex;
+            flex-direction: column;
         }
 
-        .multilevelNavForWebSite ul:hover>.level3Nav, .level3Nav a:hover {
-            display: block;
+        .multilevelNavForWebSite .leftNav:hover .level2Nav>ul,
+        .multilevelNavForWebSite .rightNav:hover .level2Nav>ul {
+            display: flex;
+            flex-direction: column;
+            padding-inline-start: 0;
         }
 
-        .multilevelNavForWebSite .level2Nav,.level3Nav {
+        .multilevelNavForWebSite .level2Nav,
+        .multilevelNavForWebSite .level3Nav {
             display: none;
             flex-direction: row;
             position: absolute;
-            top:50px
+            top: 70px;
         }
 
-        .multilevelNavForWebSite ul{
+        .multilevelNavForWebSite ul {
             display: flex;
             flex-direction: row;
             position: relative;
@@ -79,7 +85,7 @@
                 <ul class="level2Nav">
                     <a href="#">Bring</a>
                     <a href="#">Deliver</a>
-                    <ul >
+                    <ul>
                         <a href="#">Package</a>
                         <ul class="level3Nav">
                             <a href="#">Bring</a>
