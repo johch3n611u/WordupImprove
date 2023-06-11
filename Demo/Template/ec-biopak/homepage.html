@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+    <style>
+        a {
+            cursor: pointer;
+        }
+
+        .callToActionAtTop {
+            background-color: #ff8d00;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            height: 40px;
+            line-height: 40px;
+            font-weight: 400;
+            font-size: 1.6rem;
+            padding: 5px 0;
+        }
+
+        .callToActionAtTop a {
+            text-decoration: underline;
+            color: #fff;
+        }
+
+        .multilevelNavForWebSite {
+            background-color: #f2f2f2;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            line-height: 40px;
+            font-weight: 400;
+            font-size: 1.6rem;
+        }
+
+        .leftNav,.rightNav{
+            align-items: center;
+            display: flex;
+        }
+
+        .multilevelNavForWebSite:hover .level2Nav, .level2Nav a:hover {
+            display: block;
+        }
+
+        .multilevelNavForWebSite ul:hover>.level3Nav, .level3Nav a:hover {
+            display: block;
+        }
+
+        .multilevelNavForWebSite .level2Nav,.level3Nav {
+            display: none;
+            flex-direction: row;
+            position: absolute;
+            top:50px
+        }
+
+        .multilevelNavForWebSite ul{
+            display: flex;
+            flex-direction: row;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="callToActionAtTop">
+        <span>King's Birthday 2023 Delivery Details
+            <a href="#">Read More</a>
+        </span>
+    </div>
+    <div class="multilevelNavForWebSite">
+        <div class="leftNav">
+            <ul>
+                <a class="level1Nav">CUSTOM PACKAGING</a>
+                <ul class="level2Nav">
+                    <a href="#">Bring</a>
+                    <a href="#">Deliver</a>
+                    <ul >
+                        <a href="#">Package</a>
+                        <ul class="level3Nav">
+                            <a href="#">Bring</a>
+                            <a href="#">Express</a>
+                            <a href="#">Package</a>
+                            <a href="#">Deliver</a>
+                        </ul>
+                    </ul>
+                    <a href="#">Express</a>
+                </ul>
+            </ul>
+        </div>
+        <div class="rightNav">
+            <ul>
+                <a class="level1Nav">CUSTOM PACKAGING</a>
+                <ul class="level2Nav">
+                    <a href="#">Bring</a>
+                    <ul>
+                        <a href="#">Deliver</a>
+                        <ul class="level3Nav">
+                            <a href="#">Express</a>
+                            <a href="#">Package</a>
+                        </ul>
+                    </ul>
+                    <a href="#">Package</a>
+                    <a href="#">Express</a>
+                </ul>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
