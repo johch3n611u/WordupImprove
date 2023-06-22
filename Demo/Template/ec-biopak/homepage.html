@@ -6,7 +6,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+    <link href="https://use.fontawesome.com/releases/v5.0.1/css/all.css" rel="stylesheet">
     <style>
+        .container {
+            width: 100%;
+            max-width: 1640px;
+            /* Default max-width for extra large devices */
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        @media (max-width: 1199.98px) {
+
+            /* Reduce max-width for large devices */
+            .container {
+                max-width: 960px;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+
+            /* Reduce max-width for medium devices */
+            .container {
+                max-width: 720px;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+
+            /* Reduce max-width for small devices */
+            .container {
+                max-width: 540px;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+
+            /* Remove max-width for extra small devices */
+            .container {
+                max-width: none;
+            }
+        }
+
         a {
             cursor: pointer;
         }
@@ -27,9 +70,11 @@
             color: #fff;
         }
 
-        .multilevelNavForWebSite {
+        .panel {
             background-color: #f2f2f2;
-            padding: 0 30px;
+        }
+
+        .multilevelNav {
             display: flex;
             justify-content: space-between;
             line-height: 40px;
@@ -37,83 +82,402 @@
             font-size: 1.6rem;
         }
 
+        .multilevelNav ul {
+            padding-inline-start: 0;
+            margin-block-start: 0;
+            margin-block-end: 0;
+            display: flex;
+            position: relative;
+        }
+
         .leftNav,
         .rightNav {
-            align-items: center;
             display: flex;
+            flex-direction: row;
         }
 
-        .multilevelNavForWebSite .leftNav:hover .level2Nav,
-        .multilevelNavForWebSite .rightNav:hover .level2Nav {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .multilevelNavForWebSite .leftNav:hover .level2Nav>ul,
-        .multilevelNavForWebSite .rightNav:hover .level2Nav>ul {
-            display: flex;
-            flex-direction: column;
-            padding-inline-start: 0;
-        }
-
-        .multilevelNavForWebSite .level2Nav,
-        .multilevelNavForWebSite .level3Nav {
+        .multilevelNav .level2Nav,
+        .multilevelNav .level3Nav {
             display: none;
-            flex-direction: row;
-            position: absolute;
-            top: 70px;
         }
 
-        .multilevelNavForWebSite ul {
+        .multilevelNav .level1Nav {
+            padding: 0.5rem 2rem 0.5rem 0;
+            width: max-content;
+            word-wrap: normal;
+            font-size: 16px;
+            font-weight: 600;
+            max-width: none;
+            background-color: #f2f2f2;
+        }
+
+        .multilevelNav a {
+            width: 5rem;
+            padding: 0.5rem 1.5rem;
+            background-color: white;
+            writing-mode: horizontal-tb;
+        }
+
+        .multilevelNav ul>.level1Nav::after {
+            content: "\f107";
+            margin-left: 8px;
+            font-family: 'Font Awesome\ 5 Free'
+        }
+
+        .multilevelNav ul:hover>.level2Nav {
             display: flex;
-            flex-direction: row;
-            position: relative;
+            flex-direction: column;
+            position: absolute;
+            top: 3.5rem;
+        }
+
+        .level2Nav>ul>a::after {
+            content: "\f054";
+            margin-left: 8px;
+            font-family: 'Font Awesome\ 5 Free'
+        }
+
+        .level2Nav>ul:hover>.level3Nav {
+            display: flex;
+        }
+
+        .level2Nav a,
+        .level3Nav a {
+            border: solid 1px #c4c4c4;
+            color: black;
+        }
+
+        .level2Nav a:hover,
+        .level3Nav a:hover {
+            background-color: #f2f2f2;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 1rem;
+        }
+
+        .logoBox {
+            display: flex;
+            align-items: center;
+        }
+
+        .logoBox>h1 {
+            font-size: 3.5rem;
+            font-weight: 600;
+        }
+
+        .iconButtonBox {
+            display: flex;
+            align-items: center;
+        }
+
+        .iconButtonBox>div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .searchBar::before {
+            content: '\e615';
+            font-family: 'Font Awesome\ 5 Free';
+        }
+
+        img {
+            width: 50px;
+            height: 50px;
         }
     </style>
 </head>
 
 <body>
-    <div class="callToActionAtTop">
-        <span>King's Birthday 2023 Delivery Details
-            <a href="#">Read More</a>
-        </span>
-    </div>
-    <div class="multilevelNavForWebSite">
-        <div class="leftNav">
-            <ul>
-                <a class="level1Nav">CUSTOM PACKAGING</a>
-                <ul class="level2Nav">
-                    <a href="#">Bring</a>
-                    <a href="#">Deliver</a>
+    <header>
+        <div class="callToActionAtTop">
+            <span>King's Birthday 2023 Delivery Details
+                <a href="#">Read More</a>
+            </span>
+        </div>
+        <div class="panel">
+            <div class="multilevelNav container">
+                <nav class="leftNav">
+                    <a class="level1Nav">CUSTOM PACKAGING</a>
                     <ul>
-                        <a href="#">Package</a>
-                        <ul class="level3Nav">
+                        <a class="level1Nav">SHOP INDUSTRY</a>
+                        <ul class="level2Nav">
                             <a href="#">Bring</a>
-                            <a href="#">Express</a>
-                            <a href="#">Package</a>
                             <a href="#">Deliver</a>
+                            <ul>
+                                <a href="#">Package</a>
+                                <ul class="level3Nav">
+                                    <a href="#">Bring</a>
+                                    <a href="#">Express</a>
+                                    <a href="#">Package</a>
+                                    <a href="#">Deliver</a>
+                                </ul>
+                            </ul>
+                            <a href="#">Express</a>
                         </ul>
                     </ul>
-                    <a href="#">Express</a>
-                </ul>
+                    <a class="level1Nav">PLASTIC BANS</a>
+                </nav>
+                <nav class="rightNav">
+                    <a class="level1Nav">SHIPPING</a>
+                    <a class="level1Nav">CONTACT</a>
+                    <ul>
+                        <a class="level1Nav">DISPOSAL</a>
+                        <ul class="level2Nav">
+                            <a href="#">Bring</a>
+                            <ul>
+                                <a href="#">Deliver</a>
+                                <ul class="level3Nav">
+                                    <a href="#">Express</a>
+                                    <a href="#">Package</a>
+                                </ul>
+                            </ul>
+                            <a href="#">Package</a>
+                            <a href="#">Express</a>
+                        </ul>
+                    </ul>
+                    <a class="level1Nav">ABOUT</a>
+                    <ul>
+                        <a class="level1Nav">EN</a>
+                        <ul class="level2Nav">
+                            <a href="#">繁體</a>
+                            <a href="#">简体</a>
+                            <a href="#">日本語</a>
+                            <a href="#">แบบไทย</a>
+                        </ul>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="header container">
+            <div class="logoBox">
+                <img src="./assets/img/logo.png" class="logo" />
+                <h1>SMART DIGEST</h1>
+            </div>
+            <div class="searchBar">
+                <input type="text" />
+            </div>
+            <div class="iconButtonBox">
+                <div>
+                    <img src="./assets/img/logo.png" />
+                    <span>FAQ</span>
+                </div>
+                <div>
+                    <img src="./assets/img/logo.png" />
+                    <span>Catalogue</span>
+                </div>
+            </div>
+        </div>
+        <div class="megaMenuTabs container">
+            <ul>
+                <li>Cups</li>
+                <li>Containers & Lids </li>
+                <li>Plates & Trays </li>
+                <li>Cutlery & Straws </li>
+                <li>Bags </li>
+                <li>Napkins & Washroom </li>
+                <li>Retail</li>
             </ul>
         </div>
-        <div class="rightNav">
-            <ul>
-                <a class="level1Nav">CUSTOM PACKAGING</a>
-                <ul class="level2Nav">
-                    <a href="#">Bring</a>
-                    <ul>
-                        <a href="#">Deliver</a>
-                        <ul class="level3Nav">
-                            <a href="#">Express</a>
-                            <a href="#">Package</a>
-                        </ul>
-                    </ul>
-                    <a href="#">Package</a>
-                    <a href="#">Express</a>
+    </header>
+    <article>
+        <div class="heroImages">
+            <h1>業或組織通過分析市場需求和客戶行為，制定相應的行銷策略和方案，以達到經營目標的過程</h1>
+            <p>數位媒介和工具，進行行銷活動、廣告投放、品牌推廣等活動的方式，企業或組織為了建立和維護與客戶之間的良好關係，進行的一系列行銷和管理活動，消費者在購買產品或服務時所表現出的行為和心理特徵</p>
+            <button class="callToActionButton">立即聯絡</button>
+        </div>
+    </article>
+    <div class="categoriesCarousel">
+        <div>left</div>
+        <div classs="categories">categories</div>
+        <div>righth</div>
+    </div>
+    <div class="benefits">
+        <div>
+            <img src="./assets/img/logo.png" />
+            <h3>
+                <span>Packaging Made</span>
+                <span>From Plants</span>
+            </h3>
+            <p>Designed for the circular economy where resources are reused and not wasted.</p>
+        </div>
+        <div>
+            <img src="./assets/img/logo.png" />
+            <h3>
+                <span>Packaging Made</span>
+                <span>From Plants</span>
+            </h3>
+            <p>Designed for the circular economy where resources are reused and not wasted.</p>
+        </div>
+        <div>
+            <img src="./assets/img/logo.png" />
+            <h3>
+                <span>Packaging Made</span>
+                <span>From Plants</span>
+            </h3>
+            <p>Designed for the circular economy where resources are reused and not wasted.</p>
+        </div>
+        <div>
+            <img src="./assets/img/logo.png" />
+            <h3>
+                <span>Packaging Made</span>
+                <span>From Plants</span>
+            </h3>
+            <p>Designed for the circular economy where resources are reused and not wasted.</p>
+        </div>
+        <div class="marketingArticles">
+            <div>
+                <img src="./assets/img/logo.png" />
+                <h3>免費次日送達</h3>
+                <p>四箱或以上免費送貨，次日送達大多數都市區。</p>
+                <a>Read more</a>
+            </div>
+            <div>
+                <img src="./assets/img/logo.png" />
+                <h3>免費次日送達</h3>
+                <p>四箱或以上免費送貨，次日送達大多數都市區。</p>
+                <a>Read more</a>
+            </div>
+            <div>
+                <img src="./assets/img/logo.png" />
+                <h3>免費次日送達</h3>
+                <p>四箱或以上免費送貨，次日送達大多數都市區。</p>
+                <a>Read more</a>
+            </div>
+        </div>
+        <div class="marketingViedo">
+            <div>
+                <h2>開始堆肥</h2>
+                <p>將食品和包裝從垃圾填埋場轉移出來並扭轉氣候變化。只需搜索您的郵政編碼並找到當地的堆肥器，然後開始製作營養豐富的堆肥。</p>
+                <button>加入堆肥連接</button>
+            </div>
+            <video width="400" controls>
+                <source src="mov_bbb.mp4" type="video/mp4">
+                <source src="mov_bbb.ogg" type="video/ogg">
+                Your browser does not support HTML video.
+            </video>
+        </div>
+        <div class="instagramCarousel">
+            <h3>分享愛</h3>
+            <div>
+                <ul>
+                    <li>post1</li>
+                    <li>post2</li>
+                    <li>post3</li>
+                    <li>post4</li>
+                    <li>post5</li>
+                    <li>post6</li>
                 </ul>
-            </ul>
+            </div>
+        </div>
+        <div class="awardsCarousel">
+            <h3>分享愛</h3>
+            <div>
+                <ul>
+                    <li>
+                        <img src="./assets/img/logo.png" />
+                        <p>四箱或以上免費送貨，次日送達大多數都市區。</p>
+                    </li>
+                    <li>
+                        <img src="./assets/img/logo.png" />
+                        <p>四箱或以上免費送貨，次日送達大多數都市區。</p>
+                    </li>
+                    <li>
+                        <img src="./assets/img/logo.png" />
+                        <p>四箱或以上免費送貨，次日送達大多數都市區。</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="coreThemes">
+            <div>
+                <img src="./assets/img/logo.png" />
+                <h3>
+                    <span>Custom</span>
+                    <span>Packaging</span>
+                </h3>
+            </div>
+            <div>
+                <img src="./assets/img/logo.png" />
+                <h3>
+                    <span>Custom</span>
+                    <span>Packaging</span>
+                </h3>
+            </div>
+            <div>
+                <img src="./assets/img/logo.png" />
+                <h3>
+                    <span>Custom</span>
+                    <span>Packaging</span>
+                </h3>
+            </div>
+        </div>
+        <div clas="marketingPanel">
+            <div>
+                <h4>Be the First to Know</h4>
+                <p>Sign up for the latest product news, sustainability trends and eco tips.</p>
+            </div>
+            <div>
+                <input />
+                <button>Submit</button>
+                <p>For more information on our privacy best practices, please review our</p>
+                <span>privacy policy</span>
+            </div>
+            <div>
+                <span>Follow Us On Social</span>
+                <div>
+                    <img src="./assets/img/logo.png" />
+                    <img src="./assets/img/logo.png" />
+                    <img src="./assets/img/logo.png" />
+                    <img src="./assets/img/logo.png" />
+                    <img src="./assets/img/logo.png" />
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div>
+                <h4>Shop Products</h4>
+                <p>BioPak Catalogue</p>
+                <p>BioPak Catalogue</p>
+                <p>BioPak Catalogue</p>
+                <p>BioPak Catalogue</p>
+                <p>BioPak Catalogue</p>
+            </div>
+            <div>
+                <h4>Shop Products</h4>
+                <p>BioPak Catalogue</p>
+                <p>BioPak Catalogue</p>
+                <p>BioPak Catalogue</p>
+            </div>
+            <div>
+                <h4>Shop Products</h4>
+                <p>BioPak Catalogue</p>
+                <p>BioPak Catalogue</p>
+                <p>BioPak Catalogue</p>
+                <p>BioPak Catalogue</p>
+            </div>
+            <div>
+                <h4>Shop Products</h4>
+                <p>BioPak Catalogue</p>
+                <p>BioPak Catalogue</p>
+                <p>BioPak Catalogue</p>
+                <img src="./assets/img/logo.png" />
+            </div>
+        </footer>
+        <div class="copyRight">
+            <span>Copyright © 2022 BioPak. All rights reserved (FSC™ C110879).</span>
+            <span>Terms & Conditions </span>
+            <span>Privacy Policy</span>
+            <span>Cookie Preferences</span>
         </div>
     </div>
 </body>
