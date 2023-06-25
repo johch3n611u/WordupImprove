@@ -79,3 +79,35 @@ https://kenwheeler.github.io/slick/
 
 
 * searchBar input 必須用 div 裝著，避免被 flex 影響，也可以客製化 input
+
+## input focus outline
+
+https://stackoverflow.com/questions/3397113/how-to-remove-focus-border-outline-around-text-input-boxes-chrome
+
+## font awesome bug
+
+some free icon must use font weight
+
+https://stackoverflow.com/questions/54931636/why-font-awesome-icon-f105-is-not-appears
+
+## after text-decoration not working
+
+display: inline-block;
+
+https://stackoverflow.com/questions/1238881/text-decoration-and-the-after-pseudo-element-revisited
+
+## drag carousel
+
+https://owlcarousel2.github.io/
+
+## style feature components
+
+like sap spartacus angular
+
+https://github.com/SAP/spartacus
+
+![](!https://github.com/UrWebApp/ComponentLibrary/blob/master/Demo/Template/ec-biopak/assets/img/style-feature-components.png)
+
+## embedfeed social media aggregator
+
+https://embedsocial.com/

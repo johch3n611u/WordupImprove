@@ -1,0 +1,643 @@
+img {
+    width: 50px;
+    height: 50px;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+.container {
+    width: 100%;
+    max-width: 1240px;
+    /* Default max-width for extra large devices */
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media (max-width: 1199.98px) {
+
+    /* Reduce max-width for large devices */
+    .container {
+        max-width: 960px;
+    }
+}
+
+@media (max-width: 991.98px) {
+
+    /* Reduce max-width for medium devices */
+    .container {
+        max-width: 720px;
+    }
+}
+
+@media (max-width: 767.98px) {
+
+    /* Reduce max-width for small devices */
+    .container {
+        max-width: 540px;
+    }
+}
+
+@media (max-width: 575.98px) {
+
+    /* Remove max-width for extra small devices */
+    .container {
+        max-width: none;
+    }
+}
+
+a,
+button {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+button {
+    background-color: #78b54e;
+    border-radius: 5px;
+    font-size: 1.8rem;
+    padding: 10px 30px;
+    border: none;
+    color: white;
+}
+
+h3 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+p {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+}
+
+header {
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    background-color: white;
+}
+
+main {
+    padding-top: 23rem;
+}
+
+.callToActionAtTop {
+    background-color: #ff8d00;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    line-height: 40px;
+    font-weight: 400;
+    font-size: 1.6rem;
+    padding: 5px 0;
+}
+
+.callToActionAtTop a {
+    text-decoration: underline;
+    color: #fff;
+}
+
+.panel {
+    background-color: #f2f2f2;
+}
+
+.multilevelNav {
+    display: flex;
+    justify-content: space-between;
+    line-height: 40px;
+    font-weight: 400;
+    font-size: 1.6rem;
+}
+
+.multilevelNav ul {
+    padding-inline-start: 0;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    display: flex;
+    position: relative;
+}
+
+.leftNav,
+.rightNav {
+    display: flex;
+    flex-direction: row;
+}
+
+.multilevelNav .level2Nav,
+.multilevelNav .level3Nav {
+    display: none;
+}
+
+.multilevelNav .level1Nav {
+    width: max-content;
+    word-wrap: normal;
+    font-size: 16px;
+    font-weight: 600;
+    max-width: none;
+    background-color: #f2f2f2;
+    color: black;
+}
+
+.leftNav .level1Nav {
+    padding: 0.5rem 2rem 0.5rem 0;
+}
+
+.rightNav .level1Nav {
+    padding: 0.5rem 0 0.5rem 2rem;
+}
+
+.multilevelNav a {
+    width: 7rem;
+    padding: 0.5rem 1.5rem;
+    background-color: white;
+    writing-mode: horizontal-tb;
+}
+
+.multilevelNav ul>.level1Nav::after {
+    content: "\f107";
+    margin-left: 8px;
+    font-family: 'Font Awesome 5 Free';
+}
+
+.multilevelNav ul:hover>.level2Nav {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 5rem;
+}
+
+.level2Nav>ul>a::after {
+    content: "\f105";
+    margin-left: 8px;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    display: inline-block;
+}
+
+.level2Nav>ul:hover>.level3Nav {
+    display: flex;
+}
+
+.level2Nav a,
+.level3Nav a {
+    border: solid 1px #c4c4c4;
+    color: black;
+}
+
+.level2Nav a:hover,
+.level3Nav a:hover {
+    background-color: #f2f2f2;
+}
+
+.header {
+    margin: 1rem 0;
+}
+
+.header>div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 1rem;
+}
+
+.logoBox {
+    display: flex;
+    align-items: center;
+}
+
+.logoBox>h1 {
+    font-size: 3.5rem;
+    font-weight: 600;
+}
+
+.iconButtonBox {
+    display: flex;
+    align-items: center;
+}
+
+.iconButtonBox>a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    color: black;
+}
+
+.iconButtonBox>a>span {
+    margin-top: 8px;
+}
+
+.iconButtonBox img {
+    width: 30px;
+    height: 30px;
+}
+
+.searchBar {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.searchBar>a {
+    position: absolute;
+}
+
+.searchBar>a>img {
+    width: 20px;
+    height: 20px;
+    margin-left: 15px;
+}
+
+.searchBar>input {
+    width: 300px;
+    border: solid 1px#e4e4e4;
+    border-radius: 5px;
+    padding: 0 20px 0 50px;
+    height: 46px;
+    font-size: 2rem;
+}
+
+.searchBar>input:focus {
+    outline: none;
+}
+
+.megaMenuTabs {
+    background-color: #78b54e;
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.megaMenuTabs ul {
+    padding-inline-start: 0;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    display: flex;
+}
+
+.megaMenuTabs ul a {
+    padding: 16px 20px;
+    color: #ffffff;
+}
+
+.megaMenuTabs ul a::after {
+    content: "\f107";
+    margin-left: 4px;
+    font-family: 'Font Awesome 5 Free';
+}
+
+.heroImages {
+    cursor: pointer;
+    background-image: url("/assets/img/johannes-mandle-r_FNlKOxxos-unsplash.jpg");
+    background-position: 50% 50%;
+    background-size: cover;
+    text-shadow: black 0.1em 0.1em 0.2em;
+}
+
+.heroImages div {
+    color: white;
+    padding: 10rem;
+}
+
+.heroImages h1 {
+    font-size: 4rem;
+    width: 30%;
+    margin-bottom: 3rem;
+    text-align: left;
+}
+
+.heroImages p {
+    font-size: 1.5rem;
+    width: 50%;
+    margin-bottom: 5rem;
+    text-align: left;
+}
+
+.categoriesCarousel {
+    margin: 5rem 0;
+}
+
+.categoriesCarousel>div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.categoriesCarousel div>span {
+    background-color: #78b54e;
+    padding: 2rem;
+    color: white;
+    font-size: 2rem;
+    font-weight: 900;
+    border-radius: 10rem;
+    width: 10px;
+    height: 10px;
+    text-align: center;
+    line-height: 10px;
+    cursor: pointer;
+    margin: 3rem;
+}
+
+.categoriesCarousel .categories {
+    display: flex;
+    overflow: hidden;
+}
+
+.categoriesCarousel .categories a {
+    margin: 0 2rem;
+}
+
+.categoriesCarousel .categories img {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 1rem;
+}
+
+.categoriesCarousel .categories span {
+    font-size: 2rem;
+    color: black;
+}
+
+.benefits {
+    background-color: #f7f7f7;
+    padding: 5rem 0;
+}
+
+.benefits>div {
+    display: flex;
+}
+
+.benefits>.container div {
+    width: 25%;
+    margin: 0 5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.benefits>.container div img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 2rem;
+}
+
+.marketingArticles div {
+    display: flex;
+    padding: 3rem 0;
+}
+
+.marketingArticles>.container div {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+.marketingArticles>.container div h3 {
+    text-align: left;
+}
+
+.marketingArticles>.container div img {
+    width: 100%;
+    height: 250px;
+    margin-bottom: 2rem;
+}
+
+.marketingArticles>.container div a {
+    font-size: 2rem;
+    color: #78b54e;
+}
+
+.marketingViedo {
+    padding: 5rem 0;
+    background-image: url("/assets/img/johannes-mandle-r_FNlKOxxos-unsplash.jpg");
+    background-position: 20% 80%;
+    background-size: cover;
+    text-shadow: black 0.1em 0.1em 0.2em;
+}
+
+.marketingViedo>.container {
+    display: flex;
+}
+
+.marketingViedo>.container div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 0 5rem;
+}
+
+.marketingViedo>.container video {
+    width: 100%;
+}
+
+.instagramCarousel {
+    padding: 5rem 0;
+    background-color: #efece7;
+}
+
+.instagramCarousel h3 {
+    color: #78b54e;
+    font-size: 3.5rem;
+}
+
+.instagramCarousel ul {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+.instagramCarousel ul img {
+    width: 300px;
+    height: 150px;
+    margin: 0 2rem;
+    background-color: white;
+}
+
+.awardsCarousel {
+    margin-top: 35px;
+}
+
+.divider {
+    display: flex;
+    justify-content: center;
+}
+
+.divider div {
+    width: 5%;
+    border-bottom: 1px solid gray;
+}
+
+.awardsCarousel ul {
+    margin: 30px auto;
+    justify-content: space-around;
+    display: flex;
+    overflow-x: hidden;
+}
+
+.awardsCarousel ul li {
+    width: 300px;
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.awardsCarousel ul li p {
+    color: #78b54e;
+}
+
+.awardsCarousel ul li img {
+    width: 200px;
+    height: auto;
+    margin-bottom: 30px;
+}
+
+.coreThemes {
+    padding: 50px 0;
+    background-color: #efece7;
+}
+
+.coreThemes ul {
+    display: flex;
+    justify-content: space-between;
+}
+
+.coreThemes ul li {
+    padding: 5rem 1rem;
+    background-color: #78b54e;
+    display: flex;
+    align-items: center;
+    width: 30%;
+    justify-content: center;
+}
+
+.coreThemes ul li h3 {
+    color: white;
+    margin-left: 20px;
+    margin-bottom: 0;
+}
+
+.marketingPanel {
+    background-color: #f2f2f2;
+    padding: 3rem 0;
+}
+
+.marketingPanel>div {
+    justify-content: space-between;
+}
+
+.marketingPanel div,
+.marketingPanel div div {
+    display: flex;
+}
+
+.marketingPanel .left,
+.marketingPanel .center {
+    flex-direction: column;
+}
+
+.marketingPanel .left {
+    width: 30%;
+}
+
+.marketingPanel .left>p {
+    text-align: left;
+}
+
+.marketingPanel .right {
+    align-items: center;
+}
+
+.marketingPanel .right img {
+    width: 25px;
+    height: 25px;
+    margin-right: 1rem;
+}
+
+.marketingPanel .right>span {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-right: 1.5rem;
+}
+
+.marketingPanel .center>p {
+    margin-top: 1rem;
+    font-size: 0.5rem;
+    text-align: left;
+}
+
+.marketingPanel .center>a {
+    color: #78b54e;
+}
+
+.marketingPanel .center input {
+    background-color: #ffffff;
+    border-color: #e4e4e4;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px;
+    line-height: 19.2px;
+    padding: 0px 120px 0px 15px;
+    width: 100%;
+}
+
+.marketingPanel .center button {
+    border-radius: unset;
+}
+
+.marketingPanel h4 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+}
+
+.footerNav {
+    padding: 3rem 0;
+}
+
+.footerNav>div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.footerNav>div div {
+    display: flex;
+    flex-direction: column;
+}
+
+.footerNav>div div>h4 {
+    font-size: 2rem;
+}
+
+.footerNav>div div>a {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    color: #78b54e;
+}
+
+.footerNav>div div>img {
+    margin-top: 1rem;
+}
+
+.copyRight {
+    background-color: #f2f2f2;
+    color: #2d2d2d;
+    padding: 1.5rem 0;
+    text-align: center;
+}
+
+.copyRight a {
+    margin-left: 1rem;
+}
