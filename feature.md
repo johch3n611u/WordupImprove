@@ -1,4 +1,22 @@
-https://ithelp.ithome.com.tw/users/20112280/ironman/2093?page=1
+# 專案要點
+
+1. tsconfig.json => path "projects/lib/*", "dist/lib/*" 
+   * ng serve 開發模式優先從 projects/lib 目錄下尋找模組
+   * ng build 解析器會優先從 dist/lib 目錄下尋找模組
+2. 用新的 [pnpm](https://zhuanlan.zhihu.com/p/546400909) 進行模組管理，指令同 npm
+3. [NG-ZORRO](https://ng.ant.design/docs/introduce/en) 參考較多人使用的 UI Repo 去產結構，以 feature 業務邏輯對原生 element 或第三方元件庫進行二次封裝
+4. 新模組或元件/功能需先查詢此文檔有無類似功能並優化重構，如無則需補上說明文件與路徑
+5. 找不到功能應用開發可以看以下參考
+   * 千人群聊專案 [影片](https://www.douyin.com/user/MS4wLjABAAAA0VPScPz6NfgTCKstkkGr5RS6tsAC8PgpVT7F_Rb2XwA?modal_id=7249728594157505849) [Github](https://github.com/Evansy/MallChatWeb)
+   * [渡一Web前端学习频道](https://www.douyin.com/search/%E6%B8%A1%E4%B8%80?source=switch_tab&type=user) 所有渡一的都可以看一下，都是前端拆單元模組出來講
+   * [前端面試考題](https://www.douyin.com/note/7234853856453070140)
+   * [JS Design Pattern](https://ithelp.ithome.com.tw/users/20112280/ironman/2093?page=1)
+   * 都做完再去 KGPT 找表單內類別試程式或商業的看有沒有機會有其他的可能性
+6. 盡量補上測試或至少保留原生單元測試
+   * unit `ng test` [Karma](https://karma-runner.github.io)
+   * end-to-end `ng e2e` 端對端測試的套件最多人使用的是 Protractor
+
+## 專案架構與文檔
 
 ## Facade Pattern
 
@@ -533,4 +551,3 @@ User    > Account
 Vop
 
 ```
-

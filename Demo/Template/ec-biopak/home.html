@@ -8,7 +8,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
     <link href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css" rel="stylesheet">
     <link href="https://use.fontawesome.com/releases/v6.4.0/css/all.css" rel="stylesheet">
-    <link href="./assets/css/all.css" rel="stylesheet">
+    <!-- <link href="./assets/css/all.css" rel="stylesheet"> -->
+    <style>
+        header,main,footer {
+            border: 2px solid red;
+            margin: 2rem;
+        }
+
+        header>div,main>div,footer>div{
+            border: 2px solid blue;
+            margin: 1rem;
+        }
+
+        img{
+            width: 50px;
+            height: auto;
+        }
+    </style>
 </head>
 
 <body>
@@ -116,13 +132,13 @@
     </header>
 
     <main>
-        <article class="heroImages">
+        <div class="heroImages">
             <div class="container">
                 <h1>業或組織通過分析市場需求和客戶行為，制定相應的行銷策略和方案，以達到經營目標的過程</h1>
                 <p>數位媒介和工具，進行行銷活動、廣告投放、品牌推廣等活動的方式，企業或組織為了建立和維護與客戶之間的良好關係，進行的一系列行銷和管理活動，消費者在購買產品或服務時所表現出的行為和心理特徵</p>
                 <button class="callToActionButton">立即聯絡</button>
             </div>
-        </article>
+        </div>
         <div class="categoriesCarousel">
             <div class="container">
                 <span>&lt;</span>
@@ -395,7 +411,6 @@
                 </div>
             </div>
         </div>
-
         <div class="copyRight">
             <span>Copyright © 2022 BioPak. All rights reserved (FSC™ C110879).</span>
             <a>Terms & Conditions </a>
