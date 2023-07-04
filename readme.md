@@ -1,26 +1,576 @@
-# ComponentLibrary
+# 專案要點
 
-> 元件資源
+1. tsconfig.json => path "projects/lib/*", "dist/lib/*" 
+   * ng serve 開發模式優先從 projects/lib 目錄下尋找模組
+   * ng build 解析器會優先從 dist/lib 目錄下尋找模組
+2. 用新的 [pnpm](https://zhuanlan.zhihu.com/p/546400909) 進行模組管理，指令同 npm
+3. [NG-ZORRO](https://ng.ant.design/docs/introduce/en) 參考較多人使用的 UI Repo 去產結構，以 feature 業務邏輯對原生 element 或第三方元件庫進行二次封裝
+4. 新模組或元件/功能需先查詢此文檔有無類似功能並優化重構，如無則需補上說明文件與路徑
+5. 找不到功能應用開發可以看以下參考
+   * 千人群聊專案 [影片](https://www.douyin.com/user/MS4wLjABAAAA0VPScPz6NfgTCKstkkGr5RS6tsAC8PgpVT7F_Rb2XwA?modal_id=7249728594157505849) [Github](https://github.com/Evansy/MallChatWeb)
+   * [渡一Web前端学习频道](https://www.douyin.com/search/%E6%B8%A1%E4%B8%80?source=switch_tab&type=user) 所有渡一的都可以看一下，都是前端拆單元模組出來講
+   * [前端面試考題](https://www.douyin.com/note/7234853856453070140)
+   * [JS Design Pattern](https://ithelp.ithome.com.tw/users/20112280/ironman/2093?page=1)
+   * 都做完再去 KGPT 找表單內類別試程式或商業的看有沒有機會有其他的可能性
+   1. [ng-lightning](https://github.com/ng-lightning/ng-lightning/tree/master/projects/ng-lightning/src)
+   1. [29 個 components](https://ithelp.ithome.com.tw/articles/10288482)
+   2. [100 個 components / js game](https://github.com/johch3n611u/johch3n611u/tree/main/Research/SelfTraing)
+   3. [擊破前端面試的困難 / 或許可以做成 comopnent demo ?](https://medium.com/@askiebaby/%E6%93%8A%E7%A0%B4%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%A9%A6%E7%9A%84%E5%9B%B0%E9%9B%A3-%E7%B9%81%E4%B8%AD%E7%BF%BB%E8%AD%AF-5054500e9415)
+   4. advergaming 感覺是趨勢? 還是可能過時了
+   5. [30js做成 components](https://github.com/wesbos/JavaScript30)
+   6. [w3c how to](https://www.w3schools.com/howto/default.asp)
+   6. [Angular 大師之路](https://ithelp.ithome.com.tw/users/20020617/ironman/1630)
+   7. [understanding-angular-overview](https://angular.tw/guide/understanding-angular-overview)
+   8. [ant design](https://ant.design/components/overview/)
+   9. [angular design pattern](https://blogs.halodoc.io/commonly-used-design-patterns-in-angular/)
+   10. [ng jest](https://ithelp.ithome.com.tw/articles/10308509)
+   11. [30 天擁有一套自己手刻的 React UI 元件庫](https://ithelp.ithome.com.tw/m/users/20111490/ironman/3999)
+   12. [以經典小遊戲為主題之ReactJS應用練習](https://ithelp.ithome.com.tw/m/users/20111490/ironman/2007)
+   13. [awesome-angular-components](https://github.com/brillout/awesome-angular-components)
+   14. [vueuse](https://vueuse.org/functions.html)
+6. 盡量補上測試或至少保留原生單元測試
+   * unit `ng test` [Karma](https://karma-runner.github.io)
+   * end-to-end `ng e2e` 端對端測試的套件最多人使用的是 Protractor
 
-1. [ng-lightning](https://github.com/ng-lightning/ng-lightning/tree/master/projects/ng-lightning/src)
-1. [29 個 components](https://ithelp.ithome.com.tw/articles/10288482)
-2. [100 個 components / js game](https://github.com/johch3n611u/johch3n611u/tree/main/Research/SelfTraing)
-3. [擊破前端面試的困難 / 或許可以做成 comopnent demo ?](https://medium.com/@askiebaby/%E6%93%8A%E7%A0%B4%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%A9%A6%E7%9A%84%E5%9B%B0%E9%9B%A3-%E7%B9%81%E4%B8%AD%E7%BF%BB%E8%AD%AF-5054500e9415)
-4. advergaming 感覺是趨勢? 還是可能過時了
-5. [30js做成 components](https://github.com/wesbos/JavaScript30)
-6. [w3c how to](https://www.w3schools.com/howto/default.asp)
-6. [Angular 大師之路](https://ithelp.ithome.com.tw/users/20020617/ironman/1630)
-7. [understanding-angular-overview](https://angular.tw/guide/understanding-angular-overview)
-8. [ant design](https://ant.design/components/overview/)
-9. [angular design pattern](https://blogs.halodoc.io/commonly-used-design-patterns-in-angular/)
-10. [ng jest](https://ithelp.ithome.com.tw/articles/10308509)
-11. [30 天擁有一套自己手刻的 React UI 元件庫](https://ithelp.ithome.com.tw/m/users/20111490/ironman/3999)
-12. [以經典小遊戲為主題之ReactJS應用練習](https://ithelp.ithome.com.tw/m/users/20111490/ironman/2007)
-13. [awesome-angular-components](https://github.com/brillout/awesome-angular-components)
-14. [vueuse](https://vueuse.org/functions.html)
+## 專案架構與文檔
 
+### Facade Pattern
 
-## Node.js V8
+簡化複雜系統，提供統一的界面，隱藏了系統內部複雜性。
+
+EX. 封裝表單相關的功能、方法和事件，提供簡單統一的介面供其他程式使用。
+
+[NG 依賴注入](https://ithelp.ithome.com.tw/articles/10207990)
+
+[useFactory](https://fullstackladder.dev/blog/2018/11/05/mastering-angular-21-ngmodule-providers-2/)
+
+```typescript
+import { facadeFactory, StateUtils } from '@spartacus/core';
+import { FORM_CORE_FEATURE } from '../form-feature-name';
+
+@Injectable({
+  providedIn: 'root',
+  useFactory: () =>
+    facadeFactory({
+      facade: FormFacade,
+      feature: FORM_CORE_FEATURE,
+      methods: [
+        'getCompleteFormStepSuccess',
+        'getCompleteFormStepError',
+      ],
+      async: true,
+    }),
+})
+export abstract class FormFacade {
+  abstract getCompleteFormStepSuccess(
+    formId: string,
+    formStepId: string
+  ): Observable<boolean>;
+  abstract getCompleteFormStepError(
+    formId: string,
+    formStepId: string
+  ): Observable<boolean>;
+}
+```
+
+### Loading Overlay Service
+
+加载状态的管理控制。它包含了被观察的属性和方法，根据不同的进程ID来跟踪和控制加载过程。
+
+[pipe distinctuntilchanged](https://rxjs-cn.github.io/learn-rxjs-operators/operators/filtering/distinctuntilchanged.html)：当前值与之前最后一个值不同时才将其发出。
+
+[ES6 Map](https://pjchender.dev/javascript/js-map/)：當需要經常增添刪減屬性時，使用 Map 的效能會比 Object 來得好。
+  
+```typescript 
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { distinctUntilChanged, map, take, tap } from 'rxjs/operators';
+import { LogService } from '../log';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class LoadingOverlayService {
+  logger = this.logService.getLogger('LoadingOverlayService');
+  private index = 0;
+  private readonly isLoading$: Observable<boolean>;
+  // 用于存储不同进程 ID 和加载状态之间的映射关系
+  private processLoadingMap$: BehaviorSubject<Map<string, string>>;
+  processEndState$ = new BehaviorSubject(undefined);
+  constructor(protected logService: LogService) {
+    this.processLoadingMap$ = new BehaviorSubject<Map<string, string>>(
+      new Map()
+    );
+    // 通过处理 processLoadingMap$ 的变化，计算是否有正在进行的加载过程。
+    this.isLoading$ = this.processLoadingMap$.pipe(
+      map(processLoadingMap => {
+        if (processLoadingMap) {
+          return new Map( // 进行过滤，去除值为 undefined 或假值的条目
+            [...processLoadingMap].filter(
+              ([k, v]) => typeof v !== 'undefined' && v
+            )
+          );
+        } else {
+          return new Map();
+        }
+      }),
+      map((processes: Map<string, string>) => {
+        this.logger.debug('Loading processing count: ', processes.size);
+        this.logger.debug('Active processes:', [processes.keys()]);
+        return processes.size;
+      }),
+      distinctUntilChanged(),
+      // 计算剩余条目的数量，并最终判断数量是否大于0，返回一个布尔值表示加载状态。
+      map((count: number) => count > 0)
+    );
+  }
+
+  // 获取加载状态。如果不提供processId参数，则直接返回isLoading$属性的值（一个Observable<boolean>）。如果提供了 processId 参数，则调用方法获取特定进程的加载状态。 
+  public getLoadingStatus(processId?: string): Observable<boolean> {
+    return !!!processId
+      ? this.isLoading$
+      : this.getProcessLoadingState(processId);
+  }
+
+  // 开始一个加载过程，并在开始之前检查该进程是否已经处于加载状态。
+  public startLoadingWithLock(
+    processId: string,
+    shouldReturnBooleanInsteadOfThrowingError?: boolean
+  ): boolean {
+    let isLoading = false;
+    // 通过调用方法来获取特定进程的加载状态
+    this.getProcessLoadingState(processId)
+      .pipe(
+        // 通过 take(1) 操作符只订阅一次该状态
+        take(1),
+        tap(isProcessing => {
+          isLoading = isProcessing;
+        })
+      )
+      .subscribe();
+    if (isLoading) {
+      // 已经在加载中根据参数返回布尔值或抛出错误
+      if (shouldReturnBooleanInsteadOfThrowingError) {
+        return false;
+      } else {
+        throw new Error(`process is locked - processId: ${processId}`);
+      }
+    }
+    // 不是加载中，则调用方法开始加载
+    this.startLoading(processId);
+    return true;
+  }
+
+  // 开始一个加载过程。
+  public startLoading(processId?: string): string {
+    this.logger.debug('Loading started for process', processId);
+    if (!!!processId) {
+      // 如果不提供 processId 参数，则会生成一个新的唯一进程 ID。
+      processId = this.getNewProcessId();
+    }
+    // 它通过调用方法将该进程的加载状态设置为进行中，并返回进程 ID。
+    this.setProcessLoadingState(processId);
+    return processId;
+  }
+
+  // 结束一个加载过程。
+  public endLoading(processId: string) {
+    // 它接受一个processId参数，表示要结束的加载过程的进程ID。
+    this.logger.debug('Loading ended for process', processId);
+    // 获取当前的加载过程映射（Map对象）。
+    const processLoadingMap = this.processLoadingMap$.getValue();
+    // delete 从映射中删除指定的 processId
+    processLoadingMap.delete(processId);
+    // 通过 next 方法将更新后的加载过程映射发送给所有订阅了 processLoadingMap$ 的观察者。
+    this.processLoadingMap$.next(processLoadingMap);
+  }
+
+  // 强制结束所有的加载过程。
+  public forceEndAllLoading() {
+    if (this.processLoadingMap$.getValue().size > 0) {
+    // 检查 processLoadingMap$ 的大小，如果大于0，则输出警告信息表示还有正在运行的进程。
+      this.logger.warn(
+        `Requested to end all loading when there are still ${
+          this.processLoadingMap$.getValue().size
+        } process running`
+      );
+    }
+    // 调用processLoadingMap$的 next 方法将加载过程映射重置为空的Map对象，从而强制结束所有的加载过程。
+    this.processLoadingMap$.next(new Map<string, string>());
+  }
+
+  // 获取特定进程的加载状态。
+  public getProcessLoadingState(processId: string): Observable<boolean> {
+    return this.processLoadingMap$.pipe(
+      // 根据指定的processId查找对应的加载状态。如果找到了加载状态，则返回true；否则返回false。
+      map(processLoadingMap => !!processLoadingMap.get(processId))
+    );
+  }
+
+  // 设置特定进程的加载状态。
+  private setProcessLoadingState(processId: string): void {
+    const processLoadingMap = this.processLoadingMap$.getValue();
+    processLoadingMap.set(processId, new Date().toUTCString());
+    this.processLoadingMap$.next(processLoadingMap);
+  }
+
+  // 生成一个新的进程ID。
+  private getNewProcessId(): string {
+    this.index++;
+    return this.index.toString();
+  }
+
+  // 处理加载过程状态的更新。
+  onProcessStateUpdate(result: string) {
+    if (!result) {
+      return;
+    }
+    this.processEndState$.next(result);
+  }
+}
+
+``` 
+  
+### Addon Onetrust Service
+  
+可以幫助網站管理者遵守 GDPR 和其他隱私法律，同時保護使用者的隱私權，可能有的功能如同意彈窗、多語系、數據管理等功能。
+
+### Debounce & Throttle => Queue
+
+```typescript
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Subject, timer } from 'rxjs';
+import { debounce, filter, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { Observable, from } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class QueueService {
+
+  // 緩衝不立即發出的資料
+  private pending$ = new BehaviorSubject<any>([]);
+  // 等待發出的資料
+  public outgoing$ = new BehaviorSubject<any>([]);
+  // 當符合條件時發出資料
+  private isReadyToEmit$ = new Subject<boolean>();
+  private ngUnsubscribe = new Subject();
+
+  BUFFER_SIZE = 5;
+  DEBOUNCE_TIME = 5000;
+
+  constructor() {
+    this.getPendingEvent().pipe(
+      // 發出符合給定條件的值
+      filter(items => items && items.length > 0),
+      // 根據一個選擇器函數，捨棄掉在兩次輸出之間小於指定時間的發出值
+      debounce(items =>
+        timer(
+          items.length >= Number(this.BUFFER_SIZE) ? 0 : (Number(this.DEBOUNCE_TIME))
+        ),
+      ),
+      // 發出值，直到提供的 observable 發出值，它便完成
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe(pendingItems => {
+      // 分類：超過 BUFFER_SIZE 筆數則等待下一次發送
+      const outgoingList = pendingItems.slice(0, Number(this.BUFFER_SIZE)) || [];
+      const restOfPendingList = pendingItems.slice(outgoingList.length, pendingItems.length) || [];
+      if (outgoingList.length > 0) {
+        this.outgoing$.next(outgoingList);
+        this.isReadyToEmit$.next(true);
+      }
+      this.pending$.next(restOfPendingList);
+    });
+
+    this.isReadyToEmit$.pipe(
+      withLatestFrom(this.getOutgoingEvent()),
+      switchMap(([isReadyToEmit, outgoingEvents]) => {
+        return this.request(isReadyToEmit, outgoingEvents)
+      }),
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe(
+      res => {
+        this.clearOutgoingEvents();
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    console.log('ngOnDestroy');
+    this.ngUnsubscribe.complete();
+  }
+
+  add(event: any) {
+    this.pending$.next([...this.pending$.getValue(), ...[event]]);
+  }
+
+  getPendingEvent() {
+    return this.pending$.asObservable();
+  }
+
+  getOutgoingEvent() {
+    return this.outgoing$.asObservable();
+  }
+
+  clearOutgoingEvents() {
+    this.outgoing$.next([]);
+  }
+
+  request(isReadyToEmit: any, outgoingEvents: any): Observable<any> {
+    return from(outgoingEvents);
+  }
+}
+```
+
+### Large EC Project Architecture
+
+```
+Auth > Connector        > Log Out
+                        > Get Otp Token
+       Guards           > guard
+       HttpInterceptors > Group useExisting
+                        > Auth
+                        > Auth Token Fallback
+                        > Convert Auth Error
+       User Auth        > Config
+                        > Facade
+                        > Service > Config
+                                  > State Persistence ( 持久化 Spartacus AuthStatePersistenceService )
+                                  > Wrapper ( Spartacus AuthService )
+                                  > First Sign In
+                                  > Oauth Library Wrapper ( Spartacus OAuthLibWrapperService )
+       Web Auth         > Biometric Toggle Switch ( 生物識別登錄 )
+Base Store > Connector ( API GetSoming )
+           > Facade
+           > Store      > Actions ( Redux )
+                        > Effects ( Redux )
+                        > Reducers ( Redux )
+                        > Selectors ( Redux )
+Brand > Connector ( API GetSoming )
+      > Facades
+      > Store > Actions ( Redux )
+              > Effects ( Redux )
+              > Reducers ( Redux )
+              > Selectors ( Redux )
+Cart > Adaptors > Load All
+                > Load
+     > Components
+     > Promotion Connector ( API GetSoming )
+     > Connector ( API GetSoming )
+     > Service > Active Cart
+               > Cart Multi Buy
+               > Cart Promotion
+               > Cart Validation
+               > Cart With Senior Citizen
+               > Cart
+               > Mini Cart
+               > Shopping List
+     > Store   > Actions ( Redux )
+               > Effects ( Redux )
+               > Reducers ( Redux )
+               > Selectors ( Redux )
+               > Save For Later
+               > Error State
+               > Checkout Delivery
+Category > Connector ( API GetSoming )
+         > Facades 
+         > Service
+         > Store > Some Others
+         > Utils > Noramlize > Map Category Tree
+Checkout > Adaptors > Checkout Citi
+                    > Checkout Dbs
+         > Service > Payment Gateway      > AmEx Payment Gateway 美國運通（American Express）
+                                          > Amex2 Payment Gateway
+                                          > Atome Payment Gateway 新加坡支付網關服務
+                                          > Bill Payment Gateway
+                                          > COD Payment Gateway ( Cash On Delivery )
+                                          > Eft Payment Gateway ( Electronic Funds Transfer )
+                                          > Estamp Payment Gateway ( Estamp Asia Pte Ltd )
+                                          > Line Pay Payment Gateway
+                                          > Member Points Payment Gateway
+                                          > MPGS Payment Gateway ( Mastercard )
+                                          > Octopus Payment Gateway 香港八達通
+                                          > Union Pay Payment Gateway 中國銀聯
+                   > Referral Tracking
+         > Store > Some Others
+Core > Adapters > CMS
+                > Converters
+     > Config
+     > Exents > Page Meta Event ( GTM )
+     > Guards > Card Loss
+              > Order
+              > Search 
+              > Supplier
+     > Http Interceptors > API
+                         > Queue It
+                         > Site Context
+     > i18n
+     > Models
+     > Pipes > Abbreviated Number
+             > Algolia Multilingual Field
+             > Count Down
+             > Date Diff
+             > Day Of Week
+             > Discount Display
+             > Dynamic Translate
+             > Error Translate
+             > Filter Orders
+             > Format File Size
+             > Handle Price Value
+             > List Filter
+             > Negative Value
+             > Order Cancel Reason
+             > Order History Status
+             > Replace All
+             > Space Translate
+             > String Array Reduce
+             > Url
+             > Unescape
+     > Resolvers > Url
+                 > Page Meta
+     > Routing   > Scroll Position Restoration
+                 > Store
+     > Services > Captcha
+                > CMS
+                > CRM
+                > Google Speech
+                > Google Vision
+                > Slot Defer Loading
+                > Storefront
+                > Auto Complete
+                > Breakpoint
+                > BuildInfo
+                > Custom Site Context
+                > Device Detector
+                > Global Config
+                > Go In Store ( GIS )
+                > GTM
+                > Insider
+                > JSON Id
+                > Loading Overlay
+                > Log
+                > Omni Chat
+                > Page Click Event
+                > Process Lock
+                > Url Normalizer
+                > Viewport Intersector
+     > Utils > Loder Reducer
+             > Rxjs Extends > BufferDebounceTime
+                            > CombineReload
+                            > DelayedRetry
+                            > Switch Map If Nullable
+     > Window
+Error Handling > Config
+               > Facade
+               > Utils
+Field Option   > Connectors
+               > Facade
+               > Models
+               > Store
+Form           > Field Accessors
+               > Adapters
+               > Components > Attachments
+                            > Auto Suggestion
+                            > Captcha
+                            > Checkbox
+                            > Checkbox Select All
+                            > Date Select
+                            > Display Text
+                            > Error Message
+                            > Input
+                            > Mb Password
+                            > Mb Password With Hints
+                            > Moneyback Language
+                            > OTP Email
+                            > OTP Moneyback
+                            > OTP SMS
+                            > Radio Option
+                            > Selective Product List
+                            > Textarea
+                            > Title
+                            > Toggler
+               > Config
+               > Connectors
+               > Facade
+               > Loaders
+               > Store
+               > Validators
+Http
+Lazada 東南亞地區最大的電子商務平台之一
+Multi Cart
+Newsletter
+( OCC ) Omni Commerce Connect 是新 SAP Commerce Cloud / 舊 Hybris Commerce Suite 的 API 
+用於實現與不同商業系統的集成，例如 ERP 系統、支付系統、庫存系統等
+OCC Commerce > Tracking Event Queue
+               > Brand
+               > Category
+               > Product
+               > Social Followers
+               > Tracking Event
+               > Related Keywords
+               > Social Followers
+Popup > Components > Direct Content
+                   > Error
+                   > Form
+                   > i18n
+                   > Popup
+      > Config
+      > Models
+      > Service
+Product > Components > Product Code
+                     > Product Thumnbail
+Routes
+Shared  > Components > Breadcrumb
+                     > Banner
+                     > Banner Carousel
+                     > Icon
+                     > Icon Link
+                     > Icon Link List
+                     > Item Counter
+                     > Link
+                     > Media
+                     > Nested Tab
+                     > Paragraph
+                     > Rating
+                     > Responsive Banner
+                     > Video
+                     > Back To Top
+                     > Loading
+                     > Loading Overlay
+                     > Notification
+                     > Digit Only
+                     > Checkbox
+                     > Error Msg
+                     > Input
+                     > Multi Select
+                     > Radio
+                     > Select
+        > Directives
+        > Models
+        > Services > Notification
+                   > Swiper Reference
+Social Media
+SSR
+Storefinder
+User    > Account
+        > Address
+        > Buy It Again
+        > Estamp
+        > Ewallet
+        > Notify Me
+        > Order
+        > Order History
+        > Point Donation
+        > Reciept
+        > Review
+        > Wishlist
+Vop
+
+```
+
+----------------------------------------------------
+## 基本知識
+### Node.js V8
 
 * 介紹：Node.js 是一個能夠在伺服器端執行 JavaScript 的平台，其背後所使用的引擎是 Google 以  C++ 開發的 V8 引擎。
 * 包管理系統：Node.js 預設附帶的包管理系統為 npm (Node Package Manager)，可透過此系統方便地管理套件。
@@ -29,7 +579,7 @@
 * 安裝與使用套件：透過指令 npm install 或 yarn add，即可安裝相應套件，並透過 require 或 import 語法將套件引入專案。
 * 套件版本控制：透過 package.json 可以管理專案所使用套件的版本，避免產生相容性問題。
 
-## NPM、Yarn、Nuget
+### NPM、Yarn、Nuget
 
 * 介紹：NPM、Yarn、Nuget 均為套件管理系統，NPM 是 Node.js 的官方套件管理工具，Yarn 是 Facebook 開發的套件管理工具，Nuget 則是專為 .NET 平台而設計的套件管理工具。
 * 常見差異與選擇：NPM 與 Yarn 在功能上大致相同，Yarn 擁有較快的速度及更好的穩定性；Nuget 則是針對 .NET 平台的套件管理，具有專為 .NET 開發者所設計的功能。
@@ -37,7 +587,7 @@
 * 安裝與使用套件：透過指令 install 或 add，即可安裝相應套件，並透過 require 或 import 語法將套件引入專案。
 * 套件版本控制：透過相應套件管理工具的版本控制系統，可控制套件版本。
 
-## Webpack
+### Webpack
 
 * 參考：[為什麼前端需要工程化？ — webpack](https://ithelp.ithome.com.tw/articles/10214480)、[關於 Webpack，它是什麼？能夠做什麼？為什麼？怎麼做？— freeCodeCamp 的筆記](https://askie.today/what-is-webpack/)、[[note] Webpack 學習筆記](https://pjchender.dev/webpack/note-webpack/)
 * 介紹：Webpack 也是一種 NPM 套件由 Js 編寫並執行於 Nodejs，是一個 JavaScript 模組打包工具，能夠將多個 JavaScript 檔案及相關資源整合打包成一個或多個 bundle，以利於網頁應用程式的載入。
@@ -54,7 +604,7 @@
   * 插件和 Loader：Webpack 使用插件和 Loader 来处理不同类型的资源。如果插件或 Loader 存在问题，Webpack 会输出错误信息，并指出出现错误的插件或 Loader 名称和文件路径。
   * 语法检查：Webpack 会使用 ESLint 或者类似的工具来检查你的代码是否符合规范和语法。如果代码存在语法错误，Webpack 会输出错误信息，并指出出现错误的文件和行数。
 
-## Gulp、Grunt、Parcel、Browserify、PUG、SASS、Babel
+### Gulp、Grunt、Parcel、Browserify、PUG、SASS、Babel
 
 * 介紹：Gulp、Grunt、Parcel、Browserify、PUG、SASS、Babel 均為前端工具，都可以運行於nodejs，能夠協助前端開發人員加速開發、提高可維護性及可重用性等。
 * 使用方法：透過指令安裝相應的工具後，需設定相關的配置檔案，以定義其使用方式及相應的規則。
@@ -70,7 +620,7 @@
   * Create React App：是React框架的官方腳手架工具，用於創建新的React應用程序。它提供了一個基本的React項目模板，並且在項目中集成了常用的開發工具，例如Webpack和Babel。它還提供了一些有用的功能，例如熱加載和自動代碼重載，以便開發人員可以快速迭代他們的應用程序。
   * Angular CLI：是Angular框架基於 Typescript 的官方命令行界面，可以幫助你創建、構建和部署Angular應用程序。它提供了一些常用的命令，例如創建新的Angular應用程序、生成新的組件、生成新的服務器、運行開發服務器等等。提供了預設的 webpack 設定檔，會將 TypeScript、Sass、Less、Stylus、PostCSS、ES6 等輸入檔案編譯，允許你透過 ng eject 指令來擷取出 webpack 設定檔案，然後進行自訂。
 
-## Angular AOT / JIT / Ivy / Esbuild
+### Angular AOT / JIT / Ivy / Esbuild
 
 * 參考：[NG 13 use  esbuild](https://www.reddit.com/r/Angular2/comments/10by6fg/comment/j4dpiux/)
 * AOT：(Ahead-of-Time) 是一種編譯模式，是指在構建應用程序時將模板編譯為本機JavaScript代碼。這樣一來，當用戶訪問應用程序時，可以直接載入編譯後的JavaScript代碼，減少了代碼解析和編譯的時間。這樣可以提高應用程序的性能和加載速度。
@@ -78,7 +628,7 @@
 * Ivy：是Angular的新的渲染引擎，取代了舊的View Engine，它提供更高效的編譯和更快的啟動時間。它還支持更小的應用程序大小，更好的應用程序性能和更強大的模板編譯功能。
 * Esbuild：esbuild 是一款快速的 JavaScript 构建工具，能够快速将 JavaScript、CSS 和其他资源文件打包成可部署的文件。这款工具具有快速的构建速度和高效的编译能力，可以显著提高应用程序的构建速度。虽然 Angular 没有直接使用 esbuild，但它使用了基于 esbuild 的工具 * ng-packagr 来打包 Angular 应用。ng-packagr 是一款在 Angular 5.0 版本中引入的打包工具，它默认使用 Webpack 作为打包引擎，但从 Angular 11.0 版本开始，ng-packagr 默认使用 esbuild 作为主要的打包引擎，以提高打包速度和性能。
 
-## Vite
+### Vite
 
 * 參考：[Native ESM、esbuild、HMR](https://ithelp.ithome.com.tw/m/users/20139636/ironman/3890)
 * 介紹：Vite 是一個快速開發工具，能夠幫助前端開發人員快速開發網頁應用程式，並支援原生的 ESM (ES6 模組化)。
@@ -86,9 +636,9 @@
 * 使用方法：透過指令安裝 Vite 後，可透過相應的配置檔案來進行設定及開發。
 * 開發環境設定：Vite 預設使用本機端的網頁伺服器，以提高開發效率。
 
-## 建立元件庫
+### 建立元件庫
 
-### 建立 Angular 元件庫
+#### 建立 Angular 元件庫
 
 * [使用AngularCli搭配ng-packagr建立元件](https://jiaming0708.github.io/2018/06/13/angular-cli-packagr/)
 * [Storybook UI View](https://ithelp.ithome.com.tw/articles/10245423)
@@ -117,7 +667,7 @@ SecondaryExport
 
 ![HMR](https://github.com/UrWebApp/ComponentLibrary/blob/master/img/HMR.png)
 
-### Angula StoryBook
+#### Angula StoryBook
 
 [Storybook for Angular tutorial](https://storybook.js.org/tutorials/intro-to-storybook/angular/en/get-started/)
 
@@ -161,11 +711,11 @@ Export default 描述一個元件故事的基本設定
 
 [玩轉 Storybook: Day 06 Component Story Format](https://ithelp.ithome.com.tw/articles/10240995)
 
-### Jest
+#### Jest
 
 [今天我想來在 Angular 應用程式上加上測試保護 系列](https://ithelp.ithome.com.tw/users/20109645/ironman/5708)
 
-### 建立 React 元件庫
+#### 建立 React 元件庫
 
 > `TL;DR` 綜合環境不好建置最好直接找現成的整合方案
 
@@ -196,7 +746,7 @@ yarn workspace @react-project/site add @react-project/lib@^0.0.0
 npm install ../my-library
 ```
 
-### React Storybook 直接看官網的就簡單易懂了 ( 支援度最高的也是 React 還有中文 )
+#### React Storybook 直接看官網的就簡單易懂了 ( 支援度最高的也是 React 還有中文 )
 
 [Storybook 教學：React 篇](https://storybook.js.org/tutorials/intro-to-storybook/react/zh-TW/get-started/)
 
