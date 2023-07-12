@@ -196,11 +196,11 @@ main {
     background-color: #f2f2f2;
 }
 
-.header {
+.headerBoard {
     margin: 1rem 0;
 }
 
-.header>div {
+.headerBoard>div {
     display: flex;
     justify-content: space-between;
 }

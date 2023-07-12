@@ -1,0 +1,15 @@
+.callToActionAtTop {
+  background-color: #ff8d00;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  line-height: 40px;
+  font-weight: 400;
+  font-size: 1.6rem;
+  padding: 5px 0;
+
+  a {
+    text-decoration: underline;
+    color: #fff;
+  }
+}

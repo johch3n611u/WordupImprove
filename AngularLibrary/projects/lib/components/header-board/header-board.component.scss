@@ -1,0 +1,75 @@
+.headerBoard {
+  margin: 1rem 0;
+}
+
+.headerBoard>div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+  margin-right: 1rem;
+}
+
+.logoBox {
+  display: flex;
+  align-items: center;
+}
+
+.logoBox>h1 {
+  font-size: 3.5rem;
+  font-weight: 600;
+}
+
+.iconButtonBox {
+  display: flex;
+  align-items: center;
+}
+
+.iconButtonBox>a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  color: black;
+}
+
+.iconButtonBox>a>span {
+  margin-top: 8px;
+}
+
+.iconButtonBox img {
+  width: 30px;
+  height: 30px;
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.searchBar>a {
+  position: absolute;
+}
+
+.searchBar>a>img {
+  width: 20px;
+  height: 20px;
+  margin-left: 15px;
+}
+
+.searchBar>input {
+  width: 300px;
+  border: solid 1px#e4e4e4;
+  border-radius: 5px;
+  padding: 0 20px 0 50px;
+  height: 46px;
+  font-size: 2rem;
+}
+
+.searchBar>input:focus {
+  outline: none;
+}

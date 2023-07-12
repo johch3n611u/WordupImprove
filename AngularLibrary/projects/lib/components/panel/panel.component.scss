@@ -1,0 +1,91 @@
+.panel {
+  background-color: #f2f2f2;
+}
+
+.multilevelNav {
+  display: flex;
+  justify-content: space-between;
+  line-height: 40px;
+  font-weight: 400;
+  font-size: 1.6rem;
+}
+
+.multilevelNav ul {
+  padding-inline-start: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  display: flex;
+  position: relative;
+}
+
+.leftNav,
+.rightNav {
+  display: flex;
+  flex-direction: row;
+}
+
+.multilevelNav .level2Nav,
+.multilevelNav .level3Nav {
+  display: none;
+}
+
+.multilevelNav .level1Nav {
+  width: max-content;
+  word-wrap: normal;
+  font-size: 16px;
+  font-weight: 600;
+  max-width: none;
+  background-color: #f2f2f2;
+  color: black;
+}
+
+.leftNav .level1Nav {
+  padding: 0.5rem 2rem 0.5rem 0;
+}
+
+.rightNav .level1Nav {
+  padding: 0.5rem 0 0.5rem 2rem;
+}
+
+.multilevelNav a {
+  width: 7rem;
+  padding: 0.5rem 1.5rem;
+  background-color: white;
+  writing-mode: horizontal-tb;
+}
+
+.multilevelNav ul>.level1Nav::after {
+  content: "\f107";
+  margin-left: 8px;
+  font-family: 'Font Awesome 5 Free';
+}
+
+.multilevelNav ul:hover>.level2Nav {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 5rem;
+}
+
+.level2Nav>ul>a::after {
+  content: "\f105";
+  margin-left: 8px;
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  display: inline-block;
+}
+
+.level2Nav>ul:hover>.level3Nav {
+  display: flex;
+}
+
+.level2Nav a,
+.level3Nav a {
+  border: solid 1px #c4c4c4;
+  color: black;
+}
+
+.level2Nav a:hover,
+.level3Nav a:hover {
+  background-color: #f2f2f2;
+}
