@@ -1,0 +1,22 @@
+.benefits {
+  background-color: #f7f7f7;
+  padding: 5rem 0;
+}
+
+.benefits>div {
+  display: flex;
+}
+
+.benefits>.container div {
+  width: 25%;
+  margin: 0 5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.benefits>.container div img {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 2rem;
+}

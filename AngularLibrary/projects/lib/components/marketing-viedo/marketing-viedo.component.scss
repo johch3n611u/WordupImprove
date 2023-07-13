@@ -1,0 +1,24 @@
+.marketingViedo {
+  padding: 5rem 0;
+  background-image: url("/assets/img/johannes-mandle-r_FNlKOxxos-unsplash.jpg");
+  background-position: 20% 80%;
+  background-size: cover;
+  text-shadow: black 0.1em 0.1em 0.2em;
+}
+
+.marketingViedo>.container {
+  display: flex;
+}
+
+.marketingViedo>.container div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  padding: 0 5rem;
+}
+
+.marketingViedo>.container video {
+  width: 100%;
+}

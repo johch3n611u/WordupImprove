@@ -1,5 +1,7 @@
 <header>
-  <lib-call-to-action-at-top></lib-call-to-action-at-top>
+  <lib-call-to-action-at-top [data]="(layoutData$ | async).callToActionAtTop">
+    
+  </lib-call-to-action-at-top>
   <lib-panel></lib-panel>
   <lib-header-board></lib-header-board>
   <lib-mega-menu-tabs></lib-mega-menu-tabs>

@@ -1,0 +1,25 @@
+.marketingArticles div {
+  display: flex;
+  padding: 3rem 0;
+}
+
+.marketingArticles>.container div {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
+.marketingArticles>.container div h3 {
+  text-align: left;
+}
+
+.marketingArticles>.container div img {
+  width: 100%;
+  height: 250px;
+  margin-bottom: 2rem;
+}
+
+.marketingArticles>.container div a {
+  font-size: 2rem;
+  color: #78b54e;
+}

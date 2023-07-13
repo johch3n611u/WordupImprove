@@ -3,6 +3,8 @@
 1. tsconfig.json => path "projects/lib/*", "dist/lib/*" 
    * ng serve 開發模式優先從 projects/lib 目錄下尋找模組
    * ng build 解析器會優先從 dist/lib 目錄下尋找模組
+2. `ng generate application <app-name>` 新增新站台
+3. 新增 component 可以透過 gui 新增資料夾在在 application 專案後，在搬移至 library 專案 ( gui 套件結構問題，除非去改 generate schame )
 
 ## AngularLibrary
 

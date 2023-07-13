@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { FakeService } from 'lib/public-api';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'ec-root',
@@ -6,5 +8,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'ec';
+
+  layoutData$: Observable<any> = {} as Observable<any>;
+  constructor(private fake: FakeService) {
+    this.layoutData$ = this.fake.layoutData$;
+  }
 }

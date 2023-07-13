@@ -1,0 +1,38 @@
+.awardsCarousel {
+  margin-top: 35px;
+}
+
+.divider {
+  display: flex;
+  justify-content: center;
+}
+
+.divider div {
+  width: 5%;
+  border-bottom: 1px solid gray;
+}
+
+.awardsCarousel ul {
+  margin: 30px auto;
+  justify-content: space-around;
+  display: flex;
+  overflow-x: hidden;
+}
+
+.awardsCarousel ul li {
+  width: 300px;
+  padding: 5px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.awardsCarousel ul li p {
+  color: #78b54e;
+}
+
+.awardsCarousel ul li img {
+  width: 200px;
+  height: auto;
+  margin-bottom: 30px;
+}

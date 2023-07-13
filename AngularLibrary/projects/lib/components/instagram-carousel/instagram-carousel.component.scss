@@ -1,0 +1,22 @@
+.instagramCarousel {
+  padding: 5rem 0;
+  background-color: #efece7;
+}
+
+.instagramCarousel h3 {
+  color: #78b54e;
+  font-size: 3.5rem;
+}
+
+.instagramCarousel ul {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.instagramCarousel ul img {
+  width: 300px;
+  height: 150px;
+  margin: 0 2rem;
+  background-color: white;
+}

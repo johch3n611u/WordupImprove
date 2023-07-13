@@ -1,0 +1,26 @@
+.heroImages {
+  cursor: pointer;
+  background-image: url("/assets/img/johannes-mandle-r_FNlKOxxos-unsplash.jpg");
+  background-position: 50% 50%;
+  background-size: cover;
+  text-shadow: black 0.1em 0.1em 0.2em;
+}
+
+.heroImages div {
+  color: white;
+  padding: 10rem;
+}
+
+.heroImages h1 {
+  font-size: 4rem;
+  width: 30%;
+  margin-bottom: 3rem;
+  text-align: left;
+}
+
+.heroImages p {
+  font-size: 1.5rem;
+  width: 50%;
+  margin-bottom: 5rem;
+  text-align: left;
+}

@@ -1,0 +1,73 @@
+.marketingPanel {
+  background-color: #f2f2f2;
+  padding: 3rem 0;
+}
+
+.marketingPanel>div {
+  justify-content: space-between;
+}
+
+.marketingPanel div,
+.marketingPanel div div {
+  display: flex;
+}
+
+.marketingPanel .left,
+.marketingPanel .center {
+  flex-direction: column;
+}
+
+.marketingPanel .left {
+  width: 30%;
+}
+
+.marketingPanel .left>p {
+  text-align: left;
+}
+
+.marketingPanel .right {
+  align-items: center;
+}
+
+.marketingPanel .right img {
+  width: 25px;
+  height: 25px;
+  margin-right: 1rem;
+}
+
+.marketingPanel .right>span {
+  font-size: 2rem;
+  font-weight: 900;
+  margin-right: 1.5rem;
+}
+
+.marketingPanel .center>p {
+  margin-top: 1rem;
+  font-size: 0.5rem;
+  text-align: left;
+}
+
+.marketingPanel .center>a {
+  color: #78b54e;
+}
+
+.marketingPanel .center input {
+  background-color: #ffffff;
+  border-color: #e4e4e4;
+  border-radius: 3px;
+  border-style: solid;
+  border-width: 1px;
+  line-height: 19.2px;
+  padding: 0px 120px 0px 15px;
+  width: 100%;
+}
+
+.marketingPanel .center button {
+  border-radius: unset;
+}
+
+.marketingPanel h4 {
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+}
