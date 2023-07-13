@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'lib-marketing-articles',
+  selector: 'ec-marketing-articles',
   templateUrl: './marketing-articles.component.html',
   styleUrls: ['./marketing-articles.component.scss']
 })

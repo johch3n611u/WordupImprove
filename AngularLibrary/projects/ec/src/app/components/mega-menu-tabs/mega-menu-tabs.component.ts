@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'lib-mega-menu-tabs',
+  selector: 'ec-mega-menu-tabs',
   templateUrl: './mega-menu-tabs.component.html',
   styleUrls: ['./mega-menu-tabs.component.scss']
 })

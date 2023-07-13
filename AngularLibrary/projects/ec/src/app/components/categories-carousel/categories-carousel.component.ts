@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'lib-categories-carousel',
+  selector: 'ec-categories-carousel',
   templateUrl: './categories-carousel.component.html',
   styleUrls: ['./categories-carousel.component.scss']
 })

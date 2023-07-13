@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'lib-footer-nav',
+  selector: 'ec-footer-nav',
   templateUrl: './footer-nav.component.html',
   styleUrls: ['./footer-nav.component.scss']
 })

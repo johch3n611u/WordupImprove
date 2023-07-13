@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'lib-panel',
+  selector: 'ec-panel',
   templateUrl: './panel.component.html',
   styleUrls: ['./panel.component.scss']
 })

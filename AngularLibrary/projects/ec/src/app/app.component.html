@@ -1,18 +1,17 @@
 <header>
-  <lib-call-to-action-at-top [data]="(layoutData$ | async).callToActionAtTop">
-    
-  </lib-call-to-action-at-top>
-  <lib-panel></lib-panel>
-  <lib-header-board></lib-header-board>
-  <lib-mega-menu-tabs></lib-mega-menu-tabs>
+  <ec-call-to-action-at-top [data]="(layoutData$ | async).callToActionAtTop">
+  </ec-call-to-action-at-top>
+  <ec-panel></ec-panel>
+  <ec-header-board></ec-header-board>
+  <ec-mega-menu-tabs></ec-mega-menu-tabs>
 </header>
 <!-- 根據路由顯示對應元件 -->
 <main>
   <router-outlet></router-outlet>
 </main>
 <footer>
-  <lib-core-themes></lib-core-themes>
-  <lib-marketing-panel></lib-marketing-panel>
-  <lib-footer-nav></lib-footer-nav>
-  <lib-copy-right></lib-copy-right>
+  <ec-core-themes></ec-core-themes>
+  <ec-marketing-panel></ec-marketing-panel>
+  <ec-footer-nav></ec-footer-nav>
+  <ec-copy-right></ec-copy-right>
 </footer>
