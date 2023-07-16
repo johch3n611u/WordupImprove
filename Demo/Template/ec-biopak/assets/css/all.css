@@ -64,6 +64,12 @@ button {
     color: white;
 }
 
+h2{
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 1.5rem;
+}
+
 h3 {
     font-size: 2.5rem;
     font-weight: 900;
@@ -85,7 +91,7 @@ header {
 }
 
 main {
-    padding-top: 23rem;
+    padding-top: 24rem;
 }
 
 .callToActionAtTop {
