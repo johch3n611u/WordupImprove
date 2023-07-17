@@ -8,46 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css" rel="stylesheet">
     <link href="https://use.fontawesome.com/releases/v6.4.0/css/all.css" rel="stylesheet">
     <link href="./assets/css/all.css" rel="stylesheet">
-    <style>
-        .filter-green {
-            filter: invert(67%) sepia(76%) saturate(407%) hue-rotate(93deg) brightness(93%) contrast(95%);
-        }
-
-        .categoryBanner {
-            background-color: #0f8346;
-            color: white;
-        }
-
-        .categoryBanner * {
-            text-align: left;
-        }
-
-        .breadcrumbs {
-            font-size: 2rem;
-            margin: 3rem 0;
-        }
-
-        .categoryBannerLeft,
-        .categoryBannerRight {
-            width: 50%;
-            margin: unset;
-        }
-
-        .categoryBanner>div {
-            display: flex;
-        }
-
-        .categoryBannerRight>img {
-            margin: 30px 200px;
-            width: 200px;
-            height: 200px;
-            
-        }
-
-        .categoryBannerRight path{
-            fill: white;
-        }
-    </style>
+    <link href="./assets/css/category.css" rel="stylesheet">
 </head>
 
 <body>
@@ -194,17 +155,26 @@
             </div>
         </div>
         <div class="productList">
-            <div class="toolBar">
-                <div>Show Filter</div>
-                <div>
-                    <span>Grid</span>
-                    <span>List</span>
+            <div class="toolBar container">
+                <div class="filter">
+                    <i class="fa-solid fa-filter"></i>
+                    <span>Show Filter</span>
+                </div>
+                <div class="displayMode">
+                    <i class="fa-solid fa-grip"></i>
+                    <i class="fa-solid fa-list"></i>
                 </div>
                 <div>
-                    Sort By
+                    <!-- https://stackoverflow.com/questions/5805059/how-do-i-make-a-placeholder-for-a-select-box -->
+                    <!-- https://codepen.io/druArt/pen/BWONQp -->
+                    <select>
+                        <option disabled selected>Soft By</option>
+                        <option>Default</option>
+                        <option>Price</option>
+                    </select>
                 </div>
             </div>
-            <div>
+            <div class="products container">
                 <div class="product">
                     <a href="#">
                         <img src="./assets/img/logo.svg" />
@@ -287,34 +257,37 @@
                 </div>
 
             </div>
-            <p>You have viewed 12 of 62 Products.</p>
-            <button>Load More</button>
+            <div class="loadMore">
+                <p>You have viewed 12 of 62 Products.</p>
+                <button>Load More</button>
+            </div>
         </div>
-        <div class="categoryDescription">
-            <h2>Disposable Bowls That Are Better for the Planet</h3>
-                <div>
-                    <div>
-                        <p>Serving food to consumers on the go? Disposable bowls offer a convenient way to package your
-                            delicious food beautifully and hygienically. Our takeaway food bowls, known as BioBowls, are
-                            available in sustainable materials like plastic-free sugarcane bagasse, paper, and
-                            plant-based bioplastic.</p>
-                        <h3>Why BioPak Bowls Are Better</h3>
-                        <p>Takeaway convenience usually comes at a cost to the earth, with conventional single-use
-                            service ware like disposable food bowls often made from old-growth forests or fossil fuels.
-                            After their short useful life of 20 minutes, conventional plastic bowls usually end up in
-                            landfill, where they take hundreds of years to break down and release greenhouse gases in
-                            the process.</p>
-                        <p>Our BioBoard and clear bioplastic bowls are certified industrially compostable to Australian
-                            AS4736 standards and will break down in an industrial composting environment. This means if
-                            you have any leftovers or you’ve just enjoyed a nice curry in your bowl – no need to wash it
-                            out, food and packaging can both be composted! Composting is a great way to reduce food
-                            waste and our greenhouse gas emissions, as food in a landfill does not have the proper
-                            conditions to break down and instead produces methane – a potent greenhouse gas. </p>
-                    </div>
-                    <img src="./assets/img/logo.png" />
+        <hr class="container">
+        <div class="categoryDescription container">
+            <h2>Disposable Bowls That Are Better for the Planet</h2>
+            <div>
+                <div class="description">
+                    <p>Serving food to consumers on the go? Disposable bowls offer a convenient way to package your
+                        delicious food beautifully and hygienically. Our takeaway food bowls, known as BioBowls, are
+                        available in sustainable materials like plastic-free sugarcane bagasse, paper, and
+                        plant-based bioplastic.</p>
+                    <h3>Why BioPak Bowls Are Better</h3>
+                    <p>Takeaway convenience usually comes at a cost to the earth, with conventional single-use
+                        service ware like disposable food bowls often made from old-growth forests or fossil fuels.
+                        After their short useful life of 20 minutes, conventional plastic bowls usually end up in
+                        landfill, where they take hundreds of years to break down and release greenhouse gases in
+                        the process.</p>
+                    <p>Our BioBoard and clear bioplastic bowls are certified industrially compostable to Australian
+                        AS4736 standards and will break down in an industrial composting environment. This means if
+                        you have any leftovers or you’ve just enjoyed a nice curry in your bowl – no need to wash it
+                        out, food and packaging can both be composted! Composting is a great way to reduce food
+                        waste and our greenhouse gas emissions, as food in a landfill does not have the proper
+                        conditions to break down and instead produces methane – a potent greenhouse gas. </p>
                 </div>
+                <img src="./assets/img/logo.png" />
+            </div>
         </div>
-        <div class="postersFlyers">
+        <div class="postersFlyers container">
             <h2>Posters and Flyers</h2>
             <div>
                 <img src="./assets/img/logo.png" />
