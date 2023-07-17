@@ -5,12 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LibraryModule, SampleModule } from 'lib/public-api';
 import { SampleComponent } from './components/sample/sample.component';
+import { DynamicMasonryComponent } from './layout/dynamic-masonry/dynamic-masonry.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    SampleComponent
+    SampleComponent,
+    DynamicMasonryComponent
   ],
   imports: [
     BrowserModule,
