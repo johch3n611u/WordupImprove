@@ -20,6 +20,8 @@ import { BenefitsComponent } from './components/benefits/benefits.component';
 import { MarketingArticlesComponent } from './components/marketing-articles/marketing-articles.component';
 import { MarketingViedoComponent } from './components/marketing-viedo/marketing-viedo.component';
 import { HeroImagesComponent } from './components/hero-images/hero-images.component';
+import { EsgMarketingComponent } from './pages/landing-page/esg-marketing/esg-marketing.component';
+import { BannerComponent } from './components/marketing-esg/banner/banner.component';
 
 let components = [
   CallToActionAtTopComponent,
@@ -43,7 +45,9 @@ let components = [
     declarations: [
         AppComponent,
         HomepageComponent,
-        ...components
+        ...components,
+        EsgMarketingComponent,
+        BannerComponent
     ],
     providers: [],
     bootstrap: [AppComponent],
