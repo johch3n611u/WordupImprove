@@ -26,6 +26,8 @@ import { CategoryListComponent } from './components/category-list/category-list.
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { CategoryDescriptionComponent } from './components/category-description/category-description.component';
 import { PostersFlyersComponent } from './components/posters-flyers/posters-flyers.component';
+import { EsgMarketingComponent } from './pages/landing-page/esg-marketing/esg-marketing.component';
+import { BannerComponent } from './components/marketing-esg/banner/banner.component';
 
 let components = [
   CallToActionAtTopComponent,
@@ -43,27 +45,33 @@ let components = [
   MarketingArticlesComponent,
   MarketingViedoComponent,
   HeroImagesComponent,
+  CategoryBannerComponent,
+  CategoryListComponent,
+  ProductListComponent,
+  CategoryDescriptionComponent,
+  PostersFlyersComponent,
+  EsgMarketingComponent,
+  BannerComponent,
+];
+
+let pages = [
+  HomepageComponent,
+  CategoryComponent,
 ];
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HomepageComponent,
-        ...components,
-        CategoryComponent,
-        CategoryBannerComponent,
-        CategoryListComponent,
-        ProductListComponent,
-        CategoryDescriptionComponent,
-        PostersFlyersComponent
-    ],
-    providers: [],
-    bootstrap: [AppComponent],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        SampleModule,
-        LibraryModule
-    ]
+  declarations: [
+    AppComponent,
+    ...components,
+    ...pages,
+  ],
+  providers: [],
+  bootstrap: [AppComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    SampleModule,
+    LibraryModule
+  ]
 })
 export class AppModule { }
