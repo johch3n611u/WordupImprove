@@ -1,0 +1,32 @@
+.categoryBanner {
+  background-color: #0f8346;
+  color: white;
+}
+
+.categoryBanner * {
+  text-align: left;
+}
+
+.breadcrumbs {
+  margin: 3rem 0;
+}
+
+.breadcrumbs>a {
+  font-size: 2rem;
+}
+
+.categoryBannerLeft,
+.categoryBannerRight {
+  width: 50%;
+  margin: unset;
+}
+
+.categoryBanner>div {
+  display: flex;
+}
+
+.categoryBannerRight>img {
+  margin: 30px 200px;
+  width: 200px;
+  height: 200px;
+}

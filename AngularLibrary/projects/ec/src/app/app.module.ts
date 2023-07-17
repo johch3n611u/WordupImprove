@@ -20,6 +20,12 @@ import { BenefitsComponent } from './components/benefits/benefits.component';
 import { MarketingArticlesComponent } from './components/marketing-articles/marketing-articles.component';
 import { MarketingViedoComponent } from './components/marketing-viedo/marketing-viedo.component';
 import { HeroImagesComponent } from './components/hero-images/hero-images.component';
+import { CategoryComponent } from './pages/category/category.component';
+import { CategoryBannerComponent } from './components/category-banner/category-banner.component';
+import { CategoryListComponent } from './components/category-list/category-list.component';
+import { ProductListComponent } from './components/product-list/product-list.component';
+import { CategoryDescriptionComponent } from './components/category-description/category-description.component';
+import { PostersFlyersComponent } from './components/posters-flyers/posters-flyers.component';
 
 let components = [
   CallToActionAtTopComponent,
@@ -43,7 +49,13 @@ let components = [
     declarations: [
         AppComponent,
         HomepageComponent,
-        ...components
+        ...components,
+        CategoryComponent,
+        CategoryBannerComponent,
+        CategoryListComponent,
+        ProductListComponent,
+        CategoryDescriptionComponent,
+        PostersFlyersComponent
     ],
     providers: [],
     bootstrap: [AppComponent],

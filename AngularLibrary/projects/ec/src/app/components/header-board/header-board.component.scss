@@ -5,6 +5,7 @@
 .headerBoard>div {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .logo {
@@ -13,12 +14,13 @@
   margin-right: 1rem;
 }
 
-.logoBox {
+.logoBox a {
   display: flex;
   align-items: center;
+  color:black;
 }
 
-.logoBox>h1 {
+.logoBox h1 {
   font-size: 3.5rem;
   font-weight: 600;
 }

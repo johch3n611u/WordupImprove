@@ -1,0 +1,22 @@
+.categoryDescription h2 {
+  text-align: center;
+  margin: 5rem;
+  color: #0f8346;
+}
+
+.categoryDescription div {
+  display: flex;
+}
+
+.categoryDescription img {
+  width: 300px;
+  margin-left: 8rem;
+}
+
+.categoryDescription .description {
+  flex-direction: column;
+}
+
+.categoryDescription>div>.description>* {
+  text-align: left;
+}
