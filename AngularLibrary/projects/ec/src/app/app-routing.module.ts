@@ -7,7 +7,7 @@ import { EsgMarketingComponent } from './pages/landing-page/esg-marketing/esg-ma
 const routes: Routes = [
   { path: '', component: HomepageComponent },
   { path: 'category', component: CategoryComponent },
-  { path: 'landingPage', component: EsgMarketingComponent },
+  { path: 'esgMarketing', component: EsgMarketingComponent },
   // { path: '**', component: Page404Component }
 ];
 
