@@ -1,22 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { CategoryComponent } from './pages/category/category.component';
-import { EsgMarketingComponent } from './pages/landing/esg-marketing/esg-marketing.component';
-import { ProductComponent } from './pages/product/product.component';
-import { AccountComponent } from './pages/account/account.component';
-import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { CheckAndBuyComponent } from './pages/check-and-buy/check-and-buy.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
+import { CategoryPageComponent } from './pages/category-page/category-page.component';
+import { EsgMarketingPageComponent } from './pages/landing-page/esg-marketing-page/esg-marketing-page.component';
+import { ProductPageComponent } from './pages/product-page/product-page.component';
+import { AccountPageComponent } from './pages/account-page/account-page.component';
+import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
+import { CheckAndBuyPageComponent } from './pages/check-and-buy-page/check-and-buy-page.component';
 
 const routes: Routes = [
-  { path: '', component: ProductComponent },
-  { path: 'account', component: AccountComponent },
-  { path: 'category', component: CategoryComponent },
-  { path: 'checkAndBuy', component: CheckAndBuyComponent },
-  { path: 'product', component: ProductComponent },
-  { path: 'landing/esgMarketing', component: EsgMarketingComponent },
+  { path: '', component: ProductPageComponent },
+  { path: 'account', component: AccountPageComponent },
+  { path: 'category', component: CategoryPageComponent },
+  { path: 'checkAndBuy', component: CheckAndBuyPageComponent },
+  { path: 'product', component: ProductPageComponent },
+  { path: 'landing/esgMarketing', component: EsgMarketingPageComponent },
   // { path: '', component: HomeComponent },
-  { path: '**', component: NotFoundComponent }
+  { path: '**', component: NotFoundPageComponent }
 ];
 
 @NgModule({

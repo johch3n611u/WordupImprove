@@ -77,10 +77,41 @@ img {
   height: auto;
 }
 
-.normalButton{
+.normalButton {
   background-color: unset;
   color: black;
   border: solid 1px black;
+}
+
+.countButton {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: solid 3px #78b54e;
+  border-radius: 5px;
+
+  span {
+    color: gray;
+    font-size: 3rem;
+    font-weight: 900;
+    margin: 0 1rem;
+    cursor: pointer;
+  }
+
+  input {
+    width: 33px;
+    height: 3rem;
+    font-size: 2.5rem;
+    text-align: center;
+    border: unset;
+  }
+
+  button {
+    color: white;
+    border-radius: unset;
+    font-weight: 900;
+  }
 }
 
 .container {

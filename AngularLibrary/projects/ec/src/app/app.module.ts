@@ -36,6 +36,7 @@ import { AccountPageComponent } from './pages/account-page/account-page.componen
 import { MarketingProductsComponent } from './components/marketing-products/marketing-products.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import { PortalPageComponent } from './pages/portal-page/portal-page.component';
+import { ProductComponent } from './components/product/product.component';
 
 let components = [
   CallToActionAtTopComponent,
@@ -62,6 +63,7 @@ let components = [
   ProductDetailsComponent,
   AddToBagComponent,
   MarketingProductsComponent,
+  ProductComponent,
 ];
 
 let pages = [

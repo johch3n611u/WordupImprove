@@ -1,9 +1,7 @@
 <h3>{{marketingName}}</h3>
 
 <div *ngIf="displayMode === 'sidebar' else block">
-  <ng-container *ngFor="let asd of products">
-    <ec-product></ec-product>
-  </ng-container>
+  <ec-product *ngFor="let product of products" [product]="product"></ec-product>
 </div>
 
 <ng-template #block>
