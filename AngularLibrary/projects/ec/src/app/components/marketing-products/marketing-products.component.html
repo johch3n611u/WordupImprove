@@ -1,1 +1,11 @@
-<p>marketing-products works!</p>
+<h3>{{marketingName}}</h3>
+
+<div *ngIf="displayMode === 'sidebar' else block">
+  <ng-container *ngFor="let asd of products">
+    <ec-product></ec-product>
+  </ng-container>
+</div>
+
+<ng-template #block>
+
+</ng-template>

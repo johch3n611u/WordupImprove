@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EsgMarketingComponent } from './esg-marketing.component';
+import { HomePageComponent } from './home-page.component';
 
-describe('EsgMarketingComponent', () => {
-  let component: EsgMarketingComponent;
-  let fixture: ComponentFixture<EsgMarketingComponent>;
+describe('HomePageComponent', () => {
+  let component: HomePageComponent;
+  let fixture: ComponentFixture<HomePageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EsgMarketingComponent ]
+      declarations: [ HomePageComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EsgMarketingComponent);
+    fixture = TestBed.createComponent(HomePageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

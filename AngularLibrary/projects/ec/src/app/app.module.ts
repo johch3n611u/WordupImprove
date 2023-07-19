@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LibraryModule, SampleModule } from 'lib/public-api';
-import { HomeComponent } from './pages/home/home.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
 import { CallToActionAtTopComponent } from './components/call-to-action-at-top/call-to-action-at-top.component';
 import { PanelComponent } from './components/panel/panel.component';
 import { HeaderBoardComponent } from './components/header-board/header-board.component';
@@ -20,22 +20,22 @@ import { BenefitsComponent } from './components/benefits/benefits.component';
 import { MarketingArticlesComponent } from './components/marketing-articles/marketing-articles.component';
 import { MarketingViedoComponent } from './components/marketing-viedo/marketing-viedo.component';
 import { HeroImagesComponent } from './components/hero-images/hero-images.component';
-import { CategoryComponent } from './pages/category/category.component';
+import { CategoryPageComponent } from './pages/category-page/category-page.component';
 import { CategoryBannerComponent } from './components/category-banner/category-banner.component';
 import { CategoryListComponent } from './components/category-list/category-list.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { CategoryDescriptionComponent } from './components/category-description/category-description.component';
 import { PostersFlyersComponent } from './components/posters-flyers/posters-flyers.component';
-import { EsgMarketingComponent } from './pages/landing/esg-marketing/esg-marketing.component';
+import { EsgMarketingPageComponent } from './pages/landing-page/esg-marketing-page/esg-marketing-page.component';
 import { BannerComponent } from './components/marketing-esg/banner/banner.component';
-import { ProductComponent } from './pages/product/product.component';
+import { ProductPageComponent } from './pages/product-page/product-page.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { AddToBagComponent } from './components/add-to-bag/add-to-bag.component';
-import { CheckAndBuyComponent } from './pages/check-and-buy/check-and-buy.component';
-import { AccountComponent } from './pages/account/account.component';
+import { CheckAndBuyPageComponent } from './pages/check-and-buy-page/check-and-buy-page.component';
+import { AccountPageComponent } from './pages/account-page/account-page.component';
 import { MarketingProductsComponent } from './components/marketing-products/marketing-products.component';
-import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { PortalComponent } from './pages/portal/portal.component';
+import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
+import { PortalPageComponent } from './pages/portal-page/portal-page.component';
 
 let components = [
   CallToActionAtTopComponent,
@@ -58,20 +58,21 @@ let components = [
   ProductListComponent,
   CategoryDescriptionComponent,
   PostersFlyersComponent,
-  EsgMarketingComponent,
   BannerComponent,
   ProductDetailsComponent,
   AddToBagComponent,
+  MarketingProductsComponent,
 ];
 
 let pages = [
-  AccountComponent,
-  CategoryComponent,
-  CheckAndBuyComponent,
-  HomeComponent,
-  NotFoundComponent,
-  ProductComponent,
-  MarketingProductsComponent,
+  AccountPageComponent,
+  CategoryPageComponent,
+  CheckAndBuyPageComponent,
+  HomePageComponent,
+  NotFoundPageComponent,
+  ProductPageComponent,
+  EsgMarketingPageComponent,
+  PortalPageComponent,
 ];
 
 @NgModule({
@@ -79,7 +80,6 @@ let pages = [
     AppComponent,
     ...components,
     ...pages,
-    PortalComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],

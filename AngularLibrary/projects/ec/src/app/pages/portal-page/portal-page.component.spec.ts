@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PortalComponent } from './portal.component';
+import { PortalPageComponent } from './portal-page.component';
 
-describe('PortalComponent', () => {
-  let component: PortalComponent;
-  let fixture: ComponentFixture<PortalComponent>;
+describe('PortalPageComponent', () => {
+  let component: PortalPageComponent;
+  let fixture: ComponentFixture<PortalPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PortalComponent ]
+      declarations: [ PortalPageComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PortalComponent);
+    fixture = TestBed.createComponent(PortalPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
