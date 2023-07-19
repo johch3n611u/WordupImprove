@@ -1,0 +1,43 @@
+h3 {
+  margin: 2rem 0;
+  text-align: left;
+  color: #0f8346;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 5rem;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 2rem;
+  font-size: 1.6rem;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+ul{
+  list-style-type: circle;
+}
+
+li {
+  font-size: 1.6rem;
+  margin: 2rem;
+  line-height: 3rem;
+}
+
+.featureIcons {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+img {
+  width: 100px;
+  margin: 5rem;
+}

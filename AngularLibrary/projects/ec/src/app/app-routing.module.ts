@@ -1,14 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomepageComponent } from './pages/homepage/homepage.component';
+import { HomeComponent } from './pages/home/home.component';
 import { CategoryComponent } from './pages/category/category.component';
-import { EsgMarketingComponent } from './pages/landing-page/esg-marketing/esg-marketing.component';
+import { EsgMarketingComponent } from './pages/landing/esg-marketing/esg-marketing.component';
+import { ProductComponent } from './pages/product/product.component';
+import { AccountComponent } from './pages/account/account.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { CheckAndBuyComponent } from './pages/check-and-buy/check-and-buy.component';
 
 const routes: Routes = [
-  { path: '', component: HomepageComponent },
+  { path: '', component: ProductComponent },
+  { path: 'account', component: AccountComponent },
   { path: 'category', component: CategoryComponent },
-  { path: 'esgMarketing', component: EsgMarketingComponent },
-  // { path: '**', component: Page404Component }
+  { path: 'checkAndBuy', component: CheckAndBuyComponent },
+  { path: 'product', component: ProductComponent },
+  { path: 'landing/esgMarketing', component: EsgMarketingComponent },
+  // { path: '', component: HomeComponent },
+  { path: '**', component: NotFoundComponent }
 ];
 
 @NgModule({

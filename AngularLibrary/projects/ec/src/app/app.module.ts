@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LibraryModule, SampleModule } from 'lib/public-api';
-import { HomepageComponent } from './pages/homepage/homepage.component';
+import { HomeComponent } from './pages/home/home.component';
 import { CallToActionAtTopComponent } from './components/call-to-action-at-top/call-to-action-at-top.component';
 import { PanelComponent } from './components/panel/panel.component';
 import { HeaderBoardComponent } from './components/header-board/header-board.component';
@@ -26,8 +26,16 @@ import { CategoryListComponent } from './components/category-list/category-list.
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { CategoryDescriptionComponent } from './components/category-description/category-description.component';
 import { PostersFlyersComponent } from './components/posters-flyers/posters-flyers.component';
-import { EsgMarketingComponent } from './pages/landing-page/esg-marketing/esg-marketing.component';
+import { EsgMarketingComponent } from './pages/landing/esg-marketing/esg-marketing.component';
 import { BannerComponent } from './components/marketing-esg/banner/banner.component';
+import { ProductComponent } from './pages/product/product.component';
+import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { AddToBagComponent } from './components/add-to-bag/add-to-bag.component';
+import { CheckAndBuyComponent } from './pages/check-and-buy/check-and-buy.component';
+import { AccountComponent } from './pages/account/account.component';
+import { MarketingProductsComponent } from './components/marketing-products/marketing-products.component';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { PortalComponent } from './pages/portal/portal.component';
 
 let components = [
   CallToActionAtTopComponent,
@@ -52,11 +60,18 @@ let components = [
   PostersFlyersComponent,
   EsgMarketingComponent,
   BannerComponent,
+  ProductDetailsComponent,
+  AddToBagComponent,
 ];
 
 let pages = [
-  HomepageComponent,
+  AccountComponent,
   CategoryComponent,
+  CheckAndBuyComponent,
+  HomeComponent,
+  NotFoundComponent,
+  ProductComponent,
+  MarketingProductsComponent,
 ];
 
 @NgModule({
@@ -64,6 +79,7 @@ let pages = [
     AppComponent,
     ...components,
     ...pages,
+    PortalComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],
@@ -71,7 +87,7 @@ let pages = [
     BrowserModule,
     AppRoutingModule,
     SampleModule,
-    LibraryModule
+    LibraryModule,
   ]
 })
 export class AppModule { }

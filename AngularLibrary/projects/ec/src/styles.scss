@@ -1,5 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 
+:root {
+  // https://stackoverflow.com/questions/45381871/how-to-customize-arrow-buttons-in-swiper
+  --swiper-navigation-color: #ffffff;
+  --swiper-pagination-color: #ffffff;
+}
+
 html {
   font-size: 62.5%;
 }

@@ -1,0 +1,10 @@
+swiper-slide {
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.swiper-button-next::after, .swiper-button-prev::after {
+  content: "";
+}

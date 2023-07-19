@@ -5,6 +5,7 @@
    * ng build 解析器會優先從 dist/lib 目錄下尋找模組
 2. `ng generate application <app-name>` 新增新站台
 3. 新增 component 可以透過 gui 新增資料夾在在 application 專案後，在搬移至 library 專案 ( gui 套件結構問題，除非去改 generate schame )
+4. 框架二次封裝高階元件比對網站 https://www.slant.co/、https://moiva.io/
 
 ## AngularLibrary
 
