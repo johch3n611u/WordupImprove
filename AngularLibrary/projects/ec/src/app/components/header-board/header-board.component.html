@@ -1,29 +1,29 @@
 <div class="headerBoard">
   <div class="container">
       <div class="logoBox">
-        <a href="#">
+        <a [routerLink]="['']">
           <img src="./assets/img/logo.svg" class="logo" />
           <h1>SMART DIGEST</h1>
         </a>
       </div>
       <div class="searchBar">
-          <a href="#">
+          <a>
               <img src="./assets/img/logo.svg" />
           </a>
           <input type="text" placeholder="Search Entire store here..." />
       </div>
       <div class="iconButtonBox">
-          <a href="#">
+          <a [routerLink]="['category']">
               <img src="./assets/img/logo.svg" />
-              <span>FAQ</span>
+              <span>Account</span>
           </a>
-          <a href="#">
+          <a [routerLink]="['category']">
               <img src="./assets/img/logo.svg" />
               <span>Catalogue</span>
           </a>
-          <a href="#">
+          <a [routerLink]="['category']">
               <img src="./assets/img/logo.svg" />
-              <span>FAQ</span>
+              <span>Bag</span>
           </a>
       </div>
   </div>

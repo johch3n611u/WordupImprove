@@ -9,13 +9,13 @@ import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.com
 import { CheckAndBuyPageComponent } from './pages/check-and-buy-page/check-and-buy-page.component';
 
 const routes: Routes = [
-  { path: '', component: ProductPageComponent },
+  // { path: '', component: ProductPageComponent },
   { path: 'account', component: AccountPageComponent },
   { path: 'category', component: CategoryPageComponent },
   { path: 'checkAndBuy', component: CheckAndBuyPageComponent },
-  { path: 'product', component: ProductPageComponent },
+  { path: 'category/product', component: ProductPageComponent },
   { path: 'landing/esgMarketing', component: EsgMarketingPageComponent },
-  // { path: '', component: HomeComponent },
+  { path: '', component: HomePageComponent },
   { path: '**', component: NotFoundPageComponent }
 ];
 

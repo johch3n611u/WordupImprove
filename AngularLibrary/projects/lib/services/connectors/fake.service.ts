@@ -12,7 +12,7 @@ export class FakeService {
   private _behaviorSubject = new BehaviorSubject({
     "callToActionAtTop": {
       "content": "King's Birthday 2023 Delivery Details",
-      "url": "#"
+      "url": "landing/esgMarketing"
     },
     "panel": {
 

@@ -1,13 +1,11 @@
 <header>
-  <ec-call-to-action-at-top [data]="(layoutData$ | async).callToActionAtTop">
-  </ec-call-to-action-at-top>
+  <ec-call-to-action-at-top [data]="(layoutData$ | async).callToActionAtTop"></ec-call-to-action-at-top>
   <ec-panel></ec-panel>
   <ec-header-board></ec-header-board>
   <ec-mega-menu-tabs></ec-mega-menu-tabs>
 </header>
-<!-- 根據路由顯示對應元件 -->
 <main>
-  <router-outlet></router-outlet>
+  <router-outlet><!-- 根據路由顯示對應元件 --></router-outlet>
 </main>
 <footer>
   <ec-core-themes></ec-core-themes>
