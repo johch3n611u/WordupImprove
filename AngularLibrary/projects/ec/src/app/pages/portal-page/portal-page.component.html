@@ -1,3 +1,43 @@
-<p>portal works!</p>
-
-login logout signin forget password all in one
+<!-- https://codepen.io/FlorinPop17/pen/vPKWjd -->
+<div class="container">
+  <div style="border: 1px solid gray;">
+    <h2>Sign in</h2>
+    <div>
+      <div class="community">
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-google-plus"></i>
+        <i class="fa-brands fa-linkedin"></i>
+        <i class="fa-brands fa-line"></i>
+      </div>
+      <input type="email" placeholder="email" />
+      <input type="password" placeholder="password" />
+      <br>
+      <!-- 直接前往一個路由路徑而不是嵌套路由，使用絕對路徑在最前面加上一個斜杠 (/) -->
+      <button [routerLink]="['/account/information']">Submit</button>
+    </div>
+  </div>
+  <div style="border: 1px solid gray;">
+    <h2>Sign up</h2>
+    <div>
+      <div class="community">
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-google-plus"></i>
+        <i class="fa-brands fa-linkedin"></i>
+        <i class="fa-brands fa-line"></i>
+      </div>
+      <input type="text" placeholder="name" />
+      <input type="email" placeholder="email" />
+      <input type="password" placeholder="password" />
+      <br>
+      <button [routerLink]="['/account/information']">Submit</button>
+    </div>
+  </div>
+  <div style="border: 1px solid gray;">
+    <h2>Forget password</h2>
+    <div>
+      <input type="email" placeholder="email" />
+      <br>
+      <button [routerLink]="['/account/information']">Submit</button>
+    </div>
+  </div>
+</div>

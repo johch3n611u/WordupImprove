@@ -1,0 +1,46 @@
+i {
+  font-size: 3rem;
+  margin: 1rem;
+  cursor: pointer;
+}
+
+i:hover {
+  color: #78b54e;
+}
+
+.container {
+  padding: 5rem;
+  display: flex;
+
+  >div {
+
+    width: 33%;
+    display: flex;
+    justify-content: center;
+    padding: 5rem;
+    min-height: 15vh;
+    align-items: center;
+    flex-direction: column;
+
+    >div {
+      display: flex;
+      flex-direction: column;
+      font-size: 2rem;
+      align-items: center;
+    }
+  }
+
+  input {
+    background-color: #eee;
+    border: none;
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
+  }
+
+  .community {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

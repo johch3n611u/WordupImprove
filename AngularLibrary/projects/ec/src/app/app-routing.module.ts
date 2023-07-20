@@ -10,6 +10,7 @@ import { CheckAndBuyPageComponent } from './pages/check-and-buy-page/check-and-b
 import { OrdersComponent } from './components/orders/orders.component';
 import { AccountInformationComponent } from './components/account-information/account-information.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import { PortalPageComponent } from './pages/portal-page/portal-page.component';
 
 const routes: Routes = [
   {
@@ -23,8 +24,9 @@ const routes: Routes = [
   { path: 'category', component: CategoryPageComponent },
   { path: 'checkAndBuy', component: CheckAndBuyPageComponent },
   { path: 'category/product', component: ProductPageComponent },
+  { path: 'portal', component: PortalPageComponent },
   { path: 'landing/esgMarketing', component: EsgMarketingPageComponent },
-  { path: '', component: AccountPageComponent },
+  { path: '', component: PortalPageComponent },
   { path: '**', component: NotFoundPageComponent }
 ];
 
