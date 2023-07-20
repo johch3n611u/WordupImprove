@@ -2,3 +2,33 @@ h3 {
   text-align: left;
   color: #0f8346
 }
+
+.products.block {
+  display: flex;
+  overflow-x: scroll;
+  overflow-y: hidden;
+
+  >ec-product {
+    margin: 5rem 10rem 5rem 0;
+  }
+}
+
+::-webkit-scrollbar {
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #ebebeb;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: #6d6d6d;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3d3d3d; 
+}

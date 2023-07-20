@@ -7,4 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class ProductComponent {
   @Input('product') product: any = {};
+  @Input('displayMode') displayMode: string | undefined = 'sidebar';
 }
