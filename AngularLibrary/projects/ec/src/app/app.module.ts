@@ -37,6 +37,9 @@ import { MarketingProductsComponent } from './components/marketing-products/mark
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import { PortalPageComponent } from './pages/portal-page/portal-page.component';
 import { ProductComponent } from './components/product/product.component';
+import { AccountInformationComponent } from './components/account-information/account-information.component';
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import { OrdersComponent } from './components/orders/orders.component';
 
 let components = [
   CallToActionAtTopComponent,
@@ -82,6 +85,9 @@ let pages = [
     AppComponent,
     ...components,
     ...pages,
+    AccountInformationComponent,
+    PrivacyPolicyComponent,
+    OrdersComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,3 +1,10 @@
-<p>account works!</p>
-
-any account info / order / history 
+<div class="container">
+  <ul>
+    <li *ngFor="let block of blocks;let i = index;" [class.active]="i === activeBlock" (click)="activeBlock = i"
+      [routerLink]="block.url">
+      {{block.name}}</li>
+  </ul>
+  <div style="width: 65%;">
+    <router-outlet><!-- 根據路由顯示對應元件 --></router-outlet>
+  </div>
+</div>

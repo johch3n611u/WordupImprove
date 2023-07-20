@@ -1,0 +1,23 @@
+ul {
+  width: 310px;
+  margin-right: 1rem;
+
+  li {
+    font-size: 1.8rem;
+    margin-bottom: 3rem;
+    cursor: pointer;
+    padding-left: 12px;
+  }
+
+  li.active {
+    font-weight: 900;
+    border-left: 3px solid #0f8346;
+    padding-left: 8px;
+  }
+}
+
+.container {
+  margin-top: 2rem;
+  margin-bottom: 5rem;
+  display:flex;
+}

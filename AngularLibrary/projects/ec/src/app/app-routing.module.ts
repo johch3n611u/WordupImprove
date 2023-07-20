@@ -7,15 +7,24 @@ import { ProductPageComponent } from './pages/product-page/product-page.componen
 import { AccountPageComponent } from './pages/account-page/account-page.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import { CheckAndBuyPageComponent } from './pages/check-and-buy-page/check-and-buy-page.component';
+import { OrdersComponent } from './components/orders/orders.component';
+import { AccountInformationComponent } from './components/account-information/account-information.component';
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 
 const routes: Routes = [
-  // { path: '', component: ProductPageComponent },
-  { path: 'account', component: AccountPageComponent },
+  {
+    path: 'account', component: AccountPageComponent,
+    children: [
+      { path: 'information', component: AccountInformationComponent },
+      { path: 'orders', component: OrdersComponent },
+      { path: 'privacy&policy', component: PrivacyPolicyComponent },
+    ]
+  },
   { path: 'category', component: CategoryPageComponent },
   { path: 'checkAndBuy', component: CheckAndBuyPageComponent },
   { path: 'category/product', component: ProductPageComponent },
   { path: 'landing/esgMarketing', component: EsgMarketingPageComponent },
-  { path: '', component: HomePageComponent },
+  { path: '', component: AccountPageComponent },
   { path: '**', component: NotFoundPageComponent }
 ];
 
