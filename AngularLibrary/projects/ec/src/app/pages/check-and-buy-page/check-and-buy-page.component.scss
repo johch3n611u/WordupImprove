@@ -1,0 +1,113 @@
+h2 {
+  margin-top: 5rem;
+}
+
+.header {
+  display: flex;
+  font-size: 2rem;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .05);
+  border-radius: 3px;
+  color: #888;
+  margin-bottom: 3rem;
+
+  span {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.promotional {
+  border: 1px solid rgba(0, 0, 0, .09);
+}
+
+.shadow {
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .05);
+}
+
+.products {
+  display: flex;
+  flex-direction: column;
+  border-radius: 3px;
+  padding-bottom: 2rem;
+  font-size: 2rem;
+
+  .promotionalMix {
+    padding: 9px 12px;
+    background: #fff3ed;
+    line-height: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, .87);
+    border: 1px solid rgba(0, 0, 0, .09);
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+  }
+
+  .product {
+    display: flex;
+
+    span {
+      padding: 0 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
+.checkBox {
+  min-width: 58px;
+}
+
+img {
+  width: 50px;
+  margin-right: 2rem;
+}
+
+h5 {
+  margin-right: 2rem;
+}
+
+.productInfo {
+  width: 45%;
+}
+
+.count {
+  width: 15%;
+}
+
+.price {
+  flex-direction: column;
+}
+
+.price,
+.total,
+.operate {
+  width: 13%;
+}
+
+.discount {
+  text-decoration: line-through;
+}
+
+.countButton {
+  input {
+    width: 30px;
+    font-size: 2rem;
+  }
+
+  span {
+    font-size: 2rem;
+  }
+}
+
+ul {
+  margin-bottom: 3rem;
+}
+
+.checkout {
+  margin-bottom: 10rem;
+  text-align: right;
+}

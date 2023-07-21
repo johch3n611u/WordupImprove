@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'ec-check-and-buy-page',
@@ -6,5 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./check-and-buy-page.component.scss']
 })
 export class CheckAndBuyPageComponent {
-
+  promotional = [{}, {}];
+  products = [{}, {}, {}];
+  template: any;
 }

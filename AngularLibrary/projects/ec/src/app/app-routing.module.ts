@@ -26,7 +26,7 @@ const routes: Routes = [
   { path: 'category/product', component: ProductPageComponent },
   { path: 'portal', component: PortalPageComponent },
   { path: 'landing/esgMarketing', component: EsgMarketingPageComponent },
-  { path: '', component: PortalPageComponent },
+  { path: '', component: CheckAndBuyPageComponent },
   { path: '**', component: NotFoundPageComponent }
 ];
 
