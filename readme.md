@@ -27,7 +27,7 @@
 <details>
   <summary>如果不確定開發題材可以從這找</summary>
 
-1. [LargeEcProhectArchitecture 大型跨國 MonoRepo 架構]()
+1. [LargeEcProhectArchitecture 大型跨國 MonoRepo 架構](https://github.com/UrWebApp/ComponentLibrary/tree/master#large-ec-project-architecture)
 1. 千人群聊專案 [影片](https://www.douyin.com/user/MS4wLjABAAAA0VPScPz6NfgTCKstkkGr5RS6tsAC8PgpVT7F_Rb2XwA?modal_id=7249728594157505849) [Github](https://github.com/Evansy/MallChatWeb)
 2. [渡一Web前端学习频道](https://www.douyin.com/search/%E6%B8%A1%E4%B8%80?source=switch_tab&type=user) 所有渡一的都可以看一下，都是前端拆單元模組出來講
 3. [前端面試考題](https://www.douyin.com/note/7234853856453070140)
