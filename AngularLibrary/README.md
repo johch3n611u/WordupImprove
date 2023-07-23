@@ -25,3 +25,42 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+### Facade Pattern
+
+簡化複雜系統，提供統一的界面，隱藏了系統內部複雜性。
+
+EX. 封裝表單相關的功能、方法和事件，提供簡單統一的介面供其他程式使用。
+
+[NG 依賴注入](https://ithelp.ithome.com.tw/articles/10207990)
+
+[useFactory](https://fullstackladder.dev/blog/2018/11/05/mastering-angular-21-ngmodule-providers-2/)
+
+```typescript
+import { facadeFactory, StateUtils } from '@spartacus/core';
+import { FORM_CORE_FEATURE } from '../form-feature-name';
+
+@Injectable({
+  providedIn: 'root',
+  useFactory: () =>
+    facadeFactory({
+      facade: FormFacade,
+      feature: FORM_CORE_FEATURE,
+      methods: [
+        'getCompleteFormStepSuccess',
+        'getCompleteFormStepError',
+      ],
+      async: true,
+    }),
+})
+export abstract class FormFacade {
+  abstract getCompleteFormStepSuccess(
+    formId: string,
+    formStepId: string
+  ): Observable<boolean>;
+  abstract getCompleteFormStepError(
+    formId: string,
+    formStepId: string
+  ): Observable<boolean>;
+}
+```
