@@ -1,14 +1,14 @@
 # 專案要點
 
 1. 所有東西 ( gitBranch、filesArchitecture、communicate ) 都越扁平越好並保持 DRY 原則，能夠快速釐清、整合、決策、執行，避免延伸非必要的任何事情
-3. 用新的 [pnpm](https://zhuanlan.zhihu.com/p/546400909) 進行模組管理，指令同 npm
-4. [NG-ZORRO](https://ng.ant.design/docs/introduce/en) 參考較多人使用的 UI Repo 去產結構，以 feature 業務邏輯對原生 element 或第三方元件庫進行二次封裝
-5. 新模組或元件 / 功能需先查詢此文檔有無類似功能並優化重構，如無則需補上說明文件與路徑
-6. 找不到功能應用開發可以參考以下項目
-7. 盡量補上測試或至少保留原生單元測試
+2. 用新的 [pnpm](https://zhuanlan.zhihu.com/p/546400909) 進行模組管理，指令同 npm
+3. [NG-ZORRO](https://ng.ant.design/docs/introduce/en) 參考較多人使用的 UI Repo 去產結構，以 feature 業務邏輯對原生 element 或第三方元件庫進行二次封裝
+4. 新模組或元件 / 功能需先查詢此文檔有無類似功能並優化重構，如無則需補上說明文件與路徑
+5. 找不到功能應用開發可以參考以下項目
+6. 盡量補上測試或至少保留原生單元測試
    * unit `ng test` [Karma](https://karma-runner.github.io)
    * end-to-end `ng e2e` 端對端測試的套件最多人使用的是 Protractor
-8. 用 [Markdown All in One: Create Table of Contents](https://zhuanlan.zhihu.com/p/126353341) 自動產生 github 目錄
+7. 用 [Markdown All in One: Create Table of Contents](https://zhuanlan.zhihu.com/p/126353341) 自動產生 github 目錄
 
 ## 專案架構與文檔
 
@@ -757,6 +757,9 @@ npm install ../my-library
 1. tsconfig.json => path "projects/lib/*", "dist/lib/*" 
    * ng serve 開發模式優先從 projects/lib 目錄下尋找模組
    * ng build 解析器會優先從 dist/lib 目錄下尋找模組
+2. `ng generate application <app-name>` 新增新站台
+3. 新增 component 可以透過 gui 新增資料夾在在 application 專案後，在搬移至 library 專案 ( gui 套件結構問題，除非去改 generate schame )
+4. 框架二次封裝高階元件比對網站 https://www.slant.co/、https://moiva.io/
 
 #### 模組參考項目
 
