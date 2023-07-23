@@ -27,7 +27,6 @@ import { ProductListComponent } from './components/product-list/product-list.com
 import { CategoryDescriptionComponent } from './components/category-description/category-description.component';
 import { PostersFlyersComponent } from './components/posters-flyers/posters-flyers.component';
 import { EsgMarketingPageComponent } from './pages/landing-page/esg-marketing-page/esg-marketing-page.component';
-import { BannerComponent } from './components/marketing-esg/banner/banner.component';
 import { ProductPageComponent } from './pages/product-page/product-page.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { AddToBagComponent } from './components/add-to-bag/add-to-bag.component';
@@ -40,6 +39,7 @@ import { ProductComponent } from './components/product/product.component';
 import { AccountInformationComponent } from './components/account-information/account-information.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { OrdersComponent } from './components/orders/orders.component';
+import { EsgMarketingBannerComponent } from './components/esg-marketing-page/banner/esg-marketing-banner.component';
 
 let components = [
   CallToActionAtTopComponent,
@@ -62,7 +62,7 @@ let components = [
   ProductListComponent,
   CategoryDescriptionComponent,
   PostersFlyersComponent,
-  BannerComponent,
+  EsgMarketingBannerComponent,
   ProductDetailsComponent,
   AddToBagComponent,
   MarketingProductsComponent,

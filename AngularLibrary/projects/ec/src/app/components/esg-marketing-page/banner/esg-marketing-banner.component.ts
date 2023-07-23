@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ec-esg-banner',
-  templateUrl: './banner.component.html',
-  styleUrls: ['./banner.component.scss']
+  selector: 'ec-esg-marketing-banner',
+  templateUrl: './esg-marketing-banner.component.html',
+  styleUrls: ['./esg-marketing-banner.component.scss']
 })
-export class BannerComponent implements OnInit  {
+export class EsgMarketingBannerComponent implements OnInit  {
   ngOnInit(): void {
     this.startAnimation();
   }
