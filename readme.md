@@ -1,56 +1,10 @@
-- [專案要點](#專案要點)
-  - [專案架構與文檔](#專案架構與文檔)
-    - [Facade Pattern](#facade-pattern)
-    - [Loading Overlay Service](#loading-overlay-service)
-    - [Addon Onetrust Service](#addon-onetrust-service)
-    - [Debounce \& Throttle =\> Queue](#debounce--throttle--queue)
-    - [Large EC Project Architecture](#large-ec-project-architecture)
-  - [基本知識](#基本知識)
-    - [Node.js V8](#nodejs-v8)
-    - [NPM、Yarn、Nuget](#npmyarnnuget)
-    - [Webpack](#webpack)
-    - [Gulp、Grunt、Parcel、Browserify、PUG、SASS、Babel](#gulpgruntparcelbrowserifypugsassbabel)
-    - [Angular AOT / JIT / Ivy / Esbuild](#angular-aot--jit--ivy--esbuild)
-    - [Vite](#vite)
-    - [建立元件庫](#建立元件庫)
-      - [建立 Angular 元件庫](#建立-angular-元件庫)
-      - [Angula StoryBook](#angula-storybook)
-      - [Jest](#jest)
-      - [建立 React 元件庫](#建立-react-元件庫)
-      - [React Storybook 直接看官網的就簡單易懂了 ( 支援度最高的也是 React 還有中文 )](#react-storybook-直接看官網的就簡單易懂了--支援度最高的也是-react-還有中文-)
-      - [!!! Vite / Template React \& TS  / Init Storybook !!! 建議直接使用以下人家整理好的 Repo](#-vite--template-react--ts---init-storybook--建議直接使用以下人家整理好的-repo)
-
 # 專案要點
 
 1. 所有東西 ( gitBranch、filesArchitecture、communicate ) 都越扁平越好並保持 DRY 原則，能夠快速釐清、整合、決策、執行，避免延伸非必要的任何事情
-2. tsconfig.json => path "projects/lib/*", "dist/lib/*" 
-   * ng serve 開發模式優先從 projects/lib 目錄下尋找模組
-   * ng build 解析器會優先從 dist/lib 目錄下尋找模組
 3. 用新的 [pnpm](https://zhuanlan.zhihu.com/p/546400909) 進行模組管理，指令同 npm
 4. [NG-ZORRO](https://ng.ant.design/docs/introduce/en) 參考較多人使用的 UI Repo 去產結構，以 feature 業務邏輯對原生 element 或第三方元件庫進行二次封裝
-5. 新模組或元件/功能需先查詢此文檔有無類似功能並優化重構，如無則需補上說明文件與路徑
-6. 找不到功能應用開發可以看以下參考
-   1. 千人群聊專案 [影片](https://www.douyin.com/user/MS4wLjABAAAA0VPScPz6NfgTCKstkkGr5RS6tsAC8PgpVT7F_Rb2XwA?modal_id=7249728594157505849) [Github](https://github.com/Evansy/MallChatWeb)
-   2. [渡一Web前端学习频道](https://www.douyin.com/search/%E6%B8%A1%E4%B8%80?source=switch_tab&type=user) 所有渡一的都可以看一下，都是前端拆單元模組出來講
-   3. [前端面試考題](https://www.douyin.com/note/7234853856453070140)
-   4. [JS Design Pattern](https://ithelp.ithome.com.tw/users/20112280/ironman/2093?page=1)
-   5. 都做完再去 KGPT 找表單內類別試程式或商業的看有沒有機會有其他的可能性
-   6. [ng-lightning](https://github.com/ng-lightning/ng-lightning/tree/master/projects/ng-lightning/src)
-   7. [29 個 components](https://ithelp.ithome.com.tw/articles/10288482)
-   8. [100 個 components / js game](https://github.com/johch3n611u/johch3n611u/tree/main/Research/SelfTraing)
-   9. [擊破前端面試的困難 / 或許可以做成 comopnent demo ?](https://medium.com/@askiebaby/%E6%93%8A%E7%A0%B4%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%A9%A6%E7%9A%84%E5%9B%B0%E9%9B%A3-%E7%B9%81%E4%B8%AD%E7%BF%BB%E8%AD%AF-5054500e9415)
-   10. advergaming 感覺是趨勢? 還是可能過時了
-   11. [30js做成 components](https://github.com/wesbos/JavaScript30)
-   12. [w3c how to](https://www.w3schools.com/howto/default.asp)
-   13. [Angular 大師之路](https://ithelp.ithome.com.tw/users/20020617/ironman/1630)
-   14. [understanding-angular-overview](https://angular.tw/guide/understanding-angular-overview)
-   15. [ant design](https://ant.design/components/overview/)
-   16. [angular design pattern](https://blogs.halodoc.io/commonly-used-design-patterns-in-angular/)
-   17. [ng jest](https://ithelp.ithome.com.tw/articles/10308509)
-   18. [30 天擁有一套自己手刻的 React UI 元件庫](https://ithelp.ithome.com.tw/m/users/20111490/ironman/3999)
-   19. [以經典小遊戲為主題之ReactJS應用練習](https://ithelp.ithome.com.tw/m/users/20111490/ironman/2007)
-   20. [awesome-angular-components](https://github.com/brillout/awesome-angular-components)
-   21. [vueuse](https://vueuse.org/functions.html)
+5. 新模組或元件 / 功能需先查詢此文檔有無類似功能並優化重構，如無則需補上說明文件與路徑
+6. 找不到功能應用開發可以參考以下項目
 7. 盡量補上測試或至少保留原生單元測試
    * unit `ng test` [Karma](https://karma-runner.github.io)
    * end-to-end `ng e2e` 端對端測試的套件最多人使用的是 Protractor
@@ -797,3 +751,33 @@ npm install ../my-library
 大型 [https://github.com/NiGhTTraX/ts-monorepo](https://github.com/NiGhTTraX/ts-monorepo)
 
 較小 [https://github.com/adiun/vite-monorepo](https://github.com/adiun/vite-monorepo)
+
+### Angular MonoRepo
+
+1. tsconfig.json => path "projects/lib/*", "dist/lib/*" 
+   * ng serve 開發模式優先從 projects/lib 目錄下尋找模組
+   * ng build 解析器會優先從 dist/lib 目錄下尋找模組
+
+#### 模組參考項目
+
+1. 千人群聊專案 [影片](https://www.douyin.com/user/MS4wLjABAAAA0VPScPz6NfgTCKstkkGr5RS6tsAC8PgpVT7F_Rb2XwA?modal_id=7249728594157505849) [Github](https://github.com/Evansy/MallChatWeb)
+2. [渡一Web前端学习频道](https://www.douyin.com/search/%E6%B8%A1%E4%B8%80?source=switch_tab&type=user) 所有渡一的都可以看一下，都是前端拆單元模組出來講
+3. [前端面試考題](https://www.douyin.com/note/7234853856453070140)
+4. [JS Design Pattern](https://ithelp.ithome.com.tw/users/20112280/ironman/2093?page=1)
+5. 都做完再去 KGPT 找表單內類別試程式或商業的看有沒有機會有其他的可能性
+6. [ng-lightning](https://github.com/ng-lightning/ng-lightning/tree/master/projects/ng-lightning/src)
+7. [29 個 components](https://ithelp.ithome.com.tw/articles/10288482)
+8. [100 個 components / js game](https://github.com/johch3n611u/johch3n611u/tree/main/Research/SelfTraing)
+9. [擊破前端面試的困難 / 或許可以做成 comopnent demo ?](https://medium.com/@askiebaby/%E6%93%8A%E7%A0%B4%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%A9%A6%E7%9A%84%E5%9B%B0%E9%9B%A3-%E7%B9%81%E4%B8%AD%E7%BF%BB%E8%AD%AF-5054500e9415)
+10. advergaming 感覺是趨勢? 還是可能過時了
+11. [30js做成 components](https://github.com/wesbos/JavaScript30)
+12. [w3c how to](https://www.w3schools.com/howto/default.asp)
+13. [Angular 大師之路](https://ithelp.ithome.com.tw/users/20020617/ironman/1630)
+14. [understanding-angular-overview](https://angular.tw/guide/understanding-angular-overview)
+15. [ant design](https://ant.design/components/overview/)
+16. [angular design pattern](https://blogs.halodoc.io/commonly-used-design-patterns-in-angular/)
+17. [ng jest](https://ithelp.ithome.com.tw/articles/10308509)
+18. [30 天擁有一套自己手刻的 React UI 元件庫](https://ithelp.ithome.com.tw/m/users/20111490/ironman/3999)
+19. [以經典小遊戲為主題之ReactJS應用練習](https://ithelp.ithome.com.tw/m/users/20111490/ironman/2007)
+20. [awesome-angular-components](https://github.com/brillout/awesome-angular-components)
+21. [vueuse](https://vueuse.org/functions.html)
