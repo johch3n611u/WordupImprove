@@ -20,15 +20,15 @@ export class CheckAndBuyPageComponent {
     // Router 同頁重載
     this.navigationSub$ = this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
-        // this.template = this.bag;
-        this.template = this.check;
+        this.template = this.bag;
+        // this.template = this.check;
       }
     });
   }
 
   ngAfterContentInit(): void {
-    // this.template = this.bag;
-    this.template = this.check;
+    this.template = this.bag;
+    // this.template = this.check;
   }
 
   ngOnDestroy(): void {

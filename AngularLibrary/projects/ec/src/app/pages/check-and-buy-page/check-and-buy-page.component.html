@@ -4,95 +4,122 @@
   <ng-container [ngTemplateOutlet]="template"></ng-container>
 </div>
 
-<!-- Bag -->
 <ng-template #bag>
   <h2>Bag</h2>
   <ul>
     <li class="header">
       <span class="checkBox"><input type="checkbox" /></span>
-      <span class="productInfo">商品</span>
-      <span class="price">單價</span>
+      <span class="info">商品</span>
       <span class="count">數量</span>
-      <span class="total">統計</span>
       <span class="operate">操作</span>
-    </li>
-    <li class="promotional">
-      <div class="products" *ngFor="let product of promotional;let i = index;">
-        <div class="promotionalMix" *ngIf="i === 0">
-          <span>促銷組合</span><span>任 2 件可享 5%</span>
-          <span><a>去看看 ></a></span>
-        </div>
-        <div class="product">
-          <span class="checkBox"><input type="checkbox" /></span>
-          <span class="productInfo">
-            <img src="./assets/img/logo.svg" />
-            <h5>台灣出貨 跳繩 無繩跳繩 計數跳繩 電子跳繩 智能跳繩 電子智</h5>
-          </span>
-          <span class="price">
-            <span class="discount">$398</span>
-            <span>$351</span>
-          </span>
-          <span class="count">
-            <div class="countButton">
-              <span>-</span><input value="1" /><span>+</span>
-            </div>
-          </span>
-          <span class="total">$205</span>
-          <span class="operate">刪除</span>
-        </div>
-      </div>
+      <span class="price">單價</span>
     </li>
     <br><br>
-    <li class="products shadow" *ngFor="let product of products">
-      <div class="product">
+    <ul class="promotional">
+      <div class="method">
+        <span>促銷組合</span>
+        <span>任 2 件可享 5%</span>
+        <span><a>去看看 ></a></span>
+      </div>
+      <div class="product" *ngFor="let product of promotional;let i = index;">
         <span class="checkBox"><input type="checkbox" /></span>
-        <span class="productInfo">
-          <img src="./assets/img/logo.svg" />
-          <h5>台灣出貨 跳繩 無繩跳繩 計數跳繩 電子跳繩 智能跳繩 電子智</h5>
-        </span>
-        <span class="price">
-          <span>$351</span>
+        <span class="info">
+          <a [routerLink]="['/category/product']">
+            <img src="./assets/img/logo.svg" />
+            <h5>台灣出貨 跳繩 無繩跳繩 計數跳繩 電子跳繩 智能跳繩 電子智</h5>
+          </a>
         </span>
         <span class="count">
           <div class="countButton">
             <span>-</span><input value="1" /><span>+</span>
           </div>
         </span>
-        <span class="total">$205</span>
-        <span class="operate">刪除</span>
+        <span class="operate"></span>
+        <span class="price">
+          <span class="discount">$398</span>
+          <span>$351</span>
+        </span>
       </div>
+    </ul>
+    <li class="product" *ngFor="let product of products">
+      <span class="checkBox"><input type="checkbox" /></span>
+      <span class="info">
+        <a [routerLink]="['/category/product']">
+          <img src="./assets/img/logo.svg" />
+          <h5>台灣出貨 跳繩 無繩跳繩 計數跳繩 電子跳繩 智能跳繩 電子智</h5>
+        </a>
+      </span>
+      <span class="count">
+        <div class="countButton">
+          <span>-</span><input value="1" /><span>+</span>
+        </div>
+      </span>
+      <span class="operate">刪除</span>
+      <span class="price">
+        <span class="discount">$398</span>
+        <span>$351</span>
+      </span>
     </li>
   </ul>
   <div class="checkout">
+    <p><span>Total Amount</span><span>NTD</span><span>$5.283</span></p>
     <button (click)="template = check">Checkout</button>
   </div>
 </ng-template>
 
-<!-- Check -->
 <ng-template #check>
   <h2>Order</h2>
   <ul>
     <li class="header">
-      <span class="productInfo">商品</span>
-      <span class="price">單價</span>
+      <span class="info">商品</span>
       <span class="count">數量</span>
-      <span class="total"></span>
+      <span class="price">單價</span>
     </li>
-    <li class="products shadow" *ngFor="let product of products">
-      <div class="product">
-        <span class="productInfo">
-          <img src="./assets/img/logo.svg" />
-          <h5>台灣出貨 跳繩 無繩跳繩 計數跳繩 電子跳繩 智能跳繩 電子智</h5>
-        </span>
-        <span class="price">
-          <span>$351</span>
-        </span>
-        <span class="count">
-          <span>1</span>
-        </span>
-      </div>
+    <li class="product" *ngFor="let product of products">
+      <span class="info">
+        <img src="./assets/img/logo.svg" />
+        <h5>台灣出貨 跳繩 無繩跳繩 計數跳繩 電子跳繩 智能跳繩 電子智</h5>
+      </span>
+      <span class="count">
+        1
+      </span>
+      <span class="price">
+        <span class="discount">$398</span>
+        <span>$351</span>
+      </span>
     </li>
   </ul>
+  <h2>Delivery</h2>
+  <ul>
+    <li class="header">
+      <span class="info">寄送方式</span>
+      <span class="count">說明</span>
+      <span class="price">單價</span>
+    </li>
+  </ul>
+  <h2>Coupon</h2>
+  <ul>
+    <li class="header">
+      <span class="info">優惠券</span>
+      <span class="count">說明</span>
+      <span class="price">單價</span>
+    </li>
+  </ul>
+  <h2>Payment</h2>
+  <ul>
+    <li class="header">
+      <span class="info">付款方式</span>
+      <span class="count">說明</span>
+    </li>
+  </ul>
+  <div class="checkout">
+    <p><span>Total Amount</span><span>NTD</span><span>$5.283</span></p>
+    <button>Purchase</button>
+    <!-- IF ALL required OK => VISA => Thanks Page -->
+  </div>
+</ng-template>
+
+<!-- <ng-template #check>
   <h2>Delivery</h2>
   <ul>
     <li class="header">
@@ -159,4 +186,4 @@
       <button>Purchase</button> => VISA => Thanks Page
     </div>
   </ul>
-</ng-template>
+</ng-template> -->
