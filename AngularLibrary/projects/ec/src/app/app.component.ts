@@ -9,8 +9,8 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent {
 
-  layoutData$: Observable<any> = {} as Observable<any>;
-  constructor(private fake: FakeService) {
-    this.layoutData$ = this.fake.layoutData$;
+  headerData$: Observable<any> = {} as Observable<any>;
+  constructor(private fakeService: FakeService) {
+    this.headerData$ = this.fakeService.headerData$;
   }
 }

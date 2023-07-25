@@ -62,7 +62,7 @@
     </li>
   </ul>
   <div class="checkout">
-    <p><span>Total Amount</span><span>NTD</span><span>$5.283</span></p>
+    <p class="totalAmount"><span>Total Amount</span><span>NTD</span><span>$5.283</span></p>
     <button (click)="template = check">Checkout</button>
   </div>
 </ng-template>
@@ -92,98 +92,99 @@
   <h2>Delivery</h2>
   <ul>
     <li class="header">
-      <span class="info">寄送方式</span>
-      <span class="count">說明</span>
+      <span class="count">寄送方式</span>
+      <span class="info">說明</span>
       <span class="price">單價</span>
+    </li>
+    <li class="product">
+      <span class="count">
+        <input id="drone" type="radio" name="delivery" />
+        <label for="drone">無人機</label>    
+      </span>
+      <span class="info">預計到貨時間一小時內由無人機空運過來</span>
+      <span class="price">$19</span>
+    </li>
+    <li class="product">
+      <span class="count">
+        <input id="store" type="radio" name="delivery" />
+        <label for="store">便利商店</label>
+      </span>
+      <span class="info">預計到貨時間7月25日 - 7月28日</span>
+      <span class="price">$80</span>
+    </li>
+    <li class="product">
+      <span class="count">
+        <input id="freight" type="radio" name="delivery" />
+        <label for="freight">宅配</label>
+      </span>
+      <span class="info">預計到貨時間7月25日 - 7月28日</span>
+      <span class="price">$50</span>
+    </li>
+    <li class="shippingInfo">
+      <label for="remark">備註：</label>
+      <input id="remark" placeholder="管理室代收/電話聯絡時間"/>
+      <label for="address">地址：</label>
+      <input id="address" placeholder="7-11 BX門市 新北市新店區中央路877號2樓-3"/>
     </li>
   </ul>
   <h2>Coupon</h2>
   <ul>
     <li class="header">
-      <span class="info">優惠券</span>
-      <span class="count">說明</span>
+      <span class="count">優惠券</span>
+      <span class="info">說明</span>
       <span class="price">單價</span>
+    </li>
+    <li class="product">
+      <span class="count">
+        <input id="starNight" type="radio" name="coupon" />
+        <label for="starNight">星空價</label>
+      </span>
+      <span class="info">10-11點限額使用</span>
+      <span class="price"><span>(8折)</span><span>$-30</span></span>
+    </li>
+    <li class="product">
+      <span class="count">
+        <input id="double11" type="radio" name="coupon" />
+        <label for="double11">雙11超額優惠</label>
+      </span>
+      <span class="info">凡購買商品超過 $ 1,111 立即折抵 $ 500</span>
+      <span class="price"><span>$-500</span></span>
     </li>
   </ul>
   <h2>Payment</h2>
   <ul>
     <li class="header">
-      <span class="info">付款方式</span>
-      <span class="count">說明</span>
+      <span class="count">付款方式</span>
+      <span class="info">說明</span>
+    </li>
+    <li class="product">
+      <span class="count">
+        <input id="cash" type="radio" name="payment" />
+        <label for="cash">貨到付款</label>
+      </span>
+      <span class="info">說明</span>
+    </li>
+    <li class="product">
+      <span class="count">
+        <input id="credit" type="radio" name="payment" />
+        <label for="credit">信用卡/金融卡</label>
+      </span>
+      <span class="info">說明</span>
+    </li>
+    <li class="product">
+      <span class="count">
+        <input id="bank" type="radio" name="payment" />
+        <label for="bank">銀行轉帳</label>
+      </span>
+      <span class="info">說明</span>
     </li>
   </ul>
   <div class="checkout">
-    <p><span>Total Amount</span><span>NTD</span><span>$5.283</span></p>
+    <p><span>商品總金額</span><span>$5.000</span></p>
+    <p><span>運費總金額</span><span>$283</span></p>
+    <p><span>折價券折扣</span><span>$-500</span></p>
+    <p class="totalAmount"><span>Total Amount</span><span>NTD</span><span>$5.283</span></p>
     <button>Purchase</button>
     <!-- IF ALL required OK => VISA => Thanks Page -->
   </div>
 </ng-template>
-
-<!-- <ng-template #check>
-  <h2>Delivery</h2>
-  <ul>
-    <li class="header">
-      <span></span>
-      <span class="price">寄送方式</span>
-      <span class="count"></span>
-      <span class="total">價格</span>
-    </li>
-    <li class="header">
-      <span><input type="radio" name="delivery" /></span>
-      <span class="price">無人機</span>
-      <span class="count">預計到貨時間一小時內由無人機空運過來！</span>
-      <span class="total">19.99 英鎊</span>
-    </li>
-    <li class="header">
-      <span><input type="radio" name="delivery" /></span>
-      <span class="price">便利商店</span>
-      <span class="count">預計到貨時間7月25日 - 7月28日</span>
-      <span class="total">19.99 英鎊</span>
-    </li>
-    <li class="header">
-      <span><input type="radio" name="delivery" /></span>
-      <span class="price">宅配</span>
-      <span class="count">預計到貨時間7月25日 - 7月28日</span>
-      <span class="total">19.99 英鎊</span>
-    </li>
-    <li>
-      <label for="address">地址</label><input id="address" type="text" placeholder="縣市/地區/街道巷/號樓" />
-      <label for="remark">備註：</label><input id="remark" type="text" placeholder="管理室代收/電話聯絡時間" />
-    </li>
-  </ul>
-  <h2>Coupon</h2>
-  <ul>
-    <li class="header">
-      <span class="productInfo">商品</span>
-      <span class="price">單價</span>
-      <span class="count">數量</span>
-      <span class="total"></span>
-    </li>
-  </ul>
-  <h2>Payment</h2>
-  <ul>
-    <li class="header">
-      <span></span>
-      <span class="price">付款方式</span>
-    </li>
-    <li class="header">
-      <span><input type="radio" name="payment" /></span>
-      <span>貨到付款</span>
-    </li>
-    <li class="header">
-      <span><input type="radio" name="payment" /></span>
-      <span>信用卡/金融卡</span>
-    </li>
-    <li class="header">
-      <span><input type="radio" name="payment" /></span>
-      <span>銀行轉帳</span>
-    </li>
-    <li class="totalAmount" style="text-align: right;">
-      Total Amount <span>$5.283</span><span>NTD</span>
-    </li>
-    <div class="checkout">
-      IF ALL required OK
-      <button>Purchase</button> => VISA => Thanks Page
-    </div>
-  </ul>
-</ng-template> -->

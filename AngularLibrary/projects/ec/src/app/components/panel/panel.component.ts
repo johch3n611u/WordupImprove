@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'ec-panel',
@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./panel.component.scss']
 })
 export class PanelComponent {
-
+  @Input() data: any = {};
+  ngOnInit(): void {
+    console.log(this.data.leftNav);
+  }
 }

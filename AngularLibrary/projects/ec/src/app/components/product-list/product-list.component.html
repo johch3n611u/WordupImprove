@@ -19,7 +19,7 @@
     </div>
   </div>
   <div class="products container">
-    <div class="product">
+    <div class="product" *ngFor="let product of products">
       <a [routerLink]="['product']">
         <img src="./assets/img/logo.svg" />
         <h2>390ml / 12oz White Plant Fibre BioBowl</h2>
@@ -29,77 +29,6 @@
         <span>-</span><input value="1" /><span>+</span><button>Buy</button>
       </div>
     </div>
-    <div class="product">
-      <a [routerLink]="['product']">
-        <img src="./assets/img/logo.svg" />
-        <h2>390ml / 12oz White Plant Fibre BioBowl</h2>
-        <p>$100</p>
-      </a>
-      <div class="countButton">
-        <span>-</span><input value="1" /><span>+</span><button>Buy</button>
-      </div>
-    </div>
-    <div class="product">
-      <a [routerLink]="['product']">
-        <img src="./assets/img/logo.svg" />
-        <h2>390ml / 12oz White Plant Fibre BioBowl</h2>
-        <p>$100</p>
-      </a>
-      <div class="countButton">
-        <span>-</span><input value="1" /><span>+</span><button>Buy</button>
-      </div>
-    </div>
-    <div class="product">
-      <a [routerLink]="['product']">
-        <img src="./assets/img/logo.svg" />
-        <h2>390ml / 12oz White Plant Fibre BioBowl</h2>
-        <p>$100</p>
-      </a>
-      <div class="countButton">
-        <span>-</span><input value="1" /><span>+</span><button>Buy</button>
-      </div>
-    </div>
-    <div class="product">
-      <a [routerLink]="['product']">
-        <img src="./assets/img/logo.svg" />
-        <h2>390ml / 12oz White Plant Fibre BioBowl</h2>
-        <p>$100</p>
-      </a>
-      <div class="countButton">
-        <span>-</span><input value="1" /><span>+</span><button>Buy</button>
-      </div>
-    </div>
-    <div class="product">
-      <a [routerLink]="['product']">
-        <img src="./assets/img/logo.svg" />
-        <h2>390ml / 12oz White Plant Fibre BioBowl</h2>
-        <p>$100</p>
-      </a>
-      <div class="countButton">
-        <span>-</span><input value="1" /><span>+</span><button>Buy</button>
-      </div>
-    </div>
-    <div class="product">
-      <a [routerLink]="['product']">
-        <img src="./assets/img/logo.svg" />
-        <h2>390ml / 12oz White Plant Fibre BioBowl</h2>
-        <p>$100</p>
-      </a>
-      <div>
-        <span>-</span><input value="1" /><span>+</span><button>Buy</button>
-      </div>
-    </div>
-    <div class="product">
-      <a [routerLink]="['product']">
-        <img src="./assets/img/logo.svg" />
-        <h2>390ml / 12oz White Plant Fibre BioBowl</h2>
-        <p>$100</p>
-      </a>
-      <div class="countButton">
-        <span>-</span><input value="1" /><span>+</span><button>Buy</button>
-      </div>
-    </div>
-
   </div>
   <div class="loadMore">
     <p>You have viewed 12 of 62 Products.</p>

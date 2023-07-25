@@ -1,1 +1,1 @@
-export * from './connectors/fake.service';
+export * from './connectors/fake/fake.service';

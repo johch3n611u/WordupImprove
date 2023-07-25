@@ -8,11 +8,7 @@ import { Component, Input } from '@angular/core';
 export class CallToActionAtTopComponent {
   @Input() data: any = {};
 
-  constructor()
-  {
-
-  }
-
   ngOnInit(): void {
+    // console.log(this.data);
   }
 }

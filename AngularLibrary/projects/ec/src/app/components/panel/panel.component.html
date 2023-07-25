@@ -1,56 +1,110 @@
 <div class="panel">
   <div class="multilevelNav container">
-      <nav class="leftNav">
-          <a [routerLink]="['category']" class="level1Nav">
-              CUSTOM PACKAGING
-          </a>
+    <nav class="leftNav">
+      <ng-container *ngTemplateOutlet="superMenu; context: { items: data.leftNav }"></ng-container>
+    </nav>
+    <!-- <nav class="rightNav">
+      <ng-container *ngTemplateOutlet="superMenu; context: { items: data.rightNav }"></ng-container>
+    </nav> -->
+    <nav class="rightNav">
+      <a [routerLink]="['category']" class="level1Nav">SHIPPING</a>
+      <a [routerLink]="['category']" class="level1Nav">CONTACT</a>
+      <ul>
+        <a class="level1Nav">DISPOSAL</a>
+        <ul class="level2Nav">
+          <a [routerLink]="['category']">Bring</a>
           <ul>
-              <a [routerLink]="['category']" class="level1Nav">SHOP INDUSTRY</a>
-              <ul class="level2Nav">
-                  <a [routerLink]="['category']">Bring</a>
-                  <a [routerLink]="['category']">Deliver</a>
-                  <ul>
-                      <a [routerLink]="['category']">Package</a>
-                      <ul class="level3Nav">
-                          <a [routerLink]="['category']">Bring</a>
-                          <a [routerLink]="['category']">Express</a>
-                          <a [routerLink]="['category']">Package</a>
-                          <a [routerLink]="['category']">Deliver</a>
-                      </ul>
-                  </ul>
-                  <a [routerLink]="['category']">Express</a>
-              </ul>
+            <a [routerLink]="['category']">Deliver</a>
+            <ul class="level3Nav">
+              <a [routerLink]="['category']">Express</a>
+              <a [routerLink]="['category']">Package</a>
+            </ul>
           </ul>
-          <a [routerLink]="['category']" class="level1Nav">PLASTIC BANS</a>
-      </nav>
-      <nav class="rightNav">
-          <a [routerLink]="['category']" class="level1Nav">SHIPPING</a>
-          <a [routerLink]="['category']" class="level1Nav">CONTACT</a>
-          <ul>
-              <a class="level1Nav">DISPOSAL</a>
-              <ul class="level2Nav">
-                  <a [routerLink]="['category']">Bring</a>
-                  <ul>
-                      <a [routerLink]="['category']">Deliver</a>
-                      <ul class="level3Nav">
-                          <a [routerLink]="['category']">Express</a>
-                          <a [routerLink]="['category']">Package</a>
-                      </ul>
-                  </ul>
-                  <a [routerLink]="['category']">Package</a>
-                  <a [routerLink]="['category']">Express</a>
-              </ul>
-          </ul>
-          <a [routerLink]="['category']" class="level1Nav">ABOUT</a>
-          <ul>
-              <a [routerLink]="['category']" class="level1Nav">EN</a>
-              <ul class="level2Nav">
-                  <a [routerLink]="['category']">繁體</a>
-                  <a [routerLink]="['category']">简体</a>
-                  <a [routerLink]="['category']">日本語</a>
-                  <a [routerLink]="['category']">แบบไทย</a>
-              </ul>
-          </ul>
-      </nav>
+          <a [routerLink]="['category']">Package</a>
+          <a [routerLink]="['category']">Express</a>
+        </ul>
+      </ul>
+      <a [routerLink]="['category']" class="level1Nav">ABOUT</a>
+      <ul>
+        <a [routerLink]="['category']" class="level1Nav">EN</a>
+        <ul class="level2Nav">
+          <a [routerLink]="['category']">繁體</a>
+          <a [routerLink]="['category']">简体</a>
+          <a [routerLink]="['category']">日本語</a>
+          <a [routerLink]="['category']">แบบไทย</a>
+        </ul>
+      </ul>
+    </nav>
   </div>
 </div>
+
+<ng-template #superMenu let-items="items">
+  <ng-container *ngFor="let item of items">
+    <ng-container *ngIf="!item.children else chirld">
+      <a [ngClass]="{'level1Nav':item.level === 'level1Nav'}" [routerLink]="[item.link]">{{item.name}}</a>
+    </ng-container>
+    <ng-template #chirld>
+      <ul>
+        <a [ngClass]="{'level1Nav':item.level === 'level1Nav'}" [routerLink]="[item.link]">{{item.name}}</a>
+        <ul [attr.class]="item.children[0].level">
+          <ng-container *ngTemplateOutlet="superMenu; context: { items: item.children }"></ng-container>
+        </ul>
+      </ul>
+    </ng-template>
+  </ng-container>
+</ng-template>
+
+<!-- <div class="panel">
+  <div class="multilevelNav container">
+    <nav class="leftNav">
+      <a [routerLink]="['category']" class="level1Nav">CUSTOM PACKAGING</a>
+      <ul>
+        <a [routerLink]="['category']" class="level1Nav">SHOP INDUSTRY</a>
+        <ul class="level2Nav">
+          <a [routerLink]="['category']">Bring</a>
+          <a [routerLink]="['category']">Deliver</a>
+          <ul>
+            <a [routerLink]="['category']">Package</a>
+            <ul class="level3Nav">
+              <a [routerLink]="['category']">Bring</a>
+              <a [routerLink]="['category']">Express</a>
+              <a [routerLink]="['category']">Package</a>
+              <a [routerLink]="['category']">Deliver</a>
+            </ul>
+          </ul>
+          <a [routerLink]="['category']">Express</a>
+        </ul>
+      </ul>
+      <a [routerLink]="['category']" class="level1Nav">PLASTIC BANS</a>
+    </nav>
+    <nav class="rightNav">
+      <a [routerLink]="['category']" class="level1Nav">SHIPPING</a>
+      <a [routerLink]="['category']" class="level1Nav">CONTACT</a>
+      <ul>
+        <a class="level1Nav">DISPOSAL</a>
+        <ul class="level2Nav">
+          <a [routerLink]="['category']">Bring</a>
+          <ul>
+            <a [routerLink]="['category']">Deliver</a>
+            <ul class="level3Nav">
+              <a [routerLink]="['category']">Express</a>
+              <a [routerLink]="['category']">Package</a>
+            </ul>
+          </ul>
+          <a [routerLink]="['category']">Package</a>
+          <a [routerLink]="['category']">Express</a>
+        </ul>
+      </ul>
+      <a [routerLink]="['category']" class="level1Nav">ABOUT</a>
+      <ul>
+        <a [routerLink]="['category']" class="level1Nav">EN</a>
+        <ul class="level2Nav">
+          <a [routerLink]="['category']">繁體</a>
+          <a [routerLink]="['category']">简体</a>
+          <a [routerLink]="['category']">日本語</a>
+          <a [routerLink]="['category']">แบบไทย</a>
+        </ul>
+      </ul>
+    </nav>
+  </div>
+</div> -->
