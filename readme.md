@@ -359,6 +359,6 @@ Facade 門面模式 Rxjs combineLatest 組合不同取得資料的 API　統一�
 
 ### [EC-Panel] Mega Menu 動態模板套版
 
-ngTemplateOutlet、ng-container、ng-template
+ngTemplateOutlet、ng-container、ng-template 透過以上選擇器特性與流程控制 ngIf、ngFor else 完成動態套版
 
 [可參考 Angular 大師之路：淺出深入的學習筆記](https://urwebapp.github.io/Dev-Tech/PathAgMasterGuideLearningBasicsAdvanced/#day12-ngTemplateOutlet)
