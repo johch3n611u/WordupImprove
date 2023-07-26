@@ -50,6 +50,7 @@
 20. [awesome-angular-components](https://github.com/brillout/awesome-angular-components)
 21. [vueuse](https://vueuse.org/functions.html)
 22. [今天我想來在 Angular 應用程式上加上測試保護 系列](https://ithelp.ithome.com.tw/users/20109645/ironman/5708)
+23. [什麼？又是／不只是 Design Patterns!?](https://ithelp.ithome.com.tw/users/20120812/ironman/2697)
 
 </details>
 
@@ -340,14 +341,24 @@ Vop
 
 </details>
 
-### Loading Overlay Service
+### [Lib] Loading Overlay Service
 
 加載狀態的管理控制。它包含了被觀察的屬性和方法，根據不同的進程 ID 來跟踪和控制加載過程。
   
-### Queue Service
+### [Lib] Queue Service
 
 throttle(節流): 從最初一次觸發開始，在 t秒後執行函數。中間無論觸發多少次都不會執行。
 
 debounce(防抖): 從最後一次觸發開始，在 t秒後執行函數。因為是最後一次觸發，所以會把中間的觸發蓋掉。
 
+### [Lib] FakeData Service
 
+Facade 門面模式 Rxjs combineLatest 組合不同取得資料的 API　統一使用的介面
+
+[單元測試名詞解釋](https://medium.com/starbugs/unit-test-%E4%B8%AD%E7%9A%84%E6%9B%BF%E8%BA%AB-%E6%90%9E%E4%B8%8D%E6%B8%85%E6%A5%9A%E7%9A%84dummy-stub-spy-mock-fake-94be192d5c46) DummyObject、TestStub、TestSpy、MockObject、FakeObject
+
+### [EC-Panel] Mega Menu 動態模板套版
+
+ngTemplateOutlet、ng-container、ng-template
+
+[可參考 Angular 大師之路：淺出深入的學習筆記](https://urwebapp.github.io/Dev-Tech/PathAgMasterGuideLearningBasicsAdvanced/#day12-ngTemplateOutlet)
