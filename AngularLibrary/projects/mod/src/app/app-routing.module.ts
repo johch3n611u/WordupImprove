@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SampleComponent } from './components/sample/sample.component';
-import { DynamicMasonryComponent } from './layout/dynamic-masonry/dynamic-masonry.component';
+import { SampleComponent } from './sample/sample.component';
+import { DynamicMasonryComponent } from './dynamic-masonry/dynamic-masonry.component';
 
 const routes: Routes = [
   { path: '', component: DynamicMasonryComponent },

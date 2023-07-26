@@ -1,7 +1,7 @@
 <div class="panel">
   <div class="multilevelNav container">
     <nav class="leftNav">
-      <ng-container *ngTemplateOutlet="superMenu; context: { items: data.leftNav }"></ng-container>
+      <ng-container *ngTemplateOutlet="megaMenu; context: { items: data.leftNav }"></ng-container>
     </nav>
     <!-- <nav class="rightNav">
       <ng-container *ngTemplateOutlet="superMenu; context: { items: data.rightNav }"></ng-container>
@@ -38,7 +38,7 @@
   </div>
 </div>
 
-<ng-template #superMenu let-items="items">
+<ng-template #megaMenu let-items="items">
   <ng-container *ngFor="let item of items">
     <ng-container *ngIf="!item.children else chirld">
       <a [ngClass]="{'level1Nav':item.level === 'level1Nav'}" [routerLink]="[item.link]">{{item.name}}</a>
@@ -47,7 +47,7 @@
       <ul>
         <a [ngClass]="{'level1Nav':item.level === 'level1Nav'}" [routerLink]="[item.link]">{{item.name}}</a>
         <ul [attr.class]="item.children[0].level">
-          <ng-container *ngTemplateOutlet="superMenu; context: { items: item.children }"></ng-container>
+          <ng-container *ngTemplateOutlet="megaMenu; context: { items: item.children }"></ng-container>
         </ul>
       </ul>
     </ng-template>

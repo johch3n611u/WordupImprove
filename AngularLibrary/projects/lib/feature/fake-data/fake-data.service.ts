@@ -6,7 +6,7 @@ import * as panel from './panel.json';
 @Injectable({
   providedIn: 'root'
 })
-export class FakeService {
+export class FakeDataService {
 
   constructor() { }
 

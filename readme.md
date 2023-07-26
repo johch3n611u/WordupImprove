@@ -168,7 +168,7 @@ Checkout > Adaptors > Checkout Citi
 Core > Adapters > CMS
                 > Converters
      > Config
-     > Exents > Page Meta Event ( GTM )
+     > Events > Page Meta Event ( GTM )
      > Guards > Card Loss
               > Order
               > Search 
@@ -337,6 +337,118 @@ User    > Account
         > Review
         > Wishlist
 Vop
+```
+
+```V2
+Addon > OneTrust 隱私管理和合規平台
+Auth  > Connectors
+      > Guards
+      > Http Interceptors
+      > User Auth                   > Config
+                                    > Facade
+                                    > Services
+      > Web Auth                    > Components
+                                    > Models
+                                    > Services
+BaseStore > Connectors
+          > Facade
+          > Store                   > Actions
+                                    > Effects
+                                    > Reducers
+                                    > Selectors
+BeautyProfile
+Brand > Core                        > Connectors
+                                    > Facade
+                                    > Store
+Cart  > Adaptors
+      > Components
+      > Core                        > Connectors
+                                    > Services
+                                    > Store
+Category > Connectors
+         > Facades
+         > Services
+         > Store
+         > Utils
+Checkout > Core                     > Adaptors
+                                    > Services
+                                    > Store
+Core     > Adapters 
+         > Config
+         > Events
+         > Guards
+         > Http Interceptors
+         > i18n
+         > Models
+         > Pipes
+         > Resolvers
+         > Routing                  > Scroll Position Restoration
+Services > Captcha
+         > CMS
+         > Common                   > Autocomplete
+                                    > Breakpoint
+                                    > BuildInfo
+                                    > Criteo 開放互聯網的商業媒體平台
+                                    > Device Detector
+                                    ...
+         > CRM
+         > Search                   > Algolia
+                                    > Google Speech
+                                    > Google Vision
+         > Utils
+         > Window
+Error Handling
+Field Options
+Form
+Http
+Lazada 國際電子商務公司
+Multi Cart
+Newsletter
+OO Commerce     
+Popup
+Product 
+Routes
+Shared                              > Components > > CMS
+                                                   > Common
+                                                   > Misc
+                                                   > Modal
+                                                   > Simple Form Fields
+                                    > Models
+                                    > Root
+                                    > Services 
+                                    > Social Media
+SSR
+Store Finder                    
+Supplier
+User
+Vop
+========================================================
+<Platform>
+Modules
+Page Layout / Slot Spartacus
+Routing
+Spartacus > Features
+Assets    > API
+          > CSS
+          > ERROR PAGE
+          > Font
+          > Icons
+          > Img
+          > Lottie 是一種矢量圖形動畫文件格式
+          > Mock
+          > Robots
+          > Scss
+          > Translations
+Components
+Core      > Some Other
+Environments
+Form
+Legacy
+Manifests
+Replacements
+Scripts
+Server
+Service Worker
 ```
 
 </details>

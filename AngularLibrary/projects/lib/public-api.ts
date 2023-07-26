@@ -2,6 +2,6 @@
  * Public API Surface of lib
  */
 
-export * from './services/index';
-export * from './components/sample/index';
+export * from './feature/fake-data/fake-data.service';
+export * from './user-interface/sample/index';
 export * from './library.module';

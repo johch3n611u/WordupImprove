@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FakeService } from 'lib/public-api';
+import { FakeDataService } from 'lib/public-api';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 export class AppComponent {
 
   headerData$: Observable<any> = {} as Observable<any>;
-  constructor(private fakeService: FakeService) {
-    this.headerData$ = this.fakeService.headerData$;
+  constructor(private fakeDataService: FakeDataService) {
+    this.headerData$ = this.fakeDataService.headerData$;
   }
 }
