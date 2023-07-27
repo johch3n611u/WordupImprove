@@ -469,6 +469,10 @@ Facade 門面模式 Rxjs combineLatest 組合不同取得資料的 API　統一�
 
 [單元測試名詞解釋](https://medium.com/starbugs/unit-test-%E4%B8%AD%E7%9A%84%E6%9B%BF%E8%BA%AB-%E6%90%9E%E4%B8%8D%E6%B8%85%E6%A5%9A%E7%9A%84dummy-stub-spy-mock-fake-94be192d5c46) DummyObject、TestStub、TestSpy、MockObject、FakeObject
 
+### [Lib] Translate Service
+
+透過 Json / Angular Token 製作簡易版本的翻譯 i18n 功能，透過 pipe 與 module 內注入的 Json 檔案，讓所有站台都可以複用
+
 ### [EC-Panel] Mega Menu 動態模板套版
 
 ngTemplateOutlet、ng-container、ng-template 透過以上選擇器特性與流程控制 ngIf、ngFor else 完成動態套版
