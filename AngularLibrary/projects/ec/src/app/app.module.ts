@@ -44,6 +44,8 @@ import { TRANSLATION_PROVIDERS, TranSetting } from 'lib/feature/translate/transl
 import { TranslatePipe } from 'lib/feature/translate/translate.pipe';
 import { LANG_TW_NAME, LANG_TW_TRANS } from '../assets/i18n/lazg-tw';
 import { LANG_CN_NAME, LANG_CN_TRANS } from '../assets/i18n/lazg-cn';
+import { LANG_THAI_NAME, LANG_THAI_TRANS } from '../assets/i18n/lazg-thai';
+import { LANG_JAPANESE_NAME, LANG_JAPANESE_TRANS } from '../assets/i18n/lazg-japanese';
 
 let components = [
   CallToActionAtTopComponent,
@@ -87,6 +89,8 @@ let pages = [
 const tranSetting: TranSetting = {
   [LANG_TW_NAME]: LANG_TW_TRANS,
   [LANG_CN_NAME]: LANG_CN_TRANS,
+  [LANG_THAI_NAME]: LANG_THAI_TRANS,
+  [LANG_JAPANESE_NAME]: LANG_JAPANESE_TRANS,
 };
 
 @NgModule({

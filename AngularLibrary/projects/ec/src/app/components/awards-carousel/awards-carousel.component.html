@@ -1,34 +1,14 @@
 <div class="awardsCarousel">
   <div class="container">
-      <h3>分享愛</h3>
-      <div class="divider">
-          <div></div>
-      </div>
-      <ul>
-          <li>
-              <img src="./assets/img/logo.svg" />
-              <p>四箱或以上免費送貨，次日送達大多數都市區。</p>
-          </li>
-          <li>
-              <img src="./assets/img/logo.svg" />
-              <p>四箱或以上免費送貨，次日送達大多數都市區。</p>
-          </li>
-          <li>
-              <img src="./assets/img/logo.svg" />
-              <p>四箱或以上免費送貨，次日送達大多數都市區。</p>
-          </li>
-          <li>
-              <img src="./assets/img/logo.svg" />
-              <p>四箱或以上免費送貨，次日送達大多數都市區。</p>
-          </li>
-          <li>
-              <img src="./assets/img/logo.svg" />
-              <p>四箱或以上免費送貨，次日送達大多數都市區。</p>
-          </li>
-          <li>
-              <img src="./assets/img/logo.svg" />
-              <p>四箱或以上免費送貨，次日送達大多數都市區。</p>
-          </li>
-      </ul>
+    <h3>{{'Share Love'|translate}}</h3>
+    <div class="divider">
+      <div></div>
+    </div>
+    <ul>
+      <li *ngFor="let item of [1,2,3,4,5,6]">
+        <img src="./assets/img/logo.svg" />
+        <p>{{'Free shipping on four boxes or more, with next-day delivery in most metro areas.'|translate}}</p>
+      </li>
+    </ul>
   </div>
 </div>

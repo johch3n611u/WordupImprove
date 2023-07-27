@@ -1,22 +1,10 @@
 <div class="marketingArticles">
   <div class="container">
-      <div>
-          <img src="./assets/img/logo.svg" />
-          <h3>免費次日送達</h3>
-          <p>四箱或以上免費送貨，次日送達大多數都市區。</p>
-          <a [routerLink]="['landing/esgMarketing']">Read more</a>
-      </div>
-      <div>
-          <img src="./assets/img/logo.svg" />
-          <h3>免費次日送達</h3>
-          <p>四箱或以上免費送貨，次日送達大多數都市區。</p>
-          <a [routerLink]="['landing/esgMarketing']">Read more</a>
-      </div>
-      <div>
-          <img src="./assets/img/logo.svg" />
-          <h3>免費次日送達</h3>
-          <p>四箱或以上免費送貨，次日送達大多數都市區。</p>
-          <a [routerLink]="['landing/esgMarketing']">Read more</a>
-      </div>
+    <div *ngFor="let item of [1,2,3]">
+      <img src="./assets/img/logo.svg" />
+      <h3>{{'Free Next Day Delivery'|translate}}</h3>
+      <p>{{'Free shipping on four boxes or more, with next-day delivery in most metro areas.'|translate}}</p>
+      <a [routerLink]="['landing/esgMarketing']">{{'Read More'|translate}}</a>
+    </div>
   </div>
 </div>

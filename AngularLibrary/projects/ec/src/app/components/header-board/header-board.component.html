@@ -1,30 +1,30 @@
 <div class="headerBoard">
   <div class="container">
-      <div class="logoBox">
-        <a [routerLink]="['']">
-          <img src="./assets/img/logo.svg" class="logo" />
-          <h1>SMART DIGEST</h1>
-        </a>
-      </div>
-      <div class="searchBar">
-          <a>
-              <img src="./assets/img/logo.svg" />
-          </a>
-          <input type="text" placeholder="Search Entire store here..." />
-      </div>
-      <div class="iconButtonBox">
-          <a [routerLink]="['portal']">
-              <img src="./assets/img/logo.svg" />
-              <span>Account</span>
-          </a>
-          <a [routerLink]="['account/orders']">
-              <img src="./assets/img/logo.svg" />
-              <span>Catalogue</span>
-          </a>
-          <a [routerLink]="['checkAndBuy']">
-              <img src="./assets/img/logo.svg" />
-              <span>Bag</span>
-          </a>
-      </div>
+    <div class="logoBox">
+      <a [routerLink]="['']">
+        <img src="./assets/img/logo.svg" class="logo" />
+        <h1>SMART DIGEST</h1>
+      </a>
+    </div>
+    <div class="searchBar">
+      <a>
+        <img src="./assets/img/logo.svg" />
+      </a>
+      <input type="text" [placeholder]="'Search Entire store here...' | translate" />
+    </div>
+    <div class="iconButtonBox">
+      <a [routerLink]="['portal']">
+        <img src="./assets/img/logo.svg" />
+        <span>{{'Account' | translate}}</span>
+      </a>
+      <a [routerLink]="['account/orders']">
+        <img src="./assets/img/logo.svg" />
+        <span>{{'Catalogue' | translate}}</span>
+      </a>
+      <a [routerLink]="['checkAndBuy']">
+        <img src="./assets/img/logo.svg" />
+        <span>{{'Bag' | translate}}</span>
+      </a>
+    </div>
   </div>
 </div>

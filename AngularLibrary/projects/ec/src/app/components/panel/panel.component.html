@@ -7,31 +7,30 @@
       <ng-container *ngTemplateOutlet="superMenu; context: { items: data.rightNav }"></ng-container>
     </nav> -->
     <nav class="rightNav">
-      <a [routerLink]="['category']" class="level1Nav">SHIPPING</a>
-      <a [routerLink]="['category']" class="level1Nav">CONTACT</a>
+      <a [routerLink]="['category']" class="level1Nav">{{'SHIPPING' | translate}}</a>
+      <a [routerLink]="['category']" class="level1Nav">{{'CONTACT' | translate}}</a>
       <ul>
-        <a class="level1Nav">DISPOSAL</a>
+        <a class="level1Nav">{{'DISPOSAL' | translate}}</a>
         <ul class="level2Nav">
-          <a [routerLink]="['category']">Bring</a>
+          <a [routerLink]="['category']">{{'Bring' | translate}}</a>
           <ul>
-            <a [routerLink]="['category']">Deliver</a>
+            <a [routerLink]="['category']">{{'Deliver' | translate}}</a>
             <ul class="level3Nav">
-              <a [routerLink]="['category']">Express</a>
-              <a [routerLink]="['category']">Package</a>
+              <a [routerLink]="['category']">{{'Express' | translate}}</a>
+              <a [routerLink]="['category']">{{'Package' | translate}}</a>
             </ul>
           </ul>
-          <a [routerLink]="['category']">Package</a>
-          <a [routerLink]="['category']">Express</a>
+          <a [routerLink]="['category']">{{'Package' | translate}}</a>
+          <a [routerLink]="['category']">{{'Express' | translate}}</a>
         </ul>
       </ul>
-      <a [routerLink]="['category']" class="level1Nav">ABOUT</a>
+      <a [routerLink]="['category']" class="level1Nav">{{'ABOUT' | translate}}</a>
       <ul>
-        <a [routerLink]="['category']" class="level1Nav">EN</a>
+        <a class="level1Nav" (click)="ChangeLang(GetActive())">{{GetActive()}}</a>
         <ul class="level2Nav">
-          <a [routerLink]="['category']">繁體</a>
-          <a [routerLink]="['category']">简体</a>
-          <a [routerLink]="['category']">日本語</a>
-          <a [routerLink]="['category']">แบบไทย</a>
+          <a *ngFor="let lang of GetPassive()" (click)="ChangeLang(lang)">
+            {{lang}}
+          </a>
         </ul>
       </ul>
     </nav>
@@ -41,11 +40,11 @@
 <ng-template #megaMenu let-items="items">
   <ng-container *ngFor="let item of items">
     <ng-container *ngIf="!item.children else chirld">
-      <a [ngClass]="{'level1Nav':item.level === 'level1Nav'}" [routerLink]="[item.link]">{{item.name}}</a>
+      <a [ngClass]="{'level1Nav':item.level === 'level1Nav'}" [routerLink]="[item.link]">{{item.name | translate}}</a>
     </ng-container>
     <ng-template #chirld>
       <ul>
-        <a [ngClass]="{'level1Nav':item.level === 'level1Nav'}" [routerLink]="[item.link]">{{item.name}}</a>
+        <a [ngClass]="{'level1Nav':item.level === 'level1Nav'}" [routerLink]="[item.link]">{{item.name | translate}}</a>
         <ul [attr.class]="item.children[0].level">
           <ng-container *ngTemplateOutlet="megaMenu; context: { items: item.children }"></ng-container>
         </ul>

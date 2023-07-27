@@ -1,36 +1,12 @@
 <div class="benefits">
   <div class="container">
-      <div>
-          <img src="./assets/img/logo.svg" />
-          <h3>
-              <span>Packaging Made</span>
-              <span>From Plants</span>
-          </h3>
-          <p>Designed for the circular economy where resources are reused and not wasted.</p>
-      </div>
-      <div>
-          <img src="./assets/img/logo.svg" />
-          <h3>
-              <span>Packaging Made</span>
-              <span>From Plants</span>
-          </h3>
-          <p>Designed for the circular economy where resources are reused and not wasted.</p>
-      </div>
-      <div>
-          <img src="./assets/img/logo.svg" />
-          <h3>
-              <span>Packaging Made</span>
-              <span>From Plants</span>
-          </h3>
-          <p>Designed for the circular economy where resources are reused and not wasted.</p>
-      </div>
-      <div>
-          <img src="./assets/img/logo.svg" />
-          <h3>
-              <span>Packaging Made</span>
-              <span>From Plants</span>
-          </h3>
-          <p>Designed for the circular economy where resources are reused and not wasted.</p>
-      </div>
+    <div *ngFor="let item of [{},{},{},{}]">
+      <img src="./assets/img/logo.svg" />
+      <h3>
+        <span>{{'Packaging Made'|translate}}</span>
+        <span>{{'From Plants'|translate}}</span>
+      </h3>
+      <p>{{'Designed for the circular economy where resources are reused and not wasted.'|translate}}</p>
+    </div>
   </div>
 </div>
