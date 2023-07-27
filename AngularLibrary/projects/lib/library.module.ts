@@ -11,6 +11,7 @@ import { BreadcrumbsComponent } from './user-interface/breadcrumbs/breadcrumbs.c
 import { CarouselComponent } from './user-interface/carousel/carousel.component';
 import { FakeDataService } from './feature/fake-data/fake-data.service';
 import { ToThousandPipe } from './feature/to-thousand/to-thousand.pipe';
+import { TranslatePipe } from './feature/translate/translate.pipe';
 
 let components = [
   WrapperComponent,
@@ -19,9 +20,12 @@ let components = [
 ];
 
 let pipes = [
-  ToThousandPipe
+  ToThousandPipe,
+  TranslatePipe,
 ];
 
+// providers 內宣告 Service 只能注入到 libraryModule 所屬元件，如要在其他站台，須直接 import service 不能透過 Module
+// https://stackoverflow.com/questions/54146947/how-to-consume-a-service-from-angular-library-in-a-project
 let providers = [
   FakeDataService
 ];

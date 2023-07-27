@@ -8,6 +8,6 @@ import { Component, Input } from '@angular/core';
 export class PanelComponent {
   @Input() data: any = {};
   ngOnInit(): void {
-    console.log(this.data.leftNav);
+    // console.log(this.data.leftNav);
   }
 }

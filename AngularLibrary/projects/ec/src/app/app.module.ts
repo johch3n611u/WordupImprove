@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LibraryModule, SampleModule } from 'lib/public-api';
+import { LibraryModule, SampleModule, TranslateService } from 'lib/public-api';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { CallToActionAtTopComponent } from './components/call-to-action-at-top/call-to-action-at-top.component';
 import { PanelComponent } from './components/panel/panel.component';
@@ -40,6 +40,10 @@ import { AccountInformationComponent } from './components/account-information/ac
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { OrdersComponent } from './components/orders/orders.component';
 import { EsgMarketingBannerComponent } from './components/esg-marketing-page/banner/esg-marketing-banner.component';
+import { TRANSLATION_PROVIDERS, TranSetting } from 'lib/feature/translate/translate';
+import { TranslatePipe } from 'lib/feature/translate/translate.pipe';
+import { LANG_TW_NAME, LANG_TW_TRANS } from '../assets/i18n/lazg-tw';
+import { LANG_CN_NAME, LANG_CN_TRANS } from '../assets/i18n/lazg-cn';
 
 let components = [
   CallToActionAtTopComponent,
@@ -80,6 +84,11 @@ let pages = [
   PortalPageComponent,
 ];
 
+const tranSetting: TranSetting = {
+  [LANG_TW_NAME]: LANG_TW_TRANS,
+  [LANG_CN_NAME]: LANG_CN_TRANS,
+};
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -89,7 +98,11 @@ let pages = [
     PrivacyPolicyComponent,
     OrdersComponent,
   ],
-  providers: [],
+  providers: [
+    TRANSLATION_PROVIDERS(tranSetting),
+    TranslateService,
+    TranslatePipe,
+  ],
   bootstrap: [AppComponent],
   imports: [
     BrowserModule,
