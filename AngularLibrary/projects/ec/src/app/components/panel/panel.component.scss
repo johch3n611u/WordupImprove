@@ -1,5 +1,5 @@
 .panel {
-  background-color: #f2f2f2;
+  background-color: var(--subSubSubSubSubSubColor);
 }
 
 .multilevelNav {
@@ -35,8 +35,8 @@
   font-size: 16px;
   font-weight: 600;
   max-width: none;
-  background-color: #f2f2f2;
-  color: black;
+  background-color: var(--subSubSubSubSubSubColor);
+  color: var(--subSubSubColor);
 }
 
 .leftNav .level1Nav {
@@ -50,7 +50,7 @@
 .multilevelNav a {
   width: 7rem;
   padding: 0.5rem 1.5rem;
-  background-color: white;
+  background-color: var(--subSubColor);
   writing-mode: horizontal-tb;
 }
 
@@ -81,11 +81,11 @@
 
 .level2Nav a,
 .level3Nav a {
-  border: solid 1px #c4c4c4;
-  color: black;
+  border: solid 1px var(--subSubSubSubColor);
+  color: var(--subSubSubColor);
 }
 
 .level2Nav a:hover,
 .level3Nav a:hover {
-  background-color: #f2f2f2;
+  background-color: var(--subSubColor);
 }

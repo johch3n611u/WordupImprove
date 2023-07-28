@@ -1,5 +1,5 @@
 .marketingPanel {
-  background-color: #f2f2f2;
+  background-color: var(--subSubSubSubSubSubColor);
   padding: 3rem 0;
 }
 
@@ -48,12 +48,12 @@
 }
 
 .marketingPanel .center>a {
-  color: #78b54e;
+  color: var(--mainColor);
 }
 
 .marketingPanel .center input {
-  background-color: #ffffff;
-  border-color: #e4e4e4;
+  background-color: var(--subSubColor);
+  border-color: var(--subSubColor);
   border-radius: 3px;
   border-style: solid;
   border-width: 1px;

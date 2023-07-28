@@ -1,6 +1,6 @@
 .coreThemes {
   padding: 50px 0;
-  background-color: #efece7;
+  background-color: var(--subSubSubSubSubSubSubColor);
 }
 
 .coreThemes ul {
@@ -10,7 +10,7 @@
 
 .coreThemes ul li {
   padding: 5rem 1rem;
-  background-color: #78b54e;
+  background-color: var(--mainColor);
   display: flex;
   align-items: center;
   width: 30%;
@@ -19,7 +19,7 @@
 }
 
 .coreThemes ul li h3 {
-  color: white;
+  color: var(--subSubColor);
   margin-bottom: unset;
   margin-left: 1rem;
 }

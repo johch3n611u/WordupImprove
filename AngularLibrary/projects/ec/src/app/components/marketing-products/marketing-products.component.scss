@@ -1,6 +1,6 @@
 h3 {
   text-align: left;
-  color: #0f8346
+  color: var(--mainColor)
 }
 
 .products.block {
@@ -18,7 +18,7 @@ h3 {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #ebebeb;
+  background-color: var(--subSubColor);
   -webkit-border-radius: 10px;
   border-radius: 10px;
 }
@@ -30,5 +30,5 @@ h3 {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3d3d3d; 
+  background: #3d3d3d;
 }

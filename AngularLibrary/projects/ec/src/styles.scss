@@ -1,15 +1,6 @@
 @import "app/scss/variable";
 
 /* You can add global styles to this file, and also import other style files */
-
-:root {
-  // https://stackoverflow.com/questions/45381871/how-to-customize-arrow-buttons-in-swiper
-  --swiper-navigation-color: #ffffff;
-  --swiper-pagination-color: #ffffff;
-}
-
-
-
 html {
   font-size: 62.5%;
 }
@@ -18,7 +9,7 @@ header {
   position: fixed;
   z-index: 1000;
   width: 100%;
-  background-color: white;
+  background-color: var(--subSubColor);
 }
 
 main {
@@ -32,12 +23,12 @@ button {
 }
 
 button {
-  background-color: #78b54e;
+  background-color: var(--mainColor);
   border-radius: 5px;
   font-size: 1.8rem;
   padding: 10px 30px;
   border: none;
-  color: white;
+  color: var(--subSubColor);
 }
 
 h2 {
@@ -83,8 +74,8 @@ img {
 
 .normalButton {
   background-color: unset;
-  color: black;
-  border: solid 1px black;
+  color: var(--subSubSubColor);
+  border: solid 1px var(--subSubSubColor);
 }
 
 .countButton {
@@ -92,11 +83,11 @@ img {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: solid 3px #78b54e;
+  border: solid 3px var(--mainColor);
   border-radius: 5px;
 
   span {
-    color: gray;
+    color: var(--subSubSubSubColor);
     font-size: 3rem;
     font-weight: 900;
     margin: 0 1rem;
@@ -112,7 +103,7 @@ img {
   }
 
   button {
-    color: white;
+    color: var(--subSubColor);
     border-radius: unset;
     font-weight: 900;
   }

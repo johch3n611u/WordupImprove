@@ -2,14 +2,14 @@
   font-size: 2rem;
   padding: 1rem;
   border-radius: 1rem;
-  border: solid 2px #f2f2f2ce;
+  border: solid 2px var(--subSubColor);
 }
 
 .toolBar {
   display: flex;
   justify-content: space-between;
   font-size: 2rem;
-  color: #c4c4c4;
+  color: var(--subSubSubSubColor);
   align-items: center;
 }
 
@@ -20,7 +20,7 @@
 }
 
 .filter {
-  color: #0f8346;
+  color: var(--mainColor);
   cursor: pointer;
 }
 
@@ -36,11 +36,11 @@
 }
 
 .product a {
-  color: black;
+  color: var(--subSubSubColor);
 }
 
 .product p {
-  color: gray
+  color: var(--subSubSubSubColor)
 }
 
 .product img {

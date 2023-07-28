@@ -9,9 +9,9 @@
 }
 
 .categoriesCarousel div>span {
-  background-color: #78b54e;
+  background-color: var(--mainColor);
   padding: 2rem;
-  color: white;
+  color: var(--subSubColor);
   font-size: 2rem;
   font-weight: 900;
   border-radius: 10rem;
@@ -40,5 +40,5 @@
 
 .categoriesCarousel .categories span {
   font-size: 2rem;
-  color: black;
+  color: var(--subSubSubColor);
 }

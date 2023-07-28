@@ -1,6 +1,6 @@
-.product{
+.product {
   * {
-    color: black;
+    color: var(--subSubSubColor);
   }
 
   h2 {
@@ -8,11 +8,11 @@
   }
 
   p {
-    color: gray
+    color: var(--subSubSubSubColor);
   }
 
   button {
-    color: white;
+    color: var(--subSubColor);
   }
 }
 

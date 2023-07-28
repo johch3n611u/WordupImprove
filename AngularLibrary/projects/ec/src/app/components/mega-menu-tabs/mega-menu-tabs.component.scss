@@ -1,5 +1,5 @@
 .megaMenuTabs {
-  background-color: #78b54e;
+  background-color: var(--mainColor);
   font-size: 1.6rem;
   font-weight: 700;
 }
@@ -13,7 +13,7 @@
 
 .megaMenuTabs ul a {
   padding: 16px 20px;
-  color: #ffffff;
+  color: var(--subSubColor);
 }
 
 .megaMenuTabs ul a::after {

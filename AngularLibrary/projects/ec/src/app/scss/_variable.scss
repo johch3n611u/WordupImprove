@@ -1,1 +1,17 @@
-$mainColor: #78b54e;
+// https://stackoverflow.com/questions/70481841/angular-global-variables-on-styles-scss-to-share-among-all-components
+// https://stackoverflow.com/questions/45381871/how-to-customize-arrow-buttons-in-swiper
+
+:root {
+  --swiper-navigation-color: #ffffff;
+  --swiper-pagination-color: #ffffff;
+  --mainColor: #78b54e;
+  --subColor: #ff9e1e;
+  --subSubColor: #ffffff;
+  --subSubSubColor: #000000;
+  --subSubSubSubColor: #888;
+  --subSubSubSubSubColor: #2d2d2d;
+  --subSubSubSubSubSubColor: #f7f7f7;
+  --subSubSubSubSubSubSubColor: #e6e6e6;
+}
+
+// var(--subSubSubSubColor)

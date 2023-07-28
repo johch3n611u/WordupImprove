@@ -1,6 +1,6 @@
 .callToActionAtTop {
-  background-color: #ff8d00;
-  color: #fff;
+  background-color: var(--subColor);
+  color: var(--subSubColor);
   display: flex;
   justify-content: center;
   line-height: 40px;
@@ -10,6 +10,6 @@
 
   a {
     text-decoration: underline;
-    color: #fff;
+    color: var(--subSubColor);
   }
 }

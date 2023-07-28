@@ -11,7 +11,7 @@ ul {
 
   li.active {
     font-weight: 900;
-    border-left: 3px solid #0f8346;
+    border-left: 3px solid var(--mainColor);
     padding-left: 8px;
   }
 }

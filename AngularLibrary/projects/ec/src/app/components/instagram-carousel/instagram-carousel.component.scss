@@ -1,10 +1,10 @@
 .instagramCarousel {
   padding: 5rem 0;
-  background-color: #efece7;
+  background-color: var(--subSubSubSubSubSubColor);
 }
 
 .instagramCarousel h3 {
-  color: #78b54e;
+  color: var(--mainColor);
   font-size: 3.5rem;
 }
 
@@ -18,5 +18,5 @@
   width: 300px;
   height: 150px;
   margin: 0 2rem;
-  background-color: white;
+  background-color: var(--subSubColor);
 }
