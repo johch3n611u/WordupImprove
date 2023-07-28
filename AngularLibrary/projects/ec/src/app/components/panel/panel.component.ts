@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Theme, ThemeService } from 'lib/feature/theme/theme.service';
 import { TranslateService } from 'lib/public-api';
 @Component({
   selector: 'ec-panel',
@@ -6,6 +7,7 @@ import { TranslateService } from 'lib/public-api';
   styleUrls: ['./panel.component.scss']
 })
 export class PanelComponent {
+  Theme = Theme;
   @Input() data: any = {};
   language = [
     {
@@ -32,6 +34,7 @@ export class PanelComponent {
 
   constructor(
     private translateService: TranslateService,
+    public themeService: ThemeService,
   ) {
 
   }
@@ -45,7 +48,7 @@ export class PanelComponent {
     let lang = this.language.find(lang => lang.name === selected);
     if (lang) {
       lang.active = true;
-      this.translateService.use(lang.name);
+      this.translateService.Use(lang.name);
     }
   }
 

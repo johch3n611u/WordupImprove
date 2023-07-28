@@ -1,4 +1,16 @@
-@import "app/scss/variable";
+@import "./assets/scss/variable";
+
+html {
+
+  &[data-theme='dark'] {
+    background-color: var(--subSub4Color);
+  }
+
+  &[data-theme='dark'] * {
+    color: white;
+    text-shadow: 1px 1px black;
+  }
+}
 
 /* You can add global styles to this file, and also import other style files */
 html {
@@ -74,8 +86,8 @@ img {
 
 .normalButton {
   background-color: unset;
-  color: var(--subSubSubColor);
-  border: solid 1px var(--subSubSubColor);
+  color: var(--subSub2Color);
+  border: solid 1px var(--subSub2Color);
 }
 
 .countButton {
@@ -87,7 +99,7 @@ img {
   border-radius: 5px;
 
   span {
-    color: var(--subSubSubSubColor);
+    color: var(--subSub3Color);
     font-size: 3rem;
     font-weight: 900;
     margin: 0 1rem;

@@ -3,7 +3,7 @@ h2 {
 }
 
 .header {
-  color: var(--subSubSubSubColor);
+  color: var(--subSub3Color);
 }
 
 .header,
@@ -56,7 +56,7 @@ h2 {
 .product {
   .info {
     a {
-      color: var(--subSubSubColor);
+      color: var(--subSub2Color);
       display: flex;
     }
 
@@ -104,7 +104,7 @@ h2 {
   p {
     span {
       margin-left: 1rem;
-      color: var(--subSubSubSubColor);
+      color: var(--subSub3Color);
     }
 
     span:last-child {
@@ -114,7 +114,7 @@ h2 {
     &.totalAmount {
       span:last-child {
         font-size: 3rem;
-        color: var(--subSubSubColor);
+        color: var(--subSub2Color);
       }
     }
   }

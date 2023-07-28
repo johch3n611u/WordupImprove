@@ -1,5 +1,5 @@
 .panel {
-  background-color: var(--subSubSubSubSubSubColor);
+  background-color: var(--subSub5Color);
 }
 
 .multilevelNav {
@@ -35,8 +35,8 @@
   font-size: 16px;
   font-weight: 600;
   max-width: none;
-  background-color: var(--subSubSubSubSubSubColor);
-  color: var(--subSubSubColor);
+  background-color: var(--subSub5Color);
+  color: var(--subSub2Color);
 }
 
 .leftNav .level1Nav {
@@ -81,8 +81,8 @@
 
 .level2Nav a,
 .level3Nav a {
-  border: solid 1px var(--subSubSubSubColor);
-  color: var(--subSubSubColor);
+  border: solid 1px var(--subSub3Color);
+  color: var(--subSub2Color);
 }
 
 .level2Nav a:hover,

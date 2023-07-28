@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TranslatePipe } from 'lib/feature/translate/translate.pipe';
+import { ThemeService } from 'lib/feature/theme/theme.service';
 import { FakeDataService, TranslateService } from 'lib/public-api';
 import { Observable } from 'rxjs';
 
@@ -13,14 +13,15 @@ export class AppComponent {
   headerData$: Observable<any> = {} as Observable<any>;
   constructor(
     private fakeDataService: FakeDataService,
-    private translatePipe: TranslatePipe,
     private translateService: TranslateService,
+    private themeService: ThemeService,
   ) {
     this.headerData$ = this.fakeDataService.headerData$;
   }
 
   ngOnInit(): void {
-    this.translateService.use(window.navigator.language);
-    console.log('測試繁tw簡cn', this.translatePipe.transform('hello world'));
+    this.translateService.Use(window.navigator.language);
+    console.log(this.themeService.GetTheme())
+    this.themeService.SetTheme(this.themeService.GetTheme());
   }
 }

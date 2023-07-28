@@ -20,12 +20,12 @@ export class TranslateService {
   ) {
   }
 
-  public use(lang: string): void {
+  public Use(lang: string): void {
     // set current language
     this._currentLang = lang;
   }
 
-  private translate(key: string): string {
+  private Translate(key: string): string {
     // private perform translation
     let translation = key;
 
@@ -36,8 +36,8 @@ export class TranslateService {
     return translation;
   }
 
-  public instant(key: string) {
+  public Instant(key: string) {
     // call translation
-    return this.translate(key);
+    return this.Translate(key);
   }
 }

@@ -12,7 +12,7 @@ export class TranslatePipe implements PipeTransform {
 
   transform(value: string): any {
     if (!value) return;
-    return this.translateService.instant(value);
+    return this.translateService.Instant(value);
   }
 }
 
