@@ -478,3 +478,10 @@ Facade 門面模式 Rxjs combineLatest 組合不同取得資料的 API　統一�
 ngTemplateOutlet、ng-container、ng-template 透過以上選擇器特性與流程控制 ngIf、ngFor else 完成動態套版
 
 [可參考 Angular 大師之路：淺出深入的學習筆記](https://urwebapp.github.io/Dev-Tech/PathAgMasterGuideLearningBasicsAdvanced/#day12-ngTemplateOutlet)
+
+### [EC-CheckAndBuyPage] Router 同頁重載
+
+思路：爬文後對於金流前置業面 ( 背包 => 查看 => 交易資訊填寫 => 付款 => 感謝 ) 似乎可以在同個元件中完成避免資料流傳來傳去，但如果在同頁刷新必須回到查看頁。
+
+[Angular刷新当前页面的几种方法](https://blog.csdn.net/xuehu837769474/article/details/104763685)
+
