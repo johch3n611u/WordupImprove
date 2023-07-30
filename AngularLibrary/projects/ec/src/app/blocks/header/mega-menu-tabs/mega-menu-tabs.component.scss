@@ -12,12 +12,12 @@
 }
 
 .megaMenuTabs ul a {
-  padding: 16px 20px;
+  padding: 1.6rem 2rem;
   color: var(--subSubColor);
 }
 
 .megaMenuTabs ul a::after {
   content: "\f107";
-  margin-left: 4px;
+  margin-left: 0.4rem;
   font-family: 'Font Awesome 5 Free';
 }

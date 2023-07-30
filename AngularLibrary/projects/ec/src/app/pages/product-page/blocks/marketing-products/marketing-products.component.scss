@@ -14,18 +14,18 @@ h3 {
 }
 
 ::-webkit-scrollbar {
-  height: 10px;
+  height: 1rem;
 }
 
 ::-webkit-scrollbar-track {
   background-color: var(--subSubColor);
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 1rem;
+  border-radius: 1rem;
 }
 
 ::-webkit-scrollbar-thumb {
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 1rem;
+  border-radius: 1rem;
   background: #6d6d6d;
 }
 

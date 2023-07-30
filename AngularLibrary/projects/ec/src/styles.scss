@@ -2,19 +2,17 @@
 
 html {
 
+  // https://stackoverflow.com/questions/28988445/css-62-5-why-do-developers-use-it
+  font-size: 62.5%;
+
   &[data-theme='dark'] {
     background-color: var(--subSub4Color);
   }
 
   &[data-theme='dark'] * {
     color: white;
-    text-shadow: 1px 1px black;
+    text-shadow: 0.1rem 0.1rem black;
   }
-}
-
-/* You can add global styles to this file, and also import other style files */
-html {
-  font-size: 62.5%;
 }
 
 header {
@@ -36,9 +34,9 @@ button {
 
 button {
   background-color: var(--mainColor);
-  border-radius: 5px;
+  border-radius: 0.5rem;
   font-size: 1.8rem;
-  padding: 10px 30px;
+  padding: 1rem 3rem;
   border: none;
   color: var(--subSubColor);
 }
@@ -87,7 +85,7 @@ img {
 .normalButton {
   background-color: unset;
   color: var(--subSub2Color);
-  border: solid 1px var(--subSub2Color);
+  border: solid 0.1rem var(--subSub2Color);
 }
 
 .countButton {
@@ -95,8 +93,8 @@ img {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: solid 3px var(--mainColor);
-  border-radius: 5px;
+  border: solid 0.3rem var(--mainColor);
+  border-radius: 0.5rem;
 
   span {
     color: var(--subSub3Color);
@@ -107,7 +105,7 @@ img {
   }
 
   input {
-    width: 33px;
+    width: 3.3rem;
     height: 3rem;
     font-size: 2.5rem;
     text-align: center;
@@ -124,28 +122,33 @@ img {
 /* Default max-width for extra large devices */
 .container {
   width: 100%;
-  max-width: 1240px;
-  padding-right: 15px;
-  padding-left: 15px;
+  max-width: 124rem;
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
   margin-right: auto;
   margin-left: auto;
 }
 
 @include LargeDevices {
   .container {
-    max-width: 960px;
+    max-width: 9.6rem;
   }
 }
 
 @include MediumDevices {
   .container {
-    max-width: 720px;
+    max-width: 7.2rem;
   }
 }
 
 @include SmallDevices {
+
+  html {
+    font-size: 1.5rem;
+  }
+
   .container {
-    max-width: 540px;
+    max-width: 5.4rem;
   }
 }
 
