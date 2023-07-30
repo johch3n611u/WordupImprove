@@ -1,4 +1,4 @@
-@import "./assets/scss/variable";
+@import "_global.scss";
 
 html {
 
@@ -121,43 +121,35 @@ img {
   }
 }
 
+/* Default max-width for extra large devices */
 .container {
   width: 100%;
   max-width: 1240px;
-  /* Default max-width for extra large devices */
   padding-right: 15px;
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
 }
 
-@media (max-width: 1199.98px) {
-
-  /* Reduce max-width for large devices */
+@include LargeDevices {
   .container {
     max-width: 960px;
   }
 }
 
-@media (max-width: 991.98px) {
-
-  /* Reduce max-width for medium devices */
+@include MediumDevices {
   .container {
     max-width: 720px;
   }
 }
 
-@media (max-width: 767.98px) {
-
-  /* Reduce max-width for small devices */
+@include SmallDevices {
   .container {
     max-width: 540px;
   }
 }
 
-@media (max-width: 575.98px) {
-
-  /* Remove max-width for extra small devices */
+@include ExtraSmallDevices {
   .container {
     max-width: none;
   }

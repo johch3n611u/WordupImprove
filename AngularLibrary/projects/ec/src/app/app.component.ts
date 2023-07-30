@@ -21,7 +21,6 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.translateService.Use(window.navigator.language);
-    console.log(this.themeService.GetTheme())
     this.themeService.SetTheme(this.themeService.GetTheme());
   }
 }
