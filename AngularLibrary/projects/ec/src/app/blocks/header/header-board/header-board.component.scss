@@ -9,15 +9,15 @@
 }
 
 .logo {
-  width: 50px;
-  height: 50px;
+  width: 5rem;
+  height: 5rem;
   margin-right: 1rem;
 }
 
 .logoBox a {
   display: flex;
   align-items: center;
-  color:var(--subSub2Color);
+  color: var(--subSub2Color);
 }
 
 .logoBox h1 {
@@ -39,13 +39,13 @@
 }
 
 .iconButtonBox>a>span {
-  margin-top: 8px;
+  margin-top: 0.8rem;
   font-size: 2rem;
 }
 
 .iconButtonBox img {
-  width: 30px;
-  height: 30px;
+  width: 3rem;
+  height: 3rem;
 }
 
 .searchBar {
@@ -59,17 +59,17 @@
 }
 
 .searchBar>a>img {
-  width: 20px;
-  height: 20px;
-  margin-left: 15px;
+  width: 2rem;
+  height: 2rem;
+  margin-left: 1.5rem;
 }
 
 .searchBar>input {
-  width: 300px;
-  border: solid 1px#e4e4e4;
-  border-radius: 5px;
-  padding: 0 20px 0 50px;
-  height: 46px;
+  width: 30rem;
+  border: solid 0.1rem #e4e4e4;
+  border-radius: 0.5rem;
+  padding: 0 2rem 0 5rem;
+  height: 4.6rem;
   font-size: 2rem;
 }
 

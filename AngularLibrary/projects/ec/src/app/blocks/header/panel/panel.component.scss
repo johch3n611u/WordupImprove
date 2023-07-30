@@ -5,7 +5,7 @@
 .multilevelNav {
   display: flex;
   justify-content: space-between;
-  line-height: 40px;
+  line-height: 4rem;
   font-weight: 400;
   font-size: 1.6rem;
 }
@@ -32,7 +32,7 @@
 .multilevelNav .level1Nav {
   width: max-content;
   word-wrap: normal;
-  font-size: 16px;
+  font-size: 2rem;
   font-weight: 600;
   max-width: none;
   background-color: var(--subSub5Color);
@@ -56,7 +56,7 @@
 
 .multilevelNav ul>.level1Nav::after {
   content: "\f107";
-  margin-left: 8px;
+  margin-left: 0.8rem;
   font-family: 'Font Awesome 5 Free';
 }
 
@@ -69,7 +69,7 @@
 
 .level2Nav>ul>a::after {
   content: "\f105";
-  margin-left: 8px;
+  margin-left: 0.8rem;
   font-family: 'Font Awesome 5 Free';
   font-weight: 900;
   display: inline-block;
@@ -81,7 +81,7 @@
 
 .level2Nav a,
 .level3Nav a {
-  border: solid 1px var(--subSub3Color);
+  border: solid 0.1rem var(--subSub3Color);
   color: var(--subSub2Color);
 }
 

@@ -3,13 +3,17 @@
   color: var(--subSubColor);
   display: flex;
   justify-content: center;
-  line-height: 40px;
+  line-height: 4rem;
   font-weight: 400;
   font-size: 1.6rem;
-  padding: 5px 0;
+  padding: 0.5rem 0;
 
   a {
     text-decoration: underline;
     color: var(--subSubColor);
   }
+}
+
+@include SmallDevices {
+
 }

@@ -1,7 +1,7 @@
 # 要點
 
 1. 所有東西 ( gitBranch、filesArchitecture、communicate ) 都越扁平越好並保持 DRY 原則，能夠快速釐清、整合、決策、執行，避免延伸非必要的任何事情
-2. 用新的 [pnpm](https://zhuanlan.zhihu.com/p/546400909) 進行模組管理，指令同 npm
+2. 用新的 [pnpm](https://zhuanlan.zhihu.com/p/546400909) 進行模組管理，指令同 npm ( [NPM-vs-Yarm-vs-PNPM](https://www.atatus.com/blog/npm-vs-yarn-vs-pnpm/) )
 3. [NG-ZORRO](https://ng.ant.design/docs/introduce/en) 參考較多人使用的 UI Repo 去產結構，以 feature 業務邏輯對原生 element 或第三方元件庫進行二次封裝
 4. 新模組或元件 / 功能需先查詢此文檔有無類似功能並優化重構，如無則需補上說明文件與路徑
 5. 框架二次封裝高階元件，庫流行度比對網站 https://www.slant.co/、https://moiva.io/
@@ -56,9 +56,7 @@
 
 ## 進程紀錄
 
-<img align="left" src="https://github.com/UrWebApp/ComponentLibrary/assets/46659635/def0a640-eea8-4a5e-94c8-6fc291786c1c" width="50%">
-
-### [Survey Architecture](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=33942364)
+### 1. [Survey Architecture](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=33942364)
 
 我們需要一個能夠共用專案的解決方案，
 其中包括能夠開發和展示元件、模組、頁面和站台，
@@ -73,7 +71,9 @@
 
 [詳細內容可以參考此連結](https://github.com/UrWebApp/ComponentLibrary/blob/master/Doc/SurveyArchitecture.md)
 
-### [Angular MonoRepo](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=33943325)
+<img align="left" src="https://github.com/UrWebApp/ComponentLibrary/assets/46659635/def0a640-eea8-4a5e-94c8-6fc291786c1c" width="50%">
+
+### 2. [Angular MonoRepo](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=33943325)
 
 它是 NG 6 後提供的設計模式，在以往通常多個專案就會有多個 Node 模組與多個資料夾，
 利用 MonoRepo 可以將多個程式與庫放在同個倉庫中，共同管理代碼部屬、複用。
@@ -89,7 +89,7 @@
 
 [詳細內容可以參考此連結](https://github.com/UrWebApp/ComponentLibrary/blob/master/Doc/MonoRepo.md)
 
-### [Components SASS Global Variables and Media Query RWD, Theme Transformation](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=34428518)
+### 3. [Components SASS Global Variables and Media Query RWD, Theme Transformation](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=34428518)
 
 CSS 中最大的幾個議題
 
@@ -97,7 +97,11 @@ CSS 中最大的幾個議題
 2. 選擇器權重在專案過大時不好管控最後可能會束諸 !important
 3. 切換頁面開發會增加心智負擔 ( 透過 CSS in JS 解決 )
 
+[(Sass-vs-Tailwind-vs-Styled-components)Methodology-Comparison](https://ttt.studio/tech/sass-vs-tailwind-css-vs-styled-components-a-css-methodology-comparison/)
+
 目前還是看好 SASS 解決方案，1、2 可以透過 Component Style 解決，CSS in JS 可以透過 Angular 的 Component Styles 搞定，所以最後決定嘗試導入 sass-resources-loader
+
+<br><br><br><br>
 
 ## 架構與文檔
 

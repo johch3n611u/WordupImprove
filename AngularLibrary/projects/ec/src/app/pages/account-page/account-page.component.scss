@@ -1,18 +1,18 @@
 ul {
-  width: 310px;
+  width: 31rem;
   margin-right: 1rem;
 
   li {
     font-size: 1.8rem;
     margin-bottom: 3rem;
     cursor: pointer;
-    padding-left: 12px;
+    padding-left: 1.2rem;
   }
 
   li.active {
     font-weight: 900;
-    border-left: 3px solid var(--mainColor);
-    padding-left: 8px;
+    border-left: 0.3rem solid var(--mainColor);
+    padding-left: 0.8rem;
   }
 }
 

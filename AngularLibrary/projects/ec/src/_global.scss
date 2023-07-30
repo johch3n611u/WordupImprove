@@ -58,7 +58,9 @@
 /* Default max-width for extra large devices */
 
 $largeDevices: 1199.98px;
+
 @mixin LargeDevices {
+
   /* Reduce max-width for large devices */
   @media(max-width:$largeDevices) {
     @content;
@@ -66,7 +68,9 @@ $largeDevices: 1199.98px;
 }
 
 $mediumDevices: 991.98px;
+
 @mixin MediumDevices {
+
   /* Reduce max-width for medium devices */
   @media(max-width:$mediumDevices) {
     @content;
@@ -74,7 +78,9 @@ $mediumDevices: 991.98px;
 }
 
 $smallDevices: 767.98px;
+
 @mixin SmallDevices {
+
   /* Reduce max-width for small devices */
   @media(max-width:$smallDevices) {
     @content;
@@ -82,7 +88,9 @@ $smallDevices: 767.98px;
 }
 
 $extraSmallDevices: 575.98px;
+
 @mixin ExtraSmallDevices {
+
   /* Remove max-width for extra small devices */
   @media(max-width:$extraSmallDevices) {
     @content;
@@ -298,8 +306,8 @@ $xl-range: 1280px;
 
   // 設置滾動條的樣式
   &::-webkit-scrollbar {
-    height: 4px;
-    width: 4px;
+    height: 0.4rem;
+    width: 0.4rem;
     background: transparent;
   }
 
@@ -308,7 +316,7 @@ $xl-range: 1280px;
   }
 
   &::-webkit-scrollbar-thumb {
-    border-radius: 100px;
+    border-radius: 10rem;
     background: $color-gray-light;
   }
 }

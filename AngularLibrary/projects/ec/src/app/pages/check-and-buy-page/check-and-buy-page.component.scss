@@ -50,7 +50,7 @@ h2 {
 
 .header,
 .product {
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .05);
+  box-shadow: 0 0.1rem 0.1rem 0 rgba(0, 0, 0, .05);
 }
 
 .product {
@@ -61,14 +61,14 @@ h2 {
     }
 
     img {
-      width: 50px;
+      width: 5rem;
       margin-right: 3rem;
     }
   }
 }
 
 .promotional {
-  border: 1px solid rgba(0, 0, 0, .09);
+  border: 0.1rem solid rgba(0, 0, 0, .09);
   flex-direction: column;
   margin-bottom: 3rem;
   font-size: 1.3rem;
@@ -79,8 +79,8 @@ h2 {
 
     span:first-Child {
       color: var(--subColor);
-      border: 2px solid var(--subColor);
-      border-radius: 5px;
+      border: 0.2rem solid var(--subColor);
+      border-radius: 0.5rem;
       padding: 0.5rem;
     }
 

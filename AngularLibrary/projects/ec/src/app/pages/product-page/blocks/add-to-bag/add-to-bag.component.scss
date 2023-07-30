@@ -25,10 +25,10 @@ button {
 
   input,
   span {
-    border-radius: 5px;
-    border: 1px solid var(--subSubColor);
+    border-radius: 0.5rem;
+    border: 0.1rem solid var(--subSubColor);
     font-size: 2rem;
-    width: 20px;
+    width: 2rem;
     max-width: fit-content;
     text-align: center;
     padding: 0.4rem 1.2rem;
@@ -57,18 +57,18 @@ ec-marketing-products {
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 1rem;
 }
 
 ::-webkit-scrollbar-track {
   background-color: var(--subSubColor);
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 1rem;
+  border-radius: 1rem;
 }
 
 ::-webkit-scrollbar-thumb {
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 1rem;
+  border-radius: 1rem;
   background: #6d6d6d;
 }
 

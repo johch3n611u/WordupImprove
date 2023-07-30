@@ -30,8 +30,8 @@
 }
 
 .marketingPanel .right img {
-  width: 25px;
-  height: 25px;
+  width: 2.5rem;
+  height: 2.5rem;
   margin-right: 1rem;
 }
 
@@ -54,11 +54,11 @@
 .marketingPanel .center input {
   background-color: var(--subSubColor);
   border-color: var(--subSubColor);
-  border-radius: 3px;
+  border-radius: 0.3rem;
   border-style: solid;
-  border-width: 1px;
-  line-height: 19.2px;
-  padding: 0px 120px 0px 15px;
+  border-width: 0.1rem;
+  line-height: 1.92rem;
+  padding: 0 12rem 0 1.5rem;
   width: 100%;
 }
 
