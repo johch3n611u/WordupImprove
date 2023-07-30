@@ -7,9 +7,9 @@ import { ProductPageComponent } from './pages/product-page/product-page.componen
 import { AccountPageComponent } from './pages/account-page/account-page.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import { CheckAndBuyPageComponent } from './pages/check-and-buy-page/check-and-buy-page.component';
-import { OrdersComponent } from './components/orders/orders.component';
-import { AccountInformationComponent } from './components/account-information/account-information.component';
-import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import { OrdersComponent } from './pages/account-page/blocks/orders/orders.component';
+import { AccountInformationComponent } from './pages/account-page/blocks/account-information/account-information.component';
+import { PrivacyPolicyComponent } from './pages/account-page/blocks/privacy-policy/privacy-policy.component';
 import { PortalPageComponent } from './pages/portal-page/portal-page.component';
 
 const routes: Routes = [
