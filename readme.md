@@ -80,7 +80,7 @@
 
 接著我們也做了一些 在 [Hexo 中整合 Angular 的研究](https://urwebapp.github.io/Dev-Tech/HexoNestedAngular/)，最終生出以下架構
 
-![image](https://github.com/UrWebApp/ComponentLibrary/assets/46659635/9c905be4-e213-40cb-9f70-8f623c062518)
+<img align="left" src="https://github.com/UrWebApp/ComponentLibrary/assets/46659635/9c905be4-e213-40cb-9f70-8f623c062518" width="50%">
 
 比較值得一提的是 Library，相較於一般的元件庫的共用元件，以特徵需求與一般 UI 作為分類方式，
 這裡更多的可能是針對不同國家/單位的事業體 EC 所提供的 Service 搭配不同的 Pipe 所組合而成的商業邏輯資料，
