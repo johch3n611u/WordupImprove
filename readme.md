@@ -56,8 +56,6 @@
 
 ## 進程紀錄
 
-<img align="left" src="https://github.com/UrWebApp/ComponentLibrary/assets/46659635/def0a640-eea8-4a5e-94c8-6fc291786c1c" width="50%">
-
 ### [Survey Architecture](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=33942364)
 
 我們需要一個能夠共用專案的解決方案，
@@ -72,6 +70,8 @@
 4. 最後剛好手邊公司的專案有使用到 [大型 EC 專案 Angular 的 MonoRepo]()，並且有實務運行在多個國家不同站台的戰績，恰好符合我們的需求，只需補上展示平台即可，最終決定了這個方案。
 
 [詳細內容可以參考此連結](https://github.com/UrWebApp/ComponentLibrary/blob/master/Doc/SurveyArchitecture.md)
+
+<img align="left" src="https://github.com/UrWebApp/ComponentLibrary/assets/46659635/def0a640-eea8-4a5e-94c8-6fc291786c1c" width="50%">
 
 ### [Angular MonoRepo](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=33943325)
 
@@ -97,7 +97,11 @@ CSS 中最大的幾個議題
 2. 選擇器權重在專案過大時不好管控最後可能會束諸 !important
 3. 切換頁面開發會增加心智負擔 ( 透過 CSS in JS 解決 )
 
+[(Sass-vs-Tailwind-vs-Styled-components)Methodology-Comparison](https://ttt.studio/tech/sass-vs-tailwind-css-vs-styled-components-a-css-methodology-comparison/)
+
 目前還是看好 SASS 解決方案，1、2 可以透過 Component Style 解決，CSS in JS 可以透過 Angular 的 Component Styles 搞定，所以最後決定嘗試導入 sass-resources-loader
+
+<br><br><br><br>
 
 ## 架構與文檔
 
