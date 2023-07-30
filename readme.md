@@ -54,6 +54,8 @@
 
 </details>
 
+<img align="left" src="https://github.com/UrWebApp/ComponentLibrary/assets/46659635/def0a640-eea8-4a5e-94c8-6fc291786c1c" width="50%">
+
 ## 進程紀錄
 
 ### [Survey Architecture](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=33942364)
@@ -70,8 +72,6 @@
 4. 最後剛好手邊公司的專案有使用到 [大型 EC 專案 Angular 的 MonoRepo]()，並且有實務運行在多個國家不同站台的戰績，恰好符合我們的需求，只需補上展示平台即可，最終決定了這個方案。
 
 [詳細內容可以參考此連結](https://github.com/UrWebApp/ComponentLibrary/blob/master/Doc/SurveyArchitecture.md)
-
-<img align="left" src="https://github.com/UrWebApp/ComponentLibrary/assets/46659635/def0a640-eea8-4a5e-94c8-6fc291786c1c" width="50%">
 
 ### [Angular MonoRepo](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=33943325)
 
@@ -98,8 +98,6 @@ CSS 中最大的幾個議題
 3. 切換頁面開發會增加心智負擔 ( 透過 CSS in JS 解決 )
 
 目前還是看好 SASS 解決方案，1、2 可以透過 Component Style 解決，CSS in JS 可以透過 Angular 的 Component Styles 搞定，所以最後決定嘗試導入 sass-resources-loader
-
-<div style="width:100%">
 
 ## 架構與文檔
 
@@ -496,5 +494,3 @@ ngTemplateOutlet、ng-container、ng-template 透過以上選擇器特性與流�
 思路：爬文後對於金流前置業面 ( 背包 => 查看 => 交易資訊填寫 => 付款 => 感謝 ) 似乎可以在同個元件中完成避免資料流傳來傳去，但如果在同頁刷新必須回到查看頁。
 
 [Angular刷新当前页面的几种方法](https://blog.csdn.net/xuehu837769474/article/details/104763685)
-
-</div>
