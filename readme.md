@@ -54,8 +54,6 @@
 
 </details>
 
-<img align="left" src="https://github.com/UrWebApp/ComponentLibrary/assets/46659635/def0a640-eea8-4a5e-94c8-6fc291786c1c" width="50%">
-
 ## 進程紀錄
 
 ### [Survey Architecture](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=33942364)
@@ -72,6 +70,8 @@
 4. 最後剛好手邊公司的專案有使用到 [大型 EC 專案 Angular 的 MonoRepo]()，並且有實務運行在多個國家不同站台的戰績，恰好符合我們的需求，只需補上展示平台即可，最終決定了這個方案。
 
 [詳細內容可以參考此連結](https://github.com/UrWebApp/ComponentLibrary/blob/master/Doc/SurveyArchitecture.md)
+
+<img align="left" src="https://github.com/UrWebApp/ComponentLibrary/assets/46659635/def0a640-eea8-4a5e-94c8-6fc291786c1c" width="50%">
 
 ### [Angular MonoRepo](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=33943325)
 
