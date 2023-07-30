@@ -101,7 +101,7 @@ CSS 中最大的幾個議題
 
 目前還是看好 SASS 解決方案，1、2 可以透過 Component Style 解決，CSS in JS 可以透過 Angular 的 Component Styles 搞定，所以最後決定嘗試導入 sass-resources-loader
 
-<br><br><br>
+<br><br><br><br>
 
 ## 架構與文檔
 
