@@ -56,7 +56,7 @@
 
 ## 進程紀錄
 
-### [Survey Architecture](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=33942364)
+### 1. [Survey Architecture](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=33942364)
 
 我們需要一個能夠共用專案的解決方案，
 其中包括能夠開發和展示元件、模組、頁面和站台，
@@ -73,7 +73,7 @@
 
 <img align="left" src="https://github.com/UrWebApp/ComponentLibrary/assets/46659635/def0a640-eea8-4a5e-94c8-6fc291786c1c" width="50%">
 
-### [Angular MonoRepo](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=33943325)
+### 2. [Angular MonoRepo](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=33943325)
 
 它是 NG 6 後提供的設計模式，在以往通常多個專案就會有多個 Node 模組與多個資料夾，
 利用 MonoRepo 可以將多個程式與庫放在同個倉庫中，共同管理代碼部屬、複用。
@@ -89,7 +89,7 @@
 
 [詳細內容可以參考此連結](https://github.com/UrWebApp/ComponentLibrary/blob/master/Doc/MonoRepo.md)
 
-### [Components SASS Global Variables and Media Query RWD, Theme Transformation](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=34428518)
+### 3. [Components SASS Global Variables and Media Query RWD, Theme Transformation](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=34428518)
 
 CSS 中最大的幾個議題
 
