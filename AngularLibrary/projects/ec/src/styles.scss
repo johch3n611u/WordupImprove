@@ -131,29 +131,34 @@ img {
 
 @include LargeDevices {
   .container {
-    max-width: 9.6rem;
+    max-width: 96rem;
   }
 }
 
 @include MediumDevices {
   .container {
-    max-width: 7.2rem;
+    max-width: 72rem;
   }
 }
 
 @include SmallDevices {
 
-  html {
-    font-size: 1.5rem;
+  main {
+    padding-top: 0;
   }
 
   .container {
-    max-width: 5.4rem;
-  }
-}
-
-@include ExtraSmallDevices {
-  .container {
+    // max-width: 54rem;
     max-width: none;
+    padding-right: unset;
+    padding-left: unset;
+    margin-right: unset;
+    margin-left: unset;
   }
 }
+
+// @include ExtraSmallDevices {
+//   .container {
+//     max-width: none;
+//   }
+// }

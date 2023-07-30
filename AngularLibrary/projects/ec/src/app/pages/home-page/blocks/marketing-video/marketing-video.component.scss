@@ -22,3 +22,9 @@
 .marketingViedo>.container video {
   width: 100%;
 }
+
+@include SmallDevices {
+  .marketingViedo>.container {
+    flex-direction: column;
+  }
+}

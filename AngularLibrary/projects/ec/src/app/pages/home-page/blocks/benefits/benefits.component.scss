@@ -20,3 +20,10 @@
   height: 10rem;
   margin-bottom: 2rem;
 }
+
+@include SmallDevices {
+  .benefits>div {
+    flex-direction: column;
+    align-items: center;
+  }
+}

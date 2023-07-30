@@ -89,3 +89,9 @@
 .level3Nav a:hover {
   background-color: var(--subSubColor);
 }
+
+@include SmallDevices {
+  .panel{
+    display: none;
+  }
+}

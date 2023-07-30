@@ -71,3 +71,10 @@
   font-weight: 900;
   margin-bottom: 1rem;
 }
+
+@include SmallDevices {
+  .marketingPanel>div{
+    flex-direction: column;
+  }
+}
+

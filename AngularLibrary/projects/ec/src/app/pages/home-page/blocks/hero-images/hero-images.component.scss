@@ -24,3 +24,9 @@
   margin-bottom: 5rem;
   text-align: left;
 }
+
+@include SmallDevices {
+  .heroImages div {
+    padding: unset;
+  }
+}
