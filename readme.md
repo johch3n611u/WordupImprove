@@ -56,6 +56,8 @@
 
 ## 進程紀錄
 
+<img align="left" src="https://github.com/UrWebApp/ComponentLibrary/assets/46659635/def0a640-eea8-4a5e-94c8-6fc291786c1c" width="50%">
+
 ### [Survey Architecture](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=33942364)
 
 我們需要一個能夠共用專案的解決方案，
@@ -80,14 +82,22 @@
 
 接著我們也做了一些 在 [Hexo 中整合 Angular 的研究](https://urwebapp.github.io/Dev-Tech/HexoNestedAngular/)，最終生出以下架構
 
-![image](https://github.com/UrWebApp/ComponentLibrary/assets/46659635/9c905be4-e213-40cb-9f70-8f623c062518)
-
 比較值得一提的是 Library，相較於一般的元件庫的共用元件，以特徵需求與一般 UI 作為分類方式，
 這裡更多的可能是針對不同國家/單位的事業體 EC 所提供的 Service 搭配不同的 Pipe 所組合而成的商業邏輯資料，
 
 而相較於整個站台的 Demo，其餘有價值的模組則會在 module 專案內。
 
 [詳細內容可以參考此連結](https://github.com/UrWebApp/ComponentLibrary/blob/master/Doc/MonoRepo.md)
+
+### [Components SASS Global Variables and Media Query RWD, Theme Transformation](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=34428518)
+
+CSS 中最大的幾個議題
+
+1. 不好確定是否重複命名
+2. 選擇器權重在專案過大時不好管控最後可能會束諸 !important
+3. 切換頁面開發會增加心智負擔 ( 透過 CSS in JS 解決 )
+
+目前還是看好 SASS 解決方案，1、2 可以透過 Component Style 解決，CSS in JS 可以透過 Angular 的 Component Styles 搞定，所以最後決定嘗試導入 sass-resources-loader
 
 ## 架構與文檔
 
@@ -484,4 +494,3 @@ ngTemplateOutlet、ng-container、ng-template 透過以上選擇器特性與流�
 思路：爬文後對於金流前置業面 ( 背包 => 查看 => 交易資訊填寫 => 付款 => 感謝 ) 似乎可以在同個元件中完成避免資料流傳來傳去，但如果在同頁刷新必須回到查看頁。
 
 [Angular刷新当前页面的几种方法](https://blog.csdn.net/xuehu837769474/article/details/104763685)
-
