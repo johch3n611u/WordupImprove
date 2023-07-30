@@ -1,7 +1,7 @@
 # 要點
 
 1. 所有東西 ( gitBranch、filesArchitecture、communicate ) 都越扁平越好並保持 DRY 原則，能夠快速釐清、整合、決策、執行，避免延伸非必要的任何事情
-2. 用新的 [pnpm](https://zhuanlan.zhihu.com/p/546400909) 進行模組管理，指令同 npm
+2. 用新的 [pnpm](https://zhuanlan.zhihu.com/p/546400909) 進行模組管理，指令同 npm ( [NPM-vs-Yarm-vs-PNPM](https://www.atatus.com/blog/npm-vs-yarn-vs-pnpm/) )
 3. [NG-ZORRO](https://ng.ant.design/docs/introduce/en) 參考較多人使用的 UI Repo 去產結構，以 feature 業務邏輯對原生 element 或第三方元件庫進行二次封裝
 4. 新模組或元件 / 功能需先查詢此文檔有無類似功能並優化重構，如無則需補上說明文件與路徑
 5. 框架二次封裝高階元件，庫流行度比對網站 https://www.slant.co/、https://moiva.io/
