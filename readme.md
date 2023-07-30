@@ -71,6 +71,8 @@
 
 [詳細內容可以參考此連結](https://github.com/UrWebApp/ComponentLibrary/blob/master/Doc/SurveyArchitecture.md)
 
+<img align="left" src="https://github.com/UrWebApp/ComponentLibrary/assets/46659635/def0a640-eea8-4a5e-94c8-6fc291786c1c" width="50%">
+
 ### [Angular MonoRepo](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=33943325)
 
 它是 NG 6 後提供的設計模式，在以往通常多個專案就會有多個 Node 模組與多個資料夾，
@@ -79,8 +81,6 @@
 如果你寫過 C# 其實會更好理解，它就像 Visual Studio 內的方案與專案、類別庫的依賴與關係架構，較不一樣的是 VS 可以專注於資料面整合不同版本的專案、庫，但 NG MonoRepo 只能共享同個版本的專案與庫，目前解決方案是搭配 pnpm 使用。
 
 接著我們也做了一些 在 [Hexo 中整合 Angular 的研究](https://urwebapp.github.io/Dev-Tech/HexoNestedAngular/)，最終生出以下架構
-
-<img align="left" src="https://github.com/UrWebApp/ComponentLibrary/assets/46659635/def0a640-eea8-4a5e-94c8-6fc291786c1c" width="50%">
 
 比較值得一提的是 Library，相較於一般的元件庫的共用元件，以特徵需求與一般 UI 作為分類方式，
 這裡更多的可能是針對不同國家/單位的事業體 EC 所提供的 Service 搭配不同的 Pipe 所組合而成的商業邏輯資料，
