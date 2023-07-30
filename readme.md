@@ -91,13 +91,13 @@
 
 ### [Components SASS Global Variables and Media Query RWD, Theme Transformation](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=34428518)
 
-[(Sass-vs-Tailwind-vs-Styled-components)Methodology-Comparison](https://ttt.studio/tech/sass-vs-tailwind-css-vs-styled-components-a-css-methodology-comparison/)
-
 CSS 中最大的幾個議題
 
 1. 不好確定是否重複命名
 2. 選擇器權重在專案過大時不好管控最後可能會束諸 !important
 3. 切換頁面開發會增加心智負擔 ( 透過 CSS in JS 解決 )
+
+[(Sass-vs-Tailwind-vs-Styled-components)Methodology-Comparison](https://ttt.studio/tech/sass-vs-tailwind-css-vs-styled-components-a-css-methodology-comparison/)
 
 目前還是看好 SASS 解決方案，1、2 可以透過 Component Style 解決，CSS in JS 可以透過 Angular 的 Component Styles 搞定，所以最後決定嘗試導入 sass-resources-loader
 
