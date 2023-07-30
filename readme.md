@@ -80,9 +80,9 @@
 
 接著我們也做了一些 在 [Hexo 中整合 Angular 的研究](https://urwebapp.github.io/Dev-Tech/HexoNestedAngular/)，最終生出以下架構
 
-![](https://user-images.githubusercontent.com/46659635/255341228-3c1f740f-2b3c-41e8-b483-eb5a60075366.png)
+![image](https://github.com/UrWebApp/ComponentLibrary/assets/46659635/9c905be4-e213-40cb-9f70-8f623c062518)
 
-比較值得一提的是 Library，相較於一般的元件庫的共用元件，
+比較值得一提的是 Library，相較於一般的元件庫的共用元件，以特徵需求與一般 UI 作為分類方式，
 這裡更多的可能是針對不同國家/單位的事業體 EC 所提供的 Service 搭配不同的 Pipe 所組合而成的商業邏輯資料，
 
 而相較於整個站台的 Demo，其餘有價值的模組則會在 module 專案內。
