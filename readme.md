@@ -54,9 +54,9 @@
 
 </details>
 
-<img align="left" src="https://github.com/UrWebApp/ComponentLibrary/assets/46659635/def0a640-eea8-4a5e-94c8-6fc291786c1c" width="50%">
-
 ## 進程紀錄
+
+<img align="left" src="https://github.com/UrWebApp/ComponentLibrary/assets/46659635/def0a640-eea8-4a5e-94c8-6fc291786c1c" width="50%">
 
 ### [Survey Architecture](https://github.com/orgs/UrWebApp/projects/2?pane=issue&itemId=33942364)
 
