@@ -89,7 +89,8 @@
 
 [詳細內容可以參考此連結](https://github.com/UrWebApp/ComponentLibrary/blob/master/Doc/MonoRepo.md)
 
-<br>
+
+<div style="width:100%">
 
 ## 架構與文檔
 
@@ -487,3 +488,4 @@ ngTemplateOutlet、ng-container、ng-template 透過以上選擇器特性與流�
 
 [Angular刷新当前页面的几种方法](https://blog.csdn.net/xuehu837769474/article/details/104763685)
 
+</div>
