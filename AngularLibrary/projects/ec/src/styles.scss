@@ -16,13 +16,25 @@ html {
 }
 
 header {
+  top:0;
   position: fixed;
   z-index: 1000;
   width: 100%;
   background-color: var(--subSubColor);
+  display: flex;
+  flex-direction: column;
 }
 
-main {
+ec-panel{
+  order:3;
+  box-shadow: 0 2px 6px var(--subSub8Color);
+}
+
+ec-header-board{
+  order:2;
+}
+
+body {
   padding-top: 24rem;
 }
 
@@ -143,8 +155,8 @@ img {
 
 @include SmallDevices {
 
-  main {
-    padding-top: 0;
+  body {
+    padding-top: 12.5rem;
   }
 
   .container {

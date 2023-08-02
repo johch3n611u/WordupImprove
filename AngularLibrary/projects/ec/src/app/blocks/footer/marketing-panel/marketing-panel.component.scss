@@ -73,8 +73,27 @@
 }
 
 @include SmallDevices {
-  .marketingPanel>div{
+  .marketingPanel>div {
     flex-direction: column;
   }
-}
 
+  .marketingPanel .left {
+    align-items: center;
+    margin: 0 2rem;
+    width: unset;
+    p {
+      text-align: center;
+    }
+  }
+  .center > div {
+    margin: 0 3rem;
+  }
+
+  .marketingPanel .right {
+    margin-top: 2rem;
+    flex-direction: column;
+    div {
+      margin-top: 1rem;
+    }
+  }
+}

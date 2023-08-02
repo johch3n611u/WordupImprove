@@ -27,4 +27,9 @@
   .marketingViedo>.container {
     flex-direction: column;
   }
+
+  .marketingViedo>.container video {
+    width: 90%;
+    margin: 3rem 2rem 0 2rem;
+  }
 }

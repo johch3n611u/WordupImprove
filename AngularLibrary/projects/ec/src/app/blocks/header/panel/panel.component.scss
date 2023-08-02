@@ -21,7 +21,6 @@
 .leftNav,
 .rightNav {
   display: flex;
-  flex-direction: row;
 }
 
 .multilevelNav .level2Nav,
@@ -82,7 +81,7 @@
 .level2Nav a,
 .level3Nav a {
   border: solid 0.1rem var(--subSub3Color);
-  color: var(--subSub2Color);
+  color: var(--subSub7Color);
 }
 
 .level2Nav a:hover,
@@ -90,8 +89,39 @@
   background-color: var(--subSubColor);
 }
 
+.multilevelNavDisappear {
+  display: none;
+}
+
 @include SmallDevices {
-  .panel{
-    display: none;
+
+  .multilevelNav,
+  .leftNav,
+  .rightNav {
+    flex-direction: column;
+    align-items: center;
+
+    a {
+      padding: unset;
+      border-bottom: 1px solid #939699;
+      background-color: unset;
+    }
+
+    ul {
+      flex-direction: column;
+    }
+
+  }
+
+  .multilevelNav ul:hover>.level2Nav {
+    position: unset;
+    top: unset;
+    align-items: center;
+  }
+
+  .level2Nav a,
+  .level3Nav a {
+    border: unset;
+    border-bottom: 1px solid #939699;
   }
 }

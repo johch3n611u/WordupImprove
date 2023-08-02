@@ -27,3 +27,13 @@
   font-size: 2rem;
   color: var(--mainColor);
 }
+
+@include SmallDevices {
+  .marketingArticles div {
+    flex-direction: column;
+  }
+
+  .marketingArticles>.container div {
+    margin: 3rem;
+  }
+}

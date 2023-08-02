@@ -16,7 +16,7 @@ export class FakeDataService {
     "url": "landing/esgMarketing"
   });
   callToActionAtTop$ = this._callToActionAtTopSub.asObservable();
-  setCallToActionAtTop<T>(Data: any) {
+  SetCallToActionAtTop<T>(Data: any) {
     this._callToActionAtTopSub.next(Data);
   }
 
@@ -25,7 +25,6 @@ export class FakeDataService {
   setPanel<T>(Data: any) {
     this._panelSub.next(Data);
   }
-
 
   headerData$ = combineLatest([
     this.callToActionAtTop$,

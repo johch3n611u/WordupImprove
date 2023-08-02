@@ -1,61 +1,61 @@
 {
   "leftNav": [
     {
-      "level":"level1Nav",
+      "level": "level1Nav",
       "name": "CUSTOM PACKAGING",
       "link": "category"
     },
     {
-      "level":"level1Nav",
+      "level": "level1Nav",
       "name": "SHOP INDUSTRY",
-      "link": "category",
+      "link": "",
       "children": [
         {
-          "level":"level2Nav",
+          "level": "level2Nav",
           "name": "Bring",
           "link": "category"
         },
         {
-          "level":"level2Nav",
+          "level": "level2Nav",
           "name": "Deliver",
           "link": "category"
         },
         {
-          "level":"level2Nav",
+          "level": "level2Nav",
           "name": "Package",
-          "link": "category",
+          "link": "",
           "children": [
             {
-              "level":"level3Nav",
+              "level": "level3Nav",
               "name": "Bring",
               "link": "category"
             },
             {
-              "level":"level3Nav",
+              "level": "level3Nav",
               "name": "Express",
               "link": "category"
             },
             {
-              "level":"level3Nav",
+              "level": "level3Nav",
               "name": "Package",
               "link": "category"
             },
             {
-              "level":"level3Nav",
+              "level": "level3Nav",
               "name": "Deliver",
               "link": "category"
             }
           ]
         },
         {
-          "level":"level2Nav",
+          "level": "level2Nav",
           "name": "Express",
           "link": "category"
         }
       ]
     },
     {
-      "level":"level1Nav",
+      "level": "level1Nav",
       "name": "PLASTIC BANS",
       "link": "category"
     }

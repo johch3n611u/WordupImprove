@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Theme, ThemeService } from 'lib/feature/theme/theme.service';
-import { TranslateService } from 'lib/public-api';
+import { DeviceCheckService, TranslateService } from 'lib/public-api';
+import { PanelService } from './panel.service';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'ec-panel',
   templateUrl: './panel.component.html',
@@ -32,11 +34,15 @@ export class PanelComponent {
     }
   ];
 
+  multilevelNavDisplay$: Observable<boolean>;
+
   constructor(
     private translateService: TranslateService,
     public themeService: ThemeService,
+    public panelService: PanelService,
+    public deviceCheckService: DeviceCheckService,
   ) {
-
+    this.multilevelNavDisplay$ = panelService.multilevelNavDisplay$;
   }
 
   ngOnInit(): void {

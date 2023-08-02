@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PanelService } from '../panel/panel.service';
 
 @Component({
   selector: 'ec-header-board',
@@ -7,4 +8,7 @@ import { Component } from '@angular/core';
 })
 export class HeaderBoardComponent {
 
+  constructor(
+    public panelService: PanelService,
+  ) { }
 }

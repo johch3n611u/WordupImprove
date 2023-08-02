@@ -1,5 +1,9 @@
 <div class="panel">
-  <div class="multilevelNav container">
+  <div class="multilevelNav container" [ngClass]="{
+    'multilevelNavDisappear':
+    deviceCheckService.isMobile && 
+    !(multilevelNavDisplay$ | async)
+  }">
     <nav class="leftNav">
       <ng-container *ngTemplateOutlet="megaMenu; context: { items: data.leftNav }"></ng-container>
     </nav>

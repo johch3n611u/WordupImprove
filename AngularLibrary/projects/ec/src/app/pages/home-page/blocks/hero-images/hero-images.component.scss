@@ -8,7 +8,7 @@
 
 .heroImages div {
   color: var(--subSubColor);
-  padding: 10rem;
+  padding: 10rem 0;
 }
 
 .heroImages h1 {
@@ -26,7 +26,21 @@
 }
 
 @include SmallDevices {
-  .heroImages div {
-    padding: unset;
+
+  .heroImages {
+    padding: 2rem 4rem;
+
+    div {
+      padding: unset;
+    }
+
+    h1 {
+      width: unset;
+    }
+
+    p {
+      width: unset;
+      margin-bottom: 2rem
+    }
   }
 }

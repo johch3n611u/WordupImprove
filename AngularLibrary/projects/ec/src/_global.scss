@@ -20,6 +20,8 @@
     --subSub4Color: #2d2d2d;
     --subSub5Color: #f7f7f7;
     --subSub6Color: #e6e6e6;
+    --subSub7Color: black;
+    --subSub8Color: rgba(0,0,0,.25);
   }
 
   &[data-theme='dark'] {
@@ -33,6 +35,8 @@
     --subSub4Color: #2C3333;
     --subSub5Color: #CBE4DE;
     --subSub6Color: #1d1d1d;
+    --subSub7Color: white;
+    --subSub8Color: rgba(255, 255, 255, 0.25);
   }
 }
 
