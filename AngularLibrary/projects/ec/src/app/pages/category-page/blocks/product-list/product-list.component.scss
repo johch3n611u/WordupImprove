@@ -63,3 +63,28 @@
 .loadMore button {
   margin: auto;
 }
+
+@include SmallDevices {
+  .products {
+    column-count: 2;
+    column-gap: unset;
+  }
+
+  .countButton {
+    >*:not(button) {
+      display: none;
+    }
+
+    >button {
+      width: 100%;
+    }
+  }
+
+  .productList {
+    padding: 0 1.5rem;
+
+    .products h2 {
+      font-size: 2rem;
+    }
+  }
+}

@@ -20,3 +20,16 @@
 .categoryDescription>div>.description>* {
   text-align: left;
 }
+
+@include SmallDevices {
+  .categoryDescription img {
+    margin-left: unset;
+  }
+  .categoryDescription div {
+    display: block;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}

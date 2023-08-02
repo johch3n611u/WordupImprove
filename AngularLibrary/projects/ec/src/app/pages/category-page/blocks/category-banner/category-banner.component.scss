@@ -22,3 +22,11 @@
   width: 20rem;
   height: 20rem;
 }
+
+@include SmallDevices {
+
+  .categoryBannerLeft>div>p,
+  .categoryBannerRight>img {
+    display: none;
+  }
+}

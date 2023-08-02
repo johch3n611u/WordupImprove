@@ -17,3 +17,10 @@
   margin: 3rem;
   margin-bottom: 8rem;
 }
+
+
+@include SmallDevices {
+  .postersFlyers div {
+    overflow: hidden;
+  }
+}
