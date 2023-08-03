@@ -27,7 +27,7 @@ header {
 
 ec-panel{
   order:3;
-  box-shadow: 0 2px 6px var(--subSub8Color);
+  box-shadow: 0 6px 6px var(--subSub8Color);
 }
 
 ec-header-board{
@@ -166,6 +166,10 @@ img {
     padding-left: unset;
     margin-right: unset;
     margin-left: unset;
+  }
+
+  ec-header-board{
+    box-shadow: 0 6px 6px var(--subSub8Color);
   }
 }
 

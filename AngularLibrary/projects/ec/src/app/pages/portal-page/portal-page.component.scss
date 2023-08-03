@@ -44,3 +44,15 @@ i:hover {
     justify-content: center;
   }
 }
+
+@include SmallDevices {
+  .container {
+    flex-direction: column;
+    padding: unset;
+    align-items: center;
+    > div {
+      width: unset;
+      margin: 3rem;
+    }
+  }
+}

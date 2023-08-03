@@ -3,6 +3,7 @@
 <p>PER CARTON OF 2,500</p>
 <hr>
 <p>Quantity (cartons):</p>
+<lib-carousel *ngIf="deviceCheckService.isMobile"></lib-carousel>
 <div class="count">
   <span>-</span><input value="1" /><span>+</span>
 </div>
@@ -17,8 +18,10 @@
 <hr>
 <p>Our 6" compostable spoon is made from a plant-based bioplastic, produced from a rapidly renewable starch. This
   bioplastic spoon has a smaller carbon footprint than conventional plastic. This spoon is certified industrially
-  compostable. Australian states are implementing single-use plastic bans. Bioplastic cutlery is banned in SA, ACT, WA,
+  compostable. Australian states are implementing single-use plastic bans. Bioplastic cutlery is banned in SA, ACT,
+  WA,
   NSW & VIC.</p>
 <button class="normalButton">Product Specs</button>
 <hr>
-<ec-marketing-products marketingName="Compatible Products"></ec-marketing-products>
+<ec-marketing-products marketingName="Compatible Products" *ngIf="!deviceCheckService.isMobile">
+</ec-marketing-products>

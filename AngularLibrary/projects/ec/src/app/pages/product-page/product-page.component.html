@@ -1,12 +1,21 @@
 <article class="container">
-  <lib-breadcrumbs></lib-breadcrumbs>
-  <section class="mainContent">
-    <div class="left">
-      <lib-carousel></lib-carousel>
+  <ng-container *ngIf="!deviceCheckService.isMobile else mobile">
+    <lib-breadcrumbs></lib-breadcrumbs>
+    <section class="mainContent">
+      <div class="left">
+        <lib-carousel></lib-carousel>
+        <ec-product-details></ec-product-details>
+      </div>
+      <ec-add-to-bag></ec-add-to-bag>
+    </section>
+  </ng-container>
+  <ng-template #mobile>
+    <section class="mainContent">
+      <ec-add-to-bag></ec-add-to-bag>
       <ec-product-details></ec-product-details>
-    </div>
-    <ec-add-to-bag></ec-add-to-bag>
-  </section>
+      <ec-marketing-products marketingName="Compatible Products"></ec-marketing-products>
+    </section>
+  </ng-template>
   <hr>
   <ec-marketing-products marketingName="Alternative Products" displayMode="block"></ec-marketing-products>
   <br><br><br>

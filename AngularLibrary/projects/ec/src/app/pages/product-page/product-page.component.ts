@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DeviceCheckService } from 'lib/public-api';
 
 @Component({
   selector: 'ec-product-page',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./product-page.component.scss']
 })
 export class ProductPageComponent {
-
+  constructor(
+    public deviceCheckService: DeviceCheckService,
+  ){
+    
+  }
 }

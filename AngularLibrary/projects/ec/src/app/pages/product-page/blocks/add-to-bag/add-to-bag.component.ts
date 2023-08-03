@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DeviceCheckService } from 'lib/public-api';
 
 @Component({
   selector: 'ec-add-to-bag',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./add-to-bag.component.scss']
 })
 export class AddToBagComponent {
+  constructor(
+    public deviceCheckService: DeviceCheckService,
+  )
+  {
 
+  }
 }

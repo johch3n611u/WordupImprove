@@ -14,3 +14,26 @@ ec-add-to-bag {
 ec-marketing-products {
   margin-bottom: 2rem;
 }
+
+@include SmallDevices {
+
+  .mainContent {
+    flex-direction: column;
+  }
+
+  ec-add-to-bag {
+    width: unset;
+    padding: 2rem;
+  }
+
+  ec-product-details,
+  ec-marketing-products,
+  ec-marketing-products {
+    padding: 2rem;
+  }
+
+  ec-marketing-products {
+    display: flex;
+    flex-direction: column;
+  }
+}

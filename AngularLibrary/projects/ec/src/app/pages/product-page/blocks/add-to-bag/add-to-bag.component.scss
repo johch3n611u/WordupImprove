@@ -75,3 +75,9 @@ ec-marketing-products {
 ::-webkit-scrollbar-thumb:hover {
   background: #3d3d3d;
 }
+
+@include SmallDevices {
+  ec-marketing-products {
+    display: none;
+  }
+}

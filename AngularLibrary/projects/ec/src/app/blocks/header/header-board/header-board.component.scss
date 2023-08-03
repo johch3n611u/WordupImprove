@@ -91,12 +91,16 @@
   }
 
   .searchBar,
-  .iconButtonBox>a:not(:last-child) {
+  .iconButtonBox>a:not(:first-child):not(:last-child) {
     display: none;
   }
 
   .iconButtonBox>a {
     padding: unset;
+    margin-right: 0.5rem;
+    span {
+      font-size: 0.5rem;
+    }
   }
 
   .headerBoard>div {
@@ -105,6 +109,7 @@
 
   .logoBox h1 {
     font-size: 3rem;
+    width: 10rem;
   }
 
   .logo {

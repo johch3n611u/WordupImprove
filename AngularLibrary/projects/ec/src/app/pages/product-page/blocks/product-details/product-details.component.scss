@@ -41,3 +41,9 @@ img {
   width: 10rem;
   margin: 5rem;
 }
+
+@include SmallDevices {
+  .featureIcons {
+    overflow: hidden;
+  }
+}
