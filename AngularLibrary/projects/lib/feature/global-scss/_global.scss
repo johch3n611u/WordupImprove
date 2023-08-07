@@ -1,47 +1,6 @@
 @charset "UTF-8"; // 設置該 CSS 文件的字符集編碼格式為 UTF-8
 // @use 'sass:math'; // 引入 Sass 的內置數學函數庫
 
-// https://stackoverflow.com/questions/70481841/angular-global-variables-on-styles-scss-to-share-among-all-components
-
-// https://stackoverflow.com/questions/45381871/how-to-customize-arrow-buttons-in-swiper
-
-// https://stackoverflow.com/questions/39740527/how-to-access-global-sass-mixin-function-in-angular2-individual-component
-
-// :root 是 CSS 中的一個伪类，它匹配文档树的根元素。在 HTML 中，根元素是 <html> 元素，因此 :root 选择器通常用于设置全局的 CSS 变量
-:root {
-  &[data-theme='light'] {
-    --swiper-navigation-color: #ffffff;
-    --swiper-pagination-color: #ffffff;
-    --mainColor: #854eb5;
-    --subColor: #ff621e;
-    --subSubColor: #ececec;
-    --subSub2Color: #000000;
-    --subSub3Color: #888;
-    --subSub4Color: #2d2d2d;
-    --subSub5Color: #f7f7f7;
-    --subSub6Color: #e6e6e6;
-    --subSub7Color: black;
-    --subSub8Color: rgba(0,0,0,.25);
-  }
-
-  &[data-theme='dark'] {
-    --swiper-navigation-color: #ffffff;
-    --swiper-pagination-color: #ffffff;
-    --mainColor: #0E8388;
-    --subColor: #2E4F4F;
-    --subSubColor: #525a5a;
-    --subSub2Color: #000000;
-    --subSub3Color: #888;
-    --subSub4Color: #2C3333;
-    --subSub5Color: #CBE4DE;
-    --subSub6Color: #1d1d1d;
-    --subSub7Color: white;
-    --subSub8Color: rgba(255, 255, 255, 0.25);
-  }
-}
-
-// var(--subSub3Color)
-
 // https://stackoverflow.com/questions/40722882/css-native-variables-not-working-in-media-queries
 // 不管 SCSS 或 原生 CSS Media 都是不吃 var CSS 3 變數
 
@@ -51,7 +10,7 @@
 //   }
 // }
 
-// ### 簡易斷點 ###
+/* 簡易斷點 */
 
 /* Default max-width for extra large devices */
 
@@ -95,7 +54,7 @@ $extraSmallDevices: 575.98px;
   }
 }
 
-// ### 複雜斷點 ### 
+/* 複雜斷點 */
 
 // 定義斷點變量
 $xs-range: 575px;
@@ -224,7 +183,7 @@ $xl-range: 1280px;
   }
 }
 
-// 定義 LowerBound 函數
+/* 定義 LowerBound 函數 */
 @function LowerBound($range) {
 
   // 如果 $range 為空
@@ -237,7 +196,7 @@ $xl-range: 1280px;
   @return nth($range, 1);
 }
 
-// 定義 UpperBound 函數
+/* 定義 UpperBound 函數 */
 @function UpperBound($range) {
 
   // 如果 $range 只有一個元素
@@ -250,7 +209,7 @@ $xl-range: 1280px;
   @return nth($range, 2);
 }
 
-// ### 定義展開導航 ###
+/* 定義展開導航 */
 @mixin ExpandNav($group, $parent, $child, $count, $breakpoint) {
 
   // 在指定斷點以上的設備上應用展開導航樣式
@@ -279,7 +238,7 @@ $xl-range: 1280px;
   }
 }
 
-// ### 定義 clearfix ###
+/* 定義 clearfix */
 @mixin Clearfix() {
 
   // 清除浮動
@@ -297,7 +256,7 @@ $xl-range: 1280px;
   }
 }
 
-// ### 定義自定義滾動條 ###
+/* 定義自定義滾動條 */
 @mixin Scrollbar {
   // 優化滾動性能
   -webkit-overflow-scrolling: touch;
@@ -319,8 +278,85 @@ $xl-range: 1280px;
   }
 }
 
-// ### 定義 showTemplate ###
+/* 定義 showTemplate */
 @mixin ShowTemplate {
   // 顯示模板
   opacity: 1 !important;
+}
+
+/* Default max-width for extra large devices */
+.container {
+  width: 100%;
+  max-width: 124rem;
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@include LargeDevices {
+  .container {
+    max-width: 96rem;
+  }
+}
+
+@include MediumDevices {
+  .container {
+    max-width: 72rem;
+  }
+}
+
+@include SmallDevices {
+
+  .container {
+    // max-width: 54rem;
+    max-width: none;
+    padding-right: unset;
+    padding-left: unset;
+    margin-right: unset;
+    margin-left: unset;
+  }
+
+}
+
+// @include ExtraSmallDevices {
+//   .container {
+//     max-width: none;
+//   }
+// }
+
+/* RWD Table */
+.rwdTable {
+  width: 100%;
+
+  th,
+  td {
+    padding: 1.5rem;
+  }
+}
+
+@include SmallDevices {
+  .rwdTable {
+    th {
+      display: none;
+    }
+
+    td {
+      display: block;
+
+      &:before {
+        content: attr(data-th)": "; // 藉由這個與 html 串聯前綴
+        font-weight: bold;
+        width: 2rem;
+        display: inline;
+      }
+    }
+
+    tbody>tr {
+      border: 1px solid #ddd;
+      margin: 2rem;
+      display: block;
+      padding: 2rem;
+    }
+  }
 }

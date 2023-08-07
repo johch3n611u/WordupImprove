@@ -93,7 +93,7 @@
   display: none;
 }
 
-@include SmallDevices {
+@include ExtraSmallDevices {
 
   .multilevelNav,
   .leftNav,

@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { LibraryModule, SampleModule } from 'lib/public-api';
 import { SampleComponent } from './sample/sample.component';
 import { DynamicMasonryComponent } from './dynamic-masonry/dynamic-masonry.component';
+import { RwdTableComponent } from './rwd-table/rwd-table.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     SampleComponent,
-    DynamicMasonryComponent
+    DynamicMasonryComponent,
+    RwdTableComponent
   ],
   imports: [
     BrowserModule,
