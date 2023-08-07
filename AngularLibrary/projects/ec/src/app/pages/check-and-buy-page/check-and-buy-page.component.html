@@ -5,8 +5,8 @@
 </div>
 
 <ng-template #bag>
-  <h2>Bag</h2>
-  <ul>
+  <h2 *ngIf="!deviceCheckService.isMobile">Bag</h2>
+  <ul class="bag">
     <li class="header">
       <span class="checkBox"><input type="checkbox" /></span>
       <span class="info">商品</span>
@@ -68,9 +68,9 @@
 </ng-template>
 
 <ng-template #check>
-  <h2>Order</h2>
-  <ul>
-    <li class="header">
+  <h2 class="checkContent">Order</h2>
+  <ul class="check checkContent">
+    <li *ngIf="!deviceCheckService.isMobile" class="header">
       <span class="info">商品</span>
       <span class="count">數量</span>
       <span class="price">單價</span>
@@ -89,8 +89,8 @@
       </span>
     </li>
   </ul>
-  <h2>Delivery</h2>
-  <ul>
+  <h2 class="checkContent">Delivery</h2>
+  <ul class="checkContent">
     <li class="header">
       <span class="count">寄送方式</span>
       <span class="info">說明</span>
@@ -99,7 +99,7 @@
     <li class="product">
       <span class="count">
         <input id="drone" type="radio" name="delivery" />
-        <label for="drone">無人機</label>    
+        <label for="drone">無人機</label>
       </span>
       <span class="info">預計到貨時間一小時內由無人機空運過來</span>
       <span class="price">$19</span>
@@ -122,13 +122,13 @@
     </li>
     <li class="shippingInfo">
       <label for="remark">備註：</label>
-      <input id="remark" placeholder="管理室代收/電話聯絡時間"/>
+      <input id="remark" placeholder="管理室代收/電話聯絡時間" />
       <label for="address">地址：</label>
-      <input id="address" placeholder="7-11 BX門市 新北市新店區中央路877號2樓-3"/>
+      <input id="address" placeholder="7-11 BX門市 新北市新店區中央路877號2樓-3" />
     </li>
   </ul>
-  <h2>Coupon</h2>
-  <ul>
+  <h2 class="checkContent">Coupon</h2>
+  <ul class="checkContent">
     <li class="header">
       <span class="count">優惠券</span>
       <span class="info">說明</span>
@@ -151,8 +151,8 @@
       <span class="price"><span>$-500</span></span>
     </li>
   </ul>
-  <h2>Payment</h2>
-  <ul>
+  <h2 class="checkContent">Payment</h2>
+  <ul class="checkContent">
     <li class="header">
       <span class="count">付款方式</span>
       <span class="info">說明</span>
@@ -179,11 +179,11 @@
       <span class="info">說明</span>
     </li>
   </ul>
-  <div class="checkout">
+  <div class="checkout check" [ngClass]="{'display':detailDisplay}">
     <p><span>商品總金額</span><span>$5.000</span></p>
     <p><span>運費總金額</span><span>$283</span></p>
     <p><span>折價券折扣</span><span>$-500</span></p>
-    <p class="totalAmount"><span>Total Amount</span><span>NTD</span><span>$5.283</span></p>
+    <p class="totalAmount" (click)="checkDetail()"><span>Total Amount</span><span>NTD</span><span>$5.283</span></p>
     <button>Purchase</button>
     <!-- IF ALL required OK => VISA => Thanks Page -->
   </div>

@@ -19,8 +19,6 @@ h2 {
     align-items: center;
     justify-content: center;
 
-    &.checkBox {}
-
     &.info {
       width: 45%;
     }
@@ -127,7 +125,120 @@ h2 {
   padding: 1rem;
   margin: 1rem;
   font-size: 2rem;
+
   * {
     margin: 0 1rem;
+  }
+}
+
+@include SmallDevices {
+
+  .bag {
+
+    h2 {
+      margin-left: 2rem;
+    }
+
+    .header {
+      display: none;
+    }
+
+    .product {
+      flex-direction: column;
+      box-shadow: 0.2rem 0.3rem 0.8rem rgba(0, 0, 0, 0.1);
+      margin: 1rem 3rem;
+
+      >span {
+
+        &.info,
+        &.count {
+          width: unset;
+        }
+
+        &.operate {
+          display: none;
+        }
+      }
+    }
+
+  }
+
+  .checkout {
+    box-shadow: 0.2rem -0.1rem 0.2rem rgba(0, 0, 0, 0.05);
+    position: fixed;
+    bottom: 0;
+    background-color: #fff3ed;
+    align-items: center;
+    margin: unset;
+    width: 100%;
+
+    p {
+      margin-top: 1rem;
+      margin-bottom: unset;
+    }
+
+    button {
+      margin: 1rem;
+    }
+  }
+
+  .check {
+    .product {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+
+      >span {
+
+        padding: 1rem;
+
+        &.info,
+        &.count {
+          width: unset;
+        }
+
+        &.count {
+          &:after {
+            content: "x";
+          }
+        }
+      }
+    }
+  }
+
+  .shippingInfo {
+    flex-direction: column;
+  }
+
+  .checkout.check {
+    p:not(.totalAmount) {
+      display: none;
+    }
+
+    .totalAmount {
+      &:before {
+        content: "△ 明細";
+        display: block;
+        color: var(--subSub3Color);
+        font-size: 1.8rem;
+      }
+    }
+  }
+
+  .checkout.check.display{
+    .totalAmount {
+      &:before {
+        content: "▼ 明細";
+      }
+    }
+  }
+
+  .checkContent {
+    margin: 2rem;
+  }
+
+  .display {
+    p:not(.totalAmount) {
+      display: block !important;
+    }
   }
 }

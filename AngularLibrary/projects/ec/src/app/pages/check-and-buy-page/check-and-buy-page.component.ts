@@ -1,5 +1,6 @@
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { DeviceCheckService } from 'lib/public-api';
 
 @Component({
   selector: 'ec-check-and-buy-page',
@@ -14,8 +15,12 @@ export class CheckAndBuyPageComponent {
   navigationSub$: any;
   @ViewChild('bag', { static: true }) bag: TemplateRef<any> | undefined;
   @ViewChild('check', { static: true }) check: TemplateRef<any> | undefined;
+  detailDisplay: boolean = false;
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    public deviceCheckService: DeviceCheckService,
+  ) {
     // https://blog.csdn.net/xuehu837769474/article/details/104763685
     // Router 同頁重載
     this.navigationSub$ = this.router.events.subscribe((event: any) => {
@@ -33,5 +38,11 @@ export class CheckAndBuyPageComponent {
 
   ngOnDestroy(): void {
     this.navigationSub$.unsubscribe();
+  }
+
+  checkDetail() {
+    if (this.deviceCheckService.isMobile) {
+      this.detailDisplay = !this.detailDisplay;
+    }
   }
 }
