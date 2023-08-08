@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "build:lib": "ng build lib",
-    "build:ec": "ng build ec --base-href=/assets/angular/ec/",
+    "build:ec": "ng build ec --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/assets/angular/ec/",
     "build:crm": "ng build crm --base-href=/assets/angular/crm/",
     "build:cms": "ng build cms --base-href=/assets/angular/cms/",
     "build:mod": "ng build mod --base-href=/assets/angular/mod/",

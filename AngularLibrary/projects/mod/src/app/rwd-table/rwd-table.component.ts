@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PicsumImgService } from 'lib/public-api';
 
 @Component({
   selector: 'app-rwd-table',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./rwd-table.component.scss']
 })
 export class RwdTableComponent {
+  constructor(
 
+  ) {
+
+  }
 }
