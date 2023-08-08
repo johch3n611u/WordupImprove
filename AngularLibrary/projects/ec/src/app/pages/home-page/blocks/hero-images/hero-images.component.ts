@@ -10,7 +10,7 @@ export class HeroImagesComponent {
   constructor(
     private picsumImgService: PicsumImgService,
   ) {
-    this.backgroundImg = `url('${picsumImgService.getImageUrl('3000')}')`;
+    this.backgroundImg = `url('${picsumImgService.getImageUrl('3000', '3000', false)}')`;
   }
 
   backgroundImg: string = '';

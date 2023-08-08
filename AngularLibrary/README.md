@@ -1,4 +1,13 @@
-https://www.biopak.com/
+## Reference
+
+1. ec： https://www.biopak.com/
+2. brand： https://digitaljungle.com.br/
+
+## Command
+
+1. 新增庫專案 `ng generate library <library> --prefix <library>` 
+   * --prefix 會更改 app-xxx 為新前綴 library-xxx
+2. 新增程式專案 `ng generate application <app-name>` 
 
 ## AngularLibrary
 

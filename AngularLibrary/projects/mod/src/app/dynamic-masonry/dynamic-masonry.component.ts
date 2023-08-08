@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
-  selector: 'app-dynamic-masonry',
+  selector: 'mod-dynamic-masonry',
   templateUrl: './dynamic-masonry.component.html',
   styleUrls: ['./dynamic-masonry.component.scss']
 })
