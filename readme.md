@@ -498,3 +498,11 @@ ngTemplateOutlet、ng-container、ng-template 透過以上選擇器特性與流�
 思路：爬文後對於金流前置業面 ( 背包 => 查看 => 交易資訊填寫 => 付款 => 感謝 ) 似乎可以在同個元件中完成避免資料流傳來傳去，但如果在同頁刷新必須回到查看頁。
 
 [Angular刷新当前页面的几种方法](https://blog.csdn.net/xuehu837769474/article/details/104763685)
+
+### Layouts
+
+新增佈局層級
+
+[Website Layout: Design Ideas and Examples to Inspire You](https://crocoblock.com/blog/website-layout-basics/)
+
+[7 Webpage Layouts Crucial for Any Site to Incorporate](https://www.upwork.com/resources/web-page-layouts)

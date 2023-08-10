@@ -1,8 +1,4 @@
 import { Component } from '@angular/core';
-import { ThemeService } from 'lib/feature/theme/theme.service';
-import { FakeDataService, TranslateService } from 'lib/public-api';
-import { Observable } from 'rxjs';
-
 @Component({
   selector: 'ec-root',
   templateUrl: './app.component.html',
@@ -10,17 +6,4 @@ import { Observable } from 'rxjs';
 })
 export class AppComponent {
 
-  headerData$: Observable<any> = {} as Observable<any>;
-  constructor(
-    private fakeDataService: FakeDataService,
-    private translateService: TranslateService,
-    private themeService: ThemeService,
-  ) {
-    this.headerData$ = this.fakeDataService.headerData$;
-  }
-
-  ngOnInit(): void {
-    this.translateService.Use(window.navigator.language);
-    this.themeService.SetTheme(this.themeService.GetTheme());
-  }
 }

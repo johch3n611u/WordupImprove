@@ -184,7 +184,7 @@
     <p><span>運費總金額</span><span>$283</span></p>
     <p><span>折價券折扣</span><span>$-500</span></p>
     <p class="totalAmount" (click)="checkDetail()"><span>Total Amount</span><span>NTD</span><span>$5.283</span></p>
-    <button>Purchase</button>
+    <button [routerLink]="['/sigleColumn/fakeCreditCardVerification']">Purchase</button>
     <!-- IF ALL required OK => VISA => Thanks Page -->
   </div>
 </ng-template>

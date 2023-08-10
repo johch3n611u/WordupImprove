@@ -10,6 +10,7 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { HowItWorksPageComponent } from './pages/how-it-works-page/how-it-works-page.component';
 import { OurServicesPageComponent } from './pages/our-services-page/our-services-page.component';
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
+import { FakeCreditCardVerificationPageComponent } from './pages/fake-credit-card-verification-page/fake-credit-card-verification-page.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.com
     HomePageComponent,
     HowItWorksPageComponent,
     OurServicesPageComponent,
-    NotFoundPageComponent
+    NotFoundPageComponent,
+    FakeCreditCardVerificationPageComponent
   ],
   imports: [
     BrowserModule,
