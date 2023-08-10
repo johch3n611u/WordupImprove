@@ -51,6 +51,8 @@
 21. [vueuse](https://vueuse.org/functions.html)
 22. [今天我想來在 Angular 應用程式上加上測試保護 系列](https://ithelp.ithome.com.tw/users/20109645/ironman/5708)
 23. [什麼？又是／不只是 Design Patterns!?](https://ithelp.ithome.com.tw/users/20120812/ironman/2697)
+24. [全世界最大開放 api 項目](https://github.com/public-apis/public-apis)
+25. [中文api](https://github.com/TonnyL/Awesome_APIs)
 
 </details>
 
