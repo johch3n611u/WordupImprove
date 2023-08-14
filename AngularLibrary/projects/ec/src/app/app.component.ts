@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ThemeService } from 'lib/feature/theme/theme.service';
 @Component({
   selector: 'ec-root',
   templateUrl: './app.component.html',
@@ -6,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
+  constructor(
+    private themeService: ThemeService,
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.themeService.SetTheme(this.themeService.GetTheme());
+  }
 }

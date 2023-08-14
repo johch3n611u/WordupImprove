@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 // https://stackoverflow.com/questions/44067002/how-to-clean-up-import-statements-in-modules
 // todo：有機會的話抽成 module 或單頁 import export typescript
@@ -53,6 +54,7 @@ import { SingleColumnLayoutComponent } from './layouts/single-column-layout/sing
 import { SkyLandLayoutComponent } from './layouts/sky-land-layout/sky-land-layout.component';
 import { FakeCreditCardVerificationPageComponent } from './layouts/single-column-layout/pages/fake-credit-card-verification-page/fake-credit-card-verification-page.component';
 import { ThanksPageComponent } from './layouts/sky-land-layout/pages/thanks-page/thanks-page.component';
+
 
 let layouts = [
   SingleColumnLayoutComponent,
@@ -126,6 +128,7 @@ const tranSetting: TranSetting = {
   ],
   bootstrap: [AppComponent],
   imports: [
+    FormsModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
