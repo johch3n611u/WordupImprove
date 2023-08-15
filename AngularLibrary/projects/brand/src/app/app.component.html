@@ -1,9 +1,27 @@
-<header>
-  header
+<header style="width: 100vw;">
+  <lib-svg [src]="'./assets/scene1.svg'" [style]="'position:absolute;width:100%;'"></lib-svg>
+  <nav>
+    <div class="logo">Logo</div>
+    <ul class="nav">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Criação de Sites</a></li>
+      <li><a href="#">Anunciar no Google</a></li>
+      <li><a href="#">Redes Sociais</a></li>
+      <li><a href="#">Sobre</a></li>
+      <li><a href="#">Contato</a></li>
+    </ul>
+  </nav>
+  <div class="contentBox">
+    <p>It is jointly managed by the British Council, IDP: IELTS Australia and Cambridge Assessment English, and was
+      established in 1989.</p>
+    <h3>is an international standardized test of English language proficiency for non-native English language speakers
+    </h3>
+    <h1>The International English Language Testing System</h1>
+    <button>Call To Action</button>
+  </div>
 </header>
 <main>
   <router-outlet><!-- 根據路由顯示對應元件 --></router-outlet>
 </main>
 <footer>
-  footer
 </footer>

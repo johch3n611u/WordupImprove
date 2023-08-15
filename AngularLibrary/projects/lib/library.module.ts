@@ -12,11 +12,13 @@ import { CarouselComponent } from './user-interface/carousel/carousel.component'
 import { FakeDataService } from './feature/fake-data/fake-data.service';
 import { ToThousandPipe } from './feature/to-thousand/to-thousand.pipe';
 import { TranslatePipe } from './feature/translate/translate.pipe';
+import { SvgComponent } from './feature/svg/svg.component';
 
 let components = [
   WrapperComponent,
   BreadcrumbsComponent,
   CarouselComponent,
+  SvgComponent,
 ];
 
 let pipes = [

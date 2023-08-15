@@ -1,3 +1,6 @@
+// 使用 global.scss 需要確保 angular.json build / serve 都使用 @angular-builders/custom-webpack:dev-server 解析，並且參考客製化 customWebpackConfig
+
+
 @charset "UTF-8"; // 設置該 CSS 文件的字符集編碼格式為 UTF-8
 // @use 'sass:math'; // 引入 Sass 的內置數學函數庫
 
