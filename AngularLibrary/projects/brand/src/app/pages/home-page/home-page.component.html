@@ -1,19 +1,34 @@
-<div >
-  <lib-svg class="diver1" #diver1 [src]="'./assets/diver1.svg'"></lib-svg>
-
-  <div class="contentBox">
-    <p>It is jointly managed by the British Council, IDP: IELTS Australia and Cambridge Assessment English, and was
-      established in 1989.</p>
-    <h4>is an international standardized test of English language proficiency for non-native English language speakers
-    </h4>
-    <h2>The International English Language Testing System</h2>
-    <button>Call To Action</button>
+<div>
+  <div class="animationBox">
+    <lib-svg class="left" #diver1 [src]="'./assets/diver1.svg'"></lib-svg>
+    <lib-svg class="right" #diver2 [src]="'./assets/diver2.svg'"></lib-svg>
+    <lib-svg class="right" #fish1 [src]="'./assets/fish1.svg'"></lib-svg>
+    <lib-svg class="left" #fish2 [src]="'./assets/fish2.svg'"></lib-svg>
   </div>
 
-  <lib-svg class="scene10" [src]="'./assets/scene10.svg'" height="40vh"></lib-svg>
+  <div class="contentBox">
+    <p>was established in 1989.</p>
+    <h4>is an international standardized test</h4>
+    <h2>The International English</h2>
+    <span class='pulse-button'>pulse</span>
+  </div>
+
+  <div class="sceneBox">
+    <lib-svg [src]="'./assets/scene10.svg'" height="20vh"></lib-svg>
+    <lib-svg [src]="'./assets/scene6.svg'" [boxStyle]="'width:100%;position:absolute;bottom:0;right:0;z-index:-50'"
+      height="50vh"></lib-svg>
+    <lib-svg [src]="'./assets/scene3.svg'" [boxStyle]="'position:absolute;bottom:0;right:0;z-index:-50'"
+      height="40vh"></lib-svg>
+    <lib-svg [src]="'./assets/scene5.svg'" [boxStyle]="'width:100%;position:absolute;bottom:0;right:0;z-index:-50'"
+      height="40vh"></lib-svg>
+    <lib-svg [src]="'./assets/scene2.svg'"
+      [boxStyle]="'transform: scaleX(-1);position:absolute;bottom:0;left:0;z-index:-50'" height="70vh"></lib-svg>
+
+  </div>
+
 </div>
 <div style="height: 100vh;margin-top: -5px;">
-  <lib-svg [src]="'./assets/scene1.svg'" [style]="'position:absolute;width:100%;'"></lib-svg>
+  <lib-svg [svgClass]="'scene1'" [src]="'./assets/scene1.svg'" [style]="'position:absolute;width:100%;'"></lib-svg>
 </div>
 <div style="height: 100vh;"></div>
 <div style="height: 100vh;"></div>

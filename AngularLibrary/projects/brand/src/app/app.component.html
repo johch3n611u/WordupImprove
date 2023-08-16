@@ -1,15 +1,14 @@
 <header>
-  <lib-svg [src]="'./assets/scene1.svg'" [style]="'position:absolute;width:100%;'" height="40vh"></lib-svg>
+  <lib-svg [src]="'./assets/scene1.svg'" [boxStyle]="'position:absolute;width:100%;z-index:-10000'" height="40vh"></lib-svg>
   <nav>
-    <div class="logo">Logo</div>
+    <div class="logo" [routerLink]="['']">
+      <h1>Logo</h1>
+    </div>
     <ul class="nav">
       <!-- https://stackoverflow.com/questions/8614862/using-focus-pseudo-class-on-li-or-other-element-else-than-a-input-button-etc -->
-      <li tabindex="0">Home</li>
-      <li tabindex="0">Criação de Sites</li>
-      <li tabindex="0">Anunciar no Google</li>
-      <li tabindex="0">Redes Sociais</li>
-      <li tabindex="0">Sobre</li>
-      <li tabindex="0">Contato</li>
+      <li tabindex="0" [routerLink]="['aboutUs']">About Us</li>
+      <li tabindex="0" [routerLink]="['howItWorks']">How It Work</li>
+      <li tabindex="0" [routerLink]="['ourServices']">Our Services</li>
     </ul>
   </nav>
 </header>
