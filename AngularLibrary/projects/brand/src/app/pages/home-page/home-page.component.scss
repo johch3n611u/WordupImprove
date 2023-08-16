@@ -1,0 +1,25 @@
+.contentBox {
+  position: relative;
+  color: azure;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-shadow: 3px 1px 2px black;
+  margin: auto;
+  margin-top: 10rem;
+  width: 40%;
+  text-align: center;
+}
+
+.diver1 {
+  display: block;
+  // z-index: 4;
+  position: absolute;
+  // opacity: 0;
+  right: -300px;
+}
+
+.scene10{
+
+}

@@ -1,29 +1,6 @@
 a {
   color: azure;
   text-decoration: none;
-
-  &:active {
-    color: rgb(255, 0, 0);
-  }
-
-  &:hover {
-    color: rgb(190, 190, 190);
-  }
-
-  &:link {
-    color: rgb(135, 135, 135);
-  }
-
-  &:visited {
-    color: rgb(255, 255, 255);
-  }
-
-  &:focus {
-    color: rgb(255, 0, 0);
-    border-top-color: rgb(255, 0, 0);
-    border-top-width: 2px;
-    border-top-style: solid;
-  }
 }
 
 h2 {
@@ -56,4 +33,9 @@ p {
   text-align: center;
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
+}
+
+// https://stackoverflow.com/questions/50011614/overflow-hidden-on-an-absolute-positioned-svg
+body {
+  overflow-x: hidden;
 }

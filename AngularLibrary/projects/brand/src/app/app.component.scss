@@ -20,17 +20,37 @@ nav {
   width: 80%;
 
   li {
+    display: flex;
+    align-items: center;
     height: 80px;
-  }
-}
+    border-top-color: hsla(0, 0%, 100%, 0);
+    border-top-width: 6px;
+    border-top-style: solid;
+    cursor: pointer;
 
-.contentBox {
-  position: relative;
-  color: azure;
-  margin: 15% 30%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  text-shadow: 3px 1px 2px black;
+    &:active {
+      color: rgb(255, 0, 0);
+    }
+
+    &:hover {
+      color: rgb(190, 190, 190);
+    }
+
+    &:link {
+      color: rgb(135, 135, 135);
+    }
+
+    &:visited {
+      color: rgb(255, 255, 255);
+    }
+
+    &:focus {
+      color: rgb(255, 0, 0);
+      border-top-color: rgb(255, 0, 0);
+      border-top-width: 6px;
+      border-top-style: solid;
+    }
+  }
+
+
 }

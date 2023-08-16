@@ -7,7 +7,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'lib-svg',
   templateUrl: './svg.component.html',
-  styleUrls: ['./svg.component.css']
+  styleUrls: ['./svg.component.scss']
 })
 export class SvgComponent {
 
@@ -29,7 +29,7 @@ export class SvgComponent {
         let parser = new DOMParser();
         let doc = parser.parseFromString(res, 'image/svg+xml');
         doc.documentElement.setAttribute('preserveAspectRatio', 'none');
-        // doc.documentElement.setAttribute('viewBox', '0 0 1 1');
+        // doc.documentElement.setAttribute('viewBox', '0 0 100 100');
         doc.documentElement.setAttribute('width', this.width === undefined ? '100%' : this.width);
         doc.documentElement.setAttribute('height', this.height === undefined ? '100%' : this.height);
         this.svgContent = this.sanitizer.bypassSecurityTrustHtml(doc.documentElement.outerHTML);

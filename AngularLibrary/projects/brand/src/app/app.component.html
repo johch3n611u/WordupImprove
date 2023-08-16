@@ -1,24 +1,17 @@
-<header style="width: 100vw;">
-  <lib-svg [src]="'./assets/scene1.svg'" [style]="'position:absolute;width:100%;'"></lib-svg>
+<header>
+  <lib-svg [src]="'./assets/scene1.svg'" [style]="'position:absolute;width:100%;'" height="40vh"></lib-svg>
   <nav>
     <div class="logo">Logo</div>
     <ul class="nav">
-      <li><a href="#">Home</a></li>
-      <li><a href="#">Criação de Sites</a></li>
-      <li><a href="#">Anunciar no Google</a></li>
-      <li><a href="#">Redes Sociais</a></li>
-      <li><a href="#">Sobre</a></li>
-      <li><a href="#">Contato</a></li>
+      <!-- https://stackoverflow.com/questions/8614862/using-focus-pseudo-class-on-li-or-other-element-else-than-a-input-button-etc -->
+      <li tabindex="0">Home</li>
+      <li tabindex="0">Criação de Sites</li>
+      <li tabindex="0">Anunciar no Google</li>
+      <li tabindex="0">Redes Sociais</li>
+      <li tabindex="0">Sobre</li>
+      <li tabindex="0">Contato</li>
     </ul>
   </nav>
-  <div class="contentBox">
-    <p>It is jointly managed by the British Council, IDP: IELTS Australia and Cambridge Assessment English, and was
-      established in 1989.</p>
-    <h3>is an international standardized test of English language proficiency for non-native English language speakers
-    </h3>
-    <h1>The International English Language Testing System</h1>
-    <button>Call To Action</button>
-  </div>
 </header>
 <main>
   <router-outlet><!-- 根據路由顯示對應元件 --></router-outlet>
