@@ -1,16 +1,21 @@
+<!-- https://stackoverflow.com/questions/50011614/overflow-hidden-on-an-absolute-positioned-svg -->
+<!-- style="overflow: hidden;position: relative;" -->
 <div>
   <div class="animationBox">
     <lib-svg class="left" #diver1 [src]="'./assets/diver1.svg'"></lib-svg>
     <lib-svg class="right" #diver2 [src]="'./assets/diver2.svg'"></lib-svg>
-    <lib-svg class="right" #fish1 [src]="'./assets/fish1.svg'"></lib-svg>
-    <lib-svg class="left" #fish2 [src]="'./assets/fish2.svg'"></lib-svg>
+    <lib-svg class="right" #fish1 [src]="'./assets/fish2.svg'"></lib-svg>
+    <lib-svg class="left" #fish2 [src]="'./assets/fish1.svg'"></lib-svg>
+    <lib-svg class="bottom" #fish3 [src]="'./assets/fish3.svg'"></lib-svg>
+    <img #ink src="./assets/ink.png" style="position:absolute;opacity:0;z-index: 1000;">
+    <lib-svg class="sharkMouth" #sharkMouth [src]="'./assets/sharkMouth.svg'" height="40vh"></lib-svg>
   </div>
 
-  <div class="contentBox">
+  <div class="contentBox" [ngClass]="{'mixBlendModeDf':isMixBlendModeDf}">
     <p>was established in 1989.</p>
     <h4>is an international standardized test</h4>
     <h2>The International English</h2>
-    <span class='pulse-button'>pulse</span>
+    <span class='pulse-button' (click)="Part3Animation()">pulse</span>
   </div>
 
   <div class="sceneBox">
@@ -23,13 +28,14 @@
       height="40vh"></lib-svg>
     <lib-svg [src]="'./assets/scene2.svg'"
       [boxStyle]="'transform: scaleX(-1);position:absolute;bottom:0;left:0;z-index:-50'" height="70vh"></lib-svg>
-
   </div>
-
 </div>
-<div style="height: 100vh;margin-top: -5px;">
-  <lib-svg [svgClass]="'scene1'" [src]="'./assets/scene1.svg'" [style]="'position:absolute;width:100%;'"></lib-svg>
+<div style="margin-top: -5px;position: absolute;width: 100%;z-index: 10000;">
+  <img #ink src="./assets/mock.png" style="width:100%;">
+  <lib-svg [svgClass]="'scene1'" [src]="'./assets/scene1.svg'" [boxStyle]="'position:absolute;width:100%;z-index:-10000'" height="40vh"></lib-svg>
 </div>
-<div style="height: 100vh;"></div>
+<div style="margin-top: -5px;">
+  
+</div>
 <div style="height: 100vh;"></div>
 <div style="height: 100vh;"></div>
