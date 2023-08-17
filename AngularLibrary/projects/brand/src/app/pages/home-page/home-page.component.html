@@ -1,5 +1,10 @@
 <!-- https://stackoverflow.com/questions/50011614/overflow-hidden-on-an-absolute-positioned-svg -->
 <!-- style="overflow: hidden;position: relative;" -->
+
+<video id="background-video" autoplay loop muted poster="https://assets.codepen.io/6093409/river.jpg">
+  <source src="./assets/underwater.mp4" type="video/mp4">
+</video>
+
 <div>
   <div class="animationBox">
     <lib-svg class="left" #diver1 [src]="'./assets/diver1.svg'"></lib-svg>
@@ -31,13 +36,24 @@
       [height]="sceneHeight[4]+'vh'"></lib-svg>
   </div>
 </div>
-<div style="margin-top: -5px;position: absolute;width: 100%;z-index: 10000;">
-  <img #ink src="./assets/mock.png" style="width:100%;">
-  <lib-svg [svgClass]="'scene1'" [src]="'./assets/scene1.svg'"
-    [boxStyle]="'position:absolute;width:100%;z-index:-10000'" height="40vh"></lib-svg>
+<div
+  style="margin-top: -5px;position: absolute;width: 100%;z-index: 10000;background-image: url('./assets/mock.png');height: 100vh;">
+  <!-- <img src="./assets/mock.png" style="width:100%;"> -->
+  <div>
+    <p>was established in 1989.</p>
+    <h4>is an international standardized test</h4>
+    <h2>The International English</h2>
+  </div>
 </div>
 <div style="margin-top: -5px;">
-
+  <lib-svg [svgClass]="'scene1'" [src]="'./assets/scene1.svg'"
+    [boxStyle]="'width:100%;'" height="40vh"></lib-svg>
 </div>
-<div style="height: 100vh;"></div>
-<div style="height: 100vh;"></div>
+<div style="height: 100vh;">
+</div>
+<div style="height: 100vh;">
+</div>
+<div style="height: 100vh;">
+</div>
+<div style="height: 100vh;">
+</div>
