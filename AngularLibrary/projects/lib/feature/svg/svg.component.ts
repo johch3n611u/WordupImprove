@@ -25,6 +25,10 @@ export class SvgComponent {
   }
 
   ngOnInit(): void {
+    this.setSvg();
+  }
+
+  setSvg() {
     this.httpClient.get(this.src, { responseType: 'text' }).subscribe(
       res => {
         let parser = new DOMParser();
@@ -39,4 +43,32 @@ export class SvgComponent {
     )
   }
 
+  previousInputs: {
+    svgClass: string;
+    width: string;
+    height: string;
+    boxStyle: string;
+    src: string;
+  } | any = {};
+
+  ngDoCheck() {
+    if (
+      this.svgClass !== this.previousInputs.svgClass ||
+      this.width !== this.previousInputs.width ||
+      this.height !== this.previousInputs.height ||
+      this.boxStyle !== this.previousInputs.boxStyle ||
+      this.src !== this.previousInputs.src
+    ) {
+      // 在这里添加你想要执行的动作
+      this.setSvg();
+      // 更新previousInputs对象，将当前的输入参数值保存起来
+      this.previousInputs = {
+        svgClass: this.svgClass,
+        width: this.width,
+        height: this.height,
+        boxStyle: this.boxStyle,
+        src: this.src
+      };
+    }
+  }
 }

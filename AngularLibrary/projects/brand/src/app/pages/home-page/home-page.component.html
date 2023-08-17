@@ -19,23 +19,25 @@
   </div>
 
   <div class="sceneBox">
-    <lib-svg [src]="'./assets/scene10.svg'" height="20vh"></lib-svg>
+    <lib-svg [src]="'./assets/scene10.svg'" [height]="sceneHeight[0]+'vh'"></lib-svg>
     <lib-svg [src]="'./assets/scene6.svg'" [boxStyle]="'width:100%;position:absolute;bottom:0;right:0;z-index:-50'"
-      height="50vh"></lib-svg>
+      [height]="sceneHeight[1]+'vh'"></lib-svg>
     <lib-svg [src]="'./assets/scene3.svg'" [boxStyle]="'position:absolute;bottom:0;right:0;z-index:-50'"
-      height="40vh"></lib-svg>
+      [height]="sceneHeight[2]+'vh'"></lib-svg>
     <lib-svg [src]="'./assets/scene5.svg'" [boxStyle]="'width:100%;position:absolute;bottom:0;right:0;z-index:-50'"
-      height="40vh"></lib-svg>
+      [height]="sceneHeight[3]+'vh'"></lib-svg>
     <lib-svg [src]="'./assets/scene2.svg'"
-      [boxStyle]="'transform: scaleX(-1);position:absolute;bottom:0;left:0;z-index:-50'" height="70vh"></lib-svg>
+      [boxStyle]="'transform: scaleX(-1);position:absolute;bottom:0;left:0;z-index:-50'"
+      [height]="sceneHeight[4]+'vh'"></lib-svg>
   </div>
 </div>
 <div style="margin-top: -5px;position: absolute;width: 100%;z-index: 10000;">
   <img #ink src="./assets/mock.png" style="width:100%;">
-  <lib-svg [svgClass]="'scene1'" [src]="'./assets/scene1.svg'" [boxStyle]="'position:absolute;width:100%;z-index:-10000'" height="40vh"></lib-svg>
+  <lib-svg [svgClass]="'scene1'" [src]="'./assets/scene1.svg'"
+    [boxStyle]="'position:absolute;width:100%;z-index:-10000'" height="40vh"></lib-svg>
 </div>
 <div style="margin-top: -5px;">
-  
+
 </div>
 <div style="height: 100vh;"></div>
 <div style="height: 100vh;"></div>

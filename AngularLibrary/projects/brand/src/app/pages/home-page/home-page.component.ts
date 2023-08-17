@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, Renderer2 } from '@angular/core';
+import { Component, ElementRef, ViewChild, Renderer2, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { gsap } from "gsap";
 
@@ -91,6 +91,38 @@ export class HomePageComponent {
         this.router.navigate(['aboutUs']);
       }
     });
+  }
+
+  // 視差滾動
+  // todo：目前是利用重新繪製 svg 畫面看起來會有 bug 最好還是改為 css translation
+  // https://medium.com/unimarket/%E6%BB%BE-%E5%8E%B2%E5%AE%B3%E7%9A%84%E7%B6%B2%E7%AB%99%E8%A1%A8%E7%8F%BE%E6%B3%95-1bafffb56955
+  sceneHeightPure = [20, 50, 40, 40, 70];
+  sceneHeight = [20, 50, 40, 40, 70];
+  scrollPosition: number = 0;
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll(event: Event) {
+
+    // 英雄頁在畫面內
+    let heroPageInScreen = window.innerHeight > window.scrollY;
+    if (heroPageInScreen) {
+      let tolerance = this.scrollPosition - window.scrollY;
+      this.sceneHeight.forEach((scene, index) => {
+        if (tolerance > 0) {
+          this.sceneHeight[index] -= 5;
+        } else {
+          this.sceneHeight[index] += 5;
+        }
+      });
+
+      this.scrollPosition = window.scrollY;
+    }
+
+    // 出現怪怪的就重新來過
+    let lock = Math.abs(this.sceneHeight[0] - this.sceneHeightPure[0]);
+    console.log(lock)
+    if (lock > 30) {
+      this.sceneHeight = [...this.sceneHeightPure];
+    }
   }
 }
 
