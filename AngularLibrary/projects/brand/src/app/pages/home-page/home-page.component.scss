@@ -1,10 +1,14 @@
-.contentBox {
-  position: relative;
-  color: white;
+.flexBox
+{
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+
+.heroImageContent {
+  position: relative;
+  color: white;
   text-shadow: 1px 1px 1px black;
   margin: auto;
   margin-top: 10rem;

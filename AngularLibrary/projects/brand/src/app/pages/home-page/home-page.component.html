@@ -1,10 +1,11 @@
-<!-- https://stackoverflow.com/questions/50011614/overflow-hidden-on-an-absolute-positioned-svg -->
-<!-- style="overflow: hidden;position: relative;" -->
-
-<video id="background-video" autoplay loop muted poster="https://assets.codepen.io/6093409/river.jpg">
+<!-- poster="https://assets.codepen.io/6093409/river.jpg" -->
+<video id="background-video" autoplay loop muted preload="auto">
   <source src="./assets/underwater.mp4" type="video/mp4">
+  Video not supported
 </video>
 
+<!-- https://stackoverflow.com/questions/50011614/overflow-hidden-on-an-absolute-positioned-svg -->
+<!-- style="overflow: hidden;position: relative;" -->
 <div>
   <div class="animationBox">
     <lib-svg class="left" #diver1 [src]="'./assets/diver1.svg'"></lib-svg>
@@ -16,7 +17,7 @@
     <lib-svg class="sharkMouth" #sharkMouth [src]="'./assets/sharkMouth.svg'" height="40vh"></lib-svg>
   </div>
 
-  <div class="contentBox" [ngClass]="{'mixBlendModeDf':isMixBlendModeDf}">
+  <div class="heroImageContent flexBox" [ngClass]="{'mixBlendModeDf':isMixBlendModeDf}">
     <p>was established in 1989.</p>
     <h4>is an international standardized test</h4>
     <h2>The International English</h2>
@@ -36,18 +37,17 @@
       [height]="sceneHeight[4]+'vh'"></lib-svg>
   </div>
 </div>
-<div
-  style="margin-top: -5px;position: absolute;width: 100%;z-index: 10000;background-image: url('./assets/mock.png');height: 100vh;">
+<div style="margin-top: -5px;width: 100%;background-image: url('./assets/mock.png');height: 1500px;">
   <!-- <img src="./assets/mock.png" style="width:100%;"> -->
-  <div>
-    <p>was established in 1989.</p>
-    <h4>is an international standardized test</h4>
-    <h2>The International English</h2>
+  <div class="flexBox" style="height:100%;padding:0 25rem;">
+    <p>remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
+      Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions
+      of Lorem Ipsum.</p>
+    <h2>What is Lorem Ipsum?</h2>
   </div>
 </div>
 <div style="margin-top: -5px;">
-  <lib-svg [svgClass]="'scene1'" [src]="'./assets/scene1.svg'"
-    [boxStyle]="'width:100%;'" height="40vh"></lib-svg>
+  <lib-svg [svgClass]="'scene1'" [src]="'./assets/scene1.svg'" [boxStyle]="'width:100%;'" height="40vh"></lib-svg>
 </div>
 <div style="height: 100vh;">
 </div>
