@@ -101,26 +101,35 @@ export class HomePageComponent {
   scrollPosition: number = 0;
   @HostListener('window:scroll', ['$event'])
   onWindowScroll(event: Event) {
+
     // 英雄頁在畫面內
     let heroPageInScreen = window.innerHeight > window.scrollY;
+    console.log('heroPageInScreen:',heroPageInScreen);
+    console.log('window.innerHeight:',window.innerHeight);
     if (heroPageInScreen) {
+      console.log('this.scrollPosition:',this.scrollPosition);
+      console.log('window.scrollY:',window.scrollY);
+
       let tolerance = this.scrollPosition - window.scrollY;
+      console.log('tolerance:',tolerance);
       this.sceneHeight.forEach((scene, index) => {
         if (tolerance > 0) {
+          console.log("-5");
           this.sceneHeight[index] -= 5;
         } else {
           this.sceneHeight[index] += 5;
         }
       });
+
       this.scrollPosition = window.scrollY;
     }
 
     // 出現怪怪的就重新來過
-    let lock = Math.abs(this.sceneHeight[0] - this.sceneHeightPure[0]);
-    console.log(lock)
-    if (lock > 30) {
-      this.sceneHeight = [...this.sceneHeightPure];
-    }
+    // let lock = Math.abs(this.sceneHeight[0] - this.sceneHeightPure[0]);
+    // console.log(lock)
+    // if (lock > 30) {
+    //   this.sceneHeight = [...this.sceneHeightPure];
+    // }
   }
 }
 
