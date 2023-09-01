@@ -11,7 +11,7 @@
     "build:ec": "ng build ec --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/assets/angular/ec/",
     "build:crm": "ng build crm --base-href=/assets/angular/crm/",
     "build:cms": "ng build cms --base-href=/assets/angular/cms/",
-    "build:mod": "ng build mod --base-href=/assets/angular/mod/",
+    "build:mod": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/assets/angular/mod/memory-card/",
     "build:brand": "ng build brand --base-href=/assets/angular/brand/",
     "start:ec": "ng serve ec --open",
     "start:crm": "ng serve crm --open",
