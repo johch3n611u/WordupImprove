@@ -8,6 +8,7 @@ import { LibraryModule, SampleModule } from 'lib/public-api';
 import { SampleComponent } from './sample/sample.component';
 import { DynamicMasonryComponent } from './dynamic-masonry/dynamic-masonry.component';
 import { RwdTableComponent } from './rwd-table/rwd-table.component';
+import { MemoryCardsComponent } from './memory-cards/memory-cards.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { RwdTableComponent } from './rwd-table/rwd-table.component';
     AppComponent,
     SampleComponent,
     DynamicMasonryComponent,
-    RwdTableComponent
+    RwdTableComponent,
+    MemoryCardsComponent
   ],
   imports: [
     BrowserModule,

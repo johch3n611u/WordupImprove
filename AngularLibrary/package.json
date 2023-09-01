@@ -16,7 +16,7 @@
     "start:ec": "ng serve ec --open",
     "start:crm": "ng serve crm --open",
     "start:cms": "ng serve cms --open",
-    "start:bd": "ng serve brand --open",
+    "start:brand": "ng serve brand --open",
     "start:mod": "ng serve mod --open"
   },
   "private": true,
