@@ -25,7 +25,7 @@ export class MemoryCardsComponent {
     this.httpClient.get(this.url)
       .subscribe((res: any) => {
         this.object.titles = [...res.values[0]];
-        this.object.types = [...res.values.slice(1).map((item: any) => item[0])];
+        this.object.types = [...new Set(res.values.slice(1).map((item: any) => item[0]) as string[])];
         this.object.questions = [...res.values.slice(1).map((item: any) => {
           return {
             t: item[0], q: item[1], a: item[2]
