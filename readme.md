@@ -109,7 +109,7 @@ CSS 中最大的幾個議題
 
 ### Large EC Project Architecture
 
-<details>
+<!--- <details>
 <summary>實戰過多國多站台共用元件庫架構</summary>
 
 ```
@@ -467,7 +467,7 @@ Server
 Service Worker
 ```
 
-</details>
+</details> --->
 
 ### [Lib] Loading Overlay Service
 
