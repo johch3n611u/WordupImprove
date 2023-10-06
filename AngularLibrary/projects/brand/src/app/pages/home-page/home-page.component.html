@@ -9,12 +9,15 @@
 <div>
   <div class="animationBox">
     <img class="left" #diver1 [src]="'./assets/diver1.gif'">
-    <img class="right" #diver2 [src]="'./assets/diver1.gif'">
-    <lib-svg class="right" #fish1 [src]="'./assets/fish2.svg'"></lib-svg>
-    <lib-svg class="left" #fish2 [src]="'./assets/fish1.svg'"></lib-svg>
-    <lib-svg class="bottom" #fish3 [src]="'./assets/fish3.svg'"></lib-svg>
+    <img class="right" #diver2 [src]="'./assets/diver2.gif'">
+    <!-- <lib-svg class="right" #fish1 [src]="'./assets/fish2.svg'"></lib-svg> -->
+    <img class="right" #fish1 [src]="'./assets/fish2.gif'">
+    <!-- <lib-svg class="left" #fish2 [src]="'./assets/fish1.svg'"></lib-svg> -->
+    <img class="left" #fish2 [src]="'./assets/fish1.gif'">
+    <img class="bottom" #fish3 [src]="'./assets/fish3.gif'">
     <img #ink src="./assets/ink.png" style="position:absolute;opacity:0;z-index: 1000;">
-    <lib-svg class="sharkMouth" #sharkMouth [src]="'./assets/sharkMouth.svg'" height="40vh"></lib-svg>
+    <!-- <lib-svg class="sharkMouth" #sharkMouth [src]="'./assets/sharkMouth.svg'" height="40vh"></lib-svg> -->
+    <img class="sharkMouth" #sharkMouth [src]="'./assets/sharkMouth.gif'" height="40vh">
   </div>
 
   <div class="heroImageContent flexBoxColumn" [ngClass]="{'mixBlendModeDf':isMixBlendModeDf}">
@@ -25,7 +28,7 @@
   </div>
 
   <div class="sceneBox">
-    <lib-svg [src]="'./assets/scene10.svg'" [height]="sceneHeight[0]+'vh'"></lib-svg>
+    <lib-svg [src]="'./assets/scene10.svg'" [height]="'20vh'"></lib-svg>
     <lib-svg [src]="'./assets/scene6.svg'" [boxStyle]="'width:100%;position:absolute;bottom:0;right:0;z-index:-50'"
       [height]="sceneHeight[1]+'vh'"></lib-svg>
     <lib-svg [src]="'./assets/scene3.svg'" [boxStyle]="'position:absolute;bottom:0;right:0;z-index:-50'"

@@ -29,7 +29,7 @@ export class HomePageComponent {
   }
 
   Part1Animation() {
-    let switchbackOption = { repeat: -1, yoyo: true, repeatRefresh: true };
+    let switchbackOption = { repeat: -1 };
     let tl = gsap.timeline(switchbackOption);
     this.switchback(tl, this._diver1?.nativeElement, -3500, 3500);
     let tl2 = gsap.timeline(switchbackOption);
@@ -48,19 +48,9 @@ export class HomePageComponent {
         duration: () => { return this.getRand(25, 60) },
         y: () => { return this.getRand(0, 1000) },
         scale: () => { return this.getRand(1, 3) },
-        delay: () => { return this.getRand(1, 5) },
+        delay: () => { return this.getRand(1, 2) },
         opacity: 0
-      })
-      .to(el, { duration: 1, rotateY: 180 })
-      .to(el, {
-        x: endX,
-        duration: () => { return this.getRand(25, 40) },
-        y: () => { return this.getRand(0, 1000) },
-        scale: () => { return this.getRand(1, 3) },
-        delay: () => { return this.getRand(1, 5) },
-        opacity: 0
-      })
-      .to(el, { duration: 1, rotateY: 180 });
+      });
   }
 
   getRand(min: any, max: any) {
@@ -87,7 +77,7 @@ export class HomePageComponent {
     let sharkMouth = this._sharkMouth?.nativeElement;
     this.isMixBlendModeDf = true;
     tl.to(sharkMouth, {
-      scale: 5, duration: 8, opacity: 1, onComplete: () => {
+      scale: 100, duration: 8, opacity: 1, onComplete: () => {
         this.router.navigate(['aboutUs']);
       }
     });
