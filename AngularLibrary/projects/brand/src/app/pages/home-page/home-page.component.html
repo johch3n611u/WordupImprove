@@ -8,8 +8,8 @@
 <!-- style="overflow: hidden;position: relative;" -->
 <div>
   <div class="animationBox">
-    <lib-svg class="left" #diver1 [src]="'./assets/diver1.svg'"></lib-svg>
-    <lib-svg class="right" #diver2 [src]="'./assets/diver2.svg'"></lib-svg>
+    <img class="left" #diver1 [src]="'./assets/diver1.gif'">
+    <img class="right" #diver2 [src]="'./assets/diver1.gif'">
     <lib-svg class="right" #fish1 [src]="'./assets/fish2.svg'"></lib-svg>
     <lib-svg class="left" #fish2 [src]="'./assets/fish1.svg'"></lib-svg>
     <lib-svg class="bottom" #fish3 [src]="'./assets/fish3.svg'"></lib-svg>
@@ -17,7 +17,7 @@
     <lib-svg class="sharkMouth" #sharkMouth [src]="'./assets/sharkMouth.svg'" height="40vh"></lib-svg>
   </div>
 
-  <div class="heroImageContent flexBox" [ngClass]="{'mixBlendModeDf':isMixBlendModeDf}">
+  <div class="heroImageContent flexBoxColumn" [ngClass]="{'mixBlendModeDf':isMixBlendModeDf}">
     <p>was established in 1989.</p>
     <h4>is an international standardized test</h4>
     <h2>The International English</h2>
@@ -39,7 +39,7 @@
 </div>
 <div style="margin-top: -5px;width: 100%;background-image: url('./assets/mock.png');height: 1500px;">
   <!-- <img src="./assets/mock.png" style="width:100%;"> -->
-  <div class="flexBox" style="height:100%;padding:0 25rem;color:white;text-shadow: 1px 1px 1px black;">
+  <div class="flexBoxColumn" style="height:100%;padding:0 25rem;color:white;text-shadow: 1px 1px 1px black;">
     <p>remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
       Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions
       of Lorem Ipsum.</p>
@@ -50,6 +50,9 @@
   <lib-svg [svgClass]="'scene1'" [src]="'./assets/scene1.svg'" [boxStyle]="'width:100%;'" height="40vh"></lib-svg>
 </div>
 <div style="height: 100vh;">
+  <div class="flexBoxRow">
+
+  </div>
 </div>
 <div style="height: 100vh;">
 </div>

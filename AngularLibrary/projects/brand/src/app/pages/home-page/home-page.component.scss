@@ -1,11 +1,14 @@
-.flexBox
+.flexBoxColumn
 {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 }
-
+.flexBoxRow{
+  display: flex;
+  align-items: center;
+}
 .heroImageContent {
   position: relative;
   color: white;
@@ -37,14 +40,15 @@
   display: block;
   position: absolute;
   z-index: 1000;
+  width: 15%;
 }
 
 .left {
-  right: -300px;
+  right: -600px;
 }
 
 .right {
-  left: -300px;
+  left: -600px;
 }
 
 .bottom {
