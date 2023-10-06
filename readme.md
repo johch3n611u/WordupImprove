@@ -53,6 +53,7 @@
 23. [什麼？又是／不只是 Design Patterns!?](https://ithelp.ithome.com.tw/users/20120812/ironman/2697)
 24. [全世界最大開放 api 項目](https://github.com/public-apis/public-apis)
 25. [中文api](https://github.com/TonnyL/Awesome_APIs)
+26. [實踐無障礙網頁設計（Web Accessibility）](https://ithelp.ithome.com.tw/articles/10215933)
 
 </details>
 
@@ -508,3 +509,7 @@ ngTemplateOutlet、ng-container、ng-template 透過以上選擇器特性與流�
 [Website Layout: Design Ideas and Examples to Inspire You](https://crocoblock.com/blog/website-layout-basics/)
 
 [7 Webpage Layouts Crucial for Any Site to Incorporate](https://www.upwork.com/resources/web-page-layouts)
+
+### [Lighthouse](https://chrome.google.com/webstore/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk)
+
+ a11y ( Accessibility )、g11n（globalization）、i18n（Internationalization）、L10n（Localization）、p13n（personalization）
