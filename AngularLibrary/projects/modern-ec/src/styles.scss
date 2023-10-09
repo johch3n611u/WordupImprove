@@ -1,0 +1,19 @@
+/* You can add global styles to this file, and also import other style files */
+
+@include LargeDevices {
+  body {
+    background-color: red !important;
+  }
+}
+
+@include MediumDevices {
+  body {
+    background-color: rgb(102, 255, 0) !important;
+  }
+}
+
+@include SmallDevices {
+  body {
+    background-color: rgb(13, 0, 255) !important;
+  }
+}

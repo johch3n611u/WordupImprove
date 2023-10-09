@@ -104,6 +104,12 @@ CSS 中最大的幾個議題
 
 目前還是看好 SASS 解決方案，1、2 可以透過 Component Style 解決，CSS in JS 可以透過 Angular 的 Component Styles 搞定，所以最後決定嘗試導入 sass-resources-loader
 
+1. 客製化 webpack.config 指定 global 位置
+2. builder 改為 angular.json => app name.architect.build.builder (@angular-devkit/build-angular:browser) => (@angular-builders/custom-webpack:browser)
+3. app name.architect.build.options 新增 customWebpackConfig ("path": "./extra-webpack.config.js",
+"mergeRules": {"externals": "replace"})
+4. app name.architect.serve.builder => (@angular-devkit/build-angular:dev-server) => (@angular-builders/custom-webpack:dev-server)
+
 <br><br><br><br>
 
 ## 架構與文檔
