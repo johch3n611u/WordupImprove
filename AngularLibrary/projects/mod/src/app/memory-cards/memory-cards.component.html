@@ -10,7 +10,7 @@
     <span style="margin-bottom:1rem;">{{nowQuestion.t}}</span>
     <button (click)="clickBtn()">{{btnWord}}</button>
     <div class="flexCenter" style="margin:2rem 0;">
-      <div style="overflow: auto;height: 390px;">{{display}}</div>
+      <div style="overflow: auto;height: 390px;white-space: pre-line;" [innerHTML]="display"></div>
     </div>
   </div>
   <a style="margin: 1.5rem;" href="https://forms.gle/eZShhKFAhDsojCGr9" target="_blank">新增題目</a>

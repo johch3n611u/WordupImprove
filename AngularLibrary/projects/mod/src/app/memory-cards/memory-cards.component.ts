@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 export class MemoryCardsComponent {
 
   nowQuestion: any = {};
-  display: any = '';
+  display: any;
   filterActive = 'all';
   btnWord = '答案';
 
@@ -26,6 +26,7 @@ export class MemoryCardsComponent {
       .subscribe((res: any) => {
         this.object.titles = [...res.values[0]];
         this.object.types = [...new Set(res.values.slice(1).map((item: any) => item[0]) as string[])];
+        console.log('this.object.types',this.object.types)
         this.object.questions = [...res.values.slice(1).map((item: any) => {
           return {
             t: item[0], q: item[1], a: item[2]
@@ -45,12 +46,15 @@ export class MemoryCardsComponent {
       nowCard = [...this.object.questions.filter((res: any) => res.t == this.filterActive)];
     }
     this.nowQuestion = nowCard[this.getRandomIndex(nowCard.length - 1)];
-    this.display = this.nowQuestion.q;
+    console.log('nowCard',nowCard)
+    this.display = this.nowQuestion.q.toString();
+    console.log(this.display);
     this.btnWord = '答案';
   }
 
   seeAnswer() {
-    this.display = this.nowQuestion.a;
+    this.display = this.nowQuestion.a.toString();
+    console.log(this.display);
     this.btnWord = '抽卡';
   }
 

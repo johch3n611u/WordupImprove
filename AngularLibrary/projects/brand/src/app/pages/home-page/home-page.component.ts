@@ -20,7 +20,7 @@ export class HomePageComponent {
   constructor(
     private router: Router
   ) {
-
+    
   }
 
   ngAfterViewInit(): void {
@@ -96,15 +96,18 @@ export class HomePageComponent {
     // console.log('window.scrollY 卷軸高度:', window.scrollY || window.pageYOffset);
     // console.log('document.documentElement.scrollHeight 檔案高度', document.documentElement.scrollHeight);
 
+    console.log(window.scrollY < window.innerHeight);
+
     if (window.scrollY < window.innerHeight && this.sceneHeight[0] >= this.sceneHeightPure[0]) {
       if (window.scrollY > this.scrollPosition) {
         this.sceneHeight.forEach((scene, index) => {
           this.sceneHeight[index] += 1;
         });
       } else {
-        this.sceneHeight.forEach((scene, index) => {
-          this.sceneHeight[index] -= 1;
-        });
+        // this.sceneHeight.forEach((scene, index) => {
+        //   this.sceneHeight[index] -= 1;
+        // });
+        this.sceneHeight = [...this.sceneHeightPure];
       }
     } else {
       this.sceneHeight = [...this.sceneHeightPure];
