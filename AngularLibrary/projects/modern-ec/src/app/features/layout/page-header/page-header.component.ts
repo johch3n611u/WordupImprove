@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { superMenuModal } from './superMenuModal';
 
+
 @Component({
   selector: 'm-ec-page-header',
   templateUrl: './page-header.component.html',

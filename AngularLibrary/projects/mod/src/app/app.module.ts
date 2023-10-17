@@ -9,6 +9,7 @@ import { SampleComponent } from './sample/sample.component';
 import { DynamicMasonryComponent } from './dynamic-masonry/dynamic-masonry.component';
 import { RwdTableComponent } from './rwd-table/rwd-table.component';
 import { MemoryCardsComponent } from './memory-cards/memory-cards.component';
+import { SuperMenuComponent } from './super-menu/super-menu.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { MemoryCardsComponent } from './memory-cards/memory-cards.component';
     SampleComponent,
     DynamicMasonryComponent,
     RwdTableComponent,
-    MemoryCardsComponent
+    MemoryCardsComponent,
+    SuperMenuComponent
   ],
   imports: [
     BrowserModule,
