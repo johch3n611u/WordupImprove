@@ -17,8 +17,7 @@
     "start:crm": "ng serve crm --open",
     "start:cms": "ng serve cms --open",
     "start:brand": "ng serve brand --open",
-    "start:mod": "ng serve mod --open",
-    "start:m-ec":"ng serve modern-ec --open"
+    "start:mod": "ng serve mod --open"
   },
   "private": true,
   "dependencies": {
