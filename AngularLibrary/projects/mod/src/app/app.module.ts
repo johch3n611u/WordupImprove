@@ -1,3 +1,5 @@
+import { SuperMenuComponent } from './super-menu/super-menu.component';
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -9,7 +11,6 @@ import { SampleComponent } from './sample/sample.component';
 import { DynamicMasonryComponent } from './dynamic-masonry/dynamic-masonry.component';
 import { RwdTableComponent } from './rwd-table/rwd-table.component';
 import { MemoryCardsComponent } from './memory-cards/memory-cards.component';
-import { SuperMenuComponent } from './super-menu/super-menu.component';
 
 
 @NgModule({

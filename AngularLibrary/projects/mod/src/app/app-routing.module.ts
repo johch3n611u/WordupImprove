@@ -4,13 +4,15 @@ import { SampleComponent } from './sample/sample.component';
 import { DynamicMasonryComponent } from './dynamic-masonry/dynamic-masonry.component';
 import { RwdTableComponent } from './rwd-table/rwd-table.component';
 import { MemoryCardsComponent } from './memory-cards/memory-cards.component';
+import { SuperMenuComponent } from './super-menu/super-menu.component';
 
 const routes: Routes = [
-  { path: '', component: MemoryCardsComponent },
+  { path: '', component: SuperMenuComponent },
   { path: 'sample', component: SampleComponent, pathMatch: 'full' },
   { path: 'dynamic-masonry', component: DynamicMasonryComponent, pathMatch: 'full' },
   { path: 'memory-cards', component: MemoryCardsComponent, pathMatch: 'full' },
   { path: 'rwd-table', component: RwdTableComponent, pathMatch: 'full' },
+  { path: 'super-menu', component: SuperMenuComponent, pathMatch: 'full'}
 ];
 
 @NgModule({
