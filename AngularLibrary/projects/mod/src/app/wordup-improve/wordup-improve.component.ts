@@ -70,7 +70,6 @@ export class WordupImproveComponent {
   drawSentence() {
     this.sentenceAnswerDisplay = false;
     const randomNumber = Math.floor(Math.random() * (this.card.sentences.length - 1));
-    console.log(this.card, randomNumber)
     this.sentence = this.card.sentences[randomNumber];
   }
 
@@ -113,31 +112,34 @@ export class WordupImproveComponent {
   }
 
   drawChat() {
-
     if (this.chart) {
       this.chart.destroy();
     }
 
+    const labels = [
+      `未複習到 ${this.familiarity.notReviewed}`,
+      `超不熟悉 ${this.familiarity.veryUnfamiliar}`,
+      `不熟悉 ${this.familiarity.unfamiliar}`,
+      `熟悉 ${this.familiarity.familiar}`,
+      `超熟悉 ${this.familiarity.veryFamiliar}`
+    ];
+
+    const data = [
+      this.familiarity.notReviewed,
+      this.familiarity.veryUnfamiliar,
+      this.familiarity.unfamiliar,
+      this.familiarity.familiar,
+      this.familiarity.veryFamiliar
+    ];
+
     this.chart = new Chart('canvas', {
       type: 'pie',
       data: {
-        labels: [
-          `未複習到 ${this.familiarity.notReviewed}`,
-          `超不熟悉 ${this.familiarity.veryUnfamiliar}`,
-          `不熟悉 ${this.familiarity.unfamiliar}`,
-          `熟悉 ${this.familiarity.familiar}`,
-          `超熟悉 ${this.familiarity.veryFamiliar}`
-        ],
+        labels: labels,
         datasets: [
           {
             label: '# of Votes',
-            data: [
-              this.familiarity.notReviewed,
-              this.familiarity.veryUnfamiliar,
-              this.familiarity.unfamiliar,
-              this.familiarity.familiar,
-              this.familiarity.veryFamiliar
-            ],
+            data: data,
             borderWidth: 1,
           },
         ],
@@ -169,6 +171,30 @@ export class WordupImproveComponent {
       this.answerScore = [];
       localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
       this.calculateFamiliarity();
+    }
+  }
+
+  searchWord: any;
+  searchWordExplain: any;
+
+  searchWordMark() {
+    const pattern = new RegExp(`\\b${this.searchWord}\\b`, "gi");
+    const searched = this.cards.find((card: any) => card.en.match(pattern));
+
+    if (searched) {
+      const word = this.answerScore.find((word: any) => word.en.match(pattern));
+
+      if (word) {
+        word.score -= 5;
+      } else {
+        this.answerScore.push({ en: this.searchWord, score: -5 });
+      }
+
+      localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
+      this.searchWordExplain = searched.cn;
+      alert('已扣 5 分');
+    } else {
+      alert('搜尋不到此單字');
     }
   }
 }

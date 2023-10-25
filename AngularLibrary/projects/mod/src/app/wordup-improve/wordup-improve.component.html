@@ -24,10 +24,17 @@
         <hr>
         <p>{{card?.en}}</p>
         <p>{{card?.cn}}</p>
+        <hr>
+        <div>
+          <input type="text" [(ngModel)]="searchWord"/>
+          <button (click)="searchWordMark()">搜尋單字註記不會</button>
+          <p>{{searchWordExplain}}</p>
+        </div>
       </ng-container>
     </div>
   </div>
   <div style="max-width: 50vw;">
+    <hr>
     <canvas id="canvas">{{chart}}</canvas>
     <button class="unobviousBtn" (click)="resetAnswerScore()">清空紀錄</button>
   </div>
