@@ -193,6 +193,7 @@ export class WordupImproveComponent {
       localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
       this.searchWordExplain = searched.cn;
       alert('已扣 5 分');
+      this.calculateFamiliarity();
     } else {
       alert('搜尋不到此單字');
     }
