@@ -11,25 +11,31 @@ import { SampleComponent } from './sample/sample.component';
 import { DynamicMasonryComponent } from './dynamic-masonry/dynamic-masonry.component';
 import { RwdTableComponent } from './rwd-table/rwd-table.component';
 import { MemoryCardsComponent } from './memory-cards/memory-cards.component';
+import { WordupImproveComponent } from './wordup-improve/wordup-improve.component';
+import { FormsModule } from '@angular/forms';
+import { HighlightPipeModule } from "../../../lib/feature/highlight/highlight.module";
 
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    SampleComponent,
-    DynamicMasonryComponent,
-    RwdTableComponent,
-    MemoryCardsComponent,
-    SuperMenuComponent
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    AppRoutingModule,
-    SampleModule,
-    LibraryModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        SampleComponent,
+        DynamicMasonryComponent,
+        RwdTableComponent,
+        MemoryCardsComponent,
+        SuperMenuComponent,
+        WordupImproveComponent
+    ],
+    providers: [],
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        AppRoutingModule,
+        FormsModule,
+        SampleModule,
+        LibraryModule,
+        HighlightPipeModule
+    ]
 })
 export class AppModule { }

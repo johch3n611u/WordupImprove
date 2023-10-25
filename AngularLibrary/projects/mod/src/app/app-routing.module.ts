@@ -5,9 +5,10 @@ import { DynamicMasonryComponent } from './dynamic-masonry/dynamic-masonry.compo
 import { RwdTableComponent } from './rwd-table/rwd-table.component';
 import { MemoryCardsComponent } from './memory-cards/memory-cards.component';
 import { SuperMenuComponent } from './super-menu/super-menu.component';
+import { WordupImproveComponent } from './wordup-improve/wordup-improve.component';
 
 const routes: Routes = [
-  { path: '', component: SuperMenuComponent },
+  { path: '', component: WordupImproveComponent },
   { path: 'sample', component: SampleComponent, pathMatch: 'full' },
   { path: 'dynamic-masonry', component: DynamicMasonryComponent, pathMatch: 'full' },
   { path: 'memory-cards', component: MemoryCardsComponent, pathMatch: 'full' },

@@ -1,0 +1,34 @@
+<div class="box" style="display:flex; align-items: center; justify-content: center;flex-direction: column;     padding-bottom: 3rem;" (window:resize)="onResize($event)">
+  <div class="toolBox">
+    <button *ngIf="displayMode !== DisplayMode.Answer"
+      (click)="displayMode = DisplayMode.Answer;sentenceAnswerDisplay = true;">
+      {{displayMode}}
+    </button>
+    <ng-container *ngIf="displayMode === DisplayMode.Answer">
+      <button (click)="answerScoreReset(true)">會</button>
+      <button (click)="answerScoreReset(false)">不會</button>
+    </ng-container>
+    <p *ngIf="SUSS > 0">連續 {{SUSS}} 答題成功!!</p>
+  </div>
+  <div style="padding: 1.5rem;">
+    <div *ngIf="card">
+      <p [innerHtml]="sentence?.en | highlight:card?.en:'full'"></p>
+      <ng-container *ngIf="displayMode === DisplayMode.Answer">
+        <p>
+          <ng-container *ngIf="sentenceAnswerDisplay">
+            <p [innerHtml]="sentence?.cn"></p>
+          </ng-container>
+        </p>
+        <button *ngIf="sentenceAnswerDisplay" (click)="drawSentence()">更多例句</button>
+        <button *ngIf="!sentenceAnswerDisplay" (click)="sentenceAnswerDisplay = true">例句答案</button>
+        <hr>
+        <p>{{card?.en}}</p>
+        <p>{{card?.cn}}</p>
+      </ng-container>
+    </div>
+  </div>
+  <div style="max-width: 50vw;">
+    <canvas id="canvas">{{chart}}</canvas>
+    <button class="unobviousBtn" (click)="resetAnswerScore()">清空紀錄</button>
+  </div>
+</div>
