@@ -28,6 +28,7 @@
         <div>
           <input type="text" [(ngModel)]="searchWord"/>
           <button (click)="searchWordMark()">搜尋單字註記不會</button>
+          <p>{{searchWordDisplay}}</p>
           <p>{{searchWordExplain}}</p>
         </div>
       </ng-container>
@@ -36,6 +37,9 @@
   <div style="max-width: 50vw;">
     <hr>
     <canvas id="canvas">{{chart}}</canvas>
-    <button class="unobviousBtn" (click)="resetAnswerScore()">清空紀錄</button>
+    <div>
+      <button class="unobviousBtn" (click)="resetAnswerScore()">清空紀錄</button>
+      <button class="unobviousBtn" (click)="setTheme()">切換黑白模式</button>
+    </div>
   </div>
 </div>

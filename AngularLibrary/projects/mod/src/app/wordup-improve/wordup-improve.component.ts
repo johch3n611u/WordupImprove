@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { tap } from 'rxjs';
 import Chart from 'chart.js/auto';
+import { Theme, ThemeService } from 'lib/feature/theme/theme.service';
 
 @Component({
   selector: 'mod-wordup-improve',
@@ -20,9 +21,11 @@ export class WordupImproveComponent {
   displayMode = DisplayMode.Questions;
   answerScore: any = [];
   chart: any;
+  theme = Theme;
 
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    public themeService: ThemeService,
   ) {
     this.httpClient.get(this.url)
       .pipe(
@@ -34,6 +37,8 @@ export class WordupImproveComponent {
       .subscribe((res: any) => {
         this.drawCard();
       });
+
+    this.themeService.SetTheme(this.themeService.GetTheme());
   }
 
   drawCard(count: any = 1) {
@@ -100,13 +105,13 @@ export class WordupImproveComponent {
     let undefined = this.cards.length - this.answerScore.length;
     this.familiarity.notReviewed = zero + undefined;
     // 超不熟悉 -5
-    this.familiarity.veryUnfamiliar = this.answerScore.filter((res: any) => res.score < -5).length;
+    this.familiarity.veryUnfamiliar = this.answerScore.filter((res: any) => res.score <= -5).length;
     // 不熟悉 -
     this.familiarity.unfamiliar = this.answerScore.filter((res: any) => res.score < 0 && res.score > -5).length;
     // 熟悉 +
     this.familiarity.familiar = this.answerScore.filter((res: any) => res.score > 0 && res.score < 5).length;
     // 超熟悉 +5
-    this.familiarity.veryFamiliar = this.answerScore.filter((res: any) => res.score > 5).length;
+    this.familiarity.veryFamiliar = this.answerScore.filter((res: any) => res.score >= 5).length;
 
     this.drawChat();
   }
@@ -176,6 +181,7 @@ export class WordupImproveComponent {
 
   searchWord: any;
   searchWordExplain: any;
+  searchWordDisplay: any;
 
   searchWordMark() {
     const pattern = new RegExp(`\\b${this.searchWord}\\b`, "gi");
@@ -194,9 +200,20 @@ export class WordupImproveComponent {
       this.searchWordExplain = searched.cn;
       alert('已扣 5 分');
       this.calculateFamiliarity();
+
+      this.searchWordDisplay = this.searchWord;
+      this.searchWord = '';
+
     } else {
       alert('搜尋不到此單字');
     }
+  }
+
+  nowTheme = this.themeService.GetTheme();
+
+  setTheme() {
+    this.nowTheme === this.theme.dark ? this.nowTheme = this.theme.light : this.nowTheme = this.theme.dark;
+    this.themeService.SetTheme(this.nowTheme);
   }
 }
 

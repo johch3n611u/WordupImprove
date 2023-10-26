@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./panel.component.scss']
 })
 export class PanelComponent {
-  Theme = Theme;
+  theme = Theme;
   @Input() data: any = {};
   language = [
     {
