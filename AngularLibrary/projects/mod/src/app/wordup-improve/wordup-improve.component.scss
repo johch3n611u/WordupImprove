@@ -11,7 +11,7 @@ button {
 }
 
 .box {
-  margin-top: 15vh;
+  margin-top: 10vh;
 }
 
 .unobviousBtn {
@@ -24,13 +24,13 @@ button {
 
 @include LargeDevices {
   .box {
-    margin-top: 15vh;
+    margin-top: 10vh;
   }
 }
 
 @include MediumDevices {
   .box {
-    margin-top: 15vh;
+    margin-top: 10vh;
   }
 }
 

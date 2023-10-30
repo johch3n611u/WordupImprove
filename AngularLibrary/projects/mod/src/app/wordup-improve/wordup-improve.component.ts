@@ -184,7 +184,8 @@ export class WordupImproveComponent {
   searchWordDisplay: any;
 
   searchWordMark() {
-    const pattern = new RegExp(`\\b${this.searchWord}\\b`, "gi");
+    let searchWord = this.searchWord.split(" ").join("");
+    const pattern = new RegExp(`\\b${searchWord}\\b`, "gi");
     const searched = this.cards.find((card: any) => card.en.match(pattern));
 
     if (searched) {
@@ -193,7 +194,7 @@ export class WordupImproveComponent {
       if (word) {
         word.score -= 5;
       } else {
-        this.answerScore.push({ en: this.searchWord, score: -5 });
+        this.answerScore.push({ en: searchWord, score: -5 });
       }
 
       localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
@@ -201,7 +202,7 @@ export class WordupImproveComponent {
       alert('已扣 5 分');
       this.calculateFamiliarity();
 
-      this.searchWordDisplay = this.searchWord;
+      this.searchWordDisplay = searchWord;
       this.searchWord = '';
 
     } else {
@@ -214,6 +215,22 @@ export class WordupImproveComponent {
   setTheme() {
     this.nowTheme === this.theme.dark ? this.nowTheme = this.theme.light : this.nowTheme = this.theme.dark;
     this.themeService.SetTheme(this.nowTheme);
+  }
+
+  isExportAnswerScore = false;
+  answerScoreDisplay: any = [];
+  clickImExport() {
+    this.isExportAnswerScore = !this.isExportAnswerScore;
+    this.answerScoreDisplay = JSON.stringify([...this.answerScore]);
+  }
+  importAnswerScore() {
+    if (confirm('確定要匯入(紀錄更改後無法返回)？')) {
+      this.answerScore = [...JSON.parse(this.answerScoreDisplay)];
+      console.log('this.answerScore', this.answerScore)
+      localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
+      this.isExportAnswerScore = false;
+      this.calculateFamiliarity();
+    }
   }
 }
 

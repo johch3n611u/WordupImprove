@@ -1,4 +1,7 @@
-<div class="box" style="display:flex; align-items: center; justify-content: center;flex-direction: column;     padding-bottom: 3rem;" (window:resize)="onResize($event)">
+<div class="box"
+  style="display:flex; align-items: center; justify-content: center;flex-direction: column;     padding-bottom: 3rem;"
+  (window:resize)="onResize($event)">
+
   <div class="toolBox">
     <button *ngIf="displayMode !== DisplayMode.Answer"
       (click)="displayMode = DisplayMode.Answer;sentenceAnswerDisplay = true;">
@@ -9,6 +12,7 @@
       <button (click)="answerScoreReset(false)">不會</button>
     </ng-container>
   </div>
+
   <p *ngIf="SUSS > 0">連續 {{SUSS}} 答題成功!!</p>
   <div style="padding: 1.5rem;">
     <div *ngIf="card">
@@ -26,7 +30,7 @@
         <p>{{card?.cn}}</p>
         <hr>
         <div>
-          <input type="text" [(ngModel)]="searchWord"/>
+          <input type="text" [(ngModel)]="searchWord" />
           <button (click)="searchWordMark()">搜尋單字註記不會</button>
           <p>{{searchWordDisplay}}</p>
           <p>{{searchWordExplain}}</p>
@@ -34,12 +38,18 @@
       </ng-container>
     </div>
   </div>
+
   <div style="max-width: 50vw;">
     <hr>
-    <canvas id="canvas">{{chart}}</canvas>
     <div>
       <button class="unobviousBtn" (click)="resetAnswerScore()">清空紀錄</button>
       <button class="unobviousBtn" (click)="setTheme()">切換黑白模式</button>
+      <button class="unobviousBtn" (click)="clickImExport()">匯出匯入</button>
     </div>
+    <div *ngIf="isExportAnswerScore" style="display: flex;flex-direction: column;">
+      <textarea [(ngModel)]="answerScoreDisplay"></textarea>
+      <button class="unobviousBtn" (click)="importAnswerScore()">匯入</button>
+    </div>
+    <canvas id="canvas">{{chart}}</canvas>
   </div>
 </div>
