@@ -22,8 +22,8 @@ export class WordupImproveComponent {
   answerScore: any = [];
   chart: any;
   theme = Theme;
-  config: any = localStorage.getItem('drawCardConfig') ? JSON.parse(localStorage.getItem('drawCardConfig') ?? '') : { dayScore: { score: 1000, days: 1 }, questionsScore: { score: 1000 } };
-  configDisplay: any = JSON.stringify(this.config) ?? {};
+  config: any;
+  configDisplay: any;
 
   constructor(
     private httpClient: HttpClient,
@@ -34,6 +34,7 @@ export class WordupImproveComponent {
         tap((res: any) => {
           this.cards = res.sort((a: any, b: any) => b.sentences.length - a.sentences.length);
           this.answerScore = JSON.parse(localStorage.getItem('answerScore') ?? '[]');
+          this.configInit();
         })
       )
       .subscribe((res: any) => {
@@ -68,10 +69,6 @@ export class WordupImproveComponent {
               cumulativeScore += this.config?.dayScore?.score ? this.config?.dayScore?.score : 1000;
             }
           }
-
-          console.log(familiar, cumulativeScore);
-        } else {
-          console.log(this.cards[i], cumulativeScore);
         }
 
         this.debug += `第${i + 1}次抽 => <br> EN：${this.cards[i]?.en},句子數量${this.cards[i]?.sentences?.length},最終分數：${cumulativeScore}<br>`;
@@ -265,9 +262,19 @@ export class WordupImproveComponent {
   }
 
   importConfig() {
-    this.debug = [...JSON.parse(this.configDisplay)];
-    localStorage.setItem('drawCardConfig', JSON.stringify(this.debug));
-    this.drawCard();
+    if (confirm('確定要更改設定檔嗎？')) {
+      this.debug = JSON.parse(this.configDisplay);
+      console.log(this.debug)
+      localStorage.setItem('drawCardConfig', JSON.stringify(this.debug));
+      this.drawCard();
+    }
+  }
+
+  configInit() {
+    let drawCardConfig: any = localStorage.getItem('drawCardConfig');
+    drawCardConfig ? this.config = JSON.parse(drawCardConfig) : this.config = { dayScore: { score: 1000, days: 1 }, questionsScore: { score: 1000 } };
+
+    this.configDisplay = JSON.stringify(this.config) ?? {};
   }
 }
 

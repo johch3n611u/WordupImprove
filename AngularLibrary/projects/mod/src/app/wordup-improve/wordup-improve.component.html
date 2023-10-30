@@ -53,7 +53,7 @@
       <button class="unobviousBtn" (click)="importAnswerScore()">匯入</button>
     </div>
     <canvas id="canvas">{{chart}}</canvas>
-    <div style="margin-top: 3rem;" *ngIf="debugDisplay">
+    <div style="margin-top: 3rem;display: flex;flex-direction: column;" *ngIf="debugDisplay">
       <hr>
       <p>Config：<button class="unobviousBtn" (click)="importConfig()">更改設定檔</button></p>
       <textarea [(ngModel)]="configDisplay"></textarea>
