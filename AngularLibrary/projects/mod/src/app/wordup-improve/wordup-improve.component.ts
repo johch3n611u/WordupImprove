@@ -22,6 +22,8 @@ export class WordupImproveComponent {
   answerScore: any = [];
   chart: any;
   theme = Theme;
+  config: any = localStorage.getItem('drawCardConfig') ? JSON.parse(localStorage.getItem('drawCardConfig') ?? '') : { dayScore: { score: 1000, days: 1 }, questionsScore: { score: 1000 } };
+  configDisplay: any = JSON.stringify(this.config) ?? {};
 
   constructor(
     private httpClient: HttpClient,
@@ -41,11 +43,15 @@ export class WordupImproveComponent {
     this.themeService.SetTheme(this.themeService.GetTheme());
   }
 
+  debug: any;
+
   drawCard(count: any = 1) {
+    this.debug = '';
     const pickedObjects: any = [];
     const totalScore = this.cards.reduce((sum: any, obj: any) => sum + obj.sentences.length, 0);
     while (pickedObjects.length < count) {
       const random = Math.random() * totalScore;
+      this.debug += `頭獎分數：${random}<br><br>`;
       let cumulativeScore = 0;
 
       for (let i = 0; i < this.cards.length; i++) {
@@ -53,8 +59,26 @@ export class WordupImproveComponent {
 
         let familiar = this.answerScore.find((res: any) => res.en === this.cards[i].en);
         if (familiar) {
-          cumulativeScore += (familiar.score * -1000);
+          cumulativeScore += (familiar.score * -(this.config?.questionsScore?.score ? this.config?.questionsScore?.score : 1000));
+          if (familiar.updateTime && familiar.score <= 0) {
+            // 一天之內的負分容易抽到 (加強記憶)
+            let aDay = this.config?.dayScore?.days ? this.config?.dayScore?.days * 86400000 : 86400000;
+            let passDay = Date.now() - familiar.updateTime;
+            if (passDay <= aDay) {
+              cumulativeScore += this.config?.dayScore?.score ? this.config?.dayScore?.score : 1000;
+            }
+          }
+
+          console.log(familiar, cumulativeScore);
+        } else {
+          console.log(this.cards[i], cumulativeScore);
         }
+
+        this.debug += `第${i + 1}次抽 => <br> EN：${this.cards[i]?.en},句子數量${this.cards[i]?.sentences?.length},最終分數：${cumulativeScore}<br>`;
+        if (familiar) {
+          this.debug += `做題分數：${familiar?.score},做題時間：${familiar?.updateTime}`;
+        }
+        this.debug += `<br><br>`;
 
         if (random <= cumulativeScore && this.cards[i]?.en !== this.card?.en) {
           if (!pickedObjects.includes(this.cards[i])) {
@@ -87,9 +111,10 @@ export class WordupImproveComponent {
 
     if (word) {
       answer ? word.score++ : word.score--;
+      word.updateTime = Date.now();
     } else {
       let newWord = answer ? 1 : -1;
-      this.answerScore.push({ en: this.card.en, score: newWord });
+      this.answerScore.push({ en: this.card.en, score: newWord, updateTime: Date.now() });
     }
 
     localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
@@ -193,8 +218,9 @@ export class WordupImproveComponent {
 
       if (word) {
         word.score -= 5;
+        word.updateTime = Date.now();
       } else {
-        this.answerScore.push({ en: searchWord, score: -5 });
+        this.answerScore.push({ en: searchWord, score: -5, updateTime: Date.now() });
       }
 
       localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
@@ -226,11 +252,22 @@ export class WordupImproveComponent {
   importAnswerScore() {
     if (confirm('確定要匯入(紀錄更改後無法返回)？')) {
       this.answerScore = [...JSON.parse(this.answerScoreDisplay)];
-      console.log('this.answerScore', this.answerScore)
       localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
       this.isExportAnswerScore = false;
       this.calculateFamiliarity();
     }
+  }
+
+  debugDisplay = JSON.parse(localStorage.getItem('clickDebug') ?? 'false');
+  clickDebug() {
+    this.debugDisplay = !this.debugDisplay;
+    localStorage.setItem('clickDebug', this.debugDisplay);
+  }
+
+  importConfig() {
+    this.debug = [...JSON.parse(this.configDisplay)];
+    localStorage.setItem('drawCardConfig', JSON.stringify(this.debug));
+    this.drawCard();
   }
 }
 

@@ -44,6 +44,8 @@
     <div>
       <button class="unobviousBtn" (click)="resetAnswerScore()">清空紀錄</button>
       <button class="unobviousBtn" (click)="setTheme()">切換黑白模式</button>
+      <br>
+      <button class="unobviousBtn" (click)="clickDebug()">Debug</button>
       <button class="unobviousBtn" (click)="clickImExport()">匯出匯入</button>
     </div>
     <div *ngIf="isExportAnswerScore" style="display: flex;flex-direction: column;">
@@ -51,5 +53,13 @@
       <button class="unobviousBtn" (click)="importAnswerScore()">匯入</button>
     </div>
     <canvas id="canvas">{{chart}}</canvas>
+    <div style="margin-top: 3rem;" *ngIf="debugDisplay">
+      <hr>
+      <p>Config：<button class="unobviousBtn" (click)="importConfig()">更改設定檔</button></p>
+      <textarea [(ngModel)]="configDisplay"></textarea>
+      <div style="font-size: 18px;line-height: 34px;margin-top: 3rem;" [innerHtml]="debug"></div>
+    </div>
   </div>
+
+
 </div>
