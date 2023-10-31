@@ -16,6 +16,8 @@
   <p *ngIf="SUSS > 0">連續 {{SUSS}} 答題成功!!</p>
   <div style="padding: 1.5rem;">
     <div *ngIf="card">
+      <span *ngIf="card?.score">Score：{{card?.score}}</span>
+      <hr>
       <p [innerHtml]="sentence?.en | highlight:card?.en:'full'"></p>
       <ng-container *ngIf="displayMode === DisplayMode.Answer">
         <p>
@@ -31,10 +33,11 @@
       </ng-container>
       <hr>
       <div>
-        <input type="text" [(ngModel)]="searchWord" />
+        <input type="text" [(ngModel)]="searchWord.word" />
         <button (click)="searchWordMark()">搜尋單字註記不會</button>
-        <p>{{searchWordDisplay}}</p>
-        <p>{{searchWordExplain}}</p>
+        <p>{{searchWord?.display}}</p>
+        <p>{{searchWord?.explain}}</p>
+        <p *ngIf="searchWord?.score">Score：{{searchWord?.score}}</p>
       </div>
     </div>
   </div>

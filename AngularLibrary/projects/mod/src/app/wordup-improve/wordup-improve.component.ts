@@ -88,6 +88,7 @@ export class WordupImproveComponent {
           if (!pickedObjects.includes(this.cards[i])) {
             pickedObjects.push(this.cards[i]);
             this.card = JSON.parse(JSON.stringify(this.cards[i]));
+            this.card.score = familiar?.score;
           }
           break;
         }
@@ -95,12 +96,8 @@ export class WordupImproveComponent {
     }
 
     this.debug.list = this.debug.list.sort((a: any, b: any) => b.drawCount - a.drawCount);
-
-    console.log(this.debug)
-
     this.displayMode = DisplayMode.Questions;
     this.drawSentence();
-
     this.calculateFamiliarity();
   }
 
@@ -212,12 +209,15 @@ export class WordupImproveComponent {
     }
   }
 
-  searchWord: any;
-  searchWordExplain: any;
-  searchWordDisplay: any;
+  searchWord: any = {
+    word: '',
+    explain: '',
+    display: '',
+    score: ''
+  };
 
   searchWordMark() {
-    let searchWord = this.searchWord.split(" ").join("");
+    let searchWord = this.searchWord.word.split(" ").join("");
     const pattern = new RegExp(`\\b${searchWord}\\b`, "gi");
     const searched = this.cards.find((card: any) => card.en.match(pattern));
 
@@ -232,12 +232,13 @@ export class WordupImproveComponent {
       }
 
       localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
-      this.searchWordExplain = searched.cn;
+      this.searchWord.explain = searched.cn;
       alert('已扣 5 分');
       this.calculateFamiliarity();
 
-      this.searchWordDisplay = searchWord;
-      this.searchWord = '';
+      this.searchWord.score = word?.score ?? 0;
+      this.searchWord.display = searchWord;
+      this.searchWord.word = '';
 
     } else {
       alert('搜尋不到此單字');
