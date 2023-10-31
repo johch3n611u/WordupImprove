@@ -47,15 +47,16 @@ export class WordupImproveComponent {
   debug: any;
 
   drawCard(count: any = 1) {
-    this.debug = '';
+    this.debug = { drawScore: 0, list: [] };
     const pickedObjects: any = [];
     const totalScore = this.cards.reduce((sum: any, obj: any) => sum + obj.sentences.length, 0);
     while (pickedObjects.length < count) {
       const random = Math.random() * totalScore;
-      this.debug += `頭獎分數：${random}<br><br>`;
+      this.debug.drawScore = random;
       let cumulativeScore = 0;
 
       for (let i = 0; i < this.cards.length; i++) {
+        let preCumulativeScore = JSON.parse(JSON.stringify(cumulativeScore));
         cumulativeScore += this.cards[i].sentences.length;
 
         let familiar = this.answerScore.find((res: any) => res.en === this.cards[i].en);
@@ -71,22 +72,32 @@ export class WordupImproveComponent {
           }
         }
 
-        this.debug += `第${i + 1}次抽 => <br> EN：${this.cards[i]?.en},句子數量${this.cards[i]?.sentences?.length},最終分數：${cumulativeScore}<br>`;
-        if (familiar) {
-          this.debug += `做題分數：${familiar?.score},做題時間：${familiar?.updateTime}`;
-        }
-        this.debug += `<br><br>`;
+        this.debug.list.push(
+          {
+            finalScore: cumulativeScore,
+            en: this.cards[i]?.en,
+            drawCount: i + 1,
+            sentencesLength: this.cards[i]?.sentences?.length,
+            questionScore: familiar?.score,
+            questionUpdateTime: this.calculateTime(familiar?.updateTime - Date.now()),
+            weightedScore: (cumulativeScore - preCumulativeScore)
+          }
+        );
 
         if (random <= cumulativeScore && this.cards[i]?.en !== this.card?.en) {
           if (!pickedObjects.includes(this.cards[i])) {
             pickedObjects.push(this.cards[i]);
+            this.card = JSON.parse(JSON.stringify(this.cards[i]));
           }
           break;
         }
       }
     }
 
-    this.card = pickedObjects[0];
+    this.debug.list = this.debug.list.sort((a: any, b: any) => b.drawCount - a.drawCount);
+
+    console.log(this.debug)
+
     this.displayMode = DisplayMode.Questions;
     this.drawSentence();
 
@@ -275,6 +286,22 @@ export class WordupImproveComponent {
     drawCardConfig ? this.config = JSON.parse(drawCardConfig) : this.config = { dayScore: { score: 1000, days: 1 }, questionsScore: { score: 1000 } };
 
     this.configDisplay = JSON.stringify(this.config) ?? {};
+  }
+
+  calculateTime(timestamp: any) {
+    let date: any = new Date(timestamp * 1000); // 將時間戳記轉換為毫秒
+    let days = Math.floor(date / (24 * 60 * 60 * 1000)); // 計算天數
+    if (days < 0) {
+      days = 0
+    }
+    let hours = date.getUTCHours(); // 獲取小時數（UTC時間）
+    let minutes = date.getUTCMinutes(); // 獲取分鐘數（UTC時間）
+
+    return {
+      days: days,
+      hours: hours,
+      minutes: minutes
+    };
   }
 }
 
