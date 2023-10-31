@@ -319,14 +319,18 @@ export class WordupImproveComponent {
     this.unfamiliarList = [];
     this.answerScore.forEach((el: any) => {
       let card = this.cards.find((res: any) => res.en === el.en);
-      this.unfamiliarList.push({
-        en: card?.en,
-        cn: card?.cn,
-        sentencesLength: card?.sentences?.length,
-        questionScore: el?.score,
-        questionUpdateTime: this.calculateTime(el?.updateTime - Date.now()),
-      });
+      if (card?.en) {
+        this.unfamiliarList.push({
+          en: card?.en,
+          cn: card?.cn,
+          sentencesLength: card?.sentences?.length,
+          questionScore: el?.score,
+          questionUpdateTime: this.calculateTime(el?.updateTime - Date.now()),
+        });
+      }
     });
+
+    this.unfamiliarList.sort((a: any, b: any) => a.questionScore - b.questionScore);
   }
 }
 
