@@ -61,7 +61,6 @@ table {
 
   .box {
     margin-top: 5vh;
-    padding: 0 2rem;
   }
 
   input {
@@ -74,8 +73,11 @@ table {
 
   .list {
     display: block;
+    height: 70vh;
+    overflow-y: scroll;
+    width: 85vw;
     * {
-      font-size: 1rem;
+      font-size: 1.5rem;
     }
   }
 }

@@ -227,8 +227,10 @@ export class WordupImproveComponent {
       if (word) {
         word.score -= 5;
         word.updateTime = Date.now();
+        this.searchWord.score = word?.score
       } else {
         this.answerScore.push({ en: searchWord, score: -5, updateTime: Date.now() });
+        this.searchWord.score = -5;
       }
 
       localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
@@ -236,7 +238,6 @@ export class WordupImproveComponent {
       alert('已扣 5 分');
       this.calculateFamiliarity();
 
-      this.searchWord.score = word?.score ?? 0;
       this.searchWord.display = searchWord;
       this.searchWord.word = '';
 
