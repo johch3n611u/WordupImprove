@@ -47,58 +47,60 @@ export class WordupImproveComponent {
   debug: any;
 
   drawCard(count: any = 1) {
+
     this.debug = { drawScore: 0, list: [] };
     const pickedObjects: any = [];
     const totalScore = this.cards.reduce((sum: any, obj: any) => sum + obj.sentences.length, 0);
+
+    let cumulativeScore = 0;
+    const random = Math.random() * totalScore;
+    this.debug.drawScore = random;
+    let i = 1;
     while (pickedObjects.length < count) {
-      const random = Math.random() * totalScore;
-      this.debug.drawScore = random;
-      let cumulativeScore = 0;
 
-      for (let i = 0; i < this.cards.length; i++) {
-        let preCumulativeScore = JSON.parse(JSON.stringify(cumulativeScore));
-        cumulativeScore += this.cards[i].sentences.length;
-
-        let familiar = this.answerScore.find((res: any) => res.en === this.cards[i].en);
-        if (familiar) {
-          cumulativeScore += (familiar.score * -(this.config?.questionsScore?.score ? this.config?.questionsScore?.score : 1000));
-          if (familiar.updateTime && familiar.score <= 0) {
-            // 一天之內的負分容易抽到 (加強記憶)
-            let aDay = this.config?.dayScore?.days ? this.config?.dayScore?.days * 86400000 : 86400000;
-            let passDay = Date.now() - familiar.updateTime;
-            if (passDay <= aDay) {
-              cumulativeScore += this.config?.dayScore?.score ? this.config?.dayScore?.score : 1000;
-            }
+      let drawNumber = Math.floor(Math.random() * (this.cards.length - 1));
+      let preCumulativeScore = JSON.parse(JSON.stringify(cumulativeScore));
+      cumulativeScore += this.cards[drawNumber].sentences.length;
+      let familiar = this.answerScore.find((res: any) => res.en === this.cards[drawNumber].en);
+      if (familiar) {
+        cumulativeScore += (familiar.score * -1 * (this.config?.questionsScore?.score ? this.config?.questionsScore?.score : 1000));
+        if (familiar.updateTime && familiar.score <= 0) {
+          let aDay = this.config?.dayScore?.days ? this.config?.dayScore?.days * 86400000 : 86400000;
+          let passDay = Date.now() - familiar.updateTime;
+          if (passDay <= aDay) {
+            cumulativeScore += this.config?.dayScore?.score ? this.config?.dayScore?.score : 1000;
           }
-        }
-
-        this.debug.list.push(
-          {
-            finalScore: cumulativeScore,
-            en: this.cards[i]?.en,
-            drawCount: i + 1,
-            sentencesLength: this.cards[i]?.sentences?.length,
-            questionScore: familiar?.score,
-            questionUpdateTime: this.calculateTime(familiar?.updateTime - Date.now()),
-            weightedScore: (cumulativeScore - preCumulativeScore)
-          }
-        );
-
-        if (random <= cumulativeScore && this.cards[i]?.en !== this.card?.en) {
-          if (!pickedObjects.includes(this.cards[i])) {
-            pickedObjects.push(this.cards[i]);
-            this.card = JSON.parse(JSON.stringify(this.cards[i]));
-            this.card.score = familiar?.score;
-          }
-          break;
         }
       }
+
+      this.debug.list.push(
+        {
+          finalScore: cumulativeScore,
+          en: this.cards[drawNumber]?.en,
+          drawCount: i++,
+          sentencesLength: this.cards[drawNumber]?.sentences?.length,
+          questionScore: familiar?.score,
+          questionUpdateTime: this.calculateTime(familiar?.updateTime - Date.now()),
+          weightedScore: (cumulativeScore - preCumulativeScore)
+        }
+      );
+
+      if (random <= cumulativeScore && this.cards[drawNumber]?.en !== this.card?.en) {
+        if (!pickedObjects.includes(this.cards[drawNumber])) {
+          pickedObjects.push(this.cards[drawNumber]);
+          this.card = JSON.parse(JSON.stringify(this.cards[drawNumber]));
+          this.card.score = familiar?.score;
+        }
+        break;
+      }
+
     }
 
     this.debug.list = this.debug.list.sort((a: any, b: any) => b.drawCount - a.drawCount);
     this.displayMode = DisplayMode.Questions;
     this.drawSentence();
     this.calculateFamiliarity();
+    this.unfamiliarReflash();
   }
 
   drawSentence() {
@@ -191,7 +193,7 @@ export class WordupImproveComponent {
           }
         },
         animation: {
-          duration: 5000
+          duration: 0
         }
       },
     });
@@ -220,10 +222,9 @@ export class WordupImproveComponent {
     let searchWord = this.searchWord.word.split(" ").join("");
     const pattern = new RegExp(`\\b${searchWord}\\b`, "gi");
     const searched = this.cards.find((card: any) => card.en.match(pattern));
-
-    if (searched) {
+    if (searched && searchWord !== undefined && searchWord !== null && searchWord !== '') {
       const word = this.answerScore.find((word: any) => word.en.match(pattern));
-
+      console.log(word);
       if (word) {
         word.score -= 5;
         word.updateTime = Date.now();
@@ -244,6 +245,8 @@ export class WordupImproveComponent {
     } else {
       alert('搜尋不到此單字');
     }
+
+    this.unfamiliarReflash();
   }
 
   nowTheme = this.themeService.GetTheme();
@@ -304,6 +307,26 @@ export class WordupImproveComponent {
       hours: hours,
       minutes: minutes
     };
+  }
+
+  displayUnfamiliar: any = JSON.parse(localStorage.getItem('displayUnfamiliar') ?? 'false');;
+  changeDisplayUnfamiliar() {
+    this.displayUnfamiliar = !this.displayUnfamiliar;
+    localStorage.setItem('displayUnfamiliar', JSON.stringify(this.displayUnfamiliar))
+  }
+  unfamiliarList: any = [];
+  unfamiliarReflash() {
+    this.unfamiliarList = [];
+    this.answerScore.forEach((el: any) => {
+      let card = this.cards.find((res: any) => res.en === el.en);
+      this.unfamiliarList.push({
+        en: card?.en,
+        cn: card?.cn,
+        sentencesLength: card?.sentences?.length,
+        questionScore: el?.score,
+        questionUpdateTime: this.calculateTime(el?.updateTime - Date.now()),
+      });
+    });
   }
 }
 

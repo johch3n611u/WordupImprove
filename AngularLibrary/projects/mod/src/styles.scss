@@ -10,10 +10,16 @@
       color: white;
       background-color: black;
 
-      button,input {
+      button,
+      input {
         color: black;
         background-color: white;
       }
+    }
+
+    .keyword {
+      background-color: yellow;
+      color: black;
     }
   }
 }
