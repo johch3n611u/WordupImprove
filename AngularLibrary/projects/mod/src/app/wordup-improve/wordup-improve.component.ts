@@ -58,7 +58,7 @@ export class WordupImproveComponent {
     let i = 1;
     while (pickedObjects.length < count) {
 
-      let drawNumber = Math.floor(Math.random() * (this.cards.length - 1));
+      let drawNumber = this.getRandomNum(this.cards.length - 1);
       let preCumulativeScore = JSON.parse(JSON.stringify(cumulativeScore));
       cumulativeScore += this.cards[drawNumber].sentences.length;
       let familiar = this.answerScore.find((res: any) => res.en === this.cards[drawNumber].en);
@@ -105,8 +105,16 @@ export class WordupImproveComponent {
 
   drawSentence() {
     this.sentenceAnswerDisplay = false;
-    const randomNumber = Math.floor(Math.random() * (this.card.sentences.length - 1));
-    this.sentence = this.card.sentences[randomNumber];
+    let randomNumber;
+    let locked = true;
+    while (this.sentence == undefined || locked) // false 不動
+    {
+      randomNumber = this.getRandomNum(this.card.sentences.length - 1);
+      if (this.sentence?.en != this.card?.sentences[randomNumber]?.en) {
+        this.sentence = this.card?.sentences[randomNumber];
+        locked = false;
+      }
+    }
   }
 
   answerScoreReset(answer: any) {
@@ -331,6 +339,12 @@ export class WordupImproveComponent {
     });
 
     this.unfamiliarList.sort((a: any, b: any) => a.questionScore - b.questionScore);
+  }
+
+  getRandomNum(max: any, min: any = 0) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 }
 
