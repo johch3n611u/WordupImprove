@@ -29,6 +29,7 @@ export class WordupImproveComponent {
   theme = Theme;
   config: any;
   configDisplay: any;
+  allWords: any;
 
   constructor(
     private httpClient: HttpClient,
@@ -242,33 +243,45 @@ export class WordupImproveComponent {
 
   searchWordMark() {
     let searchWord = this.searchWord.word.split(" ").join("");
-    const pattern = new RegExp(`\\b${searchWord}\\b`, "gi");
-    const searched = this.cards.find((card: any) => card.en.match(pattern));
-    if (searched && searchWord !== undefined && searchWord !== null && searchWord !== '') {
-      const word = this.answerScore.find((word: any) => word.en.match(pattern));
-      console.log(word);
-      if (word) {
-        word.score -= 5;
-        word.updateTime = Date.now();
-        this.searchWord.score = word?.score
+    if (searchWord !== undefined && searchWord !== null && searchWord !== '') {
+      const pattern = new RegExp(`\\b${searchWord}\\b`, "gi");
+      const searched = this.cards.find((card: any) => card.en.match(pattern));
+      if (searched) {
+        const word = this.answerScore.find((word: any) => word.en.match(pattern));
+        if (word) {
+          word.score -= 5;
+          word.updateTime = Date.now();
+          this.searchWord.score = word?.score
+        } else {
+          this.answerScore.push({ en: searchWord, score: -5, updateTime: Date.now() });
+          this.searchWord.score = -5;
+        }
+
+        localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
+        this.searchWord.explain = searched.cn;
+        alert('已扣 5 分');
+        this.calculateFamiliarity();
+
+        this.searchWord.display = searchWord;
+        this.searchWord.word = '';
+
       } else {
-        this.answerScore.push({ en: searchWord, score: -5, updateTime: Date.now() });
-        this.searchWord.score = -5;
+        let temp: any = [];
+        this.cards.forEach((el: any) => {
+          let cal = this.calculateSimilarity(el?.en, searchWord);
+          temp.push({ en: el?.en, cn: el?.cn, searchWord: searchWord, cal: cal });
+        });
+
+        let sortTemp = temp.sort((a: any, b: any) => b.cal - a.cal);
+        console.log(sortTemp);
+        this.searchWord.display = sortTemp
+          .slice(0, 5).map((obj: any) => `[${obj.en}]${obj.cn}`).join('，');
+
+        alert(`字庫搜尋不到此單字，後續可能會開發筆記系統，\n以下為[距離算法]選出字庫前五個相似度高的單字，\n如要看更多請看 console.log`);
       }
 
-      localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
-      this.searchWord.explain = searched.cn;
-      alert('已扣 5 分');
-      this.calculateFamiliarity();
-
-      this.searchWord.display = searchWord;
-      this.searchWord.word = '';
-
-    } else {
-      alert('搜尋不到此單字');
+      this.unfamiliarReflash();
     }
-
-    this.unfamiliarReflash();
   }
 
   nowTheme = this.themeService.GetTheme();
@@ -506,6 +519,36 @@ export class WordupImproveComponent {
       this.mostPositivePoints = this.logs.sort((a: any, b: any) => a.positive - b.positive);
       this.mostNegativePoints = this.logs.sort((a: any, b: any) => a.negative - b.negative);
     }
+  }
+
+  // 编辑距离算法（Levenshtein distance）来计算相似度的示例函数
+  calculateSimilarity(word1: any, word2: any) {
+    const m = word1?.length;
+    const n = word2?.length;
+    const dp = [];
+
+    for (let i = 0; i <= m; i++) {
+      dp[i] = [i];
+    }
+
+    for (let j = 0; j <= n; j++) {
+      dp[0][j] = j;
+    }
+
+    for (let i = 1; i <= m; i++) {
+      for (let j = 1; j <= n; j++) {
+        const cost = word1[i - 1] === word2[j - 1] ? 0 : 1;
+        dp[i][j] = Math.min(
+          dp[i - 1][j] + 1, // 删除操作
+          dp[i][j - 1] + 1, // 插入操作
+          dp[i - 1][j - 1] + cost // 替换操作
+        );
+      }
+    }
+
+    const maxLen = Math.max(m, n);
+    const similarity = 1 - dp[m][n] / maxLen;
+    return similarity;
   }
 }
 
