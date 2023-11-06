@@ -26,12 +26,28 @@ table {
   }
 }
 
+.rankingList {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 5rem;
+
+  >ol {
+    border: 1px solid black;
+    padding: 1rem;
+  }
+}
+
 .list {
   display: none;
 }
 
 .box {
   margin-top: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-bottom: 3rem;
 }
 
 .unobviousBtn {
@@ -40,6 +56,34 @@ table {
   font-size: 1.5rem;
   min-width: 120px;
   line-height: 2.5rem;
+}
+
+.login {
+  margin-top: 20vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-bottom: 3rem;
+
+  .user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    input {
+      width: fit-content;
+    }
+  }
+
+  .error {
+    color: red;
+  }
+
+  .info {
+    font-size: 15px;
+    color: darkcyan;
+  }
 }
 
 @include LargeDevices {
@@ -57,6 +101,7 @@ table {
 @include SmallDevices {
   .toolBox {
     display: flex;
+    justify-content: center;
   }
 
   .box {
@@ -76,8 +121,30 @@ table {
     height: 70vh;
     overflow-y: scroll;
     width: 85vw;
+
     * {
       font-size: 1.5rem;
+    }
+  }
+
+  .login {
+    margin-top: 1rem;
+
+    .info{
+      padding: 0 2rem;
+      font-size: 1.5rem;
+    }
+  }
+
+  .rankingList {
+    flex-direction: column;
+
+    * {
+      word-wrap: break-word;
+    }
+
+    ol li:not(:first-child) {
+      font-size: 1.3rem;
     }
   }
 }

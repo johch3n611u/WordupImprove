@@ -1,8 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { tap } from 'rxjs';
+import { Subscription, combineLatest, filter, take, tap } from 'rxjs';
 import Chart from 'chart.js/auto';
 import { Theme, ThemeService } from 'lib/feature/theme/theme.service';
+
+import { inject } from '@angular/core';
+import { Firestore, collectionData, collection, CollectionReference, DocumentData, addDoc, DocumentReference, setDoc, doc } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { Auth, User, authState, createUserWithEmailAndPassword, signInAnonymously, signInWithEmailAndPassword, signOut, updateProfile, user } from '@angular/fire/auth';
 
 @Component({
   selector: 'mod-wordup-improve',
@@ -42,6 +47,12 @@ export class WordupImproveComponent {
       });
 
     this.themeService.SetTheme(this.themeService.GetTheme());
+
+  }
+
+
+  ngOnDestroy() {
+    this.logsSub.unsubscribe();
   }
 
   debug: any;
@@ -65,10 +76,13 @@ export class WordupImproveComponent {
       if (familiar) {
         cumulativeScore += (familiar.score * -1 * (this.config?.questionsScore?.score ? this.config?.questionsScore?.score : 1000));
         if (familiar.updateTime && familiar.score <= 0) {
-          let aDay = this.config?.dayScore?.days ? this.config?.dayScore?.days * 86400000 : 86400000;
-          let passDay = Date.now() - familiar.updateTime;
-          if (passDay <= aDay) {
-            cumulativeScore += this.config?.dayScore?.score ? this.config?.dayScore?.score : 1000;
+          let configDays = this.config?.dayScore?.days ?? 1;
+          let dayScore = this.config?.dayScore?.score ? this.config?.dayScore?.score : 1000;
+          let timeDifference = this.calculateTime(familiar?.updateTime)
+          if (timeDifference?.days < configDays) {
+            cumulativeScore += dayScore;
+          } else {
+            cumulativeScore += dayScore * 3;
           }
         }
       }
@@ -80,7 +94,7 @@ export class WordupImproveComponent {
           drawCount: i++,
           sentencesLength: this.cards[drawNumber]?.sentences?.length,
           questionScore: familiar?.score,
-          questionUpdateTime: this.calculateTime(familiar?.updateTime - Date.now()),
+          questionUpdateTime: this.calculateTime(familiar?.updateTime),
           weightedScore: (cumulativeScore - preCumulativeScore)
         }
       );
@@ -302,13 +316,12 @@ export class WordupImproveComponent {
   }
 
   calculateTime(timestamp: any) {
-    let date: any = new Date(timestamp * 1000); // 將時間戳記轉換為毫秒
-    let days = Math.floor(date / (24 * 60 * 60 * 1000)); // 計算天數
-    if (days < 0) {
-      days = 0
-    }
-    let hours = date.getUTCHours(); // 獲取小時數（UTC時間）
-    let minutes = date.getUTCMinutes(); // 獲取分鐘數（UTC時間）
+    var timeDifference = Math.abs(Date.now() - timestamp); // 計算時間差（取絕對值）
+
+    // 轉換為相差的天數、小時和分鐘
+    var days = Math.floor(timeDifference / (24 * 60 * 60 * 1000));
+    var hours = Math.floor((timeDifference % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+    var minutes = Math.floor((timeDifference % (60 * 60 * 1000)) / (60 * 1000));
 
     return {
       days: days,
@@ -333,7 +346,7 @@ export class WordupImproveComponent {
           cn: card?.cn,
           sentencesLength: card?.sentences?.length,
           questionScore: el?.score,
-          questionUpdateTime: this.calculateTime(el?.updateTime - Date.now()),
+          questionUpdateTime: this.calculateTime(el?.updateTime),
         });
       }
     });
@@ -345,6 +358,154 @@ export class WordupImproveComponent {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  /**
+  * Firebase Auth & CRUD
+  * // https://console.firebase.google.com/u/0/project/angular-vector-249608/firestore/data/~2FLogs~2FBIjfl9Y432Rtt3lwZJx0klt0j8M2
+  * // https://github.com/angular/angularfire/blob/master/docs/firestore.md#cloud-firestore
+  * // https://www.positronx.io/full-angular-firebase-authentication-system/ 
+  */
+
+  email: any;
+  password: any;
+  error: any;
+  isEnterRegistPage: boolean = false;
+  logs$!: Observable<any>;
+  logs!: any;
+  firestore: Firestore = inject(Firestore);
+  private auth: Auth = inject(Auth);
+  user$ = user(this.auth);
+  user!: User | null;
+  logsCollection!: CollectionReference<DocumentData, DocumentData>;
+
+  logsSub!: Subscription;
+
+  async login() {
+    try {
+      await signInWithEmailAndPassword(this.auth, this.email, this.password);
+      this.user$ = authState(this.auth);
+      this.refleshUser();
+      this.refleshLogs();
+    } catch (err) {
+      this.error = err;
+    }
+  }
+
+  async logout() {
+    try {
+      await signOut(this.auth);
+      if (this.logsSub) {
+        this.logsSub.unsubscribe();
+        this.user = null;
+        this.logs = null;
+      }
+      alert('登出成功');
+    } catch (err) {
+      this.error = err;
+    }
+  }
+
+  async signUp() {
+    try {
+      await createUserWithEmailAndPassword(this.auth, this.email, this.password);
+      this.refleshUser();
+      this.refleshLogs();
+    } catch (err) {
+      this.error = err;
+    }
+  }
+
+  enterRegistPage() {
+    this.refleshUser();
+    this.refleshLogs();
+    this.isEnterRegistPage = true;
+  }
+
+  refleshLogs() {
+    this.logsCollection = collection(this.firestore, 'Logs');
+    this.logs$ = collectionData(this.logsCollection);
+    this.logsSub = this.logs$.pipe(
+      take(1),
+      tap(logs => {
+        this.logs = logs;
+        console.log(logs);
+        this.countRankingList();
+      }),
+    ).subscribe();
+  }
+
+  refleshUser() {
+    if (!this.user) {
+      this.user$.pipe(
+        tap(user => { this.user = user; }),
+        take(1),
+      ).subscribe();
+    }
+  }
+
+  async updateLog() {
+    if (confirm('確定要更新雲端紀錄嗎？(此動作不可逆)')) {
+      if (this.user) {
+        let email = this.user?.email ?? '???';
+        this.logsCollection = collection(this.firestore, 'Logs');
+        await setDoc(doc(this.logsCollection, this.user.uid),
+          {
+            email: email,
+            answerScore: this.answerScore
+          }
+        );
+        this.refleshLogs();
+        alert('更新成功');
+      }
+    }
+  }
+
+  downloadLog() {
+    if (confirm('確定要更新本地紀錄嗎？(此動作不可逆)') && this.user) {
+      const log = this.logs.find((log: any) => log.email === this.user?.email);
+      if (log) {
+        this.answerScore = JSON.parse(JSON.stringify(log.answerScore));
+        localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
+        this.calculateFamiliarity();
+        this.unfamiliarReflash();
+        alert('更新成功');
+      } else {
+        alert('未找到紀錄');
+      }
+    }
+  }
+
+  changeDisplayName() {
+    // if (res !== null) {
+    //   updateProfile(res, { displayName: 'AAA' });
+    // }
+  }
+
+  answeredMostQuestions: any;
+  mostPositivePoints: any;
+  mostNegativePoints: any;
+
+  countRankingList() {
+    if (this.logs) {
+      this.answeredMostQuestions = this.logs.sort((a: any, b: any) => a.answerScore.length - b.answerScore.length);
+
+      this.logs.forEach((log: any) => {
+        let positive = 0, negative = 0;
+        log.answerScore.forEach((item: any) => {
+          if (item.score >= 0) {
+            positive += item.score;
+          } else {
+            negative += item.score;
+          }
+        });
+        log.positive = positive ?? 0;
+        log.negative = negative ?? 0;
+      });
+
+      this.mostPositivePoints = this.logs.sort((a: any, b: any) => a.positive - b.positive);
+      this.mostNegativePoints = this.logs.sort((a: any, b: any) => a.negative - b.negative);
+    }
   }
 }
 
