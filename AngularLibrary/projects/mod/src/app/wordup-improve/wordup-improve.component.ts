@@ -116,20 +116,30 @@ export class WordupImproveComponent {
     this.drawSentence();
     this.calculateFamiliarity();
     this.unfamiliarReflash();
+    this.tempSentencesIndex = [];
   }
 
+  tempSentencesIndex: any = [];
   drawSentence() {
     this.sentenceAnswerDisplay = false;
     let randomNumber;
     let locked = true;
+    if (this.tempSentencesIndex.length == this.card.sentences.length) {
+      this.tempSentencesIndex = [];
+    }
     while (this.sentence == undefined || locked) // false 不動
     {
       randomNumber = this.getRandomNum(this.card.sentences.length - 1);
-      if (this.sentence?.en != this.card?.sentences[randomNumber]?.en) {
-        this.sentence = this.card?.sentences[randomNumber];
-        locked = false;
+      if (this.tempSentencesIndex.indexOf(randomNumber) == -1) {
+        if (this.sentence?.en != this.card?.sentences[randomNumber]?.en) {
+          this.sentence = this.card?.sentences[randomNumber];
+          locked = false;
+          this.tempSentencesIndex.push(randomNumber);
+        }
       }
     }
+
+    console.log(this.tempSentencesIndex);
   }
 
   answerScoreReset(answer: any) {
