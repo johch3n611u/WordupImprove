@@ -20,7 +20,6 @@ export class WordupImproveComponent {
   cards: any = [];
   card: any;
   sentence: any;
-  SUSS: any = 0;
   sentenceAnswerDisplay: any = true;
   DisplayMode = DisplayMode;
   displayMode = DisplayMode.Questions;
@@ -117,6 +116,7 @@ export class WordupImproveComponent {
     this.calculateFamiliarity();
     this.unfamiliarReflash();
     this.tempSentencesIndex = [];
+    this.updateTimer();
   }
 
   tempSentencesIndex: any = [];
@@ -138,12 +138,26 @@ export class WordupImproveComponent {
         }
       }
     }
-
-    console.log(this.tempSentencesIndex);
   }
 
+  answerTodayArray: any = [];
+  answerCountToday: any = 0;
   answerScoreReset(answer: any) {
-    answer ? this.SUSS++ : this.SUSS = 0;
+
+    const today = new Date().setHours(0, 0, 0, 0);
+    const apartDay = this.calculateTime(today);
+    const nowDay = this.answerTodayArray.find((ansToday: any) => ansToday.day === today);
+
+    if (nowDay && apartDay.days === 0) {
+      nowDay.count = this.answerCountToday++;
+    } else {
+      this.answerTodayArray.push({
+        day: today,
+        count: this.answerCountToday++
+      });
+    }
+
+    localStorage.setItem('answerTodayArray', JSON.stringify(this.answerTodayArray));
 
     let word = this.answerScore.find((word: any) =>
       word.en == this.card.en
@@ -160,6 +174,8 @@ export class WordupImproveComponent {
     localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
     this.drawCard();
   }
+
+
 
   familiarity: Familiarity | any = {};
 
@@ -336,6 +352,13 @@ export class WordupImproveComponent {
     drawCardConfig ? this.config = JSON.parse(drawCardConfig) : this.config = { dayScore: { score: 1000, days: 1 }, questionsScore: { score: 1000 } };
 
     this.configDisplay = JSON.stringify(this.config) ?? {};
+    this.answerTodayArray = JSON.parse(localStorage.getItem('answerTodayArray') ?? `[]`);
+    if (this.answerTodayArray.length > 0) {
+      let nowDay = this.answerTodayArray?.find((ansToday: any) => ansToday.day == new Date().setHours(0, 0, 0, 0));
+      if (nowDay) {
+        this.answerCountToday = nowDay.count;
+      }
+    }
   }
 
   calculateTime(timestamp: any) {
@@ -559,6 +582,19 @@ export class WordupImproveComponent {
     const maxLen = Math.max(m, n);
     const similarity = 1 - dp[m][n] / maxLen;
     return similarity;
+  }
+
+  timerId: any;
+  seconds = 0;
+  updateTimer() {
+    if (this.timerId) {
+      clearInterval(this.timerId);
+      this.seconds = 0;
+    }
+    const self = this; // 儲存組件的參考
+    this.timerId = setInterval(function () {
+      self.seconds++;
+    }, 1000);
   }
 }
 

@@ -10,7 +10,8 @@
     </ng-container>
   </div>
 
-  <p *ngIf="SUSS > 0">連續 {{SUSS}} 答題成功!!</p>
+  <p>經過 {{seconds}} 秒</p>
+  <p *ngIf="answerCountToday > 0">累積 x {{answerCountToday}} 答題!!</p>
   <div style="padding: 1.5rem;">
     <div *ngIf="card">
       <span *ngIf="card?.score">Score：{{card?.score}}</span>
