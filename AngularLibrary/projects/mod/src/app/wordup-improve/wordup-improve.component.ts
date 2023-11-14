@@ -144,16 +144,17 @@ export class WordupImproveComponent {
   answerCountToday: any = 0;
   answerScoreReset(answer: any) {
 
+    this.answerCountToday++
     const today = new Date().setHours(0, 0, 0, 0);
     const apartDay = this.calculateTime(today);
     const nowDay = this.answerTodayArray.find((ansToday: any) => ansToday.day === today);
 
     if (nowDay && apartDay.days === 0) {
-      nowDay.count = this.answerCountToday++;
+      nowDay.count = this.answerCountToday;
     } else {
       this.answerTodayArray.push({
         day: today,
-        count: this.answerCountToday++
+        count: this.answerCountToday
       });
     }
 
