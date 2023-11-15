@@ -58,122 +58,134 @@ export class WordupImproveComponent {
   debug: any;
 
   drawCard(count: any = 1) {
+    try {
+      this.debug = { drawScore: 0, list: [] };
+      const pickedObjects: any = [];
+      const totalScore = this.cards.reduce((sum: any, obj: any) => sum + obj.sentences.length, 0);
 
-    this.debug = { drawScore: 0, list: [] };
-    const pickedObjects: any = [];
-    const totalScore = this.cards.reduce((sum: any, obj: any) => sum + obj.sentences.length, 0);
+      let cumulativeScore = 0;
+      const random = Math.random() * totalScore;
+      this.debug.drawScore = random;
+      let i = 1;
+      while (pickedObjects.length < count) {
 
-    let cumulativeScore = 0;
-    const random = Math.random() * totalScore;
-    this.debug.drawScore = random;
-    let i = 1;
-    while (pickedObjects.length < count) {
-
-      let drawNumber = this.getRandomNum(this.cards.length - 1);
-      let preCumulativeScore = JSON.parse(JSON.stringify(cumulativeScore));
-      cumulativeScore += this.cards[drawNumber].sentences.length;
-      let familiar = this.answerScore.find((res: any) => res.en === this.cards[drawNumber].en);
-      if (familiar) {
-        cumulativeScore += (familiar.score * -1 * (this.config?.questionsScore?.score ? this.config?.questionsScore?.score : 1000));
-        if (familiar.updateTime && familiar.score <= 0) {
-          let configDays = this.config?.dayScore?.days ?? 1;
-          let dayScore = this.config?.dayScore?.score ? this.config?.dayScore?.score : 1000;
-          let timeDifference = this.calculateTime(familiar?.updateTime)
-          if (timeDifference?.days < configDays) {
-            cumulativeScore += dayScore;
-          } else {
-            cumulativeScore += dayScore * 3;
+        let drawNumber = this.getRandomNum(this.cards.length - 1);
+        let preCumulativeScore = JSON.parse(JSON.stringify(cumulativeScore));
+        cumulativeScore += this.cards[drawNumber].sentences.length;
+        let familiar = this.answerScore.find((res: any) => res.en === this.cards[drawNumber].en);
+        if (familiar) {
+          cumulativeScore += (familiar.score * -1 * (this.config?.questionsScore?.score ? this.config?.questionsScore?.score : 1000));
+          if (familiar.updateTime && familiar.score <= 0) {
+            let configDays = this.config?.dayScore?.days ?? 1;
+            let dayScore = this.config?.dayScore?.score ? this.config?.dayScore?.score : 1000;
+            let timeDifference = this.calculateTime(familiar?.updateTime)
+            if (timeDifference?.days < configDays) {
+              cumulativeScore += dayScore;
+            } else {
+              cumulativeScore += dayScore * 3;
+            }
           }
         }
+
+        this.debug.list.push(
+          {
+            finalScore: cumulativeScore,
+            en: this.cards[drawNumber]?.en,
+            drawCount: i++,
+            sentencesLength: this.cards[drawNumber]?.sentences?.length,
+            questionScore: familiar?.score,
+            questionUpdateTime: this.calculateTime(familiar?.updateTime),
+            weightedScore: (cumulativeScore - preCumulativeScore)
+          }
+        );
+
+        if (random <= cumulativeScore && this.cards[drawNumber]?.en !== this.card?.en) {
+          if (!pickedObjects.includes(this.cards[drawNumber])) {
+            pickedObjects.push(this.cards[drawNumber]);
+            this.card = JSON.parse(JSON.stringify(this.cards[drawNumber]));
+            this.card.score = familiar?.score;
+          }
+          break;
+        }
+
       }
 
-      this.debug.list.push(
-        {
-          finalScore: cumulativeScore,
-          en: this.cards[drawNumber]?.en,
-          drawCount: i++,
-          sentencesLength: this.cards[drawNumber]?.sentences?.length,
-          questionScore: familiar?.score,
-          questionUpdateTime: this.calculateTime(familiar?.updateTime),
-          weightedScore: (cumulativeScore - preCumulativeScore)
-        }
-      );
-
-      if (random <= cumulativeScore && this.cards[drawNumber]?.en !== this.card?.en) {
-        if (!pickedObjects.includes(this.cards[drawNumber])) {
-          pickedObjects.push(this.cards[drawNumber]);
-          this.card = JSON.parse(JSON.stringify(this.cards[drawNumber]));
-          this.card.score = familiar?.score;
-        }
-        break;
-      }
-
+      this.debug.list = this.debug.list.sort((a: any, b: any) => b.drawCount - a.drawCount);
+      this.displayMode = DisplayMode.Questions;
+      this.drawSentence();
+      this.calculateFamiliarity();
+      this.unfamiliarReflash();
+      this.tempSentencesIndex = [];
+      this.updateTimer();
+    } catch (err) {
+      alert(err);
     }
 
-    this.debug.list = this.debug.list.sort((a: any, b: any) => b.drawCount - a.drawCount);
-    this.displayMode = DisplayMode.Questions;
-    this.drawSentence();
-    this.calculateFamiliarity();
-    this.unfamiliarReflash();
-    this.tempSentencesIndex = [];
-    this.updateTimer();
   }
 
   tempSentencesIndex: any = [];
   drawSentence() {
-    this.sentenceAnswerDisplay = false;
-    let randomNumber;
-    let locked = true;
-    if (this.tempSentencesIndex.length == this.card.sentences.length) {
-      this.tempSentencesIndex = [];
-    }
-    while (this.sentence == undefined || locked) // false 不動
-    {
-      randomNumber = this.getRandomNum(this.card.sentences.length - 1);
-      if (this.tempSentencesIndex.indexOf(randomNumber) == -1) {
-        if (this.sentence?.en != this.card?.sentences[randomNumber]?.en) {
-          this.sentence = this.card?.sentences[randomNumber];
-          locked = false;
-          this.tempSentencesIndex.push(randomNumber);
+    try {
+      this.sentenceAnswerDisplay = false;
+      let randomNumber;
+      let locked = true;
+      if (this.tempSentencesIndex.length == this.card.sentences.length) {
+        this.tempSentencesIndex = [];
+      }
+      while (this.sentence == undefined || locked) // false 不動
+      {
+        randomNumber = this.getRandomNum(this.card.sentences.length - 1);
+        if (this.tempSentencesIndex.indexOf(randomNumber) == -1) {
+          if (this.sentence?.en != this.card?.sentences[randomNumber]?.en) {
+            this.sentence = this.card?.sentences[randomNumber];
+            locked = false;
+            this.tempSentencesIndex.push(randomNumber);
+          }
         }
       }
+    } catch (err) {
+      alert(err);
     }
+
   }
 
   answerTodayArray: any = [];
   answerCountToday: any = 0;
   answerScoreReset(answer: any) {
+    try {
+      this.answerCountToday++
+      const today = new Date().setHours(0, 0, 0, 0);
+      const apartDay = this.calculateTime(today);
+      const nowDay = this.answerTodayArray.find((ansToday: any) => ansToday.day === today);
 
-    this.answerCountToday++
-    const today = new Date().setHours(0, 0, 0, 0);
-    const apartDay = this.calculateTime(today);
-    const nowDay = this.answerTodayArray.find((ansToday: any) => ansToday.day === today);
+      if (nowDay && apartDay.days === 0) {
+        nowDay.count = this.answerCountToday;
+      } else {
+        this.answerTodayArray.push({
+          day: today,
+          count: this.answerCountToday
+        });
+      }
 
-    if (nowDay && apartDay.days === 0) {
-      nowDay.count = this.answerCountToday;
-    } else {
-      this.answerTodayArray.push({
-        day: today,
-        count: this.answerCountToday
-      });
+      localStorage.setItem('answerTodayArray', JSON.stringify(this.answerTodayArray));
+
+      let word = this.answerScore.find((word: any) =>
+        word.en == this.card.en
+      );
+
+      if (word) {
+        answer ? word.score++ : word.score--;
+        word.updateTime = Date.now();
+      } else {
+        let newWord = answer ? 1 : -1;
+        this.answerScore.push({ en: this.card.en, score: newWord, updateTime: Date.now() });
+      }
+
+      localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
+      this.drawCard();
+    } catch (err) {
+      alert(err);
     }
-
-    localStorage.setItem('answerTodayArray', JSON.stringify(this.answerTodayArray));
-
-    let word = this.answerScore.find((word: any) =>
-      word.en == this.card.en
-    );
-
-    if (word) {
-      answer ? word.score++ : word.score--;
-      word.updateTime = Date.now();
-    } else {
-      let newWord = answer ? 1 : -1;
-      this.answerScore.push({ en: this.card.en, score: newWord, updateTime: Date.now() });
-    }
-
-    localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
-    this.drawCard();
   }
 
 
@@ -181,72 +193,80 @@ export class WordupImproveComponent {
   familiarity: Familiarity | any = {};
 
   calculateFamiliarity() {
-    this.familiarity.total = this.cards.length;
-    // 未複習到 0 / undefined
-    let zero = this.answerScore.filter((res: any) => res.score === 0).length;
-    let undefined = this.cards.length - this.answerScore.length;
-    this.familiarity.notReviewed = zero + undefined;
-    // 超不熟悉 -5
-    this.familiarity.veryUnfamiliar = this.answerScore.filter((res: any) => res.score <= -5).length;
-    // 不熟悉 -
-    this.familiarity.unfamiliar = this.answerScore.filter((res: any) => res.score < 0 && res.score > -5).length;
-    // 熟悉 +
-    this.familiarity.familiar = this.answerScore.filter((res: any) => res.score > 0 && res.score < 5).length;
-    // 超熟悉 +5
-    this.familiarity.veryFamiliar = this.answerScore.filter((res: any) => res.score >= 5).length;
+    try {
+      this.familiarity.total = this.cards.length;
+      // 未複習到 0 / undefined
+      let zero = this.answerScore.filter((res: any) => res.score === 0).length;
+      let undefined = this.cards.length - this.answerScore.length;
+      this.familiarity.notReviewed = zero + undefined;
+      // 超不熟悉 -5
+      this.familiarity.veryUnfamiliar = this.answerScore.filter((res: any) => res.score <= -5).length;
+      // 不熟悉 -
+      this.familiarity.unfamiliar = this.answerScore.filter((res: any) => res.score < 0 && res.score > -5).length;
+      // 熟悉 +
+      this.familiarity.familiar = this.answerScore.filter((res: any) => res.score > 0 && res.score < 5).length;
+      // 超熟悉 +5
+      this.familiarity.veryFamiliar = this.answerScore.filter((res: any) => res.score >= 5).length;
 
-    this.drawChat();
+      this.drawChat();
+    } catch (err) {
+      alert(err);
+    }
   }
 
   drawChat() {
-    if (this.chart) {
-      this.chart.destroy();
-    }
+    try {
+      if (this.chart) {
+        this.chart.destroy();
+      }
 
-    const labels = [
-      `未複習到 ${this.familiarity.notReviewed}`,
-      `超不熟悉 ${this.familiarity.veryUnfamiliar}`,
-      `不熟悉 ${this.familiarity.unfamiliar}`,
-      `熟悉 ${this.familiarity.familiar}`,
-      `超熟悉 ${this.familiarity.veryFamiliar}`
-    ];
+      const labels = [
+        `未複習到 ${this.familiarity.notReviewed}`,
+        `超不熟悉 ${this.familiarity.veryUnfamiliar}`,
+        `不熟悉 ${this.familiarity.unfamiliar}`,
+        `熟悉 ${this.familiarity.familiar}`,
+        `超熟悉 ${this.familiarity.veryFamiliar}`
+      ];
 
-    const data = [
-      this.familiarity.notReviewed,
-      this.familiarity.veryUnfamiliar,
-      this.familiarity.unfamiliar,
-      this.familiarity.familiar,
-      this.familiarity.veryFamiliar
-    ];
+      const data = [
+        this.familiarity.notReviewed,
+        this.familiarity.veryUnfamiliar,
+        this.familiarity.unfamiliar,
+        this.familiarity.familiar,
+        this.familiarity.veryFamiliar
+      ];
 
-    this.chart = new Chart('canvas', {
-      type: 'pie',
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: '# of Votes',
-            data: data,
-            borderWidth: 1,
+      this.chart = new Chart('canvas', {
+        type: 'pie',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: '# of Votes',
+              data: data,
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: '熟悉度'
+            }
           },
-        ],
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
-          },
-          title: {
-            display: true,
-            text: '熟悉度'
+          animation: {
+            duration: 0
           }
         },
-        animation: {
-          duration: 0
-        }
-      },
-    });
+      });
+    } catch (err) {
+      alert(err);
+    }
   }
 
   onResize(event: any) {
@@ -269,46 +289,51 @@ export class WordupImproveComponent {
   };
 
   searchWordMark() {
-    let searchWord = this.searchWord.word.split(" ").join("");
-    if (searchWord !== undefined && searchWord !== null && searchWord !== '') {
-      const pattern = new RegExp(`\\b${searchWord}\\b`, "gi");
-      const searched = this.cards.find((card: any) => card.en.match(pattern));
-      if (searched) {
-        const word = this.answerScore.find((word: any) => word.en.match(pattern));
-        if (word) {
-          word.score -= 5;
-          word.updateTime = Date.now();
-          this.searchWord.score = word?.score
+    try {
+      let searchWord = this.searchWord.word.split(" ").join("");
+      if (searchWord !== undefined && searchWord !== null && searchWord !== '') {
+        const pattern = new RegExp(`\\b${searchWord}\\b`, "gi");
+        const searched = this.cards.find((card: any) => card.en.match(pattern));
+        if (searched) {
+          const word = this.answerScore.find((word: any) => word.en.match(pattern));
+          if (word) {
+            word.score -= 5;
+            word.updateTime = Date.now();
+            this.searchWord.score = word?.score
+          } else {
+            this.answerScore.push({ en: searchWord, score: -5, updateTime: Date.now() });
+            this.searchWord.score = -5;
+          }
+
+          localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
+          this.searchWord.explain = searched.cn;
+          alert('已扣 5 分');
+          this.calculateFamiliarity();
+
+          this.searchWord.display = searchWord;
+          this.searchWord.word = '';
+
         } else {
-          this.answerScore.push({ en: searchWord, score: -5, updateTime: Date.now() });
-          this.searchWord.score = -5;
+          let temp: any = [];
+          this.cards.forEach((el: any) => {
+            let cal = this.calculateSimilarity(el?.en, searchWord);
+            temp.push({ en: el?.en, cn: el?.cn, searchWord: searchWord, cal: cal });
+          });
+
+          let sortTemp = temp.sort((a: any, b: any) => b.cal - a.cal);
+          console.log(sortTemp);
+          this.searchWord.display = sortTemp
+            .slice(0, 5).map((obj: any) => `[${obj.en}]${obj.cn}`).join('，');
+
+          alert(`字庫搜尋不到此單字，後續可能會開發筆記系統，\n以下為[距離算法]選出字庫前五個相似度高的單字，\n如要看更多請看 console.log`);
         }
 
-        localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
-        this.searchWord.explain = searched.cn;
-        alert('已扣 5 分');
-        this.calculateFamiliarity();
-
-        this.searchWord.display = searchWord;
-        this.searchWord.word = '';
-
-      } else {
-        let temp: any = [];
-        this.cards.forEach((el: any) => {
-          let cal = this.calculateSimilarity(el?.en, searchWord);
-          temp.push({ en: el?.en, cn: el?.cn, searchWord: searchWord, cal: cal });
-        });
-
-        let sortTemp = temp.sort((a: any, b: any) => b.cal - a.cal);
-        console.log(sortTemp);
-        this.searchWord.display = sortTemp
-          .slice(0, 5).map((obj: any) => `[${obj.en}]${obj.cn}`).join('，');
-
-        alert(`字庫搜尋不到此單字，後續可能會開發筆記系統，\n以下為[距離算法]選出字庫前五個相似度高的單字，\n如要看更多請看 console.log`);
+        this.unfamiliarReflash();
       }
-
-      this.unfamiliarReflash();
+    } catch (err) {
+      alert(err);
     }
+
   }
 
   nowTheme = this.themeService.GetTheme();
@@ -416,7 +441,6 @@ export class WordupImproveComponent {
 
   email: any;
   password: any;
-  error: any;
   isEnterRegistPage: boolean = false;
   logs$!: Observable<any>;
   logs!: any;
@@ -435,7 +459,7 @@ export class WordupImproveComponent {
       this.refleshUser();
       this.refleshLogs();
     } catch (err) {
-      this.error = err;
+      alert(err);
     }
   }
 
@@ -449,7 +473,7 @@ export class WordupImproveComponent {
       }
       alert('登出成功');
     } catch (err) {
-      this.error = err;
+      alert(err);
     }
   }
 
@@ -459,7 +483,7 @@ export class WordupImproveComponent {
       this.refleshUser();
       this.refleshLogs();
     } catch (err) {
-      this.error = err;
+      alert(err);
     }
   }
 
@@ -557,37 +581,43 @@ export class WordupImproveComponent {
 
   // 编辑距离算法（Levenshtein distance）来计算相似度的示例函数
   calculateSimilarity(word1: any, word2: any) {
-    const m = word1?.length;
-    const n = word2?.length;
-    const dp = [];
+    try {
+      const m = word1?.length;
+      const n = word2?.length;
+      const dp = [];
 
-    for (let i = 0; i <= m; i++) {
-      dp[i] = [i];
-    }
-
-    for (let j = 0; j <= n; j++) {
-      dp[0][j] = j;
-    }
-
-    for (let i = 1; i <= m; i++) {
-      for (let j = 1; j <= n; j++) {
-        const cost = word1[i - 1] === word2[j - 1] ? 0 : 1;
-        dp[i][j] = Math.min(
-          dp[i - 1][j] + 1, // 删除操作
-          dp[i][j - 1] + 1, // 插入操作
-          dp[i - 1][j - 1] + cost // 替换操作
-        );
+      for (let i = 0; i <= m; i++) {
+        dp[i] = [i];
       }
+
+      for (let j = 0; j <= n; j++) {
+        dp[0][j] = j;
+      }
+
+      for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+          const cost = word1[i - 1] === word2[j - 1] ? 0 : 1;
+          dp[i][j] = Math.min(
+            dp[i - 1][j] + 1, // 删除操作
+            dp[i][j - 1] + 1, // 插入操作
+            dp[i - 1][j - 1] + cost // 替换操作
+          );
+        }
+      }
+
+      const maxLen = Math.max(m, n);
+      const similarity = 1 - dp[m][n] / maxLen;
+      return similarity;
+    } catch (err) {
+      alert(err);
     }
 
-    const maxLen = Math.max(m, n);
-    const similarity = 1 - dp[m][n] / maxLen;
-    return similarity;
   }
 
   timerId: any;
   seconds = 0;
   updateTimer() {
+    console.log('updateTimer', this.seconds);
     if (this.timerId) {
       clearInterval(this.timerId);
       this.seconds = 0;
@@ -595,6 +625,7 @@ export class WordupImproveComponent {
     const self = this; // 儲存組件的參考
     this.timerId = setInterval(function () {
       self.seconds++;
+      console.log('setInterval', self.seconds);
     }, 1000);
   }
 }

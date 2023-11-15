@@ -195,7 +195,6 @@
   <ng-template #userLogining>
     您好尊敬的 {{user?.displayName ?? user?.email}}
   </ng-template>
-  <p class="error">{{error}}</p>
   <p class="info">第一次使用請先註冊帳號，並將本地資料上傳即可更新榜單與使用下載服務</p>
   <div>
     <ng-container *ngIf="(user$ | async) && logs else unLogin">
