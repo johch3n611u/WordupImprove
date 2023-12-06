@@ -14,7 +14,20 @@
   <p *ngIf="answerCountToday > 0">累積 x {{answerCountToday}} 答題!!</p>
   <div style="padding: 1.5rem;">
     <div *ngIf="card">
-      <span *ngIf="card?.score">Score：{{card?.score}}</span>
+      <span *ngIf="card?.score">
+        Score：{{card?.score}}
+        <span *ngIf="card?.questionUpdateTime?.minutes > 0">
+          ,<ng-container *ngIf="card?.questionUpdateTime?.days">
+            {{card?.questionUpdateTime?.days}} d /
+          </ng-container>
+          <ng-container *ngIf="card?.questionUpdateTime?.hours">
+            {{card?.questionUpdateTime?.hours}} h /
+          </ng-container>
+          <ng-container *ngIf="card?.questionUpdateTime?.minutes">
+            {{card?.questionUpdateTime?.minutes}} m
+          </ng-container>
+        </span>
+      </span>
       <hr>
       <p [innerHtml]="sentence?.en | highlight:card?.en:'full'"></p>
       <ng-container *ngIf="displayMode === DisplayMode.Answer">
@@ -33,9 +46,24 @@
       <div>
         <input autocomplete="new-password" type="text" [(ngModel)]="searchWord.word" />
         <button (click)="searchWordMark()">搜尋單字註記不會</button>
-        <p>{{searchWord?.display}}</p>
+        <p [innerHTML]="searchWord?.display"></p>
         <p>{{searchWord?.explain}}</p>
-        <p *ngIf="searchWord?.score">Score：{{searchWord?.score}}</p>
+        <p *ngIf="searchWord?.score">
+          Score：{{searchWord?.score}}
+          <span *ngIf="searchWord?.questionUpdateTime?.minutes > 0">
+            ,<ng-container *ngIf="searchWord?.questionUpdateTime?.days">
+              {{searchWord?.questionUpdateTime?.days}} d /
+            </ng-container>
+            <ng-container *ngIf="searchWord?.questionUpdateTime?.hours">
+              {{searchWord?.questionUpdateTime?.hours}} h /
+            </ng-container>
+            <ng-container *ngIf="searchWord?.questionUpdateTime?.minutes">
+              {{searchWord?.questionUpdateTime?.minutes}} m
+            </ng-container>
+          </span>
+        </p>
+        <hr *ngIf="searchWord?.similarWords">
+        <p>{{searchWord?.similarWords}}</p>
       </div>
     </div>
   </div>
@@ -67,17 +95,20 @@
         <td data-th="句子頻率次數">{{item?.sentencesLength}}</td>
         <td data-th="答題分數">{{item?.questionScore}}</td>
         <td data-th="上次答題時間">
-          <ng-container *ngIf="item?.questionUpdateTime?.minutes">
+          <ng-container *ngIf="item?.questionUpdateTime?.days">
             {{item?.questionUpdateTime?.days}} d /
+          </ng-container>
+          <ng-container *ngIf="item?.questionUpdateTime?.hours">
             {{item?.questionUpdateTime?.hours}} h /
+          </ng-container>
+          <ng-container *ngIf="item?.questionUpdateTime?.minutes">
             {{item?.questionUpdateTime?.minutes}} m
           </ng-container>
         </td>
       </tr>
       <tfoot>
         <th colspan="7" style="font-size: 15px;color:darkcyan">加權分數 = 句子頻率次數 + ( 答題分數 * 答題加權
-          config.questionsScore.score：{{config?.questionsScore?.score}} ) + (( 上次答題時間 <
-            config.dayScore.days：{{config?.dayScore?.days}}) * 設定檔時間加權 config.dayScore.score：
+          config.questionsScore.score：{{config?.questionsScore?.score}} ) + ( 上次答題時間 D * 設定檔時間加權 config.dayScore.score：
             {{config?.dayScore?.score}} )</th>
       </tfoot>
     </table>
@@ -117,7 +148,7 @@
         <td data-th="句子頻率次數">{{item?.sentencesLength}}</td>
         <td data-th="答題分數">{{item?.questionScore}}</td>
         <td data-th="上次答題時間">
-          <ng-container *ngIf="item?.questionUpdateTime?.minutes">
+          <ng-container *ngIf="item?.questionUpdateTime?.minutes > 0">
             {{item?.questionUpdateTime?.days}} d /
             {{item?.questionUpdateTime?.hours}} h /
             {{item?.questionUpdateTime?.minutes}} m
