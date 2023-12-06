@@ -8,6 +8,7 @@ import { inject } from '@angular/core';
 import { Firestore, collectionData, collection, CollectionReference, DocumentData, addDoc, DocumentReference, setDoc, doc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Auth, User, authState, createUserWithEmailAndPassword, signInAnonymously, signInWithEmailAndPassword, signOut, updateProfile, user } from '@angular/fire/auth';
+import { GlgorithmsService, REGEXP_TYPE } from 'lib/feature';
 
 @Component({
   selector: 'mod-wordup-improve',
@@ -28,10 +29,12 @@ export class WordupImproveComponent {
   config: any;
   configDisplay: any;
   allWords: any;
+  REGEXP_TYPE = REGEXP_TYPE;
 
   constructor(
     private httpClient: HttpClient,
     public themeService: ThemeService,
+    private glgorithmsService: GlgorithmsService,
   ) {
     this.httpClient.get(this.url)
       .pipe(
@@ -312,18 +315,18 @@ export class WordupImproveComponent {
 
         } else {
           this.searchWord = {};
-          alert(`字庫搜尋不到此單字，後續可能會開發筆記系統，\n以下為[距離算法]選出字庫前五個相似度高的單字，\n如要看更多請看 console.log`);
+          alert(`字庫搜尋不到此單字，\n以下為[距離算法]選出字庫前五個相似度高的單字。`);
         }
 
         let temp: any = [];
-          this.cards.forEach((el: any) => {
-            let cal = this.calculateSimilarity(el?.en, searchWord);
-            temp.push({ en: el?.en, cn: el?.cn, searchWord: searchWord, cal: cal });
-          });
+        this.cards.forEach((el: any) => {
+          let cal = this.glgorithmsService.calculateSimilarity(el?.en, searchWord);
+          temp.push({ en: el?.en, cn: el?.cn, searchWord: searchWord, cal: cal });
+        });
 
         let sortTemp = temp.sort((a: any, b: any) => b.cal - a.cal);
         this.searchWord.similarWords = `相似單字：${sortTemp
-          .slice(0, 5).map((obj: any) => `[${obj.en}]${obj.cn}`).join('，')}` ;
+          .slice(0, 5).map((obj: any) => `[${obj.en}]${obj.cn}`).join('，')}`;
 
         this.unfamiliarReflash();
       }
@@ -364,7 +367,6 @@ export class WordupImproveComponent {
   importConfig() {
     if (confirm('確定要更改設定檔嗎？')) {
       this.debug = JSON.parse(this.configDisplay);
-      console.log(this.debug)
       localStorage.setItem('drawCardConfig', JSON.stringify(this.debug));
       this.drawCard();
     }
@@ -497,7 +499,6 @@ export class WordupImproveComponent {
       take(1),
       tap(logs => {
         this.logs = logs;
-        console.log(logs);
         this.countRankingList();
       }),
     ).subscribe();
@@ -576,40 +577,9 @@ export class WordupImproveComponent {
     }
   }
 
-  // 编辑距离算法（Levenshtein distance）来计算相似度的示例函数
-  calculateSimilarity(word1: any, word2: any) {
-    const m = word1?.length;
-    const n = word2?.length;
-    const dp = [];
-
-    for (let i = 0; i <= m; i++) {
-      dp[i] = [i];
-    }
-
-    for (let j = 0; j <= n; j++) {
-      dp[0][j] = j;
-    }
-
-    for (let i = 1; i <= m; i++) {
-      for (let j = 1; j <= n; j++) {
-        const cost = word1[i - 1] === word2[j - 1] ? 0 : 1;
-        dp[i][j] = Math.min(
-          dp[i - 1][j] + 1, // 删除操作
-          dp[i][j - 1] + 1, // 插入操作
-          dp[i - 1][j - 1] + cost // 替换操作
-        );
-      }
-    }
-
-    const maxLen = Math.max(m, n);
-    const similarity = 1 - dp[m][n] / maxLen;
-    return similarity;
-  }
-
   timerId: any;
   seconds = 0;
   updateTimer() {
-    console.log('updateTimer', this.seconds);
     if (this.timerId) {
       clearInterval(this.timerId);
       this.seconds = 0;

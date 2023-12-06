@@ -29,7 +29,7 @@
         </span>
       </span>
       <hr>
-      <p [innerHtml]="sentence?.en | highlight:card?.en:'full'"></p>
+      <p [innerHtml]="sentence?.en | highlight:card?.en:REGEXP_TYPE.First"></p>
       <ng-container *ngIf="displayMode === DisplayMode.Answer">
         <p>
           <ng-container *ngIf="sentenceAnswerDisplay">
@@ -109,7 +109,7 @@
       <tfoot>
         <th colspan="7" style="font-size: 15px;color:darkcyan">加權分數 = 句子頻率次數 + ( 答題分數 * 答題加權
           config.questionsScore.score：{{config?.questionsScore?.score}} ) + ( 上次答題時間 D * 設定檔時間加權 config.dayScore.score：
-            {{config?.dayScore?.score}} )</th>
+          {{config?.dayScore?.score}} )</th>
       </tfoot>
     </table>
 
