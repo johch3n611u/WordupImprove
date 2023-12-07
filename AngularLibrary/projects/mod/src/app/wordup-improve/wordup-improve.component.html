@@ -5,8 +5,8 @@
       {{displayMode}}
     </button>
     <ng-container *ngIf="displayMode === DisplayMode.Answer">
-      <button (click)="answerScoreReset(true)">會</button>
-      <button (click)="answerScoreReset(false)">不會</button>
+      <button (click)="answerScoreReset(true)">會 +{{(6 - this.mapSeconds(this.seconds))}}</button>
+      <button (click)="answerScoreReset(false)">不會 {{(this.mapSeconds(this.seconds) * -1)}}</button>
     </ng-container>
   </div>
 

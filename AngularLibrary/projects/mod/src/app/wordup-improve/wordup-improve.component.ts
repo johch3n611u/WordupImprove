@@ -49,7 +49,6 @@ export class WordupImproveComponent {
       });
 
     this.themeService.SetTheme(this.themeService.GetTheme());
-
   }
 
 
@@ -171,7 +170,7 @@ export class WordupImproveComponent {
       );
 
       // 回答的越快增加越多分，越慢扣越多
-      let trueScore = (10 - this.mapSeconds(this.seconds));
+      let trueScore = (6 - this.mapSeconds(this.seconds));
       let falseScore = (this.mapSeconds(this.seconds) * -1);
       if (word) {
         answer ? word.score += trueScore : word.score += falseScore;
@@ -596,9 +595,9 @@ export class WordupImproveComponent {
   }
 
   @ViewChild('searchWordInput') searchWordInput!: ElementRef;
-  goToAnchor(anchor:string) {
+  goToAnchor(anchor: string) {
     this.searchWordInput.nativeElement.scrollIntoView({
-      behavior: 'smooth', block: 'start', inline: 'start' 
+      behavior: 'smooth', block: 'start', inline: 'start'
     });
   }
 
@@ -606,18 +605,18 @@ export class WordupImproveComponent {
     const minSeconds = 1;
     const maxSeconds = 120;
     const minOutput = 1;
-    const maxOutput = 10;
-    
+    const maxOutput = 5;
+
     // 將 inputSeconds 限制在最小秒數和最大秒數之間
     const normalizedSeconds = Math.min(Math.max(inputSeconds, minSeconds), maxSeconds);
-    
+
     // 計算輸入範圍和輸出範圍之間的比例
     const inputRange = maxSeconds - minSeconds;
     const outputRange = maxOutput - minOutput;
-    
+
     // 將秒數映射到輸出範圍內
     const mappedValue = Math.ceil((normalizedSeconds - minSeconds + 1) * outputRange / inputRange) + minOutput - 1;
-    
+
     return mappedValue;
   }
 }
