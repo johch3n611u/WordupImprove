@@ -10,11 +10,11 @@
     </ng-container>
   </div>
 
-  <p>經過 {{seconds}} 秒</p>
-  <p *ngIf="answerCountToday > 0">累積 x {{answerCountToday}} 答題!!</p>
-  <div style="padding: 1.5rem;">
+  <p class="subInfo">經過 {{seconds}} 秒</p>
+  <p *ngIf="answerCountToday > 0" class="subInfo">累積 x {{answerCountToday}} 答題!!</p>
+  <div class="cardBox">
     <div *ngIf="card">
-      <span *ngIf="card?.score">
+      <span *ngIf="card?.score" class="subInfo">
         Score：{{card?.score}}
         <span *ngIf="card?.questionUpdateTime?.minutes > 0">
           ,<ng-container *ngIf="card?.questionUpdateTime?.days">
@@ -44,7 +44,7 @@
       </ng-container>
       <hr>
       <div>
-        <input autocomplete="new-password" type="text" [(ngModel)]="searchWord.word" />
+        <input autocomplete="new-password" type="text" [(ngModel)]="searchWord.word" #searchWordInput/>
         <button (click)="searchWordMark()">搜尋單字註記不會</button>
         <p [innerHTML]="searchWord?.display"></p>
         <p>{{searchWord?.explain}}</p>

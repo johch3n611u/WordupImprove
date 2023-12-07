@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Subscription, combineLatest, filter, take, tap } from 'rxjs';
 import Chart from 'chart.js/auto';
 import { Theme, ThemeService } from 'lib/feature/theme/theme.service';
@@ -170,11 +170,14 @@ export class WordupImproveComponent {
         word.en == this.card.en
       );
 
+      // 回答的越快增加越多分，越慢扣越多
+      let trueScore = (10 - this.mapSeconds(this.seconds));
+      let falseScore = (this.mapSeconds(this.seconds) * -1);
       if (word) {
-        answer ? word.score++ : word.score--;
+        answer ? word.score += trueScore : word.score += falseScore;
         word.updateTime = Date.now();
       } else {
-        let newWord = answer ? 1 : -1;
+        let newWord = answer ? trueScore : falseScore;
         this.answerScore.push({ en: this.card.en, score: newWord, updateTime: Date.now() });
       }
 
@@ -290,6 +293,17 @@ export class WordupImproveComponent {
     try {
       let searchWord = this.searchWord.word.split(" ").join("");
       if (searchWord !== undefined && searchWord !== null && searchWord !== '') {
+
+        let temp: any = [];
+        this.cards.forEach((el: any) => {
+          let cal = this.glgorithmsService.calculateSimilarity(el?.en, searchWord);
+          temp.push({ en: el?.en, cn: el?.cn, searchWord: searchWord, cal: cal });
+        });
+
+        let sortTemp = temp.sort((a: any, b: any) => b.cal - a.cal);
+        this.searchWord.similarWords = `相似單字：${sortTemp
+          .slice(0, 5).map((obj: any) => `[${obj.en}]${obj.cn}`).join('，')}`;
+
         const pattern = new RegExp(`\\b${searchWord}\\b`, "gi");
         const searched = this.cards.find((card: any) => card.en.match(pattern));
         if (searched) {
@@ -314,22 +328,13 @@ export class WordupImproveComponent {
           this.searchWord.word = '';
 
         } else {
-          this.searchWord = {};
           alert(`字庫搜尋不到此單字，\n以下為[距離算法]選出字庫前五個相似度高的單字。`);
+          this.searchWord.word = sortTemp[0].en;
         }
-
-        let temp: any = [];
-        this.cards.forEach((el: any) => {
-          let cal = this.glgorithmsService.calculateSimilarity(el?.en, searchWord);
-          temp.push({ en: el?.en, cn: el?.cn, searchWord: searchWord, cal: cal });
-        });
-
-        let sortTemp = temp.sort((a: any, b: any) => b.cal - a.cal);
-        this.searchWord.similarWords = `相似單字：${sortTemp
-          .slice(0, 5).map((obj: any) => `[${obj.en}]${obj.cn}`).join('，')}`;
 
         this.unfamiliarReflash();
       }
+      this.goToAnchor('searchWordInput')
     } catch (err) {
       alert(err);
     }
@@ -588,6 +593,32 @@ export class WordupImproveComponent {
     this.timerId = setInterval(function () {
       self.seconds++;
     }, 1000);
+  }
+
+  @ViewChild('searchWordInput') searchWordInput!: ElementRef;
+  goToAnchor(anchor:string) {
+    this.searchWordInput.nativeElement.scrollIntoView({
+      behavior: 'smooth', block: 'start', inline: 'start' 
+    });
+  }
+
+  mapSeconds(inputSeconds: number) {
+    const minSeconds = 1;
+    const maxSeconds = 120;
+    const minOutput = 1;
+    const maxOutput = 10;
+    
+    // 將 inputSeconds 限制在最小秒數和最大秒數之間
+    const normalizedSeconds = Math.min(Math.max(inputSeconds, minSeconds), maxSeconds);
+    
+    // 計算輸入範圍和輸出範圍之間的比例
+    const inputRange = maxSeconds - minSeconds;
+    const outputRange = maxOutput - minOutput;
+    
+    // 將秒數映射到輸出範圍內
+    const mappedValue = Math.ceil((normalizedSeconds - minSeconds + 1) * outputRange / inputRange) + minOutput - 1;
+    
+    return mappedValue;
   }
 }
 
