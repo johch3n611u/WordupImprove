@@ -108,8 +108,8 @@
       </tr>
       <tfoot>
         <th colspan="7" style="font-size: 15px;color:darkcyan">加權分數 = 句子頻率次數 + ( 答題分數 * 答題加權
-          config.questionsScore.score：{{config?.questionsScore?.score}} ) + ( 上次答題時間 D * 設定檔時間加權 config.dayScore.score：
-          {{config?.dayScore?.score}} )</th>
+          config.questionsScore.score：{{config?.questionsScore}} ) + ( 上次答題時間 D * 設定檔時間加權 config.dayScore.score：
+          {{config?.dayScore}} )</th>
       </tfoot>
     </table>
 
@@ -193,7 +193,18 @@
     <div style="display: flex;flex-direction: column;" *ngIf="debugDisplay">
       <hr>
       <p>Config：<button class="unobviousBtn" (click)="importConfig()">更改設定檔</button></p>
-      <textarea [(ngModel)]="configDisplay"></textarea>
+      <!-- <textarea [(ngModel)]="configDisplay"></textarea> -->
+      <label for="dayScore">答題日期加權分數</label>
+      <input id="dayScore" [(ngModel)]="config.dayScore"/>
+      <label for="questionsScore">錯誤加權分數</label>
+      <input id="questionsScore" [(ngModel)]="config.questionsScore"/>
+      <label>抽籤模式</label>
+      <div class="drawMode">
+        <input [(ngModel)]="config.drawMode" id="errorFirst" type="radio" name="drawMode" value="errorFirst"/>
+        <label for="errorFirst">錯誤優先</label>
+        <input [(ngModel)]="config.drawMode" id="completelyRandom" type="radio" name="drawMode" value="completelyRandom"/>
+        <label for="completelyRandom">完全隨機</label>
+      </div>
     </div>
   </div>
 </div>
