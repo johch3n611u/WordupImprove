@@ -14,7 +14,7 @@ export class HighlightPipe implements PipeTransform {
   ) { }
 
   transform(sentence: any, keyword: any, type: REGEXP_TYPE = REGEXP_TYPE.Full): string {
-    if (!keyword) {
+    if (!keyword || !sentence) {
       return sentence;
     };
 

@@ -59,7 +59,7 @@ export class WordupImproveComponent {
       .pipe(
         tap((res: any) => {
           this.cards = res.sort(
-            (a: any, b: any) => b.sentences.length - a.sentences.length
+            (a: any, b: any) => b?.sentences?.length - a?.sentences?.length
           );
           this.answerScore = JSON.parse(
             localStorage.getItem('answerScore') ?? '[]'
@@ -78,94 +78,143 @@ export class WordupImproveComponent {
     this.logsSub.unsubscribe();
   }
 
+  timer: any;
+  drawCountRecord: any = [];
+  finalScoreRecord: any = [];
+  automaticDrawCard() {
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = undefined;
+    } else {
+      if (confirm('自動抽取開始，若要結束請重複點擊按鈕')) {
+        this.drawCountRecord = [];
+        this.finalScoreRecord = [];
+        this.timer = setInterval(() => {
+          this.drawCard();
+        }, this.config.autoDrawSeconds * 1000);
+      }
+    }
+  }
+
+  getAverage(array: number[]) {
+    return array.reduce((sum, currentValue) => sum + currentValue, 0) / array.length;
+  }
+
   debug: any;
   card: any;
-  drawCard(count: any = 1): void {
+  drawCard(): void {
     try {
-      if (this.config.drawMode !== 'errorFirst') {
-        this.debug = { drawScore: 0, list: [] };
-        const pickedObjects: any = [];
-        const totalScore = this.cards.reduce(
-          (sum: any, obj: any) => sum + obj.sentences.length,
-          0
-        );
-
-        let cumulativeScore = 0;
-        const random = Math.random() * totalScore;
-        this.debug.drawScore = random;
-        let i = 1;
-        while (pickedObjects.length < count) {
-          let drawNumber = this.getRandomNum(this.cards.length - 1);
-          let preCumulativeScore = JSON.parse(JSON.stringify(cumulativeScore));
-          cumulativeScore += this.cards[drawNumber].sentences.length;
-          let familiar = this.answerScore.find(
-            (res: any) => res.en === this.cards[drawNumber].en
+      // 錯誤優先模式
+      if (this.config.drawMode === 'errorFirst') {
+        // 將答題表與卡片關聯
+        this.cards.forEach((card: any) => {
+          let findAnswer = this.answerScore?.find(
+            (word: any) => word?.en === card?.en
           );
-          if (familiar) {
-            cumulativeScore +=
-              familiar.score *
-              -1 *
-              (this.config?.questionsScore
-                ? this.config?.questionsScore
-                : 1000);
-            if (familiar.updateTime && familiar.score <= 0) {
-              let dayScore = this.config?.dayScore
-                ? this.config?.dayScore
-                : 1000;
-              let timeDifference = this.calculateTime(familiar?.updateTime);
-              cumulativeScore += timeDifference?.days * dayScore;
-            }
-          }
+          card.score = findAnswer?.score ?? 0;
+          card.updateTime = this.calculateTime(findAnswer ?? undefined);
+        });
 
-          this.debug.list.push({
-            finalScore: cumulativeScore,
-            en: this.cards[drawNumber]?.en,
-            drawCount: i++,
-            sentencesLength: this.cards[drawNumber]?.sentences?.length,
-            questionScore: familiar?.score,
-            questionUpdateTime: this.calculateTime(familiar?.updateTime),
-            weightedScore: cumulativeScore - preCumulativeScore,
-          });
+        // 依照分數與答題時間排序
+        this.cards?.sort((a: any, b: any) => this.unfamiliarSorting(a, b));
+      }
 
-          if (
-            random <= cumulativeScore &&
-            this.cards[drawNumber]?.en !== this.card?.en
-          ) {
-            if (!pickedObjects.includes(this.cards[drawNumber])) {
-              pickedObjects.push(this.cards[drawNumber]);
-              this.card = JSON.parse(JSON.stringify(this.cards[drawNumber]));
-              this.card.score = familiar?.score;
-              this.card.questionUpdateTime = this.calculateTime(
-                familiar?.updateTime
-              );
-            }
-            break;
+      this.debug = { thresholdScore: 0, list: [] };
+      const totalScore = this.cards.reduce(
+        (sum: any, obj: any) => sum + obj?.sentences?.length,
+        0
+      );
+
+      let cumulativeScore = 0;
+      const thresholdScore = Math.random() * totalScore;
+      this.debug.thresholdScore = thresholdScore;
+      this.finalScoreRecord.push(thresholdScore);
+      let drawCount = 0;
+      let isLocked = true;
+      while (isLocked) {
+        let drawNumber = 0;
+
+        if (this.config.drawMode === 'errorFirst') {
+          drawNumber = drawCount;
+        } else {
+          drawNumber = this.getRandomNum(this.cards?.length - 1);
+        }
+
+        let preCumulativeScore = cumulativeScore;
+
+        // 例句數量權重
+        cumulativeScore += this.cards[drawNumber]?.sentences?.length;
+
+        // 答題權重
+        let answerInfo = this.answerScore.find(
+          (res: any) => res.en === this.cards[drawNumber].en
+        );
+        if (answerInfo) {
+          cumulativeScore +=
+            answerInfo.score *
+            -1 *
+            (this.config?.questionsScore ? this.config?.questionsScore : 1000);
+          // 時間權重
+          if (answerInfo.updateTime && answerInfo.score <= 0) {
+            let dayScore = this.config?.dayScore ? this.config?.dayScore : 1000;
+            let timeDifference = this.calculateTime(answerInfo?.updateTime);
+            cumulativeScore += (timeDifference?.days ?? 1) * dayScore;
           }
         }
 
-        this.debug.list = this.debug.list.sort(
-          (a: any, b: any) => b.drawCount - a.drawCount
-        );
-      } else {
-        this.cards.forEach((card: any) => {
-          card.score =
-            this.answerScore?.find((word: any) => word?.en?.match(card?.en))
-              ?.score ?? 0;
+        // 每次抽取結果
+        this.debug.list.push({
+          finalScore: cumulativeScore,
+          en: this.cards[drawNumber]?.en,
+          drawCount: drawCount++ + 1,
+          sentencesLength: this.cards[drawNumber]?.sentences?.length,
+          score: answerInfo?.score,
+          updateTime: this.calculateTime(answerInfo?.updateTime),
+          weightedScore: cumulativeScore - preCumulativeScore,
         });
 
-        this.cards?.sort((a: any, b: any) => a.score - b.score);
-
-        for (let i = 0; i < this.cards.length; i++) { }
+        // 累積分數超過臨界值則得獎
+        if (
+          thresholdScore <= cumulativeScore &&
+          this.cards[drawNumber]?.en !== this.card?.en
+        ) {
+          this.card = JSON.parse(JSON.stringify(this.cards[drawNumber]));
+          this.card.score = answerInfo?.score;
+          this.card.updateTime = this.calculateTime(answerInfo?.updateTime);
+          isLocked = false;
+          this.drawCountRecord.push(drawCount);
+        }
       }
 
+      // 排序 debug 榜單
+      this.debug.list = this.debug.list.sort(
+        (a: any, b: any) => b.drawCount - a.drawCount
+      );
+
       this.displayMode = DisplayMode.Questions;
+      this.tempSentencesIndex = [];
       this.drawSentence();
       this.calculateFamiliarity();
       this.unfamiliarReflash();
-      this.tempSentencesIndex = [];
       this.updateTimer();
     } catch (err) {
       alert(err);
+    }
+  }
+
+  unfamiliarSorting(a: any, b: any) {
+    if (a?.score === b?.score) {
+      if (b?.updateTime?.day === a?.updateTime?.day) {
+        if (b?.updateTime?.hours === a?.updateTime?.hours) {
+          return b?.updateTime?.minutes - a?.updateTime?.minutes;
+        } else {
+          return b?.updateTime?.hours - a?.updateTime?.hours;
+        }
+      } else {
+        return b?.updateTime?.day - a?.updateTime?.day;
+      }
+    } else {
+      return a?.score - b?.score;
     }
   }
 
@@ -173,13 +222,13 @@ export class WordupImproveComponent {
   drawSentence() {
     try {
       this.sentenceAnswerDisplay = false;
-      this.sentence = undefined
+      this.sentence = undefined;
       let randomNumber;
-      if (this.tempSentencesIndex.length == this.card.sentences.length) {
+      if (this.tempSentencesIndex?.length == this.card?.sentences?.length) {
         this.tempSentencesIndex = [];
       }
       while (!this.sentence) {
-        randomNumber = this.getRandomNum(this.card.sentences.length - 1);
+        randomNumber = this.getRandomNum(this.card?.sentences?.length - 1);
         if (this.tempSentencesIndex.indexOf(randomNumber) == -1) {
           if (this.sentence?.en != this.card?.sentences[randomNumber]?.en) {
             this.sentence = this.card?.sentences[randomNumber];
@@ -203,7 +252,7 @@ export class WordupImproveComponent {
         (ansToday: any) => ansToday.day === today
       );
 
-      if (nowDay && apartDay.days === 0) {
+      if (nowDay && apartDay?.days === 0) {
         nowDay.count = this.answerCountToday;
       } else {
         this.answerTodayArray.push({
@@ -385,7 +434,7 @@ export class WordupImproveComponent {
           const updateTime = JSON.stringify(word?.updateTime);
           if (word) {
             word.score -= 5;
-            this.searchWord.questionUpdateTime = this.calculateTime(updateTime);
+            this.searchWord.updateTime = this.calculateTime(updateTime);
             word.updateTime = Date.now();
             this.searchWord.score = word?.score;
           } else {
@@ -434,6 +483,7 @@ export class WordupImproveComponent {
     this.isExportAnswerScore = !this.isExportAnswerScore;
     this.answerScoreDisplay = JSON.stringify([...this.answerScore]);
   }
+
   importAnswerScore() {
     if (confirm('確定要匯入(紀錄更改後無法返回)？')) {
       this.answerScore = [...JSON.parse(this.answerScoreDisplay)];
@@ -461,10 +511,20 @@ export class WordupImproveComponent {
     drawCardConfig
       ? (this.config = JSON.parse(drawCardConfig))
       : (this.config = {
+          dayScore: 1000,
+          questionsScore: 1000,
+          drawMode: 'completelyRandom',
+          autoDrawSeconds: 5,
+        });
+
+    if (!this.config.drawMode) {
+      localStorage.removeItem('drawCardConfig');
+      this.config = {
         dayScore: 1000,
         questionsScore: 1000,
-        drawMode: 'errorFirst',
-      });
+        drawMode: 'completelyRandom',
+      };
+    }
 
     this.answerTodayArray = JSON.parse(
       localStorage.getItem('answerTodayArray') ?? `[]`
@@ -480,6 +540,10 @@ export class WordupImproveComponent {
   }
 
   calculateTime(timestamp: any) {
+    if (!timestamp) {
+      return undefined;
+    }
+
     var timeDifference = Math.abs(Date.now() - timestamp); // 計算時間差（取絕對值）
 
     // 轉換為相差的天數、小時和分鐘
@@ -516,15 +580,13 @@ export class WordupImproveComponent {
           en: card?.en,
           cn: card?.cn,
           sentencesLength: card?.sentences?.length,
-          questionScore: el?.score,
-          questionUpdateTime: this.calculateTime(el?.updateTime),
+          score: el?.score,
+          updateTime: this.calculateTime(el?.updateTime),
         });
       }
     });
 
-    this.unfamiliarList.sort(
-      (a: any, b: any) => a.questionScore - b.questionScore
-    );
+    this.unfamiliarList.sort((a: any, b: any) => this.unfamiliarSorting(a, b));
   }
 
   getRandomNum(max: any, min: any = 0) {

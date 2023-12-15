@@ -17,7 +17,8 @@
     "start:crm": "ng serve crm --open",
     "start:cms": "ng serve cms --open",
     "start:brand": "ng serve brand --open",
-    "start:mod": "ng serve mod --open"
+    "start:mod": "ng serve mod --open",
+    "build:mod:enhelper": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/assets/angular/mod/EnglishLearningHelper/"
   },
   "private": true,
   "dependencies": {

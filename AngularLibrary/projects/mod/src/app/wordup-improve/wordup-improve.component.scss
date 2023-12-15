@@ -112,6 +112,7 @@ table {
 .drawMode {
   display: flex;
   justify-content: space-around;
+  width: 100%;
 }
 
 @include LargeDevices {
@@ -149,7 +150,7 @@ table {
   }
 
   input {
-    width: 260px;
+    max-width: 260px;
   }
 
   table {
