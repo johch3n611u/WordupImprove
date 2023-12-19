@@ -16,7 +16,7 @@
     <div *ngIf="card">
       <span *ngIf="card?.score" class="subInfo">
         Score：{{card?.score}}
-        <span *ngIf="card?.updateTime?.minutes > 0">
+        <span *ngIf="card?.updateTime?.minutes">
           ,<ng-container *ngIf="card?.updateTime?.days">
             {{card?.updateTime?.days}} d /
           </ng-container>
@@ -50,7 +50,7 @@
         <p>{{searchWord?.explain}}</p>
         <p *ngIf="searchWord?.score">
           Score：{{searchWord?.score}}
-          <span *ngIf="searchWord?.updateTime?.minutes > 0">
+          <span *ngIf="searchWord?.updateTime?.minutes">
             ,<ng-container *ngIf="searchWord?.updateTime?.days">
               {{searchWord?.updateTime?.days}} d /
             </ng-container>
@@ -152,7 +152,7 @@
         <td data-th="句子頻率次數">{{item?.sentencesLength}}</td>
         <td data-th="答題分數">{{item?.score}}</td>
         <td data-th="上次答題時間">
-          <ng-container *ngIf="item?.updateTime?.minutes > 0">
+          <ng-container *ngIf="item?.updateTime?.minutes">
             {{item?.updateTime?.days}} d /
             {{item?.updateTime?.hours}} h /
             {{item?.updateTime?.minutes}} m
