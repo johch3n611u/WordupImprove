@@ -110,6 +110,7 @@ CSS 中最大的幾個議題
 3. app name.architect.build.options 新增 customWebpackConfig ("path": "./extra-webpack.config.js",
 "mergeRules": {"externals": "replace"})
 4. app name.architect.serve.builder => (@angular-devkit/build-angular:dev-server) => (@angular-builders/custom-webpack:dev-server)
+5. [speechSynthesis強制使用Chrome中的Google小姐中文語音](https://gist.github.com/Eotones/d67be7262856a79a77abeeccef455ebf)、[Speech synthesiser Demo](https://mdn.github.io/dom-examples/web-speech-api/speak-easy-synthesis/)
 
 <br><br><br><br>
 
