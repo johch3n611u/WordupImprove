@@ -1,6 +1,18 @@
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
-import { Subscription, combineLatest, filter, take, tap } from 'rxjs';
+import {
+  Subscriber,
+  Subscription,
+  combineLatest,
+  debounce,
+  delay,
+  filter,
+  of,
+  take,
+  tap,
+  timer,
+} from 'rxjs';
 import Chart from 'chart.js/auto';
 import { Theme, ThemeService } from 'lib/feature/theme/theme.service';
 
@@ -76,9 +88,10 @@ export class WordupImproveComponent {
 
   ngOnDestroy() {
     this.logsSub.unsubscribe();
+    this.debounceSub.unsubscribe();
   }
 
-  timer: any;
+  automaticDrawCardTimer: any;
   record: any = {
     drawCountRecord: [],
     drawCountRecordDisplay: undefined,
@@ -101,14 +114,14 @@ export class WordupImproveComponent {
   }
 
   automaticDrawCard() {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = undefined;
+    if (this.automaticDrawCardTimer) {
+      clearInterval(this.automaticDrawCardTimer);
+      this.automaticDrawCardTimer = undefined;
     } else {
       if (confirm('自動抽取開始，若要結束請重複點擊按鈕')) {
         this.record.drawCountRecord = [];
         this.record.finalScoreRecord = [];
-        this.timer = setInterval(() => {
+        this.automaticDrawCardTimer = setInterval(() => {
           this.drawCard();
         }, this.config.autoDrawSeconds * 1000);
       }
@@ -426,28 +439,31 @@ export class WordupImproveComponent {
     display: '',
     score: '',
     similarWords: '',
-    tempKeyword: undefined,
   };
 
+    // https://stackoverflow.com/questions/3169786/clear-text-selection-with-javascript
   searchWordMark() {
     try {
-      let searchWord =
-        this.searchWord.tempKeyword ?? this.searchWord.word.split(' ').join('');
+      
+      if (window.getSelection()?.empty) {  // Chrome
+        window.getSelection()?.empty();
+      }
+
       if (
-        searchWord !== undefined &&
-        searchWord !== null &&
-        searchWord !== ''
+        this.searchWord.word !== undefined &&
+        this.searchWord.word !== null &&
+        this.searchWord.word.replace(/\s*/g, '') !== ''
       ) {
         let temp: any = [];
         this.cards.forEach((el: any) => {
           let cal = this.glgorithmsService.calculateSimilarity(
             el?.en,
-            searchWord
+            this.searchWord.word
           );
           temp.push({
             en: el?.en,
             cn: el?.cn,
-            searchWord: searchWord,
+            searchWord: this.searchWord.word,
             cal: cal,
           });
         });
@@ -458,7 +474,7 @@ export class WordupImproveComponent {
           .map((obj: any) => `[${obj.en}]${obj.cn}`)
           .join('，')}`;
 
-        const pattern = new RegExp(`\\b${searchWord}\\b`, 'gi');
+        const pattern = new RegExp(`\\b${this.searchWord.word}\\b`, 'gi');
         const searched = this.cards.find((card: any) => card.en.match(pattern));
         if (searched) {
           const word = this.answerScore.find((word: any) =>
@@ -472,7 +488,7 @@ export class WordupImproveComponent {
             this.searchWord.score = word?.score;
           } else {
             this.answerScore.push({
-              en: searchWord,
+              en: this.searchWord.word,
               score: -5,
               updateTime: Date.now(),
             });
@@ -484,18 +500,17 @@ export class WordupImproveComponent {
           alert('已扣 5 分');
           this.calculateFamiliarity();
 
-          this.searchWord.display = searchWord;
+          this.searchWord.display = this.searchWord.word;
           this.searchWord.word = '';
 
           if (this.speakSelection) {
-            this.speak(searchWord);
+            this.debounceBeSub$.next([this.speak, this.searchWord.word]);
           }
         } else {
           alert(
             `字庫搜尋不到此單字，\n以下為[距離算法]選出字庫前五個相似度高的單字。`
           );
           this.searchWord.word = sortTemp[0].en;
-          this.searchWord.tempKeyword = sortTemp[0].en;
         }
 
         this.unfamiliarReflash();
@@ -870,46 +885,72 @@ export class WordupImproveComponent {
   @HostListener('touchend', ['$event'])
   mouseUp(event: MouseEvent) {
     let d: any = document;
-    let selection = null;
+    let selection: any = null;
+    let word = '';
 
     if (window.getSelection) {
       selection = window.getSelection();
-      this.searchWord.word = selection?.toString();
+      word = selection?.toString();
     } else if (typeof d.selection != 'undefined') {
       selection = d.selection;
-      this.searchWord.word = d.selection.createRange().text;
+      word = d.selection.createRange().text;
     }
 
     if (
-      this.searchWord.word !== undefined &&
-      this.searchWord.word !== null &&
-      this.searchWord.word.replace(/\s*/g, '') !== ''
+      word !== undefined &&
+      word !== null &&
+      word.replace(/\s*/g, '') !== ''
     ) {
-      if (
-        this.speakSelection &&
-        this.searchWord.word !== this.searchWord.word
-      ) {
-        this.speak(this.searchWord.word);
+      this.searchWord.word = word;
+      if (this.speakSelection) {
+        console.log(this.searchWord.word)
+        this.debounceBeSub$.next([this.speak, this.searchWord.word]);
       }
     }
   }
 
+  // https://stackoverflow.com/questions/41539680/speechsynthesis-speak-not-working-in-chrome
+  debounceBeSub$: BehaviorSubject<any> = new BehaviorSubject([
+    this.speak,
+    this.speakSelection,
+  ]);
+  debounceSub!: Subscription;
+  debounceHandler() {
+    this.debounceSub = this.debounceBeSub$
+      ?.pipe(
+        debounce(() => timer(500)),
+        tap(([fn, val]: any) => {
+          // 因為 chrome 政策，無法使用匿名函式觸發 speak，但其他函式應該還是可以
+          // fn(val)
+          this.speak(val);
+        })
+      )
+      ?.subscribe();
+  }
+
   speak(msg: string): void {
-    this.voices = this.synth?.getVoices();
-    let voice: any = this.voices?.find(
-      (voice: any) => voice.name === this.config?.speakSelectVoice
-    );
-    let speechSynthesisUtterance = new SpeechSynthesisUtterance();
-    if (voice) {
-      speechSynthesisUtterance.voice = voice;
+    if (this.synth) {
+      this.voices = this.synth?.getVoices();
+      let voice: any = this.voices?.find(
+        (voice: any) => voice.name === this.config?.speakSelectVoice
+      );
+      let speechSynthesisUtterance = new SpeechSynthesisUtterance();
+      if (voice) {
+        speechSynthesisUtterance.voice = voice;
+      }
+      speechSynthesisUtterance.text = msg;
+      this.synth?.speak(speechSynthesisUtterance);
     }
-    speechSynthesisUtterance.text = msg;
-    this.synth.speak(speechSynthesisUtterance);
   }
 
   setSpeakSelection() {
     this.speakSelection = !this.speakSelection;
     alert(this.speakSelection ? '開啟點擊朗讀模式' : '關閉點擊朗讀模式');
+    if (this.speakSelection) {
+      this.debounceHandler();
+    } else {
+      this.debounceSub.unsubscribe();
+    }
   }
 }
 
