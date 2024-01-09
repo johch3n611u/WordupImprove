@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { Subscription, combineLatest, filter, take, tap } from 'rxjs';
 import Chart from 'chart.js/auto';
 import { Theme, ThemeService } from 'lib/feature/theme/theme.service';
@@ -79,16 +79,35 @@ export class WordupImproveComponent {
   }
 
   timer: any;
-  drawCountRecord: any = [];
-  finalScoreRecord: any = [];
+  record: any = {
+    drawCountRecord: [],
+    drawCountRecordDisplay: undefined,
+    finalScoreRecord: [],
+    finalScoreRecordDisplay: undefined,
+    avgAnswerSpeed: [],
+    avgAnswerSpeedDisplay: undefined,
+  };
+
+  recordCalculate() {
+    this.record.drawCountRecordDisplay = this.getAverage(
+      this.record.drawCountRecord
+    );
+    this.record.finalScoreRecordDisplay = this.getAverage(
+      this.record.finalScoreRecord
+    );
+    this.record.avgAnswerSpeedDisplay = this.getAverage(
+      this.record.avgAnswerSpeed
+    );
+  }
+
   automaticDrawCard() {
     if (this.timer) {
       clearInterval(this.timer);
       this.timer = undefined;
     } else {
       if (confirm('自動抽取開始，若要結束請重複點擊按鈕')) {
-        this.drawCountRecord = [];
-        this.finalScoreRecord = [];
+        this.record.drawCountRecord = [];
+        this.record.finalScoreRecord = [];
         this.timer = setInterval(() => {
           this.drawCard();
         }, this.config.autoDrawSeconds * 1000);
@@ -97,7 +116,9 @@ export class WordupImproveComponent {
   }
 
   getAverage(array: number[]) {
-    return array.reduce((sum, currentValue) => sum + currentValue, 0) / array.length;
+    return Math.round(
+      array.reduce((sum, currentValue) => sum + currentValue, 0) / array.length
+    );
   }
 
   debug: any;
@@ -128,7 +149,7 @@ export class WordupImproveComponent {
       let cumulativeScore = 0;
       const thresholdScore = Math.random() * totalScore;
       this.debug.thresholdScore = thresholdScore;
-      this.finalScoreRecord.push(thresholdScore);
+      this.record.finalScoreRecord.push(thresholdScore);
       let drawCount = 0;
       let isLocked = true;
       while (isLocked) {
@@ -182,7 +203,7 @@ export class WordupImproveComponent {
           this.card.score = answerInfo?.score;
           this.card.updateTime = this.calculateTime(answerInfo?.updateTime);
           isLocked = false;
-          this.drawCountRecord.push(drawCount);
+          this.record.drawCountRecord.push(drawCount);
         }
       }
 
@@ -191,8 +212,10 @@ export class WordupImproveComponent {
         (a: any, b: any) => b.drawCount - a.drawCount
       );
 
+      this.searchWord = {};
       this.displayMode = DisplayMode.Questions;
       this.tempSentencesIndex = [];
+      this.recordCalculate();
       this.drawSentence();
       this.calculateFamiliarity();
       this.unfamiliarReflash();
@@ -200,6 +223,11 @@ export class WordupImproveComponent {
     } catch (err) {
       alert(err);
     }
+  }
+
+  seeAnswer() {
+    this.displayMode = DisplayMode.Answer;
+    this.sentenceAnswerDisplay = true;
   }
 
   unfamiliarSorting(a: any, b: any) {
@@ -236,6 +264,8 @@ export class WordupImproveComponent {
           }
         }
       }
+
+      this.searchWord = {};
     } catch (err) {
       alert(err);
     }
@@ -245,6 +275,7 @@ export class WordupImproveComponent {
   answerCountToday: any = 0;
   answerScoreReset(answer: any) {
     try {
+      this.record.avgAnswerSpeed.push(this.seconds);
       this.answerCountToday++;
       const today = new Date().setHours(0, 0, 0, 0);
       const apartDay = this.calculateTime(today);
@@ -272,7 +303,7 @@ export class WordupImproveComponent {
       let trueScore = 6 - this.mapSeconds(this.seconds);
       let falseScore = this.mapSeconds(this.seconds) * -1;
       if (word) {
-        answer ? (word.score += trueScore) : (word.score += falseScore);
+        answer ? (word.score += trueScore) : (word.score -= 5);
         word.updateTime = Date.now();
       } else {
         let newWord = answer ? trueScore : falseScore;
@@ -395,11 +426,13 @@ export class WordupImproveComponent {
     display: '',
     score: '',
     similarWords: '',
+    tempKeyword: undefined,
   };
 
   searchWordMark() {
     try {
-      let searchWord = this.searchWord.word.split(' ').join('');
+      let searchWord =
+        this.searchWord.tempKeyword ?? this.searchWord.word.split(' ').join('');
       if (
         searchWord !== undefined &&
         searchWord !== null &&
@@ -453,11 +486,16 @@ export class WordupImproveComponent {
 
           this.searchWord.display = searchWord;
           this.searchWord.word = '';
+
+          if (this.speakSelection) {
+            this.speak(searchWord);
+          }
         } else {
           alert(
             `字庫搜尋不到此單字，\n以下為[距離算法]選出字庫前五個相似度高的單字。`
           );
           this.searchWord.word = sortTemp[0].en;
+          this.searchWord.tempKeyword = sortTemp[0].en;
         }
 
         this.unfamiliarReflash();
@@ -515,6 +553,7 @@ export class WordupImproveComponent {
           questionsScore: 1000,
           drawMode: 'completelyRandom',
           autoDrawSeconds: 5,
+          speakSelectVoice: 'Google UK English Male',
         });
 
     if (!this.config.drawMode) {
@@ -582,6 +621,7 @@ export class WordupImproveComponent {
           sentencesLength: card?.sentences?.length,
           score: el?.score,
           updateTime: this.calculateTime(el?.updateTime),
+          displayAnswer: false,
         });
       }
     });
@@ -803,6 +843,73 @@ export class WordupImproveComponent {
       1;
 
     return mappedValue;
+  }
+
+  setUnfamiliarDisplayAnswer(item: any) {
+    item.displayAnswer = !item.displayAnswer;
+    setTimeout(() => {
+      item.displayAnswer = !item.displayAnswer;
+    }, 5000);
+  }
+
+  answerUnfamiliarScoreReset(answer: any, keyword: string) {
+    let word = this.answerScore.find((word: any) => word.en == keyword);
+    answer ? (word.score += 1) : (word.score -= 1);
+    word.updateTime = Date.now();
+    localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
+    this.calculateFamiliarity();
+    this.unfamiliarReflash();
+  }
+
+  // https://gist.github.com/Eotones/d67be7262856a79a77abeeccef455ebf
+  // https://stackoverflow.com/questions/5379120/get-the-highlighted-selected-text
+  synth = window.speechSynthesis;
+  speakSelection: any = false;
+  voices: any = [];
+  @HostListener('window:mouseup', ['$event'])
+  @HostListener('touchend', ['$event'])
+  mouseUp(event: MouseEvent) {
+    let d: any = document;
+    let selection = null;
+
+    if (window.getSelection) {
+      selection = window.getSelection();
+      this.searchWord.word = selection?.toString();
+    } else if (typeof d.selection != 'undefined') {
+      selection = d.selection;
+      this.searchWord.word = d.selection.createRange().text;
+    }
+
+    if (
+      this.searchWord.word !== undefined &&
+      this.searchWord.word !== null &&
+      this.searchWord.word.replace(/\s*/g, '') !== ''
+    ) {
+      if (
+        this.speakSelection &&
+        this.searchWord.word !== this.searchWord.word
+      ) {
+        this.speak(this.searchWord.word);
+      }
+    }
+  }
+
+  speak(msg: string): void {
+    this.voices = this.synth?.getVoices();
+    let voice: any = this.voices?.find(
+      (voice: any) => voice.name === this.config?.speakSelectVoice
+    );
+    let speechSynthesisUtterance = new SpeechSynthesisUtterance();
+    if (voice) {
+      speechSynthesisUtterance.voice = voice;
+    }
+    speechSynthesisUtterance.text = msg;
+    this.synth.speak(speechSynthesisUtterance);
+  }
+
+  setSpeakSelection() {
+    this.speakSelection = !this.speakSelection;
+    alert(this.speakSelection ? '開啟點擊朗讀模式' : '關閉點擊朗讀模式');
   }
 }
 

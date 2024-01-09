@@ -1,14 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
-  &[data-theme='light'] {
-    // 請參照 ec style.scss  
+  &[data-theme="light"] {
+    // 請參照 ec style.scss
   }
 
-  &[data-theme='dark'] {
+  &[data-theme="dark"] {
     * {
       color: white;
       background-color: black;
+
+      button {
+        cursor: pointer;
+      }
 
       button,
       input {
@@ -21,6 +25,11 @@
       background-color: yellow;
       color: black;
     }
+
+    lib-svg > div > * {
+      color: white;
+      fill: white;
+    }
   }
 }
 
@@ -30,4 +39,19 @@ body {
 
 .keyword {
   background-color: yellow;
+}
+
+lib-svg {
+  display: inline-block;
+  height: 30px;
+  margin: 0 15px;
+  cursor: pointer;
+  div {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+button {
+  cursor: pointer;
 }

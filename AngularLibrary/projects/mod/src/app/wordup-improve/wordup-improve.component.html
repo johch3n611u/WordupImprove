@@ -1,83 +1,85 @@
-<div class="box" [style.display]="isEnterRegistPage? 'none':'flex'" (window:resize)="onResize($event)">
+<div class="box" [style.display]="isEnterRegistPage ? 'none' : 'flex'" (window:resize)="onResize($event)">
   <div class="toolBox">
     <button *ngIf="displayMode !== DisplayMode.Answer"
-      (click)="displayMode = DisplayMode.Answer;sentenceAnswerDisplay = true;">
-      {{displayMode}}
+      (click)="seeAnswer()">
+      {{ displayMode }}
     </button>
     <ng-container *ngIf="displayMode === DisplayMode.Answer">
-      <button (click)="answerScoreReset(true)">會 +{{(6 - this.mapSeconds(this.seconds))}}</button>
-      <button (click)="answerScoreReset(false)">不會 {{(this.mapSeconds(this.seconds) * -1)}}</button>
+      <button (click)="answerScoreReset(true)">
+        會 +{{ 6 - this.mapSeconds(this.seconds) }}
+      </button>
+      <button (click)="answerScoreReset(false)">
+        不會 -5
+      </button>
     </ng-container>
   </div>
 
-  <p class="subInfo">經過 {{seconds}} 秒</p>
-  <p *ngIf="answerCountToday > 0" class="subInfo">累積 x {{answerCountToday}} 答題!!</p>
+  <p class="subInfo">
+    經過 {{ seconds }} 秒，未複習：{{this.familiarity.notReviewed}}
+  </p>
+  <p class="subInfo" *ngIf="this.record?.avgAnswerSpeed?.length > 0">
+    平均答題速度： {{this.record?.avgAnswerSpeedDisplay}} /s
+  </p>
+  <p *ngIf="answerCountToday > 0" class="subInfo">
+    累積 x {{ answerCountToday }} 答題!!
+    <lib-svg [src]="'./assets/audio.svg'" (click)="setSpeakSelection()"></lib-svg>
+  </p>
   <div class="cardBox">
     <div *ngIf="card">
       <span *ngIf="card?.score" class="subInfo">
-        Score：{{card?.score}}
-        <span *ngIf="card?.updateTime?.minutes">
-          ,<ng-container *ngIf="card?.updateTime?.days">
-            {{card?.updateTime?.days}} d /
-          </ng-container>
-          <ng-container *ngIf="card?.updateTime?.hours">
-            {{card?.updateTime?.hours}} h /
-          </ng-container>
-          <ng-container *ngIf="card?.updateTime?.minutes">
-            {{card?.updateTime?.minutes}} m
-          </ng-container>
+        Score：{{ card?.score }}
+        <span>
+          , {{ card?.updateTime?.days }} d / {{ card?.updateTime?.hours }} h /
+          {{ card?.updateTime?.minutes }} m
         </span>
       </span>
-      <hr>
-      <p [innerHtml]="sentence?.en | highlight:card?.en:REGEXP_TYPE.First"></p>
+      <hr />
+      <p [innerHtml]="sentence?.en | highlight : card?.en : REGEXP_TYPE.First"></p>
       <ng-container *ngIf="displayMode === DisplayMode.Answer">
         <p>
           <ng-container *ngIf="sentenceAnswerDisplay">
             <p [innerHtml]="sentence?.cn"></p>
           </ng-container>
         </p>
-        <button *ngIf="sentenceAnswerDisplay && card?.sentences?.length > 1" (click)="drawSentence()">更多例句 ({{card?.sentences?.length}})</button>
-        <button *ngIf="!sentenceAnswerDisplay" (click)="sentenceAnswerDisplay = true">例句答案</button>
-        <hr>
-        <p>{{card?.en}}</p>
-        <p>{{card?.cn}}</p>
+        <button *ngIf="sentenceAnswerDisplay && card?.sentences?.length > 1" (click)="drawSentence()">
+          更多例句 ({{ card?.sentences?.length }})
+        </button>
+        <button *ngIf="!sentenceAnswerDisplay" (click)="sentenceAnswerDisplay = true">
+          例句答案
+        </button>
+        <hr />
+        <p>{{ card?.en }}</p>
+        <p>{{ card?.cn }}</p>
       </ng-container>
-      <hr>
+      <hr />
       <div>
-        <input autocomplete="new-password" type="text" [(ngModel)]="searchWord.word" #searchWordInput/>
+        <input autocomplete="new-password" type="text" [(ngModel)]="searchWord.word" #searchWordInput />
         <button (click)="searchWordMark()">搜尋單字註記不會</button>
         <p [innerHTML]="searchWord?.display"></p>
-        <p>{{searchWord?.explain}}</p>
+        <p>{{ searchWord?.explain }}</p>
         <p *ngIf="searchWord?.score">
-          Score：{{searchWord?.score}}
-          <span *ngIf="searchWord?.updateTime?.minutes">
-            ,<ng-container *ngIf="searchWord?.updateTime?.days">
-              {{searchWord?.updateTime?.days}} d /
-            </ng-container>
-            <ng-container *ngIf="searchWord?.updateTime?.hours">
-              {{searchWord?.updateTime?.hours}} h /
-            </ng-container>
-            <ng-container *ngIf="searchWord?.updateTime?.minutes">
-              {{searchWord?.updateTime?.minutes}} m
-            </ng-container>
+          Score：{{ searchWord?.score }}
+          <span>
+            {{ searchWord?.updateTime?.days }} d /
+            {{ searchWord?.updateTime?.hours }} h /
+            {{ searchWord?.updateTime?.minutes }} m
           </span>
         </p>
-        <hr *ngIf="searchWord?.similarWords">
-        <p>{{searchWord?.similarWords}}</p>
+        <hr *ngIf="searchWord?.similarWords" />
+        <p>{{ searchWord?.similarWords }}</p>
       </div>
     </div>
   </div>
 
-  <hr>
+  <hr />
 
   <ng-container *ngIf="debugDisplay">
-
     <table>
       <thead>
         <th colspan="7">
-          頭獎門檻：{{debug?.thresholdScore}} / 
-          平均抽取次數 {{getAverage(drawCountRecord)}} / 
-          平均門檻 {{getAverage(finalScoreRecord)}}
+          頭獎門檻：{{ debug?.thresholdScore }} / 平均抽取次數
+          {{ record?.drawCountRecordDisplay }} / 平均門檻
+          {{ record?.finalScoreRecordDisplay }}
         </th>
       </thead>
       <tbody>
@@ -89,164 +91,210 @@
         <td data-th="答題分數">答題分數</td>
         <td data-th="上次答題時間">上次答題時間</td>
       </tbody>
-      <tr *ngFor="let item of debug?.list;">
-        <td data-th="抽取次數">{{item?.drawCount}}</td>
-        <td data-th="抽到的單字">{{item?.en}}</td>
-        <td data-th="最終分數">{{item?.finalScore}}</td>
-        <td data-th="加權分數">{{item?.weightedScore}}</td>
-        <td data-th="句子頻率次數">{{item?.sentencesLength}}</td>
-        <td data-th="答題分數">{{item?.score}}</td>
+      <tr *ngFor="let item of debug?.list">
+        <td data-th="抽取次數">{{ item?.drawCount }}</td>
+        <td data-th="抽到的單字">{{ item?.en }}</td>
+        <td data-th="最終分數">{{ item?.finalScore }}</td>
+        <td data-th="加權分數">{{ item?.weightedScore }}</td>
+        <td data-th="句子頻率次數">{{ item?.sentencesLength }}</td>
+        <td data-th="答題分數">{{ item?.score }}</td>
         <td data-th="上次答題時間">
-          <ng-container *ngIf="item?.updateTime?.days">
-            {{item?.updateTime?.days}} d /
-          </ng-container>
-          <ng-container *ngIf="item?.updateTime?.hours">
-            {{item?.updateTime?.hours}} h /
-          </ng-container>
-          <ng-container *ngIf="item?.updateTime?.minutes">
-            {{item?.updateTime?.minutes}} m
-          </ng-container>
+          {{ item?.updateTime?.days }} d /
+          {{ item?.updateTime?.hours }} h /
+          {{ item?.updateTime?.minutes }} m
         </td>
       </tr>
       <tfoot>
-        <th colspan="7" style="font-size: 15px;color:darkcyan">加權分數 = 句子頻率次數 + ( 答題分數 * 答題加權
-          config.questionsScore.score：{{config?.questionsScore}} ) + ( 上次答題時間 D * 設定檔時間加權 config.dayScore.score：
-          {{config?.dayScore}} )</th>
+        <th colspan="7" style="font-size: 15px; color: darkcyan">
+          加權分數 = 句子頻率次數 + ( 答題分數 * 答題加權
+          config.questionsScore.score：{{ config?.questionsScore }} ) + (
+          上次答題時間 D * 設定檔時間加權 config.dayScore.score：
+          {{ config?.dayScore }} )
+        </th>
       </tfoot>
     </table>
 
     <div class="list">
-      <p>頭獎門檻：{{debug?.thresholdScore}}</p>
-      <p>平均抽取次數 {{getAverage(drawCountRecord)}}</p>
-      <p>平均門檻 {{getAverage(finalScoreRecord)}}</p>
-      <ol *ngFor="let item of debug?.list;" style=" border: 1px solid #ccc;">
-        <li>抽取次數：{{item?.drawCount}}</li>
-        <li>抽到的單字：{{item?.en}}</li>
-        <li>最終分數：{{item?.finalScore}}</li>
-        <li>加權分數：{{item?.weightedScore}}</li>
-        <li>句子頻率次數：{{item?.sentencesLength}}</li>
-        <li>答題分數：{{item?.score}}</li>
-        <li>上次答題時間：{{item?.updateTime?.days}} d /
-          {{item?.updateTime?.hours}} h /
-          {{item?.updateTime?.minutes}} m</li>
+      <p>頭獎門檻：{{ debug?.thresholdScore }}</p>
+      <p>平均抽取次數 {{ record?.drawCountRecordDisplay }}</p>
+      <p>平均門檻 {{ record?.finalScoreRecordDisplay }}</p>
+      <ol *ngFor="let item of debug?.list" style="border: 1px solid #ccc">
+        <li>抽取次數：{{ item?.drawCount }}</li>
+        <li>抽到的單字：{{ item?.en }}</li>
+        <li>最終分數：{{ item?.finalScore }}</li>
+        <li>加權分數：{{ item?.weightedScore }}</li>
+        <li>句子頻率次數：{{ item?.sentencesLength }}</li>
+        <li>答題分數：{{ item?.score }}</li>
+        <li>
+          上次答題時間：
+          {{ item?.updateTime?.days }} d /
+          {{ item?.updateTime?.hours }} h /
+          {{ item?.updateTime?.minutes }} m
+        </li>
       </ol>
     </div>
 
-    <hr style="width: 95%;">
-
+    <hr style="width: 95%" />
   </ng-container>
 
   <ng-container *ngIf="displayUnfamiliar">
-
     <table>
       <tbody>
+        <td>顯示中文</td>
         <td data-th="英文">英文</td>
-        <td data-th="中文">中文</td>
         <td data-th="句子頻率次數">句子頻率次數</td>
         <td data-th="答題分數">答題分數</td>
         <td data-th="上次答題時間">上次答題時間</td>
+        <td data-th="中文" style="min-width: 20rem">中文</td>
       </tbody>
-      <tr *ngFor="let item of unfamiliarList;">
-        <td data-th="英文">{{item?.en}}</td>
-        <td data-th="中文">{{item?.cn}}</td>
-        <td data-th="句子頻率次數">{{item?.sentencesLength}}</td>
-        <td data-th="答題分數">{{item?.score}}</td>
+      <tr *ngFor="let item of unfamiliarList;let i = index;">
+        <td>
+          <button class="unobviousBtn" (click)="setUnfamiliarDisplayAnswer(item)">
+            看答案
+          </button>
+        </td>
+        <td data-th="英文">{{ item?.en }}</td>
+        <td data-th="句子頻率次數">{{ item?.sentencesLength }}</td>
+        <td data-th="答題分數">
+          <button class="unobviousBtn" (click)="answerUnfamiliarScoreReset(true, item?.en)">+</button>
+          {{ item?.score }}
+          <button class="unobviousBtn" (click)="answerUnfamiliarScoreReset(false, item?.en)">-</button>
+        </td>
         <td data-th="上次答題時間">
-          <ng-container *ngIf="item?.updateTime?.minutes">
-            {{item?.updateTime?.days}} d /
-            {{item?.updateTime?.hours}} h /
-            {{item?.updateTime?.minutes}} m
+          {{ item?.updateTime?.days }} d /
+          {{ item?.updateTime?.hours }} h /
+          {{ item?.updateTime?.minutes }} m
+        </td>
+        <td data-th="中文">
+          <ng-container *ngIf="item?.displayAnswer">
+            {{ item?.cn }}
           </ng-container>
         </td>
       </tr>
     </table>
 
     <div class="list">
-      <ol *ngFor="let item of unfamiliarList;" style=" border: 1px solid #ccc;">
-        <li>英文：{{item?.en}}</li>
-        <li>中文：{{item?.cn}}</li>
-        <li>句子頻率次數：{{item?.sentencesLength}}</li>
-        <li>答題分數：{{item?.score}}</li>
-        <li>上次答題時間：{{item?.updateTime?.days}} d /
-          {{item?.updateTime?.hours}} h /
-          {{item?.updateTime?.minutes}} m</li>
+      <ol *ngFor="let item of unfamiliarList;let i = index;" style="border: 1px solid #ccc">
+        <li>
+          <button class="unobviousBtn" (click)="setUnfamiliarDisplayAnswer(item)">
+            看答案
+          </button>
+        </li>
+        <li>英文：{{ item?.en }}</li>
+        <li>句子頻率次數：{{ item?.sentencesLength }}</li>
+        <li>答題分數：
+          <button style="min-width: unset;" (click)="answerUnfamiliarScoreReset(true, item?.en)">+</button>
+          {{ item?.score }}
+          <button style="min-width: unset;" (click)="answerUnfamiliarScoreReset(false, item?.en)">-</button>
+        </li>
+        <li>
+          上次答題時間：
+          {{ item?.updateTime?.days }} d /
+          {{ item?.updateTime?.hours }} h /
+          {{ item?.updateTime?.minutes }} m
+        </li>
+        <li>
+          中文：
+          <ng-container *ngIf="item?.displayAnswer">
+            {{ item?.cn }}
+          </ng-container>
+        </li>
       </ol>
     </div>
 
-    <hr>
-
+    <hr />
   </ng-container>
 
-  <div style="max-width: 85vw;">
+  <div style="max-width: 85vw">
     <div>
       <button class="unobviousBtn" (click)="enterRegistPage()">註冊登入</button>
-      <button class="unobviousBtn" (click)="resetAnswerScore()">清空紀錄</button>
+      <button class="unobviousBtn" (click)="resetAnswerScore()">
+        清空紀錄
+      </button>
       <button class="unobviousBtn" (click)="setTheme()">切換黑白模式</button>
-      <br>
+      <br />
       <button class="unobviousBtn" (click)="clickDebug()">Debug</button>
       <button class="unobviousBtn" (click)="clickImExport()">匯出匯入</button>
-      <button class="unobviousBtn" (click)="changeDisplayUnfamiliar()">不熟榜</button>
+      <button class="unobviousBtn" (click)="changeDisplayUnfamiliar()">
+        不熟榜
+      </button>
     </div>
-    <hr>
-    <div *ngIf="isExportAnswerScore" style="display: flex;flex-direction: column;">
+    <hr />
+    <div *ngIf="isExportAnswerScore" style="display: flex; flex-direction: column">
       <textarea [(ngModel)]="answerScoreDisplay"></textarea>
       <button class="unobviousBtn" (click)="importAnswerScore()">匯入</button>
-      <hr style="width: 95%;">
+      <hr style="width: 95%" />
     </div>
-    <canvas id="canvas">{{chart}}</canvas>
-    <div style="display: flex;flex-direction: column;align-items: center;" *ngIf="debugDisplay">
-      <hr>
-      <p>Config：<button class="unobviousBtn" (click)="importConfig()">更改設定檔</button></p>
+    <canvas id="canvas">{{ chart }}</canvas>
+    <div style="display: flex; flex-direction: column; align-items: center" *ngIf="debugDisplay">
+      <hr />
+      <p>
+        Config：<button class="unobviousBtn" (click)="importConfig()">
+          更改設定檔
+        </button>
+      </p>
       <!-- <textarea [(ngModel)]="configDisplay"></textarea> -->
       <label for="dayScore">答題日期加權分數</label>
-      <input id="dayScore" [(ngModel)]="config.dayScore"/>
+      <input id="dayScore" [(ngModel)]="config.dayScore" />
       <label for="questionsScore">錯誤加權分數</label>
-      <input id="questionsScore" [(ngModel)]="config.questionsScore"/>
+      <input id="questionsScore" [(ngModel)]="config.questionsScore" />
       <label>抽籤模式</label>
       <div class="drawMode">
-        <input [(ngModel)]="config.drawMode" id="errorFirst" type="radio" name="drawMode" value="errorFirst"/>
+        <input [(ngModel)]="config.drawMode" id="errorFirst" type="radio" name="drawMode" value="errorFirst" />
         <label for="errorFirst">錯誤優先</label>
-        <input [(ngModel)]="config.drawMode" id="completelyRandom" type="radio" name="drawMode" value="completelyRandom"/>
+        <input [(ngModel)]="config.drawMode" id="completelyRandom" type="radio" name="drawMode"
+          value="completelyRandom" />
         <label for="completelyRandom">完全隨機</label>
       </div>
       <label for="autoDrawSeconds">自動抽取秒數</label>
-      <input id="autoDrawSeconds" type="number" [(ngModel)]="config.autoDrawSeconds"/>
+      <input id="autoDrawSeconds" type="number" [(ngModel)]="config.autoDrawSeconds" />
       <button type="button" (click)="automaticDrawCard()">自動抽取</button>
+      <div *ngIf="voices.length > 0">
+        <p>朗讀語言選擇</p>
+        <ul>
+          <li *ngFor="let voice of voices">
+            <input [(ngModel)]="config.speakSelectVoice" [value]="voice?.name" style="margin: 1rem;" [id]="voice?.name" type="radio" name="speakSelectVoice"/> 
+            <label [for]="voice?.name">{{voice?.name}}</label>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="login" [style.display]="isEnterRegistPage? 'block':'none'">
+<div class="login" [style.display]="isEnterRegistPage ? 'block' : 'none'">
   <div class="rankingList" *ngIf="logs">
     <ol>
       <li class="answeredMostQuestions">答題最多</li>
-      <li *ngFor="let item of answeredMostQuestions;let i = index;">
-        {{i+1}}.{{item.email}} => {{item.answerScore.length}}
+      <li *ngFor="let item of answeredMostQuestions; let i = index">
+        {{ i + 1 }}.{{ item.email }} => {{ item.answerScore.length }}
       </li>
     </ol>
     <ol>
       <li class="mostPositivePoints">正分最多</li>
-      <li *ngFor="let item of mostPositivePoints;let i = index;">
-        {{i+1}}.{{item.email}} => {{item.positive}}
+      <li *ngFor="let item of mostPositivePoints; let i = index">
+        {{ i + 1 }}.{{ item.email }} => {{ item.positive }}
       </li>
     </ol>
     <ol>
       <li class="mostNegativePoints">負分最多</li>
-      <li *ngFor="let item of mostNegativePoints;let i = index;">
-        {{i+1}}.{{item.email}} => {{item.negative}}
+      <li *ngFor="let item of mostNegativePoints; let i = index">
+        {{ i + 1 }}.{{ item.email }} => {{ item.negative }}
       </li>
     </ol>
   </div>
-  <div class="user" *ngIf="!(user$ | async) else userLogining">
+  <div class="user" *ngIf="!(user$ | async); else userLogining">
     <input autocomplete="new-password" type="email" placeholder="email" [(ngModel)]="email" />
     <input autocomplete="new-password" type="password" placeholder="password" [(ngModel)]="password" />
   </div>
   <ng-template #userLogining>
-    您好尊敬的 {{user?.displayName ?? user?.email}}
+    您好尊敬的 {{ user?.displayName ?? user?.email }}
   </ng-template>
-  <p class="info">第一次使用請先註冊帳號，並將本地資料上傳即可更新榜單與使用下載服務</p>
+  <p class="info">
+    第一次使用請先註冊帳號，並將本地資料上傳即可更新榜單與使用下載服務
+  </p>
   <div>
-    <ng-container *ngIf="(user$ | async) && logs else unLogin">
+    <ng-container *ngIf="(user$ | async) && logs; else unLogin">
       <button (click)="updateLog()">上傳紀錄</button>
       <button (click)="downloadLog()">下載紀錄</button>
       <button (click)="logout()">登出</button>
