@@ -753,6 +753,7 @@ export class WordupImproveComponent {
         });
         this.refleshLogs();
         alert('更新成功');
+        this.isEnterRegistPage = false;
       }
     }
   }
@@ -766,6 +767,7 @@ export class WordupImproveComponent {
         this.calculateFamiliarity();
         this.unfamiliarReflash();
         alert('更新成功');
+        this.isEnterRegistPage = false;
       } else {
         alert('未找到紀錄');
       }

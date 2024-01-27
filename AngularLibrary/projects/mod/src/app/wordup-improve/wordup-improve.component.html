@@ -14,16 +14,6 @@
     </ng-container>
   </div>
 
-  <p class="subInfo">
-    經過 {{ seconds }} 秒，未複習：{{this.familiarity.notReviewed}}
-    <lib-svg [src]="'./assets/audio.svg'" (click)="setSpeakSelection()"></lib-svg>
-  </p>
-  <p class="subInfo" *ngIf="this.record?.avgAnswerSpeed?.length > 0">
-    平均答題速度： {{this.record?.avgAnswerSpeedDisplay}} /s
-  </p>
-  <p *ngIf="answerCountToday > 0" class="subInfo">
-    累積 x {{ answerCountToday }} 答題!!
-  </p>
   <div class="cardBox">
     <div *ngIf="card">
       <span *ngIf="card?.score" class="subInfo">
@@ -69,6 +59,19 @@
         <p>{{ searchWord?.similarWords }}</p>
       </div>
     </div>
+  </div>
+
+  <div class="trackingInfo">
+    <p class="subInfo">
+      經過 {{ seconds }} 秒，未複習：{{this.familiarity.notReviewed}}
+      <lib-svg [src]="'./assets/audio.svg'" (click)="setSpeakSelection()"></lib-svg>
+    </p>
+    <p class="subInfo" *ngIf="this.record?.avgAnswerSpeed?.length > 0">
+      平均答題速度： {{this.record?.avgAnswerSpeedDisplay}} /s
+    </p>
+    <p *ngIf="answerCountToday > 0" class="subInfo">
+      累積 x {{ answerCountToday }} 答題!!
+    </p>
   </div>
 
   <hr />
