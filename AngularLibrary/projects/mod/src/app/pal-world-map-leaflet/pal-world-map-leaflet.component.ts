@@ -41,6 +41,7 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
     var corner2 = L.latLng(1000, 1000);
     let bounds = L.latLngBounds(corner1, corner2);
     let image = L.imageOverlay('./assets/palpagos_islands.jpg', bounds).addTo(map);
+    map.fitBounds(bounds);
   }
   ngAfterViewInit(): void {
     this.initPalWorldMap();
