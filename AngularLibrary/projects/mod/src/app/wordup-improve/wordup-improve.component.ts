@@ -444,7 +444,7 @@ export class WordupImproveComponent {
     // https://stackoverflow.com/questions/3169786/clear-text-selection-with-javascript
   searchWordMark() {
     try {
-      
+
       if (window.getSelection()?.empty) {  // Chrome
         window.getSelection()?.empty();
       }
@@ -918,7 +918,7 @@ export class WordupImproveComponent {
   debounceHandler() {
     this.debounceSub = this.debounceBeSub$
       ?.pipe(
-        debounce(() => timer(500)),
+        debounce(() => timer(1000)),
         tap(([fn, val]: any) => {
           // 因為 chrome 政策，無法使用匿名函式觸發 speak，但其他函式應該還是可以
           // fn(val)

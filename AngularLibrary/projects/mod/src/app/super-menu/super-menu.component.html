@@ -1,44 +1,88 @@
 <header>
-  <div class="headerLeft">
-    <h1>GET</h1>
-    <ul class="classification">
-      <li>
-        <a href="#"><span>男裝</span></a>
-      </li>
-      <li>
-        <a href="#"><span>女裝</span></a>
-      </li>
-      <li>
-        <a href="#"><span>配件</span></a>
-      </li>
-    </ul>
-    <form class="searchForm">
-      <button><lib-svg [src]="'./assets/search.svg'"></lib-svg></button>
-      <input>
-    </form>
-    <div>
-      <div>
-
+  <div class="headerLv-1 container">
+    <div class="headerLeft">
+      <h1>GET</h1>
+      <ul class="classification" [ngClass]="SearchingStyle">
+        <li>
+          <a href="#"><span>WOMEN</span></a>
+        </li>
+        <li>
+          <a href="#"><span>MEN</span></a>
+        </li>
+        <li>
+          <a href="#"><span>OTHERS</span></a>
+        </li>
+      </ul>
+      <form class="searchForm" [ngClass]="SearchingStyle">
+        <button><lib-svg [src]="'./assets/search.svg'"></lib-svg></button>
+        <input type="text" placeholder="Clothes..." (focus)="onSearch($event)" (blur)="upSearch($event)">
+      </form>
+    </div>
+    <div class="headerRight">
+      <div class="locationBox">
+        <a href="#">
+          <lib-svg [src]="'./assets/location.svg'" [width]="'20'"></lib-svg>
+          <span>Taiwan</span>
+        </a>
       </div>
+      <div class="telBox">
+        <a href="#">
+          <lib-svg [src]="'./assets/ig.svg'" [width]="'25'" [className]="'telIcon'"></lib-svg>
+          <span>GET.Clothes</span>
+        </a>
+      </div>
+      <ul class="functionList">
+        <li><a href="#">
+          <lib-svg [src]="'./assets/user.svg'" [width]="'23'"></lib-svg>
+        </a></li>
+        <li><a href="#">
+          <lib-svg [src]="'./assets/heart.svg'" [width]="'23'"></lib-svg>
+        </a></li>
+        <li><a href="#">
+          <lib-svg [src]="'./assets/bag.svg'" [width]="'23'"></lib-svg>
+        </a></li>
+      </ul>
     </div>
   </div>
-  <nav>
+
+  <nav class="headerLv-2 container">
     <ul>
       <li>
-        上衣
+        <a href="#" (mouseenter)="headerLv2Hover($event)">
+          <span>
+            外套/大衣
+          </span>
+        </a>
       </li>
       <li>
-        下身
+        <a href="#">
+          <span>
+            上衣
+          </span>
+        </a>
       </li>
       <li>
-        家居睡衣
+        <a href="#">
+          <span>
+            下身
+          </span>
+        </a>
       </li>
       <li>
-        外套/大衣
+        <a href="#">
+          <span>
+            其他配件
+          </span>
+        </a>
       </li>
     </ul>
   </nav>
-  <div class="categories">
-
-  </div>
+  <ul class="categories container">
+    <li><a href="#"><img src="./assets/coat.png"><span>所有外套</span></a></li>
+    <li><a href="#"><img src="./assets/coat.png"><span>所有外套</span></a></li>
+    <li><a href="#"><img src="./assets/coat.png"><span>所有外套</span></a></li>
+    <li><a href="#"><img src="./assets/coat.png"><span>所有外套</span></a></li>
+    <li><a href="#"><img src="./assets/coat.png"><span>所有外套</span></a></li>
+    <li><a href="#"><img src="./assets/coat.png"><span>所有外套</span></a></li>
+  </ul>
 </header>

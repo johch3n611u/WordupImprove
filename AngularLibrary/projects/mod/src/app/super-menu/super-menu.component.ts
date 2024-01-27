@@ -7,6 +7,19 @@ import { superMenuModal } from './super-menu.modal';
   styleUrls: ['./super-menu.component.scss']
 })
 export class SuperMenuComponent {
+  upSearch(event:any):void{
+    this.SearchingStyle.active = false;
+  }
+  onSearch(event: any):void{
+    this.SearchingStyle.active = true;
+  };
+  SearchingStyle={
+    'active':false
+  }
+
+  headerLv2Hover(event:any){
+    console.log(event);
+  }
   menuList:superMenuModal[] = [{
     name: "Super Menu",
     categories: [
