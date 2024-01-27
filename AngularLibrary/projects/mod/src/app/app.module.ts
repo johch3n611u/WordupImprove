@@ -1,6 +1,7 @@
+import { NgModule } from '@angular/core';
+
 import { SuperMenuComponent } from './super-menu/super-menu.component';
 
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -19,9 +20,9 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { getAuth, provideAuth } from '@angular/fire/auth';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { PalWorldMapLeafletComponent } from './pal-world-map-leaflet/pal-world-map-leaflet.component';
 
-
+// https://stackoverflow.com/questions/60726180/angular-9-value-at-position-x-in-the-ngmodule-imports-is-not-a-reference  reload  vscode
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +31,8 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
     RwdTableComponent,
     MemoryCardsComponent,
     SuperMenuComponent,
-    WordupImproveComponent
+    WordupImproveComponent,
+    PalWorldMapLeafletComponent
   ],
   providers: [],
   bootstrap: [AppComponent],

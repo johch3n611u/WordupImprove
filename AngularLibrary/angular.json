@@ -364,6 +364,7 @@
               "projects/mod/src/assets"
             ],
             "styles": [
+              "./node_modules/leaflet/dist/leaflet.css",
               "projects/mod/src/styles.scss"
             ],
             "scripts": [],
