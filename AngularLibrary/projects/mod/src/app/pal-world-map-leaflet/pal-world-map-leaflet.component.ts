@@ -12,7 +12,7 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
 
   public addMarkers() {
     // Add your markers to the map
-    this.markers.forEach((marker,index) => marker.addTo(this.map).on('click',e => e.target.remove(()=> {this.markers.splice(index,1)})));
+    this.markers.forEach((marker, index) => marker.addTo(this.map).on('click', (e) => { e.target.remove(); this.markers.splice(index,1)}));
   }
   private centerMap() {
     // Create a LatLngBounds object to encompass all the marker locations
@@ -34,12 +34,12 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
   markerAry = <any>[];
   currentLat = 0;
   currentLng = 0;
-  private onMousemove(){
+  private onMousemove() {
     this.map.on('click', (e: L.LeafletMouseEvent) => {
       console.log(e.latlng);
       this.currentLat = e.latlng.lat;
       this.currentLng = e.latlng.lng;
-      const marker = L.marker([e.latlng.lat,e.latlng.lng])
+      const marker = L.marker([e.latlng.lat, e.latlng.lng])
       this.markers.push(marker);
     });
   }
@@ -50,7 +50,7 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
   //   let latLng = e.latlng;
   // }
   private initPalWorldMap(): void {
-     this.map = L.map('map', {
+    this.map = L.map('map', {
       crs: L.CRS.Simple,
     });
 

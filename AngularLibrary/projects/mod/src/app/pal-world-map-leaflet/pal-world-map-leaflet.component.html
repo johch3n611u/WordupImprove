@@ -2,7 +2,7 @@
 <p>lat:{{ currentLat }},lng:{{ currentLng }}</p>
 <hr>
 <p *ngFor="let marker of markers">
-  {{marker | json}}
+
 </p>
 <button (click)="addMarkers()">add markers</button>
 <div class="map-container" style="margin-top: 250px;">
