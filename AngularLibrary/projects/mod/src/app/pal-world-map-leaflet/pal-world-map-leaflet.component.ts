@@ -27,9 +27,9 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
   //   let latLng = e.latlng;
   // }
 
-  public generateIcon() {
+  public generateIcon(imgName: string) {
     return L.icon({
-      iconUrl: './assets/palworld/main_pins/10001.png',
+      iconUrl: `./assets/palworld/main_pins/${imgName}`,
       iconSize: [30, 30], // icon 寬, 長
       shadowSize: [50, 64], // 陰影 寬, 長
       iconAnchor: [5, 5], // icon 中心偏移
@@ -48,6 +48,7 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
     this.map.fitBounds(bounds);
   }
 
+  templatlngs = [];
   markersLayer = L.layerGroup();
   bossesMarkersLayer = L.layerGroup();
   baseLayers = {
@@ -64,11 +65,13 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
     this.map.on('click', (mapClick: L.LeafletMouseEvent) => {
       this.currentLat = mapClick.latlng.lat;
       this.currentLng = mapClick.latlng.lng;
+
       let marker = L.marker([mapClick.latlng.lat, mapClick.latlng.lng], {
-        icon: this.generateIcon(),
+        icon: this.generateIcon('10001.png'),
       }).on('click', (markerClick) => {
         this.bossesMarkersLayer.removeLayer(marker);
       });
+
       this.bossesMarkersLayer.addLayer(marker).addTo(this.map);
 
       console.log(this.bossesMarkersLayer.getLayers());
