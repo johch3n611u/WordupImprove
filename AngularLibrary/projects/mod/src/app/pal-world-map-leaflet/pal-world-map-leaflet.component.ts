@@ -4,7 +4,7 @@ import * as L from 'leaflet';
 @Component({
   selector: 'mod-pal-world-map-leaflet',
   templateUrl: `./pal-world-map-leaflet.component.html`,
-  styleUrls: ['./pal-world-map-leaflet.component.scss']
+  styleUrls: ['./pal-world-map-leaflet.component.scss'],
 })
 export class PalWorldMapLeafletComponent implements AfterViewInit {
   private map: any;
@@ -16,12 +16,13 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
   }
   private centerMap() {
     // Create a LatLngBounds object to encompass all the marker locations
-    const bounds = L.latLngBounds(this.markers.map(marker => marker.getLatLng()));
+    const bounds = L.latLngBounds(
+      this.markers.map((marker) => marker.getLatLng())
+    );
 
     // Fit the map view to the bounds
     this.map.fitBounds(bounds);
   }
-
 
   //
   // private initRealMap(): void {
@@ -49,20 +50,24 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
   //   let latLng = e.latlng;
   // }
   private initPalWorldMap(): void {
-     this.map = L.map('map', {
-      crs: L.CRS.Simple
+    const map = L.map('map', {
+      crs: L.CRS.Simple,
     });
 
     let corner1 = L.latLng(0, 0);
     var corner2 = L.latLng(1000, 1000);
     let bounds = L.latLngBounds(corner1, corner2);
-    let image = L.imageOverlay('./assets/palpagos_islands.webp', bounds).addTo(this.map);
-    this.map.fitBounds(bounds);
+    let image = L.imageOverlay('./assets/palworld/palpagos_islands.webp', bounds).addTo(
+      map
+    );
+    map.fitBounds(bounds);
   }
+
   ngAfterViewInit(): void {
     this.initPalWorldMap();
     console.log(this.map);
     this.onMousemove();
   }
+
   // https://www.digitalocean.com/community/tutorials/angular-angular-and-leaflet
 }
