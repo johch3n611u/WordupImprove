@@ -70,6 +70,8 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
       });
 
       this.bossesMarkersLayer.addLayer(marker).addTo(this.map);
+
+      console.log(this.bossesMarkersLayer.getLayers());
     });
   }
 
@@ -89,7 +91,7 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
       bounds
     ).addTo(this.map);
     this.map.fitBounds(bounds);
-    
+
     L.control.layers(
       this.baseLayers,
       this.overlays
