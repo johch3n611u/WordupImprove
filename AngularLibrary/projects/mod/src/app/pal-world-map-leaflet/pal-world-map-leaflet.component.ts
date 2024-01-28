@@ -26,6 +26,17 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
   //   let latLng = e.latlng;
   // }
 
+  public generateIcon() {
+    return L.icon({
+      iconUrl: './assets/palworld/main_pins/10001.png',
+      iconSize: [30, 30], // icon 寬, 長
+      shadowSize: [50, 64], // 陰影 寬, 長
+      iconAnchor: [5, 5], // icon 中心偏移
+      shadowAnchor: [4, 62], // 陰影 中心偏移
+      popupAnchor: [-3, -76], // 綁定popup 中心偏移
+    });
+  }
+
   private centerMap() {
     // Create a LatLngBounds object to encompass all the marker locations
     const bounds = L.latLngBounds(
@@ -36,7 +47,15 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
     this.map.fitBounds(bounds);
   }
 
+  markersLayer = L.layerGroup();
   bossesMarkersLayer = L.layerGroup();
+  baseLayers = {
+    '開放街圖': this.markersLayer,
+    '臺灣通用電子地圖': this.markersLayer
+  };
+  overlays = {
+    '地標': this.bossesMarkersLayer
+  };
 
   currentLat = 0;
   currentLng = 0;
@@ -44,21 +63,21 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
     this.map.on('click', (mapClick: L.LeafletMouseEvent) => {
       this.currentLat = mapClick.latlng.lat;
       this.currentLng = mapClick.latlng.lng;
-      let marker = L.marker([
-        mapClick.latlng.lat, 
-        mapClick.latlng.lng
-      ]).on('click', (markerClick) => {
+      let marker = L.marker([mapClick.latlng.lat, mapClick.latlng.lng], {
+        icon: this.generateIcon(),
+      }).on('click', (markerClick) => {
         markerClick.target.remove();
       });
 
       this.bossesMarkersLayer.addLayer(marker).addTo(this.map);
-
-      console.log(this.map)
     });
   }
 
   private initPalWorldMap(): void {
     this.map = L.map('map', {
+      layers: [
+        this.markersLayer
+      ],
       crs: L.CRS.Simple,
     });
 
@@ -70,6 +89,11 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
       bounds
     ).addTo(this.map);
     this.map.fitBounds(bounds);
+    
+    L.control.layers(
+      this.baseLayers,
+      this.overlays
+    ).addTo(this.map);
   }
 
   ngAfterViewInit(): void {
