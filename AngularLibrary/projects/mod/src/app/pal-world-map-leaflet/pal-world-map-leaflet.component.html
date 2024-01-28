@@ -1,6 +1,14 @@
 <p>pal-world-map-leaflet works!</p>
 <p>lat:{{ currentLat }},lng:{{ currentLng }}</p>
 <hr>
+<input autocomplete="new-password" type="text" [(ngModel)]="search.keyword" (change)="searchPals()">
+
+<p *ngFor="let pal of this.search.searched">
+  No {{pal.number}}, {{pal.name}}, {{pal.elements}}, {{pal.workskills}}, {{pal.drops}}
+</p>
+
+
+<hr>
 <p *ngFor="let marker of markers">
 
 </p>

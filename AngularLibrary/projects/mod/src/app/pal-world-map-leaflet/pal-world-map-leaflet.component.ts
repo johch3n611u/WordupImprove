@@ -5,17 +5,32 @@
 // https://forum.gamer.com.tw/C.php?bsn=71458&snA=11
 // https://paldb.cc/tw/
 
-import { AfterViewInit, Component, HostListener } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
 import * as L from 'leaflet';
+import { BehaviorSubject, filter, take, tap } from 'rxjs';
 
 @Component({
   selector: 'mod-pal-world-map-leaflet',
   templateUrl: `./pal-world-map-leaflet.component.html`,
   styleUrls: ['./pal-world-map-leaflet.component.scss'],
 })
-export class PalWorldMapLeafletComponent implements AfterViewInit {
+export class PalWorldMapLeafletComponent {
+  palsInfoPath = './assets/palworld/palword.json';
+  palsInfo$ = new BehaviorSubject<any>([]);
   private map: any;
   markers: L.Marker<L.LatLng>[] = [];
+
+  constructor(private httpClient: HttpClient) {
+    this.httpClient.get(this.palsInfoPath).subscribe((res: any) => {
+      this.palsInfo$.next(res);
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.initPalWorldMap();
+    this.onMouseClick();
+  }
 
   // private initRealMap(): void {
   //   const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -54,11 +69,11 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
   markersLayer = L.layerGroup();
   bossesMarkersLayer = L.layerGroup();
   baseLayers = {
-    '開放街圖': this.markersLayer,
-    '臺灣通用電子地圖': this.markersLayer
+    開放街圖: this.markersLayer,
+    臺灣通用電子地圖: this.markersLayer,
   };
   overlays = {
-    '地標': this.bossesMarkersLayer
+    地標: this.bossesMarkersLayer,
   };
 
   currentLat = 0;
@@ -76,7 +91,6 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
 
       this.bossesMarkersLayer.addLayer(marker).addTo(this.map);
 
-      
       console.log(marker.getLatLng());
       console.log(this.bossesMarkersLayer.getLayers());
     });
@@ -84,9 +98,7 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
 
   private initPalWorldMap(): void {
     this.map = L.map('map', {
-      layers: [
-        this.markersLayer
-      ],
+      layers: [this.markersLayer],
       crs: L.CRS.Simple,
     });
 
@@ -99,14 +111,52 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
     ).addTo(this.map);
     this.map.fitBounds(bounds);
 
-    L.control.layers(
-      this.baseLayers,
-      this.overlays
-    ).addTo(this.map);
+    L.control.layers(this.baseLayers, this.overlays).addTo(this.map);
   }
 
-  ngAfterViewInit(): void {
-    this.initPalWorldMap();
-    this.onMouseClick();
+  search: any = {
+    keyword: '',
+    searched: [],
+  };
+
+  searchPals() {
+    console.log('this.search.keyword', this.search.keyword);
+
+    if (
+      this.search.keyword !== undefined &&
+      this.search.keyword !== null &&
+      this.search.keyword.replace(/\s*/g, '') !== ''
+    ) {
+      // 找到数组中每个对象的每个字段都包含关键字的对象
+      // var filteredObjects = arrayOfObjects.filter(function (obj) {
+      //   // 检查对象的每个字段是否包含关键字
+      //   return Object.values(obj).every(function (value) {
+      //     // 如果字段的值是字符串并且包含关键字，则返回 true
+      //     return typeof value === 'string' && value.includes(keyword);
+      //   });
+      // });
+
+      this.palsInfo$
+        .pipe(
+          tap((pals) => {
+            this.search.searched = [];
+            pals.filter((pal: any) => {
+              let search = Object?.values(pal)?.some(
+                (value: any) =>
+                  (typeof value === 'string' &&
+                    value?.includes(this.search?.keyword)) ||
+                  (typeof value === 'object' &&
+                    Object?.values(value)?.some((value2: any) =>
+                      value2?.includes(this.search?.keyword)
+                    ))
+              );
+              if (search) {
+                this.search?.searched?.push(pal);
+              }
+            });
+          })
+        )
+        .subscribe();
+    }
   }
 }
