@@ -67,9 +67,8 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
       let marker = L.marker([mapClick.latlng.lat, mapClick.latlng.lng], {
         icon: this.generateIcon(),
       }).on('click', (markerClick) => {
-        markerClick.target.remove();
+        this.bossesMarkersLayer.removeLayer(marker);
       });
-
       this.bossesMarkersLayer.addLayer(marker).addTo(this.map);
 
       console.log(this.bossesMarkersLayer.getLayers());
