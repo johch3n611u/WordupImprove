@@ -10,6 +10,17 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
   private map: any;
   markers: L.Marker<L.LatLng>[] = [];
 
+  public generateIcon() {
+    return L.icon({
+      iconUrl: './assets/palworld/main_pins/10001.png',
+      iconSize:     [30, 30], // icon 寬, 長
+      shadowSize:   [50, 64], // 陰影 寬, 長
+      iconAnchor:   [5, 5], // icon 中心偏移
+      shadowAnchor: [4, 62],  // 陰影 中心偏移
+      popupAnchor:  [-3, -76] // 綁定popup 中心偏移
+  });
+  }
+
   public addMarkers() {
     // Add your markers to the map
     this.markers.forEach((marker, index) => marker.addTo(this.map).on('click', (e) => { e.target.remove(); this.markers.splice(index,1)}));
@@ -39,7 +50,7 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
       console.log(e.latlng);
       this.currentLat = e.latlng.lat;
       this.currentLng = e.latlng.lng;
-      const marker = L.marker([e.latlng.lat, e.latlng.lng])
+      const marker = L.marker([e.latlng.lat, e.latlng.lng],{icon: this.generateIcon()})
       this.markers.push(marker);
     });
   }
