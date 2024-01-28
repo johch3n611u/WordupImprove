@@ -1,5 +1,11 @@
 <p>pal-world-map-leaflet works!</p>
-<div class="map-container">
+<p>lat:{{ currentLat }},lng:{{ currentLng }}</p>
+<hr>
+<p *ngFor="let marker of markers">
+  {{marker | json}}
+</p>
+<button (click)="addMarkers()">add markers</button>
+<div class="map-container" style="margin-top: 250px;">
   <div class="map-frame">
     <div id="map"></div>
   </div>
