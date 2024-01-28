@@ -2,6 +2,8 @@
 // https://dowyuu.github.io/program/2021/03/22/Leaflet-note/
 // https://gamewith.net/palworld/43313
 // https://jsfiddle.net/newluck77/rk9v0uyo/
+// https://forum.gamer.com.tw/C.php?bsn=71458&snA=11
+// https://paldb.cc/tw/
 
 import { AfterViewInit, Component, HostListener } from '@angular/core';
 import * as L from 'leaflet';
