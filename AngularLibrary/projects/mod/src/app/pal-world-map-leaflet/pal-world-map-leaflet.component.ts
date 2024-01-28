@@ -74,6 +74,8 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
 
       this.bossesMarkersLayer.addLayer(marker).addTo(this.map);
 
+      
+      console.log(marker.getLatLng());
       console.log(this.bossesMarkersLayer.getLayers());
     });
   }
