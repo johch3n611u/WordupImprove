@@ -50,7 +50,7 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
   //   let latLng = e.latlng;
   // }
   private initPalWorldMap(): void {
-    const map = L.map('map', {
+     this.map = L.map('map', {
       crs: L.CRS.Simple,
     });
 
@@ -58,9 +58,9 @@ export class PalWorldMapLeafletComponent implements AfterViewInit {
     var corner2 = L.latLng(1000, 1000);
     let bounds = L.latLngBounds(corner1, corner2);
     let image = L.imageOverlay('./assets/palworld/palpagos_islands.webp', bounds).addTo(
-      map
+      this.map
     );
-    map.fitBounds(bounds);
+    this.map.fitBounds(bounds);
   }
 
   ngAfterViewInit(): void {
