@@ -78,20 +78,6 @@ export class PalWorldMapLeafletComponent {
   };
   latlngs: any = [];
   private onMouseClick() {
-    var polygon = L.polygon([
-      [658.1329178827798, -29],
-      [594.1581604480555, 208],
-      [458.21180089926634,  33]
-  ],{ color: 'red',
-  fillColor: '#f03',
-  fillOpacity: 0.5}).addTo(this.map);
-  var polygon2 = L.polygon([
-    [700.1329178827798, -29],
-    [594.1581604480555, 208],
-    [458.21180089926634,  33]
-],{ color: 'blue',
-fillColor: '#fff',
-fillOpacity: 0.5}).addTo(this.map);
     this.map.on('click', (mapClick: L.LeafletMouseEvent) => {
       this.latlngs.push({
         lat: mapClick.latlng.lat,
@@ -129,7 +115,6 @@ fillOpacity: 0.5}).addTo(this.map);
     this.map.fitBounds(bounds);
 
     L.control.layers(this.baseLayers, this.overlays).addTo(this.map);
-
   }
 
   search: any = {
@@ -172,6 +157,15 @@ fillOpacity: 0.5}).addTo(this.map);
 
   activePal(pal: any) {
     pal.selected = !pal.selected;
-    console.log(this.search.searched)
+    console.log(this.search.searched);
+
+    this.search.searched.forEach((palxxx:any)=>{
+      palxxx.latlngs.forEach((latlng:any)=>{
+        var polygon = L.polygon(
+          latlng,
+          { color: 'red', fillColor: '#f03', fillOpacity: 0.2 }
+        ).addTo(this.map);
+      })
+    });
   }
 }
