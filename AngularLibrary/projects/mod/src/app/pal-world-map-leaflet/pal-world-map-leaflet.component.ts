@@ -120,36 +120,28 @@ export class PalWorldMapLeafletComponent {
   };
 
   searchPals() {
-    console.log('this.search.keyword', this.search.keyword);
-
     if (
       this.search.keyword !== undefined &&
       this.search.keyword !== null &&
       this.search.keyword.replace(/\s*/g, '') !== ''
     ) {
-      // 找到数组中每个对象的每个字段都包含关键字的对象
-      // var filteredObjects = arrayOfObjects.filter(function (obj) {
-      //   // 检查对象的每个字段是否包含关键字
-      //   return Object.values(obj).every(function (value) {
-      //     // 如果字段的值是字符串并且包含关键字，则返回 true
-      //     return typeof value === 'string' && value.includes(keyword);
-      //   });
-      // });
-
       this.palsInfo$
         .pipe(
           tap((pals) => {
             this.search.searched = [];
-            pals.filter((pal: any) => {
-              let search = Object?.values(pal)?.some(
-                (value: any) =>
+            pals?.forEach((pal: any) => {
+              let search = Object?.values(pal)?.some((value: any) => {
+                if (!value) return false;
+                return (
                   (typeof value === 'string' &&
                     value?.includes(this.search?.keyword)) ||
                   (typeof value === 'object' &&
-                    Object?.values(value)?.some((value2: any) =>
-                      value2?.includes(this.search?.keyword)
-                    ))
-              );
+                    Object?.values(value)?.some((value2: any) => {
+                      if (!value2) return false;
+                      return value2?.includes(this.search?.keyword);
+                    }))
+                );
+              });
               if (search) {
                 this.search?.searched?.push(pal);
               }
