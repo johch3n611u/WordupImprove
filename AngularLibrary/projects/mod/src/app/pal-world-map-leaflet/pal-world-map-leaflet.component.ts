@@ -92,9 +92,7 @@ export class PalWorldMapLeafletComponent {
         // remove from layergroup
         this.bossesMarkersLayer.removeLayer(marker);
       });
-
       this.bossesMarkersLayer.addLayer(marker).addTo(this.map);
-
       console.log(marker.getLatLng());
       console.log(this.bossesMarkersLayer.getLayers());
     });
@@ -181,17 +179,46 @@ export class PalWorldMapLeafletComponent {
     return color;
   }
   colors: string[] = [];
-  activePal(pal: any) {
-    pal.selected = !pal.selected;
-    console.log(this.search.searched);
-    const color = this.colors.pop();
-    pal.latlngs.forEach((latlng: any) => {
-      var polygon = L.polygon(latlng, {
-        color: color,
-        fillColor: color,
-        fillOpacity: 0.3,
-      }).addTo(this.map);
-    });
+
+  palSelectedLayerList: [{
+    pal: any;
+    palLayer: L.Polygon<any>;
+  }] | any = [];
+  activePal(palFromSelect: any) {
+    console.log(palFromSelect);
+    palFromSelect.selected = !palFromSelect.selected;
+    if (palFromSelect.selected) {
+      const color = this.colors.pop();
+      // add pal layer in list
+      palFromSelect.latlngs.forEach((latlng: any) => {
+        const palLayer = L.polygon(
+          latlng,
+          { color: color, fillColor: color, fillOpacity: 0.3 }
+        );
+        this.bossesMarkersLayer.addLayer(palLayer).addTo(this.map);
+        const palLayerGroup = { palFromSelect , palLayer };
+        this.palSelectedLayerList.push(palLayerGroup);
+        console.log(this.palSelectedLayerList);
+      });
+    }
+    else {
+      console.log(palFromSelect.name);
+      const palLayerGroupList = this.palSelectedLayerList.filter((value: any) => palFromSelect.name == value.palFromSelect.name);
+      console.log(palLayerGroupList);
+      palLayerGroupList.forEach((value:any) =>{
+        this.bossesMarkersLayer.removeLayer(value.palLayer);
+      })
+    }
+    // this.bossesMarkersLayer.removeLayer(marker);
+    // this.search.searched.forEach((palLocation:any)=>{
+    //   const color = this.colors.pop();
+    //   palLocation.latlngs.forEach((latlng:any)=>{
+    //   var polygon = L.polygon(
+    //     latlng,
+    //     { color: color, fillColor: color, fillOpacity: 0.3 }
+    //   ).addTo(this.map);
+    // })
+    // });
   }
 
   copyLatlngs() {
