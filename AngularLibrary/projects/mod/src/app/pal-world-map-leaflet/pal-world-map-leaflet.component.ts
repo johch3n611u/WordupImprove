@@ -22,6 +22,7 @@ export class PalWorldMapLeafletComponent {
   markers: L.Marker<L.LatLng>[] = [];
 
   constructor(private httpClient: HttpClient) {
+    // get the json of pals info
     this.httpClient.get(this.palsInfoPath).subscribe((res: any) => {
       this.palsInfo$.next(res);
     });
@@ -78,14 +79,19 @@ export class PalWorldMapLeafletComponent {
 
   currentLat = 0;
   currentLng = 0;
+
+
   private onMouseClick() {
     this.map.on('click', (mapClick: L.LeafletMouseEvent) => {
       this.currentLat = mapClick.latlng.lat;
       this.currentLng = mapClick.latlng.lng;
 
+      // add marker and listen the marker, when it be click then remove it
       let marker = L.marker([mapClick.latlng.lat, mapClick.latlng.lng], {
         icon: this.generateIcon('10001.png'),
       }).on('click', (markerClick) => {
+
+        // remove from layergroup
         this.bossesMarkersLayer.removeLayer(marker);
       });
 
