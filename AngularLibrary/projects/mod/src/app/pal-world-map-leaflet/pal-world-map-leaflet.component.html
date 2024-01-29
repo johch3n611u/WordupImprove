@@ -1,10 +1,11 @@
 <div style="width: 50%;">
   <div style="display: flex;align-items: center;">
     <h2 style="font-size: 3rem;font-weight: 900;">PalWorld</h2>
-    <input autocomplete="new-password" type="text" placeholder="請雙擊查詢 Enter" [(ngModel)]="search.keyword" (change)="searchPals()">
+    <input autocomplete="new-password" type="text" placeholder="請雙擊查詢 Enter" [(ngModel)]="search.keyword"
+      (change)="searchPals()">
     <div style="margin-top: 80vh;padding: 30px;">
-      [<p *ngFor="let latlng of latlngs">
-        &#123;lat：{{latlng.lat}}, lng：{{latlng.lng}}&#125;,<br>
+      [<p *ngFor="let latlng of latlngs; let i = index;">
+        [{{latlng.lat}}, {{latlng.lng}}] <ng-container *ngIf="i !== latlngs.length-1">,</ng-container>
       </p>]
     </div>
   </div>
@@ -12,7 +13,8 @@
   <hr>
 
   <ul>
-    <li *ngFor="let pal of this.search.searched; let i = index" (click)="activePal(pal)" [ngClass]="{ 'active': pal.selected}">
+    <li *ngFor="let pal of this.search.searched; let i = index" (click)="activePal(pal)"
+      [ngClass]="{ 'active': pal.selected}">
       <img style="height: 150px;width: auto;" [src]="'assets/palworld/pals/'+ pal.image" />
       <div style="padding-left: 1rem;">
         <p>No {{pal.number}}, {{pal.name}}, {{pal.elements}}</p>
