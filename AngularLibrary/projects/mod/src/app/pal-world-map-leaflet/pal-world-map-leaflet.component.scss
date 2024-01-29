@@ -1,7 +1,8 @@
 :host {
   display: block;
-  padding: 3rem;
+  padding: 2rem;
   display: flex;
+  font-size: 2rem;
 }
 
 .map-container {
@@ -25,6 +26,18 @@
 html,
 body {
   height: 100%;
+}
+
+li {
+  border: solid 1px;
+  padding: 1rem;
+  display: flex;
+  line-height: 3rem;
+
+  &:hover {
+    background-color: cornsilk;
+    cursor: pointer;
+  }
 }
 
 .leaflet-container {

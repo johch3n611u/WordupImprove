@@ -20,7 +20,6 @@ export class PalWorldMapLeafletComponent {
   palsInfoPath = './assets/palworld/palword.json';
   palsInfo$ = new BehaviorSubject<any>([]);
   private map: any;
-  markers: L.Marker<L.LatLng>[] = [];
 
   constructor(private httpClient: HttpClient) {
     // get the json of pals info
@@ -46,6 +45,17 @@ export class PalWorldMapLeafletComponent {
   //   let latLng = e.latlng;
   // }
 
+  // private centerMap() {
+  //   let markers: L.Marker<L.LatLng>[] = [];
+  //   // Create a LatLngBounds object to encompass all the marker locations
+  //   const bounds = L.latLngBounds(
+  //     markers.map((marker) => marker.getLatLng())
+  //   );
+
+  //   // Fit the map view to the bounds
+  //   this.map.fitBounds(bounds);
+  // }
+
   public generateIcon(imgName: string) {
     return L.icon({
       iconUrl: `./assets/palworld/main_pins/${imgName}`,
@@ -55,16 +65,6 @@ export class PalWorldMapLeafletComponent {
       shadowAnchor: [4, 62], // 陰影 中心偏移
       popupAnchor: [-3, -76], // 綁定popup 中心偏移
     });
-  }
-
-  private centerMap() {
-    // Create a LatLngBounds object to encompass all the marker locations
-    const bounds = L.latLngBounds(
-      this.markers.map((marker) => marker.getLatLng())
-    );
-
-    // Fit the map view to the bounds
-    this.map.fitBounds(bounds);
   }
 
   templatlngs = [];
@@ -77,21 +77,18 @@ export class PalWorldMapLeafletComponent {
   overlays = {
     地標: this.bossesMarkersLayer,
   };
-
-  currentLat = 0;
-  currentLng = 0;
-
-
+  latlngs:any = [];
   private onMouseClick() {
     this.map.on('click', (mapClick: L.LeafletMouseEvent) => {
-      this.currentLat = mapClick.latlng.lat;
-      this.currentLng = mapClick.latlng.lng;
+      this.latlngs.push({
+        lat: mapClick.latlng.lat,
+        lng: mapClick.latlng.lng
+      });
 
       // add marker and listen the marker, when it be click then remove it
       let marker = L.marker([mapClick.latlng.lat, mapClick.latlng.lng], {
         icon: this.generateIcon('10001.png'),
       }).on('click', (markerClick) => {
-
         // remove from layergroup
         this.bossesMarkersLayer.removeLayer(marker);
       });
