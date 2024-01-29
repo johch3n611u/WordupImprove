@@ -4,6 +4,7 @@
 <input autocomplete="new-password" type="text" [(ngModel)]="search.keyword" (change)="searchPals()">
 
 <p *ngFor="let pal of this.search.searched">
+  <img style="height: 150px;width: auto;" [src]="'assets/palworld/pals/'+ pal.image" />
   No {{pal.number}}, {{pal.name}}, {{pal.elements}}, {{pal.workskills}}, {{pal.drops}}
 </p>
 
