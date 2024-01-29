@@ -32,7 +32,8 @@ export class PalWorldMapLeafletComponent {
     this.initPalWorldMap();
     this.onMouseClick();
   }
-
+  ngOnInit(): void {
+  }
   // private initRealMap(): void {
   //   const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
   //   this.map = L.map('map');
@@ -128,6 +129,7 @@ export class PalWorldMapLeafletComponent {
   };
 
   searchPals() {
+    this.colors = this.generateRandomColors(1000);
     if (
       this.search.keyword !== undefined &&
       this.search.keyword !== null &&
@@ -179,15 +181,16 @@ export class PalWorldMapLeafletComponent {
     }
     return color;
   }
+  colors:string[] = [];
   activePal(pal: any) {
     pal.selected = !pal.selected;
     console.log(this.search.searched);
-
-    this.search.searched.forEach((palxxx:any)=>{
-      palxxx.latlngs.forEach((latlng:any)=>{
+    this.search.searched.forEach((palLocation:any)=>{
+      const color = this.colors.pop();
+      palLocation.latlngs.forEach((latlng:any)=>{
         var polygon = L.polygon(
           latlng,
-          { color: 'red', fillColor: '#f03', fillOpacity: 0.2 }
+          { color: color, fillColor: color, fillOpacity: 0.3 }
         ).addTo(this.map);
       })
     });
