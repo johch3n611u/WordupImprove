@@ -2,6 +2,11 @@
   <div style="display: flex;align-items: center;">
     <h2 style="font-size: 3rem;font-weight: 900;">PalWorld</h2>
     <input autocomplete="new-password" type="text" placeholder="請雙擊查詢 Enter" [(ngModel)]="search.keyword" (change)="searchPals()">
+    <div style="margin-top: 80vh;padding: 30px;">
+      [<p *ngFor="let latlng of latlngs">
+        &#123;lat：{{latlng.lat}}, lng：{{latlng.lng}}&#125;,<br>
+      </p>]
+    </div>
   </div>
 
   <hr>
@@ -23,10 +28,5 @@
     <div class="map-frame">
       <div id="map"></div>
     </div>
-  </div>
-  <div style="margin-top: 80vh;padding: 30px;">
-    <p *ngFor="let latlng of latlngs">
-      lat：{{latlng.lat}}, lng：{{latlng.lng}}
-    </p>
   </div>
 </div>
