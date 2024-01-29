@@ -32,8 +32,7 @@ export class PalWorldMapLeafletComponent {
     this.initPalWorldMap();
     this.onMouseClick();
   }
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   // private initRealMap(): void {
   //   const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
   //   this.map = L.map('map');
@@ -162,7 +161,7 @@ export class PalWorldMapLeafletComponent {
     }
   }
 
-  public generateRandomColors(count:any) {
+  public generateRandomColors(count: any) {
     let colors = [];
 
     for (let i = 0; i < count; i++) {
@@ -174,25 +173,47 @@ export class PalWorldMapLeafletComponent {
   }
 
   public getRandomColor() {
-    let letters = "0123456789ABCDEF";
-    let color = "#";
+    let letters = '0123456789ABCDEF';
+    let color = '#';
     for (let i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
   }
-  colors:string[] = [];
+  colors: string[] = [];
   activePal(pal: any) {
     pal.selected = !pal.selected;
     console.log(this.search.searched);
-    this.search.searched.forEach((palLocation:any)=>{
-      const color = this.colors.pop();
-      palLocation.latlngs.forEach((latlng:any)=>{
-        var polygon = L.polygon(
-          latlng,
-          { color: color, fillColor: color, fillOpacity: 0.3 }
-        ).addTo(this.map);
-      })
+    const color = this.colors.pop();
+    pal.latlngs.forEach((latlng: any) => {
+      var polygon = L.polygon(latlng, {
+        color: color,
+        fillColor: color,
+        fillOpacity: 0.3,
+      }).addTo(this.map);
     });
+  }
+
+  copyLatlngs() {
+    let stringLatlngs = '[';
+    this.latlngs.forEach((latlng: any, index: any) => {
+      stringLatlngs += `[${latlng.lat},${latlng.lng}]`;
+      if (index !== this.latlngs.length - 1) {
+        stringLatlngs += ',';
+      }
+    });
+    stringLatlngs += '],';
+
+    // 建立一個新的<input>元素
+    var input = document.createElement('input');
+    input.value = stringLatlngs;
+    // 將<input>元素添加到當前的頁面上
+    document.body.appendChild(input);
+    // 選取<input>元素中的內容
+    input.select();
+    // 複製選取的內容到剪貼板
+    document.execCommand('copy');
+    // 移除<input>元素
+    document.body.removeChild(input);
   }
 }
