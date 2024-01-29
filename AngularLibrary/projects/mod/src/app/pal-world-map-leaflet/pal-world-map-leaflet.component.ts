@@ -41,7 +41,6 @@ export class PalWorldMapLeafletComponent {
 
   // @HostListener('mousemove') onMouseMove(e: any)
   // {
-  //   console.log(e);
   //   let latLng = e.latlng;
   // }
 
@@ -116,8 +115,7 @@ export class PalWorldMapLeafletComponent {
     L.control.layers(this.baseLayers, this.overlays).addTo(this.map);
     let colorCount = 150;
     let randomColors = this.generateRandomColors(colorCount);
-
-    console.log(randomColors);
+    // 改為 init pals 資料時就賦予每一種 pal 一種獨立的顏色
   }
 
   search: any = {
@@ -180,35 +178,38 @@ export class PalWorldMapLeafletComponent {
   }
   colors: string[] = [];
 
-  palSelectedLayerList: [{
-    pal: any;
-    palLayer: L.Polygon<any>;
-  }] | any = [];
+  palSelectedLayerList:
+    | [
+        {
+          pal: any;
+          palLayer: L.Polygon<any>;
+        }
+      ]
+    | any = [];
   activePal(palFromSelect: any) {
-    console.log(palFromSelect);
     palFromSelect.selected = !palFromSelect.selected;
     if (palFromSelect.selected) {
       const color = this.colors.pop();
       // add pal layer in list
       palFromSelect.latlngs.forEach((latlng: any) => {
-        const palLayer = L.polygon(
-          latlng,
-          { color: color, fillColor: color, fillOpacity: 0.3 }
-        );
+        const palLayer = L.polygon(latlng, {
+          color: color,
+          fillColor: color,
+          fillOpacity: 0.3,
+        });
         this.bossesMarkersLayer.addLayer(palLayer).addTo(this.map);
-        const palLayerGroup = { palFromSelect , palLayer };
+        const palLayerGroup = { palFromSelect, palLayer };
         this.palSelectedLayerList.push(palLayerGroup);
-        console.log(this.palSelectedLayerList);
+      });
+    } else {
+      const palLayerGroupList = this.palSelectedLayerList.filter(
+        (value: any) => palFromSelect.name == value.palFromSelect.name
+      );
+      palLayerGroupList.forEach((value: any) => {
+        this.bossesMarkersLayer.removeLayer(value.palLayer);
       });
     }
-    else {
-      console.log(palFromSelect.name);
-      const palLayerGroupList = this.palSelectedLayerList.filter((value: any) => palFromSelect.name == value.palFromSelect.name);
-      console.log(palLayerGroupList);
-      palLayerGroupList.forEach((value:any) =>{
-        this.bossesMarkersLayer.removeLayer(value.palLayer);
-      })
-    }
+
     // this.bossesMarkersLayer.removeLayer(marker);
     // this.search.searched.forEach((palLocation:any)=>{
     //   const color = this.colors.pop();
