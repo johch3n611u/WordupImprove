@@ -71,18 +71,17 @@ export class PalWorldMapLeafletComponent {
   markersLayer = L.layerGroup();
   bossesMarkersLayer = L.layerGroup();
   baseLayers = {
-    開放街圖: this.markersLayer,
-    臺灣通用電子地圖: this.markersLayer,
+    defaul: this.markersLayer,
   };
   overlays = {
-    地標: this.bossesMarkersLayer,
+    bosses: this.bossesMarkersLayer,
   };
-  latlngs:any = [];
+  latlngs: any = [];
   private onMouseClick() {
     this.map.on('click', (mapClick: L.LeafletMouseEvent) => {
       this.latlngs.push({
         lat: mapClick.latlng.lat,
-        lng: mapClick.latlng.lng
+        lng: mapClick.latlng.lng,
       });
 
       // add marker and listen the marker, when it be click then remove it
@@ -154,5 +153,10 @@ export class PalWorldMapLeafletComponent {
         )
         .subscribe();
     }
+  }
+
+  activePal(pal: any) {
+    pal.selected = !pal.selected;
+    console.log(this.search.searched)
   }
 }
