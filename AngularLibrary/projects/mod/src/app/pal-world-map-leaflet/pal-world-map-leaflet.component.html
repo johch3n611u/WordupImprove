@@ -1,20 +1,24 @@
-<p>pal-world-map-leaflet works!</p>
-<p>lat:{{ currentLat }},lng:{{ currentLng }}</p>
-<hr>
-<input autocomplete="new-password" type="text" [(ngModel)]="search.keyword" (change)="searchPals()">
+<div style="width: 50%;">
+  <p>pal-world-map-leaflet works!</p>
+  <p>lat:{{ currentLat }},lng:{{ currentLng }}</p>
+  <hr>
+  <input autocomplete="new-password" type="text" [(ngModel)]="search.keyword" (change)="searchPals()">
 
-<p *ngFor="let pal of this.search.searched">
-  <img style="height: 150px;width: auto;" [src]="'assets/palworld/pals/'+ pal.image" />
-  No {{pal.number}}, {{pal.name}}, {{pal.elements}}, {{pal.workskills}}, {{pal.drops}}
-</p>
+  <p *ngFor="let pal of this.search.searched">
+    <img style="height: 150px;width: auto;" [src]="'assets/palworld/pals/'+ pal.image" />
+    No {{pal.number}}, {{pal.name}}, {{pal.elements}}, {{pal.workskills}}, {{pal.drops}}
+  </p>
 
+  <hr>
+  <p *ngFor="let marker of markers">
 
-<hr>
-<p *ngFor="let marker of markers">
+  </p>
 
-</p>
-<div class="map-container" style="margin-top: 250px;">
-  <div class="map-frame">
-    <div id="map"></div>
+</div>
+<div style="width: 50%; position: relative; height: 100vh;">
+  <div class="map-container" style="margin-top: 250px;">
+    <div class="map-frame">
+      <div id="map"></div>
+    </div>
   </div>
 </div>
