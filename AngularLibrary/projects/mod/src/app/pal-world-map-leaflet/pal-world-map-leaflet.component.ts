@@ -77,6 +77,7 @@ export class PalWorldMapLeafletComponent {
     bosses: this.bossesMarkersLayer,
   };
   latlngs: any = [];
+
   private onMouseClick() {
     var polygon = L.polygon([
       [658.1329178827798, -29],
@@ -129,7 +130,10 @@ fillOpacity: 0.5}).addTo(this.map);
     this.map.fitBounds(bounds);
 
     L.control.layers(this.baseLayers, this.overlays).addTo(this.map);
+    let colorCount = 150;
+    let randomColors = this.generateRandomColors(colorCount);
 
+    console.log(randomColors);
   }
 
   search: any = {
@@ -170,6 +174,25 @@ fillOpacity: 0.5}).addTo(this.map);
     }
   }
 
+  public generateRandomColors(count:any) {
+    let colors = [];
+
+    for (let i = 0; i < count; i++) {
+      let color = this.getRandomColor();
+      colors.push(color);
+    }
+
+    return colors;
+  }
+
+  public getRandomColor() {
+    let letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
   activePal(pal: any) {
     pal.selected = !pal.selected;
     console.log(this.search.searched)
