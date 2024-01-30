@@ -13,7 +13,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import * as L from 'leaflet';
-import { BehaviorSubject, filter, take, tap } from 'rxjs';
+import { BehaviorSubject, filter, map, take, tap } from 'rxjs';
 
 @Component({
   selector: 'mod-pal-world-map-leaflet',
@@ -27,7 +27,10 @@ export class PalWorldMapLeafletComponent {
 
   constructor(private httpClient: HttpClient) {
     // get the json of pals info
-    this.httpClient.get(this.palsInfoPath).subscribe((res: any) => {
+    this.httpClient.get(this.palsInfoPath).pipe(
+      tap((pals: any)=>pals.forEach((pal:any)=>pal.color = this.getUniqueColor()))
+    ).subscribe((res: any) => {
+      console.log()
       this.palsInfo$.next(res);
     });
   }
@@ -159,22 +162,20 @@ export class PalWorldMapLeafletComponent {
     }
   }
 
-  public getRandomRGB(){
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
-    return `rgb(${r}, ${g}, ${b})`;
-  }
-  public getColor(){
-    let color = this.getRandomRGB();
-    while (this.colors.includes(color)) {
-      color = this.getRandomRGB();
-  }
-  return color;
-}
-
-
   colors: string[] = [];
+  public getUniqueColor() {
+    let color = '';
+    while (!this.colors?.includes(color)) {
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+      color = `rgb(${r}, ${g}, ${b})`;
+      if (!this.colors?.includes(color)) {
+        this.colors.push(color);
+      }
+    }
+    return color;
+  }
 
   palSelectedLayerList:
     | [
@@ -189,13 +190,12 @@ export class PalWorldMapLeafletComponent {
   activePal(palFromSelect: any) {
     palFromSelect.selected = !palFromSelect.selected;
     if (palFromSelect.selected) {
-    const color = this.getColor();
       // add pal layer in list
       palFromSelect.latlngs.forEach((latlng: any) => {
         const palLayer = L.polygon(latlng, {
-          color: color,
-          fillColor: color,
-          fillOpacity: 0.3,
+          color: palFromSelect.color,
+          fillColor: palFromSelect.color,
+          fillOpacity: 0.4,
         });
         // add each location layer, then add in temp to save the layer info
         this.bossesMarkersLayer.addLayer(palLayer).addTo(this.map);

@@ -10,7 +10,7 @@
   <ul>
     <!-- this.search.searched -->
     <li *ngFor="let pal of (this.palsInfo$ | async); let i = index" (click)="activePal(pal)"
-      [ngClass]="{ 'active': pal.selected}">
+      [ngClass]="{ 'active': pal.selected}" [style.background]="pal.selected?pal.color:''">
       <img style="height: 150px;width: auto;" [src]="'assets/palworld/pals/'+ pal.image" />
       <div style="padding-left: 1rem;">
         <p>No {{pal.number}}, {{pal.name}}, {{pal.elements}}</p>
