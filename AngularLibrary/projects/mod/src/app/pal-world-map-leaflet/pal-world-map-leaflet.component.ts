@@ -5,6 +5,10 @@
 // https://forum.gamer.com.tw/C.php?bsn=71458&snA=11
 // https://paldb.cc/tw/
 // https://leafletjs.cn/
+// 配種 https://palworld.fandom.com/wiki/Breeding
+// https://palworld.gg/
+// APP
+// https://paldex.io/
 
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
