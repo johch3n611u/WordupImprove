@@ -98,6 +98,7 @@ export class PalWorldMapLeafletComponent {
   }
 
   private initPalWorldMap(): void {
+    this.colors = this.generateRandomColors(1000);
     this.map = L.map('map', {
       layers: [this.markersLayer],
       crs: L.CRS.Simple,
@@ -186,6 +187,8 @@ export class PalWorldMapLeafletComponent {
         }
       ]
     | any = [];
+
+  // selected pal after search
   activePal(palFromSelect: any) {
     palFromSelect.selected = !palFromSelect.selected;
     if (palFromSelect.selected) {
@@ -197,14 +200,18 @@ export class PalWorldMapLeafletComponent {
           fillColor: color,
           fillOpacity: 0.3,
         });
+        // add each location layer, then add in temp to save the layer info
         this.bossesMarkersLayer.addLayer(palLayer).addTo(this.map);
+        // key: pal info,value: palLayer
         const palLayerGroup = { palFromSelect, palLayer };
         this.palSelectedLayerList.push(palLayerGroup);
       });
     } else {
+      // find out which isn't selected
       const palLayerGroupList = this.palSelectedLayerList.filter(
         (value: any) => palFromSelect.name == value.palFromSelect.name
       );
+      // then remove layer form the temp
       palLayerGroupList.forEach((value: any) => {
         this.bossesMarkersLayer.removeLayer(value.palLayer);
       });
