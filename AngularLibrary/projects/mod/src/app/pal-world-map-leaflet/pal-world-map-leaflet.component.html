@@ -8,10 +8,9 @@
   <hr>
 
   <ul>
-    <!-- this.search.searched -->
-    <li *ngFor="let pal of (this.palsInfo$ | async); let i = index" (click)="activePal(pal)"
+    <li *ngFor="let pal of this.search.searched; let i = index" (click)="activePal(pal)"
       [ngClass]="{ 'active': pal.selected}" [style.background]="pal.selected?pal.color:''">
-      <img style="height: 150px;width: auto;" [src]="'assets/palworld/pals/'+ pal.image" />
+      <img style="height: 150px;width: auto;border-radius: 50%;border: solid;background-color: white;" [src]="'assets/palworld/pals/'+ pal.image" />
       <div style="padding-left: 1rem;">
         <p>No {{pal.number}}, {{pal.name}}, {{pal.elements}}</p>
         <p>{{pal.workskills}}</p>

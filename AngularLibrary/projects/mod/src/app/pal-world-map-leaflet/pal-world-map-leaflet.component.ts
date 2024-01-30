@@ -7,8 +7,11 @@
 // https://leafletjs.cn/
 // 配種 https://palworld.fandom.com/wiki/Breeding
 // https://palworld.gg/
-// APP
+// APP https://forum.gamer.com.tw/C.php?bsn=71458&snA=1410
 // https://paldex.io/
+// 配種 101 https://forum.gamer.com.tw/C.php?bsn=71458&snA=1437
+// 配種 https://forum.gamer.com.tw/C.php?bsn=71458&snA=1385
+// 雕像大大巴哈 po https://forum.gamer.com.tw/C.php?bsn=71458&snA=1079&tnum=12
 
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
@@ -30,8 +33,8 @@ export class PalWorldMapLeafletComponent {
     this.httpClient.get(this.palsInfoPath).pipe(
       tap((pals: any)=>pals.forEach((pal:any)=>pal.color = this.getUniqueColor()))
     ).subscribe((res: any) => {
-      console.log()
       this.palsInfo$.next(res);
+      this.search.searched = res;
     });
   }
 
@@ -159,6 +162,8 @@ export class PalWorldMapLeafletComponent {
           })
         )
         .subscribe();
+    } else {
+      this.search.searched = this.palsInfo$.getValue();
     }
   }
 
