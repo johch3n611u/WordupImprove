@@ -12,9 +12,11 @@
       [ngClass]="{ 'active': pal.selected}" [style.background]="pal.selected?pal.color:''">
       <img style="height: 150px;width: auto;border-radius: 50%;border: solid;background-color: white;" [src]="'assets/palworld/pals/'+ pal.image" />
       <div style="padding-left: 1rem;">
-        <p>No {{pal.number}}, {{pal.name}}, {{pal.elements}}</p>
+        <p style="display: flex;align-items: center;">No {{pal.number}}, {{pal.name}}, {{pal.elements}}, {{pal.food}} <img src="assets/palworld/pals/T_itemicon_Food_Meat_ChickenPal.webp" style="width: auto;height: 50px;"></p>
         <p>{{pal.workskills}}</p>
         <p>{{pal.drops}}</p>
+        <p>{{pal.description}}</p>
+        <p>{{pal.partnerSkill}}</p>
       </div>
     </li>
   </ul>

@@ -256,14 +256,14 @@ export class PalWorldMapLeafletComponent {
   }
 
   copyLatlngs() {
-    let stringLatlngs = '[';
+    let stringLatlngs = '';
     this.latlngs.forEach((latlng: any, index: any) => {
       stringLatlngs += `[${latlng.lat},${latlng.lng}]`;
       if (index !== this.latlngs.length - 1) {
         stringLatlngs += ',';
       }
     });
-    stringLatlngs += '],';
+    stringLatlngs += '';
 
     // 建立一個新的<input>元素
     var input = document.createElement('input');
