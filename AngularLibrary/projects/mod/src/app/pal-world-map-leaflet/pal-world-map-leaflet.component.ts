@@ -26,23 +26,30 @@ import { BehaviorSubject, filter, map, take, tap } from 'rxjs';
 export class PalWorldMapLeafletComponent {
   palsInfoPath = './assets/palworld/palword.json';
   palsInfo$ = new BehaviorSubject<any>([]);
-  private map: any;
+  map: any;
 
   constructor(private httpClient: HttpClient) {
     // get the json of pals info
-    this.httpClient.get(this.palsInfoPath).pipe(
-      tap((pals: any)=>pals.forEach((pal:any)=>pal.color = this.getUniqueColor()))
-    ).subscribe((res: any) => {
-      this.palsInfo$.next(res);
-      this.search.searched = res;
-    });
+    this.httpClient
+      .get(this.palsInfoPath)
+      .pipe(
+        tap((pals: any) =>
+          pals.forEach((pal: any) => (pal.color = this.getUniqueColor()))
+        )
+      )
+      .subscribe((res: any) => {
+        this.palsInfo$.next(res);
+        this.search.searched = res;
+      });
   }
 
   ngAfterViewInit(): void {
     this.initPalWorldMap();
     this.onMouseClick();
   }
+
   ngOnInit(): void {}
+
   // private initRealMap(): void {
   //   const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
   //   this.map = L.map('map');
@@ -77,10 +84,23 @@ export class PalWorldMapLeafletComponent {
   }
 
   templatlngs = [];
-  markersLayer = L.layerGroup();
+  corner1 = L.latLng(0, 0);
+  corner2 = L.latLng(1000, 1000);
+  bounds = L.latLngBounds(this.corner1, this.corner2);
+  defaultMap = L.imageOverlay(
+    './assets/palworld/palpagos_islands.webp',
+    this.bounds
+  );
+  levelsMap = L.imageOverlay(
+    './assets/palworld/palpagos_islands_levels.webp',
+    this.bounds
+  );
+  habitatLayer = L.layerGroup();
   bossesMarkersLayer = L.layerGroup();
+
   baseLayers = {
-    defaul: this.markersLayer,
+    defaul: this.defaultMap,
+    levels: this.levelsMap,
   };
   overlays = {
     bosses: this.bossesMarkersLayer,
@@ -109,22 +129,13 @@ export class PalWorldMapLeafletComponent {
 
   private initPalWorldMap(): void {
     this.map = L.map('map', {
-      layers: [this.markersLayer],
+      layers: [this.levelsMap],
       crs: L.CRS.Simple,
     });
 
-    let corner1 = L.latLng(0, 0);
-    var corner2 = L.latLng(1000, 1000);
-    let bounds = L.latLngBounds(corner1, corner2);
-    let image = L.imageOverlay(
-      './assets/palworld/palpagos_islands.webp',
-      bounds
-    ).addTo(this.map);
-    this.map.fitBounds(bounds);
+    this.map.fitBounds(this.bounds);
 
     L.control.layers(this.baseLayers, this.overlays).addTo(this.map);
-    let colorCount = 150;
-    // 改為 init pals 資料時就賦予每一種 pal 一種獨立的顏色
   }
 
   search: any = {
@@ -203,7 +214,7 @@ export class PalWorldMapLeafletComponent {
           fillOpacity: 0.4,
         });
         // add each location layer, then add in temp to save the layer info
-        this.bossesMarkersLayer.addLayer(palLayer).addTo(this.map);
+        this.habitatLayer.addLayer(palLayer).addTo(this.map);
         // key: pal info,value: palLayer
         const palLayerGroup = { palFromSelect, palLayer };
         this.palSelectedLayerList.push(palLayerGroup);
@@ -215,7 +226,7 @@ export class PalWorldMapLeafletComponent {
       );
       // then remove layer form the temp
       palLayerGroupList.forEach((value: any) => {
-        this.bossesMarkersLayer.removeLayer(value.palLayer);
+        this.habitatLayer.removeLayer(value.palLayer);
       });
     }
 
