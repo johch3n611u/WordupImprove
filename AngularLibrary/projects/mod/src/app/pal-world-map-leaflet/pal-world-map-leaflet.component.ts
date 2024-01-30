@@ -98,7 +98,6 @@ export class PalWorldMapLeafletComponent {
   }
 
   private initPalWorldMap(): void {
-    this.colors = this.generateRandomColors(1000);
     this.map = L.map('map', {
       layers: [this.markersLayer],
       crs: L.CRS.Simple,
@@ -115,7 +114,6 @@ export class PalWorldMapLeafletComponent {
 
     L.control.layers(this.baseLayers, this.overlays).addTo(this.map);
     let colorCount = 150;
-    let randomColors = this.generateRandomColors(colorCount);
     // 改為 init pals 資料時就賦予每一種 pal 一種獨立的顏色
   }
 
@@ -125,7 +123,6 @@ export class PalWorldMapLeafletComponent {
   };
 
   searchPals() {
-    this.colors = this.generateRandomColors(1000);
     if (
       this.search.keyword !== undefined &&
       this.search.keyword !== null &&
@@ -158,25 +155,21 @@ export class PalWorldMapLeafletComponent {
     }
   }
 
-  public generateRandomColors(count: any) {
-    let colors = [];
-
-    for (let i = 0; i < count; i++) {
-      let color = this.getRandomColor();
-      colors.push(color);
-    }
-
-    return colors;
+  public getRandomRGB(){
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r}, ${g}, ${b})`;
   }
-
-  public getRandomColor() {
-    let letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+  public getColor(){
+    let color = this.getRandomRGB();
+    while (this.colors.includes(color)) {
+      color = this.getRandomRGB();
   }
+  return color;
+}
+
+
   colors: string[] = [];
 
   palSelectedLayerList:
@@ -192,7 +185,7 @@ export class PalWorldMapLeafletComponent {
   activePal(palFromSelect: any) {
     palFromSelect.selected = !palFromSelect.selected;
     if (palFromSelect.selected) {
-      const color = this.colors.pop();
+    const color = this.getColor();
       // add pal layer in list
       palFromSelect.latlngs.forEach((latlng: any) => {
         const palLayer = L.polygon(latlng, {
