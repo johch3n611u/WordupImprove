@@ -72,10 +72,10 @@ export class PalWorldMapLeafletComponent {
   //   this.map.fitBounds(bounds);
   // }
 
-  public generateIcon(imgName: string) {
+  public generateIcon(imgName: string, fileDir: string = 'main_pins',size:number = 30) {
     return L.icon({
-      iconUrl: `./assets/palworld/main_pins/${imgName}`,
-      iconSize: [30, 30], // icon 寬, 長
+      iconUrl: `./assets/palworld/${fileDir}/${imgName}`,
+      iconSize: [size, size], // icon 寬, 長
       shadowSize: [50, 64], // 陰影 寬, 長
       iconAnchor: [5, 5], // icon 中心偏移
       shadowAnchor: [4, 62], // 陰影 中心偏移
@@ -206,6 +206,15 @@ export class PalWorldMapLeafletComponent {
   activePal(palFromSelect: any) {
     palFromSelect.selected = !palFromSelect.selected;
     if (palFromSelect.selected) {
+      let bossMarker:L.Marker<any> | any = {};
+      if(palFromSelect.boss){
+        console.log(palFromSelect.boss);
+        bossMarker = L.marker(palFromSelect.boss.latlng,{icon:this.generateIcon(palFromSelect.boss.image,`bosses`,50),title:palFromSelect.boss.level});
+        this.habitatLayer.addLayer(bossMarker).addTo(this.map);
+      }
+      else{
+        bossMarker = null;
+      }
       // add pal layer in list
       palFromSelect.latlngs.forEach((latlng: any) => {
         const palLayer = L.polygon(latlng, {
@@ -216,7 +225,7 @@ export class PalWorldMapLeafletComponent {
         // add each location layer, then add in temp to save the layer info
         this.habitatLayer.addLayer(palLayer).addTo(this.map);
         // key: pal info,value: palLayer
-        const palLayerGroup = { palFromSelect, palLayer };
+        const palLayerGroup = { palFromSelect, palLayer,bossMarker};
         this.palSelectedLayerList.push(palLayerGroup);
       });
     } else {
@@ -227,8 +236,12 @@ export class PalWorldMapLeafletComponent {
       // then remove layer form the temp
       palLayerGroupList.forEach((value: any) => {
         this.habitatLayer.removeLayer(value.palLayer);
+        if(palFromSelect.boss){
+          this.habitatLayer.removeLayer(value.bossMarker);
+        }
       });
     }
+
 
     // this.bossesMarkersLayer.removeLayer(marker);
     // this.search.searched.forEach((palLocation:any)=>{

@@ -4352,6 +4352,11 @@
     "food": 0
   },
   {
+    "boss":{
+      "image":"10025.png",
+      "level":"LV.18",
+      "latlng":[498.68752465094263,341.8503097040606]
+    },
     "image": "T_HawkBird_icon_normal.webp",
     "number": "38",
     "name": "疾風隼",
