@@ -35,7 +35,18 @@ export class PalWorldMapLeafletComponent {
       .get(this.palsInfoPath)
       .pipe(
         tap((pals: any) =>
-          pals.forEach((pal: any) => (pal.color = this.getUniqueColor()))
+          pals.forEach((pal: any) => {
+            pal.color = this.getUniqueColor();
+            if (pal.boss) {
+              pal.boss.latlngs.forEach((latlng: any) => {
+                let bossMarker = L.marker(latlng, {
+                  icon: this.generateIcon(pal.boss.image, `bosses`, 50),
+                  title: pal.boss.level,
+                });
+                this.bossesMarkersLayer.addLayer(bossMarker).addTo(this.map);
+              })
+            }
+          })
         )
       )
       .subscribe((res: any) => {
