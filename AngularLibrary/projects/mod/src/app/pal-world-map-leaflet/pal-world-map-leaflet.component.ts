@@ -46,6 +46,7 @@ export class PalWorldMapLeafletComponent {
   ngAfterViewInit(): void {
     this.initPalWorldMap();
     this.onMouseClick();
+    this.initBossesLayer();
   }
 
   ngOnInit(): void {}
@@ -72,7 +73,11 @@ export class PalWorldMapLeafletComponent {
   //   this.map.fitBounds(bounds);
   // }
 
-  public generateIcon(imgName: string, fileDir: string = 'main_pins',size:number = 30) {
+  public generateIcon(
+    imgName: string,
+    fileDir: string = 'main_pins',
+    size: number = 30
+  ) {
     return L.icon({
       iconUrl: `./assets/palworld/${fileDir}/${imgName}`,
       iconSize: [size, size], // icon 寬, 長
@@ -127,6 +132,17 @@ export class PalWorldMapLeafletComponent {
     });
   }
 
+  public initBossesLayer(): void {
+    this.palsInfo$.forEach((pal) => {
+      if (pal.boss) {
+        let bossMarker = L.marker(pal.boss.latlng, {
+          icon: this.generateIcon(pal.boss.image, `bosses`, 50),
+          title: pal.boss.level,
+        });
+        this.bossesMarkersLayer.addLayer(bossMarker).addTo(this.map);
+      }
+    });
+  }
   private initPalWorldMap(): void {
     this.map = L.map('map', {
       layers: [this.levelsMap],
@@ -202,17 +218,21 @@ export class PalWorldMapLeafletComponent {
       ]
     | any = [];
 
+  activeBossesPalList: any = [];
   // selected pal after search
   activePal(palFromSelect: any) {
     palFromSelect.selected = !palFromSelect.selected;
     if (palFromSelect.selected) {
-      let bossMarker:L.Marker<any> | any = {};
-      if(palFromSelect.boss){
-        console.log(palFromSelect.boss);
-        bossMarker = L.marker(palFromSelect.boss.latlng,{icon:this.generateIcon(palFromSelect.boss.image,`bosses`,50),title:palFromSelect.boss.level});
+      let bossMarker: L.Marker<any> | any = {};
+      if (palFromSelect.boss) {
+        bossMarker = L.marker(palFromSelect.boss.latlng, {
+          icon: this.generateIcon(palFromSelect.boss.image, `bosses`, 50),
+          title: palFromSelect.boss.level,
+        });
         this.habitatLayer.addLayer(bossMarker).addTo(this.map);
-      }
-      else{
+        const bossMarkerGroup = { palFromSelect, bossMarker };
+        this.activeBossesPalList.push(bossMarkerGroup);
+      } else {
         bossMarker = null;
       }
       // add pal layer in list
@@ -225,7 +245,7 @@ export class PalWorldMapLeafletComponent {
         // add each location layer, then add in temp to save the layer info
         this.habitatLayer.addLayer(palLayer).addTo(this.map);
         // key: pal info,value: palLayer
-        const palLayerGroup = { palFromSelect, palLayer,bossMarker};
+        const palLayerGroup = { palFromSelect, palLayer };
         this.palSelectedLayerList.push(palLayerGroup);
       });
     } else {
@@ -236,12 +256,12 @@ export class PalWorldMapLeafletComponent {
       // then remove layer form the temp
       palLayerGroupList.forEach((value: any) => {
         this.habitatLayer.removeLayer(value.palLayer);
-        if(palFromSelect.boss){
-          this.habitatLayer.removeLayer(value.bossMarker);
-        }
       });
+      const palBossMarkerInfo = this.activeBossesPalList.filter(
+        (value: any) => palFromSelect.name == value.palFromSelect.name
+      );
+      this.habitatLayer.removeLayer(palBossMarkerInfo[0].bossMarker);
     }
-
 
     // this.bossesMarkersLayer.removeLayer(marker);
     // this.search.searched.forEach((palLocation:any)=>{
