@@ -165,7 +165,7 @@ export class PalWorldMapLeafletComponent {
     this.habitatLayer = L.layerGroup();
     this.palsInfo$?.getValue().forEach((pal: any) => {
       pal.selected = false;
-    });
+    })
     if (
       this.search.keyword !== undefined &&
       this.search.keyword !== null &&
