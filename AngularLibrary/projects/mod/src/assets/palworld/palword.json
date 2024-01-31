@@ -2755,7 +2755,8 @@
     "description": "",
     "partnerSkill": "[科技6鞍具] 堅硬頭殼 (可騎在牠的背上，騎乘期間破壞岩石的效率會提高)",
     "food": 3,
-    "combiRank": 1130
+    "combiRank": 1130,
+    "mount": { "type": "陸地", "speed": "700" }
   },
   {
     "image": "T_NightFox_icon_normal.webp",
@@ -3408,7 +3409,8 @@
     "description": "",
     "partnerSkill": "[科技9鞍具] 獵狼騎手 (可騎在牠背上移動，騎乘期間的移動速度會稍微變快一點)",
     "food": 3,
-    "combiRank": 1060
+    "combiRank": 1060,
+    "mount": { "type": "陸地", "speed": "1050" }
   },
   {
     "image": "T_ColorfulBird_icon_normal.webp",
@@ -3917,7 +3919,8 @@
     "description": "[科技24槍砲]",
     "partnerSkill": "不良熊貓 (可騎在牠的背上移動，騎乘期間還能用榴彈發射器連續攻擊)",
     "food": 5,
-    "combiRank": 430
+    "combiRank": 430,
+    "mount": { "type": "陸地", "speed": "700" }
   },
   {
     "boss": {
@@ -3935,7 +3938,8 @@
     "description": "野外 BOSS Lv.31",
     "partnerSkill": "[科技25槍砲] 不良熊貓 (可騎在牠的背上移動，騎乘期間還能用榴彈發射器連續攻擊)",
     "food": 5,
-    "combiRank": 390
+    "combiRank": 390,
+    "mount": { "type": "陸地", "speed": "700" }
   },
   {
     "image": "T_SweetsSheep_icon_normal.webp",
@@ -4234,7 +4238,8 @@
     "description": "",
     "partnerSkill": "[科技7鞍具] 蓬蓬羊毛 (可騎在牠背上移動) 將牠分派到家畜牧場，有機會掉落羊毛。",
     "food": 3,
-    "combiRank": 890
+    "combiRank": 890,
+    "mount": { "type": "陸地", "speed": "800" }
   },
   {
     "image": "T_Deer_icon_normal.webp",
@@ -4383,7 +4388,8 @@
     "description": "",
     "partnerSkill": "[科技12鞍具] 森林守護者 (可騎在牠背上移動，騎乘期間可以二段跳，破壞樹木的效率也會提高)",
     "food": 5,
-    "combiRank": 920
+    "combiRank": 920,
+    "mount": { "type": "陸地", "speed": "900" }
   },
   {
     "image": "T_Deer_Ground_icon_normal.webp",
@@ -4407,7 +4413,8 @@
     "description": "",
     "partnerSkill": "[科技25鞍具] 金之森守護者 (可騎在牠背上移動，騎乘期間可以二段跳，破壞樹木的效率也會提高)",
     "food": 5,
-    "combiRank": 900
+    "combiRank": 900,
+    "mount": { "type": "陸地", "speed": "900" }
   },
   {
     "boss": {
@@ -4572,7 +4579,8 @@
     "description": "野外 BOSS Lv.18",
     "partnerSkill": "[科技15鞍具] 旅伴 (可騎在牠的背上在空中飛行)",
     "food": 7,
-    "combiRank": 420
+    "combiRank": 420,
+    "mount": { "type": "飛行", "speed": "750" }
   },
   {
     "image": "T_PinkRabbit_icon_normal.webp",
@@ -4834,7 +4842,8 @@
     "description": "",
     "partnerSkill": "[科技16鞍具] 溫暖之軀 (可騎在牠背上移動，騎乘期間不會感受到寒意)",
     "food": 5,
-    "combiRank": 790
+    "combiRank": 790,
+    "mount": { "type": "陸地", "speed": "800" }
   },
   {
     "boss": {
@@ -5869,7 +5878,8 @@
     "description": "野外 BOSS Lv.17",
     "partnerSkill": "[科技13鞍具] 豐潤之軀 (可騎在他的背上移動，騎乘期間的無屬性攻擊將得到強化)",
     "food": 4,
-    "combiRank": 510
+    "combiRank": 510,
+    "mount": { "type": "陸地", "speed": "800" }
   },
   {
     "image": "T_MopBaby_icon_normal.webp",
@@ -5996,7 +6006,8 @@
     "description": "野外 BOSS Lv.11",
     "partnerSkill": "[科技14鞍具] 毛茸茸之王 (可騎在牠背上移動，與牠並肩作戰時，隊伍中的毛撢兒數量越多，牠的屬性就能提升越多)",
     "food": 3,
-    "combiRank": 410
+    "combiRank": 410,
+    "mount": { "type": "陸地", "speed": "500" }
   },
   {
     "boss": {
@@ -6062,7 +6073,8 @@
     "description": "野外 BOSS Lv.11",
     "partnerSkill": "[科技13鞍具] 扭扭鼬鼬 (可騎在牠背上移動，騎乘期間牠會為玩家的攻擊賦予龍屬性)",
     "food": 3,
-    "combiRank": 800
+    "combiRank": 800,
+    "mount": { "type": "陸地", "speed": "800" }
   },
   {
     "boss": {
@@ -6110,7 +6122,8 @@
     "description": "野外 BOSS Lv.31",
     "partnerSkill": "疾風迅雷 (可騎在牠背上移動，騎乘期間會為玩家的攻擊賦予雷屬性)",
     "food": 5,
-    "combiRank": 680
+    "combiRank": 680,
+    "mount": { "type": "陸地", "speed": "1100" }
   },
   {
     "image": "T_IceFox_icon_normal.webp",
@@ -6179,7 +6192,8 @@
     "description": "",
     "partnerSkill": " [科技30鞍具] 赤兔馬 (可騎在牠背上移動，騎乘期間會為玩家的攻擊賦予火屬性)",
     "food": 5,
-    "combiRank": 360
+    "combiRank": 360,
+    "mount": { "type": "陸地", "speed": "1300" }
   },
   {
     "image": "T_FireKirin_Dark_icon_normal.webp",
@@ -6222,7 +6236,8 @@
     "description": "",
     "partnerSkill": "[科技33鞍具] 黑兔馬 (可騎在牠背上移動，騎乘期間會為玩家的攻擊賦予暗屬性)",
     "food": 5,
-    "combiRank": 240
+    "combiRank": 240,
+    "mount": { "type": "陸地", "speed": "1300" }
   },
   {
     "image": "T_IceDeer_icon_normal.webp",
@@ -6279,7 +6294,8 @@
     "description": "",
     "partnerSkill": "[科技29鞍具] 冰涼之軀 (可騎在牠背上移動，騎乘期間不會感受到炎熱)",
     "food": 7,
-    "combiRank": 880
+    "combiRank": 880,
+    "mount": { "type": "陸地", "speed": "700" }
   },
   {
     "image": "T_ThunderDog_icon_normal.webp",
@@ -6342,7 +6358,8 @@
     "description": "",
     "partnerSkill": "[科技26鞍具] 跳躍力 (可騎在牠的背上移動，騎乘期間可以二段跳)",
     "food": 5,
-    "combiRank": 740
+    "combiRank": 740,
+    "mount": { "type": "陸地", "speed": "1150" }
   },
   {
     "image": "T_AmaterasuWolf_icon_normal.webp",
@@ -6372,7 +6389,8 @@
     "description": "夜晚出沒",
     "partnerSkill": "[科技30鞍具] 心無雜念 (可騎在牠的背上移動，騎乘期間不會受到寒冷或炎熱的影響)",
     "food": 4,
-    "combiRank": 830
+    "combiRank": 830,
+    "mount": { "type": "陸地", "speed": "900" }
   },
   {
     "image": "T_RaijinDaughter_icon_normal.webp",
@@ -6626,7 +6644,8 @@
     "description": "",
     "partnerSkill": "[科技19鞍具] 馥郁花香之龍 (可騎在牠的背上移動，騎乘期間的草屬性攻擊將得到強化)",
     "food": 6,
-    "combiRank": 820
+    "combiRank": 820,
+    "mount": { "type": "陸地", "speed": "700" }
   },
   {
     "boss": {
@@ -6644,7 +6663,8 @@
     "description": "洞窟 BOSS Lv.47",
     "partnerSkill": "[科技29鞍具] 落雷綻放之龍 (可騎在牠的背上移動，騎乘期間的雷屬性攻擊將得到強化)",
     "food": 6,
-    "combiRank": 810
+    "combiRank": 810,
+    "mount": { "type": "陸地", "speed": "700" }
   },
   {
     "image": "T_Serpent_icon_normal.webp",
@@ -6686,7 +6706,8 @@
     "description": "",
     "partnerSkill": "[科技10鞍具] 滑滑水蛇 (可騎在牠的背上移動，騎乘期間在水上移動不會消耗體力)",
     "food": 5,
-    "combiRank": 560
+    "combiRank": 560,
+    "mount": { "type": "游泳", "speed": "650" }
   },
   {
     "image": "T_Serpent_Ground_icon_normal.webp",
@@ -6750,7 +6771,8 @@
     "description": "",
     "partnerSkill": "[科技24鞍具] 滑滑沙蛇 (可騎在牠的背上移動)",
     "food": 5,
-    "combiRank": 550
+    "combiRank": 550,
+    "mount": { "type": "陸地", "speed": "650" }
   },
   {
     "image": "T_GhostBeast_icon_normal.webp",
@@ -6792,7 +6814,8 @@
     "description": "夜晚出沒",
     "partnerSkill": "[科技23鞍具] 冥界使者 (可騎在牠的背上移動，騎乘期間會為玩家的攻擊賦予暗屬性)",
     "food": 3,
-    "combiRank": 1150
+    "combiRank": 1150,
+    "mount": { "type": "陸地", "speed": "800" }
   },
   {
     "image": "T_DrillGame_icon_normal.webp",
@@ -7272,7 +7295,8 @@
     "description": "",
     "partnerSkill": "[科技21鞍具] 大空襲擊者 (可騎在牠的背上在空中飛行，騎乘期間攻擊敵人的弱點部位能造成更多的傷害)",
     "food": 6,
-    "combiRank": 660
+    "combiRank": 660,
+    "mount": { "type": "飛行", "speed": "850" }
   },
   {
     "image": "T_BirdDragon_Ice_icon_normal.webp",
@@ -7307,7 +7331,8 @@
     "description": "夜晚出沒",
     "partnerSkill": "[科技41鞍具] 大空襲擊者 (可騎在牠的背上在空中飛行，騎乘期間攻擊敵人的弱點部位能造成更多的傷害)",
     "food": 6,
-    "combiRank": 620
+    "combiRank": 620,
+    "mount": { "type": "飛行", "speed": "850" }
   },
   {
     "boss": {
@@ -7412,7 +7437,8 @@
     "description": "洞窟 BOSS Lv.29",
     "partnerSkill": "[科技34鞍具] 天雷 (可騎在牠的背上在空中飛行，騎乘期間牠會為玩家的攻擊賦予雷屬性)",
     "food": 7,
-    "combiRank": 220
+    "combiRank": 220,
+    "mount": { "type": "飛行", "speed": "1200" }
   },
   {
     "image": "T_RedArmorBird_icon_normal.webp",
@@ -7455,7 +7481,8 @@
     "description": "",
     "partnerSkill": "[科技37鞍具] 火焰之翼 (可騎在牠的背上在空中飛行，騎乘期間牠會為玩家的攻擊賦予火屬性)",
     "food": 7,
-    "combiRank": 380
+    "combiRank": 380,
+    "mount": { "type": "飛行", "speed": "1300" }
   },
   {
     "boss": {
@@ -7710,7 +7737,8 @@
     "description": "野外 BOSS Lv.30",
     "partnerSkill": "[科技21鞍具] 善良的聖潔之龍 (可騎在牠的背上在空中飛行。 與牠並肩作戰時，若擊倒暗屬性的帕魯，就能從該帕魯身上獲得更多掉落道具)",
     "food": 6,
-    "combiRank": 540
+    "combiRank": 540,
+    "mount": { "type": "飛行", "speed": "800" }
   },
   {
     "image": "T_FairyDragon_Water_icon_normal.webp",
@@ -7731,7 +7759,8 @@
     "description": "",
     "partnerSkill": "[科技28鞍具] 善良的流水之龍 (可騎在牠的背上在空中飛行。 與牠並肩作戰時，若擊倒火屬性的帕魯，就能從該帕魯身上獲得更多掉落道具)",
     "food": 6,
-    "combiRank": 540
+    "combiRank": 540,
+    "mount": { "type": "飛行", "speed": "800" }
   },
   {
     "image": "T_Kelpie_icon_normal.webp",
@@ -7854,7 +7883,8 @@
     "description": "野外 BOSS Lv.17",
     "partnerSkill": "[科技24鞍具] 水翔之舞 (可騎在牠的背上在水上移動，騎乘期間牠會為玩家的攻擊賦予水屬性)",
     "food": 6,
-    "combiRank": 500
+    "combiRank": 500,
+    "mount": { "type": "游泳", "speed": "800" }
   },
   {
     "image": "T_WhiteTiger_icon_normal.webp",
@@ -7943,7 +7973,8 @@
     "description": "",
     "partnerSkill": "[科技32鞍具] 獄炎獅子 (可騎在牠的背上移動。與牠並肩作戰時，若擊倒草屬性的帕魯，就能從該帕魯身上獲得更多掉落道具)",
     "food": 7,
-    "combiRank": 710
+    "combiRank": 710,
+    "mount": { "type": "陸地", "speed": "900" }
   },
   {
     "image": "T_Manticore_Dark_icon_normal.webp",
@@ -7979,7 +8010,8 @@
     "description": "黑夜出沒",
     "partnerSkill": "[科技35鞍具] 黑炎獅子 (可騎在牠的背上移動。與牠並肩作戰時，若擊倒無屬性的帕魯，就能從該帕魯身上獲得更多掉落道具)",
     "food": 7,
-    "combiRank": 670
+    "combiRank": 670,
+    "mount": { "type": "陸地", "speed": "900" }
   },
   {
     "image": "T_LazyDragon_icon_normal.webp",
@@ -8013,7 +8045,8 @@
     "description": "",
     "partnerSkill": "[科技44槍砲] 餓餓飛彈 (可騎在牠的背上移動。騎乘期間牠還能用導彈發射器連續攻擊)",
     "food": 7,
-    "combiRank": 280
+    "combiRank": 280,
+    "mount": { "type": "陸地", "speed": "800" }
   },
   {
     "boss": {
@@ -8031,7 +8064,8 @@
     "description": "密域 BOSS Lv.31",
     "partnerSkill": "[科技46槍砲] 飛彈盛宴 (可騎在牠的背上移動。騎乘期間牠還能用導彈發射器連續攻擊)",
     "food": 7,
-    "combiRank": 270
+    "combiRank": 270,
+    "mount": { "type": "陸地", "speed": "800" }
   },
   {
     "boss": {
@@ -8098,7 +8132,8 @@
     "description": "野外 BOSS Lv.23",
     "partnerSkill": "[科技20鞍具] 超載的愛情 (可騎在他的背上移動。若連理龍在隊伍中，牠就會幫忙載運行李，提高玩家的負重上限)",
     "food": 7,
-    "combiRank": 860
+    "combiRank": 860,
+    "mount": { "type": "陸地", "speed": "500" }
   },
   {
     "boss": {
@@ -8116,7 +8151,8 @@
     "description": "洞窟 BOSS Lv.30",
     "partnerSkill": "[科技27鞍具] 超載的愛情 (可騎在他的背上移動。若連理龍在隊伍中，牠就會幫忙載運行李，提高玩家的負重上限)",
     "food": 7,
-    "combiRank": 840
+    "combiRank": 840,
+    "mount": { "type": "陸地", "speed": "500" }
   },
   {
     "boss": {
@@ -8174,7 +8210,8 @@
     "description": "",
     "partnerSkill": "[科技31鞍具] 貪食礦石之獸 (可騎在他的背上移動，騎乘期間破壞礦石的效率會更高)",
     "food": 5,
-    "combiRank": 320
+    "combiRank": 320,
+    "mount": { "type": "陸地", "speed": "550" }
   },
   {
     "image": "T_VolcanicMonster_Ice_icon_normal.webp",
@@ -8187,7 +8224,8 @@
     "description": "配種獲得(吹雪狐 + 熔岩獸)",
     "partnerSkill": "[科技37鞍具] 貪食冰霜之獸 (可騎在他的背上移動，騎乘期間破壞礦石的效率會更高)",
     "food": 5,
-    "combiRank": 230
+    "combiRank": 230,
+    "mount": { "type": "陸地", "speed": "550" }
   },
   {
     "boss": {
@@ -8215,7 +8253,8 @@
     "description": "野外 BOSS Lv.23",
     "partnerSkill": "[科技22鞍具] 大力國王 (可騎在牠的背上移動，若君王美露帕在隊伍中，牠就會幫忙載運行李，提高玩家的負重上限)",
     "food": 7,
-    "combiRank": 470
+    "combiRank": 470,
+    "mount": { "type": "陸地", "speed": "700" }
   },
   {
     "boss": {
@@ -8233,7 +8272,8 @@
     "description": "洞窟 BOSS Lv.46",
     "partnerSkill": "[科技42鞍具] 大力國王 (可騎在牠的背上移動，若君王美露帕在隊伍中，牠就會幫忙載運行李，提高玩家的負重上限)",
     "food": 7,
-    "combiRank": 440
+    "combiRank": 440,
+    "mount": { "type": "陸地", "speed": "700" }
   },
   {
     "boss": {
@@ -8365,7 +8405,8 @@
     "description": "野外 BOSS Lv.38",
     "partnerSkill": "[科技28鞍具] 蓋亞粉碎者 (可騎在牠的背上移動，騎乘期間破壞樹木和礦石的效率會更高)",
     "food": 8,
-    "combiRank": 300
+    "combiRank": 300,
+    "mount": { "type": "陸地", "speed": "600" }
   },
   {
     "image": "T_GrassMammoth_Ice_icon_normal.webp",
@@ -8399,7 +8440,8 @@
     "description": "",
     "partnerSkill": "[科技45鞍具] 冰霜粉碎者 (可騎在牠的背上移動，騎乘期間破壞樹木和礦石的效率會更高)",
     "food": 6,
-    "combiRank": 300
+    "combiRank": 300,
+    "mount": { "type": "陸地", "speed": "600" }
   },
   {
     "image": "T_Yeti_icon_normal.webp",
@@ -8433,7 +8475,8 @@
     "description": "",
     "partnerSkill": "雪山巨人 (可騎在牠的背上移動。若白絨雪怪在隊伍中，牠就會幫忙載運行李，提高玩家的負重上限)",
     "food": 0,
-    "combiRank": 460
+    "combiRank": 460,
+    "mount": { "type": "陸地", "speed": "550" }
   },
   {
     "boss": {
@@ -8460,7 +8503,8 @@
     "description": "野外 BOSS Lv.38",
     "partnerSkill": "[科技45鞍具] 南國巨人 (可騎在牠的背上移動。若綠苔絨怪在隊伍中，牠就會幫忙載運行李，提高玩家的負重上限)",
     "food": 8,
-    "combiRank": 480
+    "combiRank": 480,
+    "mount": { "type": "陸地", "speed": "550" }
   },
   {
     "boss": {
@@ -8534,7 +8578,8 @@
     "description": "洞窟 BOSS Lv.25",
     "partnerSkill": "[科技26鞍具] 風雲 (可騎在牠的背上移動，騎乘期間可以進行二段跳)",
     "food": 6,
-    "combiRank": 980
+    "combiRank": 980,
+    "mount": { "type": "陸地", "speed": "1050" }
   },
   {
     "boss": {
@@ -8581,7 +8626,8 @@
     "description": "密域 BOSS Lv.23",
     "partnerSkill": "[科技36鞍具] 天空龍的慈愛 (可騎在牠的背上在空中飛行，騎乘期間的龍屬性攻擊將得到強化)",
     "food": 4,
-    "combiRank": 350
+    "combiRank": 350,
+    "mount": { "type": "飛行", "speed": "950" }
   },
   {
     "boss": {
@@ -8609,7 +8655,8 @@
     "description": "洞窟 BOSS Lv.49",
     "partnerSkill": "[科技38鞍具] 熔岩凱撒 (可騎在牠的背上移動，騎乘期間的火屬性攻擊將得到強化)",
     "food": 9,
-    "combiRank": 10
+    "combiRank": 10,
+    "mount": { "type": "陸地", "speed": "900" }
   },
   {
     "image": "T_HadesBird_icon_normal.webp",
@@ -8673,7 +8720,8 @@
     "description": "夜晚出沒",
     "partnerSkill": "[科技33鞍具] 冥府之翼 (可騎在牠的背上在空中飛行，騎乘期間牠會為玩家的攻擊賦予暗屬性)",
     "food": 8,
-    "combiRank": 190
+    "combiRank": 190,
+    "mount": { "type": "飛行", "speed": "1100" }
   },
   {
     "boss": {
@@ -8701,7 +8749,8 @@
     "description": "洞窟 BOSS Lv.48",
     "partnerSkill": "[科技47鞍具] 黑鎧之龍 (可騎在牠的背上在空中飛行，騎乘期間能對礦石造成更大的破壞)",
     "food": 9,
-    "combiRank": 150
+    "combiRank": 150,
+    "mount": { "type": "飛行", "speed": "800" }
   },
   {
     "boss": {
@@ -8768,7 +8817,8 @@
     "description": "野外 BOSS Lv.45",
     "partnerSkill": "[科技39鞍具] 呼喚風暴的深海龍 (可騎在牠的背上在水中移動，騎乘期間在水上移動不會消耗體力)",
     "food": 7,
-    "combiRank": 310
+    "combiRank": 310,
+    "mount": { "type": "游泳", "speed": "700" }
   },
   {
     "image": "T_Umihebi_Fire_icon_normal.webp",
@@ -8792,7 +8842,8 @@
     "description": "",
     "partnerSkill": "[科技43鞍具] 呼喚風暴的熔岩龍 (可騎在牠的背上在水中移動，騎乘期間的火屬性攻擊將得到強化)",
     "food": 7,
-    "combiRank": 315
+    "combiRank": 315,
+    "mount": { "type": "陸地", "speed": "700" }
   },
   {
     "boss": {
@@ -8840,7 +8891,8 @@
     "description": "野外 BOSS Lv.45",
     "partnerSkill": "[科技40鞍具] 炎之翼 (可騎在牠的背上在空中飛行，騎乘期間的火屬性攻擊將得到強化)",
     "food": 6,
-    "combiRank": 50
+    "combiRank": 50,
+    "mount": { "type": "飛行", "speed": "1100" }
   },
   {
     "image": "T_Suzaku_Water_icon_normal.webp",
@@ -8853,7 +8905,8 @@
     "description": "配種獲得(朱雀 + 覆海龍)",
     "partnerSkill": "[科技43鞍具] 水之翼 (可騎在牠的背上在空中飛行，騎乘期間的水屬性攻擊將得到強化)",
     "food": 8,
-    "combiRank": 30
+    "combiRank": 30,
+    "mount": { "type": "飛行", "speed": "1100" }
   },
   {
     "image": "T_ElecPanda_icon_normal.webp",
@@ -8874,7 +8927,8 @@
     "description": "",
     "partnerSkill": "[科技40槍砲] 黃色重型戰車 (可騎在牠的背上移動，騎乘期間牠還能用機關槍連續攻擊)",
     "food": 7,
-    "combiRank": 200
+    "combiRank": 200,
+    "mount": { "type": "陸地", "speed": "550" }
   },
   {
     "image": "T_LilyQueen_icon_normal.webp",
@@ -8934,7 +8988,8 @@
     "description": "",
     "partnerSkill": "[科技38鞍具] 灼熱捕食者 (可騎在牠的背上在空中飛行，與牠並肩作戰時，若擊倒冰屬性的帕魯，就能從該帕魯身上獲得更多掉落道具)",
     "food": 8,
-    "combiRank": 370
+    "combiRank": 370,
+    "mount": { "type": "飛行", "speed": "1400" }
   },
   {
     "image": "T_ThunderDragonMan_icon_normal.webp",
@@ -8976,7 +9031,8 @@
     "description": "",
     "partnerSkill": "[科技47鞍具] 基因改造 (可騎在牠的背上在空中飛行，騎乘期間的暗屬性攻擊將得到強化)",
     "food": 8,
-    "combiRank": 60
+    "combiRank": 60,
+    "mount": { "type": "飛行", "speed": "1200" }
   },
   {
     "boss": {
@@ -8994,7 +9050,8 @@
     "description": "神獸 BOSS Lv.50",
     "partnerSkill": "[科技49鞍具] 天翔聖騎士 (可騎在牠的背上移動，騎乘期間可以進行三段跳)",
     "food": 9,
-    "combiRank": 80
+    "combiRank": 80,
+    "mount": { "type": "陸地", "speed": "1400" }
   },
   {
     "boss": {
@@ -9012,7 +9069,8 @@
     "description": "神獸 BOSS Lv.50",
     "partnerSkill": "[科技49鞍具] 深淵黑騎士 (可騎在牠的背上移動，騎乘期間可以進行二段跳)",
     "food": 9,
-    "combiRank": 70
+    "combiRank": 70,
+    "mount": { "type": "陸地", "speed": "1600" }
   },
   {
     "boss": {
@@ -9030,7 +9088,8 @@
     "description": "神獸 BOSS Lv.50",
     "partnerSkill": "[科技48鞍具] 冰天馬 (可騎在牠的背上在空中飛行，騎乘期間玩家的攻擊會轉變為冰屬性，且冰屬性的攻擊會得到強化)",
     "food": 7,
-    "combiRank": 120
+    "combiRank": 120,
+    "mount": { "type": "飛行", "speed": "1500" }
   },
   {
     "image": "T_IceHorse_Dark_icon_normal.webp",
@@ -9043,7 +9102,8 @@
     "description": "配種獲得(喚冬獸 + 雷冥鳥)",
     "partnerSkill": "[科技48鞍具] 黑天馬 (可騎在牠的背上在空中飛行，騎乘期間玩家的攻擊會轉變為暗屬性，暗屬性的攻擊會得到強化)",
     "food": 7,
-    "combiRank": 100
+    "combiRank": 100,
+    "mount": { "type": "飛行", "speed": "1500" }
   },
   {
     "boss": {
@@ -9061,6 +9121,7 @@
     "description": "神獸 BOSS Lv.50",
     "partnerSkill": "[科技50槍砲] 地毯式轟炸 (可騎在牠的背上在空中飛行，騎乘期間牠還能用導彈發射器連續攻擊)",
     "food": 9,
-    "combiRank": 90
+    "combiRank": 90,
+    "mount": { "type": "飛行", "speed": "3300" }
   }
 ]
