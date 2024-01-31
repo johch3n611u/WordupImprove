@@ -3,7 +3,7 @@
 // https://gamewith.net/palworld/43313
 // https://jsfiddle.net/newluck77/rk9v0uyo/
 // https://forum.gamer.com.tw/C.php?bsn=71458&snA=11
-// https://paldb.cc/tw/
+// https://paldb.cc/tw/ 雕像網站
 // https://leafletjs.cn/
 // 配種 https://palworld.fandom.com/wiki/Breeding
 // https://palworld.gg/
@@ -43,8 +43,8 @@ export class PalWorldMapLeafletComponent {
                   icon: this.generateIcon(pal.boss.image, `bosses`, 50),
                   title: pal.boss.level,
                 });
-                this.bossesMarkersLayer.addLayer(bossMarker).addTo(this.map);
-              })
+                this.bossesMarkersLayer.addLayer(bossMarker);
+              });
             }
           })
         )
@@ -114,6 +114,11 @@ export class PalWorldMapLeafletComponent {
   );
   habitatLayer = L.layerGroup();
   bossesMarkersLayer = L.layerGroup();
+  vendorsMarkersLayer = L.layerGroup();
+  minesMarkersLayer = L.layerGroup();
+  syndicateTowerMarkersLayer = L.layerGroup();
+  skillFruitsMarkersLayer = L.layerGroup();
+  fastTravelMarkersLayer = L.layerGroup();
 
   baseLayers = {
     defaul: this.defaultMap,
@@ -121,6 +126,11 @@ export class PalWorldMapLeafletComponent {
   };
   overlays = {
     bosses: this.bossesMarkersLayer,
+    vendors: this.vendorsMarkersLayer,
+    mines: this.minesMarkersLayer,
+    syndicateTower: this.syndicateTowerMarkersLayer,
+    skillFruits: this.skillFruitsMarkersLayer,
+    fastTravel: this.fastTravelMarkersLayer,
   };
   latlngs: any = [];
 
@@ -163,7 +173,9 @@ export class PalWorldMapLeafletComponent {
 
     this.map.fitBounds(this.bounds);
 
-    L.control.layers(this.baseLayers, this.overlays).addTo(this.map);
+    L.control
+      .layers(this.baseLayers, this.overlays, { collapsed: false })
+      .addTo(this.map);
   }
 
   search: any = {
@@ -176,7 +188,7 @@ export class PalWorldMapLeafletComponent {
     this.habitatLayer = L.layerGroup();
     this.palsInfo$?.getValue().forEach((pal: any) => {
       pal.selected = false;
-    })
+    });
     if (
       this.search.keyword !== undefined &&
       this.search.keyword !== null &&
@@ -187,16 +199,41 @@ export class PalWorldMapLeafletComponent {
         this.search.searched = [];
         pals?.forEach((pal: any) => {
           delete pal.palFromSelectLayer;
-          let result = JSON?.stringify(pal)
-            ?.toLowerCase()
-            ?.indexOf(this.search?.keyword?.toLowerCase());
-          if (result !== -1) {
+          let result = JSON?.stringify(pal)?.toLowerCase();
+
+          let searchWords = [
+            ...this.search.keyword?.split(' '),
+            ...this.search.keyword?.split(','),
+            ...this.search.keyword?.split('，'),
+            ...this.search.keyword?.split('、'),
+          ];
+
+          searchWords = [
+            ...new Set(
+              searchWords
+                .map((str) => str.replace(/\s/g, ''))
+                .filter((str) => str !== '')
+            ),
+          ];
+
+          // console.log(searchWords)
+          let searched = false;
+          searchWords.forEach((word) => {
+            if (result.indexOf(word?.toLowerCase()) !== -1) {
+              searched = true;
+            } else if (word === '坐騎' && pal.mount) {
+              searched = true;
+            }
+          });
+
+          if (searched) {
             this.search?.searched?.push(pal);
           }
         });
       });
     } else {
       this.search.searched = this.palsInfo$?.getValue();
+      this.search.keyword = '';
     }
   }
 
@@ -234,7 +271,7 @@ export class PalWorldMapLeafletComponent {
         const palLayer = L.polygon(latlng, {
           color: palFromSelect.color,
           fillColor: palFromSelect.color,
-          fillOpacity: 0.4,
+          fillOpacity: 0.3,
         });
         palFromSelectLayer.addLayer(palLayer);
       });
@@ -269,5 +306,39 @@ export class PalWorldMapLeafletComponent {
     document.execCommand('copy');
     // 移除<input>元素
     document.body.removeChild(input);
+  }
+
+  filterEle: any = [
+    { name: '烹調', color: 'rgb(205,102,84)' },
+    { name: '澆水', color: 'rgb(205,102,84)' },
+    { name: '播種', color: 'rgb(205,102,84)' },
+    { name: '發電', color: 'rgb(205,102,84)' },
+    { name: '生產', color: 'rgb(205,102,84)' },
+    { name: '收成', color: 'rgb(205,102,84)' },
+    { name: '採伐', color: 'rgb(205,102,84)' },
+    { name: '挖掘', color: 'rgb(205,102,84)' },
+    { name: '製藥', color: 'rgb(205,102,84)' },
+    { name: '冷卻', color: 'rgb(205,102,84)' },
+    { name: '搬運', color: 'rgb(205,102,84)' },
+    { name: 'Boss', color: 'rgb(205,102,84)' },
+    { name: '暗', color: 'rgb(205,102,84)' },
+    { name: '冰', color: 'rgb(205,102,84)' },
+    { name: '水', color: 'rgb(205,102,84)' },
+    { name: '無', color: 'rgb(205,102,84)' },
+    { name: '草', color: 'rgb(205,102,84)' },
+    { name: '地', color: 'rgb(205,102,84)' },
+    { name: '雷', color: 'rgb(205,102,84)' },
+    { name: '火', color: 'rgb(205,102,84)' },
+    { name: '龍', color: 'rgb(205,102,84)' },
+    { name: '坐騎', color: 'rgb(205,102,84)' },
+  ];
+  filterSearchPals(ele: any) {
+    ele.selected = !ele.selected;
+    if (ele.selected) {
+      this.search.keyword += ` ${ele.name}`;
+    } else {
+      this.search.keyword = this.search.keyword.replace(ele.name, '');
+    }
+    this.searchPals();
   }
 }

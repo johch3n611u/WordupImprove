@@ -1,28 +1,50 @@
 <div style="width: 50%;">
-  <div style="display: flex;align-items: center;">
-    <h2 style="font-size: 3rem;font-weight: 900;">PalWorld</h2>
-    <input autocomplete="new-password" type="text" placeholder="請雙擊查詢 Enter" [(ngModel)]="search.keyword"
-      (change)="searchPals()">
+  <div style="position: fixed;width: 48.8%;background: #efefef;top: 0;padding-top: 3rem;">
+    <div style="display: flex;align-items: center;">
+      <h2 style="font-size: 3rem;font-weight: 900;">PalWorld</h2>
+      <input autocomplete="new-password" type="text" placeholder="請雙擊查詢 Enter" [(ngModel)]="search.keyword"
+        (change)="searchPals()">
+    </div>
+    <div>
+      <span *ngFor="let ele of filterEle;" class="filterEle" [ngClass]="{ 'active': ele.selected}"
+        [style.background]="ele.selected?ele.color:''" (click)="filterSearchPals(ele)">{{ele.name}}</span>
+    </div>
+    <hr>
   </div>
 
-  <hr>
-
-  <ul>
+  <ul class="pals" style="margin-top: 15rem;">
     <li *ngFor="let pal of this.search.searched; let i = index" (click)="activePal(pal)"
       [ngClass]="{ 'active': pal.selected}" [style.background]="pal.selected?pal.color:''">
-      <img style="height: 150px;width: auto;border-radius: 50%;border: solid;background-color: white;" [src]="'assets/palworld/pals/'+ pal.image" />
+      <img style="height: 150px;width: auto;border-radius: 50%;border: solid;background-color: white;"
+        [src]="'assets/palworld/pals/'+ pal.image" />
       <div style="padding-left: 1rem;">
-        <p style="display: flex;align-items: center;">No {{pal.number}}, {{pal.name}}, {{pal.elements}}, {{pal.food}} <img src="assets/palworld/pals/T_itemicon_Food_Meat_ChickenPal.webp" style="width: auto;height: 50px;"></p>
-        <p>{{pal.workskills}}</p>
+        <p style="display: flex;align-items: center;">No {{pal.number}}, {{pal.name}}, {{pal.elements}}, {{pal.food}} x
+          <img src="assets/palworld/pals/T_itemicon_Food_Meat_ChickenPal.webp" style="width: auto;height: 50px;">
+        </p>
+        <p>{{pal.workskills}}, 配種值：{{pal.combiRank}}</p>
         <p>{{pal.drops}}</p>
+        <hr>
         <p>{{pal.description}}</p>
         <p>{{pal.partnerSkill}}</p>
+        <ng-container *ngIf="pal.mount">
+          <hr>
+          <p>{{pal.mount.type}}, 速度：{{pal.mount.speed}}</p>
+        </ng-container>
       </div>
     </li>
   </ul>
 
 </div>
 <div style="width: 50%; position: fixed; height: 80vh;right: 0;">
+  <div>
+    <ul class="nav" style="display:flex;">
+      <li>帕魯地圖</li>
+      <li>被動技能清單</li>
+      <li>伺服器清單(歡迎投稿)</li>
+      <li>配種表工具</li>
+      <li>意見表單</li>
+    </ul>
+  </div>
   <div class="map-container">
     <div class="map-frame">
       <div id="map"></div>
