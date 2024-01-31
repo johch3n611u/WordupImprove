@@ -210,70 +210,33 @@ export class PalWorldMapLeafletComponent {
     return color;
   }
 
-  palSelectedLayerList:
-    | [
-        {
-          pal: any;
-          palLayer: L.Polygon<any>;
-        }
-      ]
-    | any = [];
-
-  activeBossesPalList: any = [];
-  // selected pal after search
   activePal(palFromSelect: any) {
     palFromSelect.selected = !palFromSelect.selected;
     if (palFromSelect.selected) {
-      let bossMarker: L.Marker<any> | any = {};
+      let palFromSelectLayer = L.layerGroup();
+
       if (palFromSelect.boss) {
-        bossMarker = L.marker(palFromSelect.boss.latlng, {
+        let bossMarker = L.marker(palFromSelect.boss.latlng, {
           icon: this.generateIcon(palFromSelect.boss.image, `bosses`, 50),
           title: palFromSelect.boss.level,
         });
-        this.habitatLayer.addLayer(bossMarker).addTo(this.map);
-        const bossMarkerGroup = { palFromSelect, bossMarker };
-        this.activeBossesPalList.push(bossMarkerGroup);
-      } else {
-        bossMarker = null;
+        palFromSelectLayer.addLayer(bossMarker);
       }
-      // add pal layer in list
+
       palFromSelect.latlngs.forEach((latlng: any) => {
         const palLayer = L.polygon(latlng, {
           color: palFromSelect.color,
           fillColor: palFromSelect.color,
           fillOpacity: 0.4,
         });
-        // add each location layer, then add in temp to save the layer info
-        this.habitatLayer.addLayer(palLayer).addTo(this.map);
-        // key: pal info,value: palLayer
-        const palLayerGroup = { palFromSelect, palLayer };
-        this.palSelectedLayerList.push(palLayerGroup);
+        palFromSelectLayer.addLayer(palLayer);
       });
-    } else {
-      // find out which isn't selected
-      const palLayerGroupList = this.palSelectedLayerList.filter(
-        (value: any) => palFromSelect.name == value.palFromSelect.name
-      );
-      // then remove layer form the temp
-      palLayerGroupList.forEach((value: any) => {
-        this.habitatLayer.removeLayer(value.palLayer);
-      });
-      const palBossMarkerInfo = this.activeBossesPalList.filter(
-        (value: any) => palFromSelect.name == value.palFromSelect.name
-      );
-      this.habitatLayer.removeLayer(palBossMarkerInfo[0].bossMarker);
-    }
 
-    // this.bossesMarkersLayer.removeLayer(marker);
-    // this.search.searched.forEach((palLocation:any)=>{
-    //   const color = this.colors.pop();
-    //   palLocation.latlngs.forEach((latlng:any)=>{
-    //   var polygon = L.polygon(
-    //     latlng,
-    //     { color: color, fillColor: color, fillOpacity: 0.3 }
-    //   ).addTo(this.map);
-    // })
-    // });
+      palFromSelect.palFromSelectLayer = palFromSelectLayer;
+      this.habitatLayer.addLayer(palFromSelectLayer).addTo(this.map);
+    } else {
+      this.habitatLayer.removeLayer(palFromSelect.palFromSelectLayer);
+    }
   }
 
   copyLatlngs() {
