@@ -40,7 +40,7 @@ export class PalWorldMapLeafletComponent {
       )
       .subscribe((res: any) => {
         this.palsInfo$.next(res);
-        this.search.searched = res;
+        this.search.searched = JSON?.parse(JSON?.stringify(res));
       });
   }
 
@@ -161,37 +161,31 @@ export class PalWorldMapLeafletComponent {
   };
 
   searchPals() {
+    this.map.removeLayer(this.habitatLayer);
+    this.habitatLayer = L.layerGroup();
+    this.palsInfo$?.getValue().forEach((pal: any) => {
+      pal.selected = false;
+    });
     if (
       this.search.keyword !== undefined &&
       this.search.keyword !== null &&
       this.search.keyword.replace(/\s*/g, '') !== ''
     ) {
-      this.palsInfo$
-        .pipe(
-          tap((pals) => {
-            this.search.searched = [];
-            pals?.forEach((pal: any) => {
-              let search = Object?.values(pal)?.some((value: any) => {
-                if (!value) return false;
-                return (
-                  (typeof value === 'string' &&
-                    value?.includes(this.search?.keyword)) ||
-                  (typeof value === 'object' &&
-                    Object?.values(value)?.some((value2: any) => {
-                      if (!value2) return false;
-                      return value2?.includes(this.search?.keyword);
-                    }))
-                );
-              });
-              if (search) {
-                this.search?.searched?.push(pal);
-              }
-            });
-          })
-        )
-        .subscribe();
+      this.palsInfo$.pipe().subscribe((pals) => {
+        this.search?.keyword?.toLowerCase();
+        this.search.searched = [];
+        pals?.forEach((pal: any) => {
+          delete pal.palFromSelectLayer;
+          let result = JSON?.stringify(pal)
+            ?.toLowerCase()
+            ?.indexOf(this.search?.keyword?.toLowerCase());
+          if (result !== -1) {
+            this.search?.searched?.push(pal);
+          }
+        });
+      });
     } else {
-      this.search.searched = this.palsInfo$.getValue();
+      this.search.searched = this.palsInfo$?.getValue();
     }
   }
 
@@ -237,7 +231,9 @@ export class PalWorldMapLeafletComponent {
       palFromSelect.palFromSelectLayer = palFromSelectLayer;
       this.habitatLayer.addLayer(palFromSelectLayer).addTo(this.map);
     } else {
-      this.habitatLayer.removeLayer(palFromSelect.palFromSelectLayer);
+      if (palFromSelect.palFromSelectLayer) {
+        this.habitatLayer.removeLayer(palFromSelect.palFromSelectLayer);
+      }
     }
   }
 
