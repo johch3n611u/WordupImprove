@@ -1337,7 +1337,7 @@
     "boss": {
       "image": "10009.png",
       "level": "LV.15",
-      "latlng": [323.629592115207, 557.6999741200829]
+      "latlngs": [[323.629592115207, 557.6999741200829]]
     },
     "image": "T_CaptainPenguin_icon_normal.webp",
     "number": "11",
@@ -1428,7 +1428,7 @@
     "boss": {
       "image": "10015.png",
       "level": "LV.11",
-      "latlng": [186.11192034385758, 444.8235766045549]
+      "latlngs": [[186.11192034385758, 444.8235766045549]]
     },
     "image": "T_PlantSlime_icon_normal.webp",
     "number": "13",
@@ -3926,7 +3926,7 @@
     "boss": {
       "image": "10036.png",
       "level": "LV.31",
-      "latlng": [409.95379544882024, 726.0509057971014]
+      "latlngs": [[409.95379544882024, 726.0509057971014]]
     },
     "image": "T_GrassPanda_Electric_icon_normal.webp",
     "number": "33B",
@@ -4420,7 +4420,7 @@
     "boss": {
       "image": "10025.png",
       "level": "LV.18",
-      "latlng": [467.57619762364595, 361.2943581780538]
+      "latlngs": [[467.57619762364595, 361.2943581780538]]
     },
     "image": "T_HawkBird_icon_normal.webp",
     "number": "38",
@@ -4849,7 +4849,7 @@
     "boss": {
       "image": "10026.png",
       "level": "LV.14",
-      "latlng": [499.03971261231004, 341.51961697722567]
+      "latlngs": [[499.03971261231004, 341.51961697722567]]
     },
     "image": "T_LazyCatfish_icon_normal.webp",
     "number": "43",
@@ -5690,7 +5690,7 @@
     "boss": {
       "image": "10033.png",
       "level": "LV.31",
-      "latlng": [407.91353178268537, 515.8367106625259]
+      "latlngs": [[407.91353178268537, 515.8367106625259]]
     },
     "image": "T_QueenBee_icon_normal.webp",
     "number": "51",
@@ -5765,7 +5765,7 @@
     "boss": {
       "image": "10035.png",
       "level": "LV.17",
-      "latlng": [380.3880940885045, 676.3630434782609]
+      "latlngs": [[380.3880940885045, 676.3630434782609]]
     },
     "image": "T_NaughtyCat_icon_normal.webp",
     "number": "52",
@@ -5946,7 +5946,7 @@
     "boss": {
       "image": "10018.png",
       "level": "LV.11",
-      "latlng": [203.66467587538835, 387.7076604554865]
+      "latlngs": [[203.66467587538835, 387.7076604554865]]
     },
     "image": "T_MopKing_icon_normal.webp",
     "number": "54",
@@ -6013,7 +6013,7 @@
     "boss": {
       "image": "10008.png",
       "level": "LV.11",
-      "latlng": [297.1574859350071, 582.3483436853002]
+      "latlngs": [[297.1574859350071, 582.3483436853002]]
     },
     "image": "T_WeaselDragon_icon_normal.webp",
     "number": "55",
@@ -6080,7 +6080,7 @@
     "boss": {
       "image": "10008.png",
       "level": "LV.31",
-      "latlng": [230.26317281047946, 438.22096273291925]
+      "latlngs": [[230.26317281047946, 438.22096273291925]]
     },
     "image": "T_Kirin_icon_normal.webp",
     "number": "56",
@@ -6505,7 +6505,7 @@
     "boss": {
       "image": "10016.png",
       "level": "LV.32",
-      "latlng": [169.7687095893862, 426.7272774327122]
+      "latlngs": [[169.7687095893862, 426.7272774327122]]
     },
     "image": "T_Mutant_icon_normal.webp",
     "number": "63",
@@ -6651,7 +6651,7 @@
     "boss": {
       "image": "10044.png",
       "level": "LV.47",
-      "latlng": [766.5128841632379, 670.4241200828158]
+      "latlngs": [[766.5128841632379, 670.4241200828158]]
     },
     "image": "T_FlowerDinosaur_Electric_icon_normal.webp",
     "number": "64B",
@@ -7338,7 +7338,7 @@
     "boss": {
       "image": "10013.png",
       "level": "LV.23",
-      "latlng": [253.97417525610882, 442.0267792443064]
+      "latlngs": [[253.97417525610882, 442.0267792443064]]
     },
     "image": "T_Ronin_icon_normal.webp",
     "number": "72",
@@ -7394,7 +7394,7 @@
     "boss": {
       "image": "10022.png",
       "level": "LV.29",
-      "latlng": [372.22441798219836, 325.54747670807456]
+      "latlngs": [[372.22441798219836, 325.54747670807456]]
     },
     "image": "T_ThunderBird_icon_normal.webp",
     "number": "73",
@@ -7488,7 +7488,7 @@
     "boss": {
       "image": "10011.png",
       "level": "LV.23",
-      "latlng": [333.58354500797714, 620.6173654244307]
+      "latlngs": [[333.58354500797714, 620.6173654244307]]
     },
     "image": "T_CatMage_icon_normal.webp",
     "number": "75",
@@ -7615,7 +7615,7 @@
     "boss": {
       "image": "10039.png",
       "level": "LV.35",
-      "latlng": [504.2027195818289, 643.1107919254658]
+      "latlngs": [[504.2027195818289, 643.1107919254658]]
     },
     "image": "T_GrassRabbitMan_icon_normal.webp",
     "number": "77",
@@ -7645,7 +7645,7 @@
     "boss": {
       "image": "10041.png",
       "level": "LV.38",
-      "latlng": [475.0354550654967, 565.2455551242236]
+      "latlngs": [[475.0354550654967, 565.2455551242236]]
     },
     "image": "T_VioletFairy_icon_normal.webp",
     "number": "78",
@@ -7674,7 +7674,7 @@
     "boss": {
       "image": "10040.png",
       "level": "LV.40",
-      "latlng": [534.2621756654631, 626.2369565217391]
+      "latlngs": [[534.2621756654631, 626.2369565217391]]
     },
     "image": "T_WhiteMoth_icon_normal.webp",
     "number": "79",
@@ -7725,7 +7725,7 @@
     "boss": {
       "image": "10032.png",
       "level": "LV.30",
-      "latlng": [357.2014600302292, 521.1703933747413]
+      "latlngs": [[357.2014600302292, 521.1703933747413]]
     },
     "image": "T_FairyDragon_icon_normal.webp",
     "number": "80",
@@ -7861,7 +7861,7 @@
     "boss": {
       "image": "10012.png",
       "level": "LV.17",
-      "latlng": [307.3913741707952, 473.9210144927536]
+      "latlngs": [[307.3913741707952, 473.9210144927536]]
     },
     "image": "T_BlueDragon_icon_normal.webp",
     "number": "82",
@@ -8052,7 +8052,7 @@
     "boss": {
       "image": "10021.png",
       "level": "LV.31",
-      "latlng": [326.26655785540345, 399.04746376811596]
+      "latlngs": [[326.26655785540345, 399.04746376811596]]
     },
     "image": "T_LazyDragon_Electric_icon_normal.webp",
     "number": "85B",
@@ -8071,7 +8071,7 @@
     "boss": {
       "image": "10017.png",
       "level": "LV.23",
-      "latlng": [165.53594970190613, 389.9607142857143]
+      "latlngs": [[165.53594970190613, 389.9607142857143]]
     },
     "image": "T_SakuraSaurus_icon_normal.webp",
     "number": "86",
@@ -8139,7 +8139,7 @@
     "boss": {
       "image": "10019.png",
       "level": "LV.30",
-      "latlng": [276.01246431270465, 415.72688923395447]
+      "latlngs": [[276.01246431270465, 415.72688923395447]]
     },
     "image": "T_SakuraSaurus_Water_icon_normal.webp",
     "number": "86B",
@@ -8158,7 +8158,7 @@
     "boss": {
       "image": "10031.png",
       "level": "LV.28",
-      "latlng": [366.9786689688471, 490.70984730848863]
+      "latlngs": [[366.9786689688471, 490.70984730848863]]
     },
     "image": "T_FlowerDoll_icon_normal.webp",
     "number": "87",
@@ -8231,7 +8231,7 @@
     "boss": {
       "image": "10010.png",
       "level": "LV.23",
-      "latlng": [270.51866891636575, 523.698188405797]
+      "latlngs": [[270.51866891636575, 523.698188405797]]
     },
     "image": "T_KingAlpaca_icon_normal.webp",
     "number": "89",
@@ -8260,7 +8260,7 @@
     "boss": {
       "image": "10047.png",
       "level": "LV.46",
-      "latlng": [738.6431060542446, 374.71288819875775]
+      "latlngs": [[738.6431060542446, 374.71288819875775]]
     },
     "image": "T_KingAlpaca_Ice_icon_normal.webp",
     "number": "89B",
@@ -8279,7 +8279,7 @@
     "boss": {
       "image": "10007.png",
       "level": "LV.38",
-      "latlng": [256.89242379712823, 608.7385610766046]
+      "latlngs": [[256.89242379712823, 608.7385610766046]]
     },
     "image": "T_GrassMammoth_icon_normal.webp",
     "number": "90",
@@ -8482,7 +8482,7 @@
     "boss": {
       "image": "10037.png",
       "level": "LV.38",
-      "latlng": [475.56402851834747, 724.33933747412]
+      "latlngs": [[475.56402851834747, 724.33933747412]]
     },
     "image": "T_Yeti_Grass_icon_normal.webp",
     "number": "91B",
@@ -8510,7 +8510,7 @@
     "boss": {
       "image": "10034.png",
       "level": "LV.30",
-      "latlng": [387.76456356537074, 580.8653467908903]
+      "latlngs": [[387.76456356537074, 580.8653467908903]]
     },
     "image": "T_HerculesBeetle_icon_normal.webp",
     "number": "92",
@@ -8537,7 +8537,7 @@
     "boss": {
       "image": "10020.png",
       "level": "LV.25",
-      "latlng": [271.0774309345873, 370.9812629399586]
+      "latlngs": [[271.0774309345873, 370.9812629399586]]
     },
     "image": "T_FengyunDeeper_icon_normal.webp",
     "number": "93",
@@ -8585,7 +8585,7 @@
     "boss": {
       "image": "10027.png",
       "level": "LV.23",
-      "latlng": [471.57748341590394, 294.79513457556936]
+      "latlngs": [[471.57748341590394, 294.79513457556936]]
     },
     "image": "T_CatVampire_icon_normal.webp",
     "number": "94",
@@ -8603,7 +8603,7 @@
     "boss": {
       "image": "10023.png",
       "level": "LV.23",
-      "latlng": [434.45618334872785, 371.3542443064182]
+      "latlngs": [[434.45618334872785, 371.3542443064182]]
     },
     "image": "T_SkyDragon_icon_normal.webp",
     "number": "95",
@@ -8633,7 +8633,7 @@
     "boss": {
       "image": "10030.png",
       "level": "LV.49",
-      "latlng": [236.3243135443782, 280.9268115942029]
+      "latlngs": [[236.3243135443782, 280.9268115942029]]
     },
     "image": "T_KingBahamut_icon_normal.webp",
     "number": "96",
@@ -8727,7 +8727,7 @@
     "boss": {
       "image": "10029.png",
       "level": "LV.48",
-      "latlng": [284.1940076832648, 211.419384057971]
+      "latlngs": [[284.1940076832648, 211.419384057971]]
     },
     "image": "T_BlackMetalDragon_icon_normal.webp",
     "number": "98",
@@ -8756,7 +8756,7 @@
     "boss": {
       "image": "10042.png",
       "level": "LV.44",
-      "latlng": [554.6996756654631, 754.9857401656315]
+      "latlngs": [[554.6996756654631, 754.9857401656315]]
     },
     "image": "T_DarkScorpion_icon_normal.webp",
     "number": "99",
@@ -8784,7 +8784,7 @@
     "boss": {
       "image": "10024.png",
       "level": "LV.47",
-      "latlng": [454.0760926610127, 427.798731884058]
+      "latlngs": [[454.0760926610127, 427.798731884058]]
     },
     "image": "T_Anubis_icon_normal.webp",
     "number": "100",
@@ -8802,7 +8802,7 @@
     "boss": {
       "image": "10038.png",
       "level": "LV.45",
-      "latlng": [
+      "latlngs": [
         [462.14583508271056, 676.4790372670807],
         [366.41845453018726, 409.93359213250517]
       ]
@@ -8849,7 +8849,7 @@
     "boss": {
       "image": "10043.png",
       "level": "LV.45",
-      "latlng": [630.0628726173483, 701.4492753623189]
+      "latlngs": [[630.0628726173483, 701.4492753623189]]
     },
     "image": "T_Suzaku_icon_normal.webp",
     "number": "102",
@@ -8954,7 +8954,7 @@
     "boss": {
       "image": "10046.png",
       "level": "LV.49",
-      "latlng": [686.7742463682929, 414.4320910973085]
+      "latlngs": [[686.7742463682929, 414.4320910973085]]
     },
     "image": "T_LilyQueen_Dark_icon_normal.webp",
     "number": "104B",
@@ -9038,7 +9038,7 @@
     "boss": {
       "image": "10045.png",
       "level": "LV.50",
-      "latlng": [847.1975239314804, 718.6117236024845]
+      "latlngs": [[847.1975239314804, 718.6117236024845]]
     },
     "image": "T_SaintCentaur_icon_normal.webp",
     "number": "108",
@@ -9057,7 +9057,7 @@
     "boss": {
       "image": "10049.png",
       "level": "LV.50",
-      "latlng": [847.1975239314804, 718.6117236024845]
+      "latlngs": [[847.1975239314804, 718.6117236024845]]
     },
     "image": "T_BlackCentaur_icon_normal.webp",
     "number": "109",
@@ -9076,7 +9076,7 @@
     "boss": {
       "image": "10048.png",
       "level": "LV.50",
-      "latlng": [743.7833781173902, 376.4123188405797]
+      "latlngs": [[743.7833781173902, 376.4123188405797]]
     },
     "image": "T_IceHorse_icon_normal.webp",
     "number": "110",
@@ -9109,7 +9109,7 @@
     "boss": {
       "image": "10028.png",
       "level": "LV.50",
-      "latlng": [346.5161642455286, 106.09821428571428]
+      "latlngs": [[346.5161642455286, 106.09821428571428]]
     },
     "image": "T_JetDragon_icon_normal.webp",
     "number": "111",

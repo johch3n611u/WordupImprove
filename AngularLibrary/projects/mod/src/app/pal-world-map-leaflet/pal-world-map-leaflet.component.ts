@@ -216,11 +216,13 @@ export class PalWorldMapLeafletComponent {
       let palFromSelectLayer = L.layerGroup();
 
       if (palFromSelect.boss) {
-        let bossMarker = L.marker(palFromSelect.boss.latlng, {
-          icon: this.generateIcon(palFromSelect.boss.image, `bosses`, 50),
-          title: palFromSelect.boss.level,
+        palFromSelect.boss.latlngs.forEach((latlng: any) => {
+          let bossMarker = L.marker(latlng, {
+            icon: this.generateIcon(palFromSelect.boss.image, `bosses`, 50),
+            title: palFromSelect.boss.level,
+          });
+          palFromSelectLayer.addLayer(bossMarker);
         });
-        palFromSelectLayer.addLayer(bossMarker);
       }
 
       palFromSelect.latlngs.forEach((latlng: any) => {
