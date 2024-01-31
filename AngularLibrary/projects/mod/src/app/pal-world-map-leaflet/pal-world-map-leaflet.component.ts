@@ -12,6 +12,7 @@
 // 配種 101 https://forum.gamer.com.tw/C.php?bsn=71458&snA=1437
 // 配種 https://forum.gamer.com.tw/C.php?bsn=71458&snA=1385
 // 雕像大大巴哈 po https://forum.gamer.com.tw/C.php?bsn=71458&snA=1079&tnum=12
+// https://palwiki.io/
 
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
