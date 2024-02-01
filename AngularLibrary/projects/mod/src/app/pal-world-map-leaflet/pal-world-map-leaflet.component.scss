@@ -72,6 +72,7 @@ img {
           position: absolute;
           width: 100%;
           max-height: 70vh;
+          height: 100vh;
         }
         .leaflet-container {
           background: rgb(16, 37, 54);
@@ -82,7 +83,7 @@ img {
       display: flex;
       flex-wrap: wrap;
       overflow: auto;
-      max-height: 70vh;
+      max-height: 60vh;
       li {
         width: 45%;
         margin: 1rem;
@@ -180,6 +181,17 @@ img {
   text-shadow: black 1px 1px 1px;
 }
 
-#map {
-  height: 100vh;
+footer {
+  display: flex;
+  align-items: center;
+  justify-content:space-around;
+  padding: 3rem;
+  line-height: 2rem;
+  nav {
+    display: flex;
+    gap:1rem;
+    a {
+      cursor: pointer;
+    }
+  }
 }

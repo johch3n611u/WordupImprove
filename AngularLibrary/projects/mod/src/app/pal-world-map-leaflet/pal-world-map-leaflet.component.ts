@@ -121,9 +121,7 @@ export class PalWorldMapLeafletComponent {
   levelsMap = L.imageOverlay(
     './assets/palworld/palpagos_islands_levels.webp',
     this.bounds,
-    {
-      
-    }
+    {}
   );
   tempMarkersLayer = L.layerGroup();
   habitatLayer = L.layerGroup();
@@ -139,12 +137,12 @@ export class PalWorldMapLeafletComponent {
     levels: this.levelsMap,
   };
   overlays = {
-    bosses: this.bossesMarkersLayer,
-    vendors: this.vendorsMarkersLayer,
-    mines: this.minesMarkersLayer,
-    syndicateTower: this.syndicateTowerMarkersLayer,
-    skillFruits: this.skillFruitsMarkersLayer,
-    fastTravel: this.fastTravelMarkersLayer,
+    頭目: this.bossesMarkersLayer,
+    商人: this.vendorsMarkersLayer,
+    礦物: this.minesMarkersLayer,
+    道館塔: this.syndicateTowerMarkersLayer,
+    技能果實: this.skillFruitsMarkersLayer,
+    傳送門: this.fastTravelMarkersLayer,
   };
   latlngs: any = [];
 
@@ -180,13 +178,6 @@ export class PalWorldMapLeafletComponent {
       .layers(this.baseLayers, this.overlays, { collapsed: false })
       .addTo(this.map);
   }
-
-  // moveToMapCenter() {
-  //   let corner1 = L.latLng(0, 0);
-  //   let corner2 = L.latLng(1800, 1000);
-  //   let bounds = L.latLngBounds(corner1, corner2);
-  //   this.map.fitBounds(bounds);
-  // }
 
   search: any = {
     palKeyword: '',
@@ -385,12 +376,17 @@ export class PalWorldMapLeafletComponent {
   filterSkill(ele: any) {
     ele.selected = !ele.selected;
     let selected = this.filterSkillElements.filter((ele: any) => ele.selected);
-    if (selected) {
-      this.passiveSkills$.pipe(take(1)).subscribe((res: any) => {
-        let result = JSON?.stringify(res)?.toLowerCase();
-
-          let blank = this.search.palKeyword?.split(' ');
-          console.log(selected);
+    if (selected.length > 0) {
+      this.search.skillSearched = [];
+      this.passiveSkills$.pipe(take(1)).subscribe((passiveSkills: any) => {
+        passiveSkills.forEach((skill: any) => {
+          let result = JSON?.stringify(skill)?.toLowerCase();
+          selected.forEach((ele: any) => {
+            if (result.toLowerCase()?.indexOf(ele.name.toLowerCase()) !== -1) {
+              this.search.skillSearched.push(skill);
+            }
+          });
+        });
       });
     } else {
       this.search.skillSearched = this.passiveSkills$.getValue();
