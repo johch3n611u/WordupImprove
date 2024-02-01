@@ -36,7 +36,7 @@ export class PalWorldMapLeafletComponent {
       .pipe(
         tap((pals: any) =>
           pals.forEach((pal: any) => {
-            pal.color = this.getUniqueColor();
+            pal.color = this.getUniqueColor(1);
             if (pal.boss) {
               pal.boss.latlngs.forEach((latlng: any) => {
                 let bossMarker = L.marker(latlng, {
@@ -201,32 +201,41 @@ export class PalWorldMapLeafletComponent {
           delete pal.palFromSelectLayer;
           let result = JSON?.stringify(pal)?.toLowerCase();
 
-          let searchWords = [
-            ...this.search.keyword?.split(' '),
-            ...this.search.keyword?.split(','),
-            ...this.search.keyword?.split('，'),
-            ...this.search.keyword?.split('、'),
-          ];
+          let blank = this.search.keyword?.split(' ');
+          let comma = this.search.keyword?.split(',');
+          let connectComma = this.search.keyword?.split('，');
+          let pauseComma = this.search.keyword?.split('、');
+
+          let searchWords: any = [];
+
+          if (comma.length > 1) {
+            searchWords = comma;
+          } else if (connectComma.length > 1) {
+            searchWords = connectComma;
+          } else if (pauseComma.length > 1) {
+            searchWords = pauseComma;
+          } else {
+            searchWords = blank;
+          }
 
           searchWords = [
             ...new Set(
               searchWords
-                .map((str) => str.replace(/\s/g, ''))
-                .filter((str) => str !== '')
+                ?.map((str: any) => str.replace(/\s/g, ''))
+                ?.filter((str: any) => str !== '')
             ),
           ];
 
-          // console.log(searchWords)
-          let searched = false;
-          searchWords.forEach((word) => {
+          let searchedCount = 0;
+          searchWords.forEach((word: any) => {
             if (result.indexOf(word?.toLowerCase()) !== -1) {
-              searched = true;
+              searchedCount++;
             } else if (word === '坐騎' && pal.mount) {
-              searched = true;
+              searchedCount++;
             }
           });
-
-          if (searched) {
+          
+          if (searchedCount === searchWords.length) {
             this.search?.searched?.push(pal);
           }
         });
@@ -238,13 +247,13 @@ export class PalWorldMapLeafletComponent {
   }
 
   colors: string[] = [];
-  public getUniqueColor() {
+  public getUniqueColor(alpha: number = 0.3) {
     let color = '';
     while (!this.colors?.includes(color)) {
       const r = Math.floor(Math.random() * 256);
       const g = Math.floor(Math.random() * 256);
       const b = Math.floor(Math.random() * 256);
-      color = `rgb(${r}, ${g}, ${b})`;
+      color = `rgba(${r}, ${g}, ${b}, ${alpha})`;
       if (!this.colors?.includes(color)) {
         this.colors.push(color);
       }
@@ -271,7 +280,7 @@ export class PalWorldMapLeafletComponent {
         const palLayer = L.polygon(latlng, {
           color: palFromSelect.color,
           fillColor: palFromSelect.color,
-          fillOpacity: 0.3,
+          fillOpacity: 0.7,
         });
         palFromSelectLayer.addLayer(palLayer);
       });

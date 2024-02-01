@@ -1,56 +1,61 @@
-<div style="width: 50%;">
-  <div style="position: fixed;width: 48.8%;background: #efefef;top: 0;padding-top: 3rem;">
-    <div style="display: flex;align-items: center;">
-      <h2 style="font-size: 3rem;font-weight: 900;">PalWorld</h2>
-      <input autocomplete="new-password" type="text" placeholder="請雙擊查詢 Enter" [(ngModel)]="search.keyword"
-        (change)="searchPals()">
-    </div>
-    <div>
-      <span *ngFor="let ele of filterEle;" class="filterEle" [ngClass]="{ 'active': ele.selected}"
-        [style.background]="ele.selected?ele.color:''" (click)="filterSearchPals(ele)">{{ele.name}}</span>
-    </div>
-    <hr>
-  </div>
-
-  <ul class="pals" style="margin-top: 15rem;">
-    <li *ngFor="let pal of this.search.searched; let i = index" (click)="activePal(pal)"
-      [ngClass]="{ 'active': pal.selected}" [style.background]="pal.selected?pal.color:''">
-      <img style="height: 150px;width: auto;border-radius: 50%;border: solid;background-color: white;"
-        [src]="'assets/palworld/pals/'+ pal.image" />
-      <div style="padding-left: 1rem;">
-        <p style="display: flex;align-items: center;">No {{pal.number}}, {{pal.name}}, {{pal.elements}}, {{pal.food}} x
-          <img src="assets/palworld/pals/T_itemicon_Food_Meat_ChickenPal.webp" style="width: auto;height: 50px;">
-        </p>
-        <p>{{pal.workskills}}, 配種值：{{pal.combiRank}}</p>
-        <p>{{pal.drops}}</p>
-        <hr>
-        <p>{{pal.description}}</p>
-        <p>{{pal.partnerSkill}}</p>
-        <ng-container *ngIf="pal.mount">
-          <hr>
-          <p>{{pal.mount.type}}, 速度：{{pal.mount.speed}}</p>
-        </ng-container>
-      </div>
-    </li>
-  </ul>
-
-</div>
-<div style="width: 50%; position: fixed; height: 80vh;right: 0;">
-  <div>
-    <ul class="nav" style="display:flex;">
+<div class="upper">
+  <div class="upperLeft">
+    <h2 class="logo">PalWorld</h2>
+    <ul class="nav">
       <li>帕魯地圖</li>
       <li>被動技能清單</li>
       <li>伺服器清單(歡迎投稿)</li>
-      <li>配種表工具</li>
-      <li>意見表單</li>
+      <li>帕魯守則/意見表單</li>
+      <li>配種表工具(建置中)</li>
+      <li>多語系</li>
+      <li>
+        <ng-container>🌞</ng-container>
+        <ng-template #night>🌙</ng-template>
+      </li>
     </ul>
   </div>
-  <div class="map-container">
-    <div class="map-frame">
-      <div id="map"></div>
+  <div class="upperRight">
+    <input autocomplete="new-password" type="text" placeholder="請雙擊查詢 Enter" [(ngModel)]="search.keyword"
+      (change)="searchPals()">
+    <div>
+      <span *ngFor="let ele of filterEle;" class="filterElements" [ngClass]="{ 'active': ele.selected}"
+        [style.background]="ele.selected?ele.color:''" (click)="filterSearchPals(ele)">{{ele.name}}</span>
     </div>
   </div>
-  <div style="margin-top: 80vh;padding: 30px;">
+</div>
+<div class="lower">
+  <div class="lowerLeft">
+    <div class="map-container" style="display: none;">
+      <div class="map-frame">
+        <div id="map"></div>
+      </div>
+    </div>
     <button type="button" (click)="copyLatlngs()">複製多邊形座標點</button>
+  </div>
+  <div class="lowerRight">
+    <ul class="pals">
+      <li *ngFor="let pal of this.search.searched; let i = index" (click)="activePal(pal)"
+        [ngClass]="{ 'active': pal.selected}" [style.background]="pal.selected?pal.color:''">
+        <img class="palImg" [style]="pal.selected?'height: 150px':'height: 80px'"
+          [src]="'assets/palworld/pals/'+ pal.image" />
+        <div style="padding-left: 1rem;">
+          <p style="display: flex;align-items: center;">No {{pal.number}}, {{pal.name}}, {{pal.elements}}, {{pal.food}}
+            x
+            <img src="assets/palworld/pals/T_itemicon_Food_Meat_ChickenPal.webp">
+          </p>
+          <p>{{pal.workskills}}</p>
+          <ng-container *ngIf="pal.selected">
+            <p>{{pal.drops}}, 配種值：{{pal.combiRank}}</p>
+            <hr>
+            <p>{{pal.description}}</p>
+            <p>{{pal.partnerSkill}}</p>
+            <ng-container *ngIf="pal.mount">
+              <hr>
+              <p>{{pal.mount.type}}, 速度：{{pal.mount.speed}}</p>
+            </ng-container>
+          </ng-container>
+        </div>
+      </li>
+    </ul>
   </div>
 </div>
