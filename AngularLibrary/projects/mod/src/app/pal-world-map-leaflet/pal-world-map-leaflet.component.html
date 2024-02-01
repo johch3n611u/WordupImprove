@@ -3,7 +3,6 @@
     <h2 class="logo">PalWorld
       <button type="button" (click)="copyLatlngs()">複製多邊形座標點</button>
     </h2>
-
     <ul class="nav">
       <li (click)="lowerLeftDisplay = 'palMap'">帕魯地圖</li> |
       <li (click)="lowerLeftDisplay = 'passiveSkills'">被動技能清單</li> |
@@ -33,7 +32,6 @@
         <div id="map"></div>
       </div>
     </div>
-
     <div [style.visibility]="lowerLeftDisplay === 'passiveSkills' ? 'visible' : 'hidden'">
       <div>
         <span *ngFor="let ele of filterSkillElements;" class="filterElements" [ngClass]="{ 'active': ele.selected}"
@@ -43,13 +41,12 @@
         <li *ngFor="let skill of search.skillSearched;">
           <p [ngClass]="{'gold': skill.rarity == '金色','white':skill.rarity == '白色','red':skill.rarity == '紅色'}">
             {{skill.name}}
-            <lib-svg [src]="'./assets/palworld/lv/lv'+skill.level+'.svg'"></lib-svg>
+            <!-- <lib-svg [src]="'./assets/palworld/lv/lv'+skill.level+'.svg'"></lib-svg> -->
           </p>
           <p>{{skill.effect}}</p>
         </li>
       </ul>
     </div>
-
   </div>
   <div class="lowerRight">
     <ul class="pals">
@@ -78,3 +75,14 @@
     </ul>
   </div>
 </div>
+<footer>
+  <div>
+    <p></p>
+    <p></p>
+  </div>
+  <nav>
+    <span></span>
+    <span></span>
+    <span></span>
+  </nav>
+</footer>

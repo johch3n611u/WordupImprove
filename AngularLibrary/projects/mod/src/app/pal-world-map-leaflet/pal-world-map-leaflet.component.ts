@@ -29,7 +29,7 @@ export class PalWorldMapLeafletComponent {
   palsInfo$ = new BehaviorSubject<any>([]);
   passiveSkills$ = new BehaviorSubject<any>([]);
   map: any;
-  lowerLeftDisplay = 'passiveSkills';
+  lowerLeftDisplay = 'palMap';
 
   constructor(private httpClient: HttpClient) {
     // get the json of pals info
@@ -120,7 +120,10 @@ export class PalWorldMapLeafletComponent {
   );
   levelsMap = L.imageOverlay(
     './assets/palworld/palpagos_islands_levels.webp',
-    this.bounds
+    this.bounds,
+    {
+      
+    }
   );
   tempMarkersLayer = L.layerGroup();
   habitatLayer = L.layerGroup();
@@ -171,19 +174,19 @@ export class PalWorldMapLeafletComponent {
       crs: L.CRS.Simple,
     });
 
-    this.moveToMapCenter();
+    this.map.fitBounds(this.bounds);
 
     L.control
       .layers(this.baseLayers, this.overlays, { collapsed: false })
       .addTo(this.map);
   }
 
-  moveToMapCenter() {
-    let corner1 = L.latLng(0, 0);
-    let corner2 = L.latLng(1800, 1000);
-    let bounds = L.latLngBounds(corner1, corner2);
-    this.map.fitBounds(bounds);
-  }
+  // moveToMapCenter() {
+  //   let corner1 = L.latLng(0, 0);
+  //   let corner2 = L.latLng(1800, 1000);
+  //   let bounds = L.latLngBounds(corner1, corner2);
+  //   this.map.fitBounds(bounds);
+  // }
 
   search: any = {
     palKeyword: '',

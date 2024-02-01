@@ -49,11 +49,15 @@ img {
 }
 
 .lower {
-  .lowerLeft,
-  .lowerRight {
+  .lowerLeft {
     width: 50%;
     padding: 0.5rem;
   }
+  .lowerRight {
+    width: 50%;
+    padding: 0 0.5rem;
+  }
+
   .lowerLeft {
     position: relative;
     .map-container {
@@ -65,11 +69,12 @@ img {
       .map-frame {
         height: 100%;
         #map {
-          height: 100%;
+          position: absolute;
+          width: 100%;
+          max-height: 70vh;
         }
         .leaflet-container {
           background: rgb(16, 37, 54);
-          outline: 0;
         }
       }
     }
@@ -82,7 +87,9 @@ img {
         width: 45%;
         margin: 1rem;
 
-        .gold,.white,.red {
+        .gold,
+        .white,
+        .red {
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -103,7 +110,7 @@ img {
           background-color: rgb(219, 219, 219);
         }
         .white {
-          color:gainsboro;
+          color: gainsboro;
           border-left: solid 0.5rem gainsboro;
           border-top: solid 2px gainsboro;
           border-right: solid 2px gainsboro;
@@ -147,7 +154,6 @@ img {
           background-color: white;
         }
       }
-
     }
   }
 }
@@ -174,3 +180,6 @@ img {
   text-shadow: black 1px 1px 1px;
 }
 
+#map {
+  height: 100vh;
+}
