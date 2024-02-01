@@ -1,13 +1,16 @@
 <div class="upper">
   <div class="upperLeft">
-    <h2 class="logo">PalWorld</h2>
+    <h2 class="logo">PalWorld
+      <button type="button" (click)="copyLatlngs()">複製多邊形座標點</button>
+    </h2>
+
     <ul class="nav">
-      <li>帕魯地圖</li>
-      <li>被動技能清單</li>
-      <li>伺服器清單(歡迎投稿)</li>
-      <li>帕魯守則/意見表單</li>
-      <li>配種表工具(建置中)</li>
-      <li>多語系</li>
+      <li (click)="lowerLeftDisplay = 'palMap'">帕魯地圖</li> |
+      <li (click)="lowerLeftDisplay = 'passiveSkills'">被動技能清單</li> |
+      <li>伺服器清單(歡迎投稿)</li> |
+      <li>帕魯守則/意見表單</li> |
+      <li>配種表工具(建置中)</li> |
+      <li>多語系 (建置中)</li> |
       <li>
         <ng-container>🌞</ng-container>
         <ng-template #night>🌙</ng-template>
@@ -15,26 +18,42 @@
     </ul>
   </div>
   <div class="upperRight">
-    <input autocomplete="new-password" type="text" placeholder="請雙擊查詢 Enter" [(ngModel)]="search.keyword"
+    <input autocomplete="new-password" type="text" placeholder="請雙擊查詢 Enter" [(ngModel)]="search.palKeyword"
       (change)="searchPals()">
     <div>
-      <span *ngFor="let ele of filterEle;" class="filterElements" [ngClass]="{ 'active': ele.selected}"
+      <span *ngFor="let ele of filterElements;" class="filterElements" [ngClass]="{ 'active': ele.selected}"
         [style.background]="ele.selected?ele.color:''" (click)="filterSearchPals(ele)">{{ele.name}}</span>
     </div>
   </div>
 </div>
 <div class="lower">
   <div class="lowerLeft">
-    <div class="map-container" style="display: none;">
+    <div class="map-container" [style.visibility]="lowerLeftDisplay === 'palMap' ? 'visible' : 'hidden'">
       <div class="map-frame">
         <div id="map"></div>
       </div>
     </div>
-    <button type="button" (click)="copyLatlngs()">複製多邊形座標點</button>
+
+    <div [style.visibility]="lowerLeftDisplay === 'passiveSkills' ? 'visible' : 'hidden'">
+      <div>
+        <span *ngFor="let ele of filterSkillElements;" class="filterElements" [ngClass]="{ 'active': ele.selected}"
+          [style.background]="ele.selected?ele.color:''" (click)="filterSkill(ele)">{{ele.name}}</span>
+      </div>
+      <ul class="passiveSkills">
+        <li *ngFor="let skill of search.skillSearched;">
+          <p [ngClass]="{'gold': skill.rarity == '金色','white':skill.rarity == '白色','red':skill.rarity == '紅色'}">
+            {{skill.name}}
+            <lib-svg [src]="'./assets/palworld/lv/lv'+skill.level+'.svg'"></lib-svg>
+          </p>
+          <p>{{skill.effect}}</p>
+        </li>
+      </ul>
+    </div>
+
   </div>
   <div class="lowerRight">
     <ul class="pals">
-      <li *ngFor="let pal of this.search.searched; let i = index" (click)="activePal(pal)"
+      <li *ngFor="let pal of this.search.palSearched; let i = index" (click)="activePal(pal)"
         [ngClass]="{ 'active': pal.selected}" [style.background]="pal.selected?pal.color:''">
         <img class="palImg" [style]="pal.selected?'height: 150px':'height: 80px'"
           [src]="'assets/palworld/pals/'+ pal.image" />

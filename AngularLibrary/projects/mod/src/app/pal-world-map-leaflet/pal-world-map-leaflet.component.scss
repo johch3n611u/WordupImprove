@@ -1,4 +1,6 @@
 :host {
+  display: flex;
+  flex-direction: column;
 }
 
 img {
@@ -6,11 +8,23 @@ img {
   height: 50px;
 }
 
+.upper,
+.lower {
+  padding: 0.5rem;
+  display: flex;
+}
+
 .upper {
+  .upperLeft,
+  .upperRight {
+    width: 50%;
+    padding: 0.5rem;
+  }
   .upperLeft {
     .logo {
       font-size: 3rem;
       font-weight: 900;
+      margin: 1rem 0;
     }
     .nav {
       display: flex;
@@ -25,20 +39,6 @@ img {
     }
   }
   .upperRight {
-    .filterElements {
-      padding: 5px;
-      border-radius: 15px;
-      border: solid 1px;
-      font-size: 1.3rem;
-      margin-right: 0.8rem;
-      line-height: 3rem;
-      white-space: nowrap;
-      white-space: norma;
-      &:hover {
-        background-color: rgb(255, 232, 141);
-        cursor: pointer;
-      }
-    }
     input {
       border-radius: 8px;
       min-width: 160px;
@@ -49,7 +49,13 @@ img {
 }
 
 .lower {
+  .lowerLeft,
+  .lowerRight {
+    width: 50%;
+    padding: 0.5rem;
+  }
   .lowerLeft {
+    position: relative;
     .map-container {
       position: absolute;
       top: 0;
@@ -67,11 +73,60 @@ img {
         }
       }
     }
+    .passiveSkills {
+      display: flex;
+      flex-wrap: wrap;
+      overflow: auto;
+      max-height: 70vh;
+      li {
+        width: 45%;
+        margin: 1rem;
+
+        .gold,.white,.red {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-size: 1.3rem;
+          border-radius: 5px;
+          padding: 1rem;
+          max-width: 15rem;
+          margin-bottom: 1rem;
+        }
+
+        .gold {
+          color: yellow;
+          border-left: solid 0.5rem gold;
+          border-top: solid 2px gold;
+          border-right: solid 2px gold;
+          border-bottom: solid 2px gold;
+          text-shadow: gold 0px 0px 6px;
+          background-color: rgb(219, 219, 219);
+        }
+        .white {
+          color:gainsboro;
+          border-left: solid 0.5rem gainsboro;
+          border-top: solid 2px gainsboro;
+          border-right: solid 2px gainsboro;
+          border-bottom: solid 2px gainsboro;
+          text-shadow: gainsboro 0px 0px 6px;
+          background-color: rgb(92, 92, 92);
+        }
+        .red {
+          color: red;
+          border-left: solid 0.5rem red;
+          border-top: solid 2px red;
+          border-right: solid 2px red;
+          border-bottom: solid 2px red;
+          text-shadow: red 0px 0px 6px;
+          background-color: rgb(219, 219, 219);
+        }
+      }
+    }
   }
   .lowerRight {
     .pals {
       overflow: auto;
-      height: 75vh;
+      max-height: 70vh;
       li {
         border: solid 1px;
         padding: 1rem;
@@ -92,12 +147,30 @@ img {
           background-color: white;
         }
       }
-      .active {
-        background-color: cornsilk;
-        cursor: pointer;
-        color: white;
-        text-shadow: black 1px 1px 1px;
-      }
+
     }
   }
 }
+
+.filterElements {
+  padding: 5px;
+  border-radius: 15px;
+  border: solid 1px;
+  font-size: 1.3rem;
+  margin-right: 0.8rem;
+  line-height: 3rem;
+  white-space: nowrap;
+  white-space: norma;
+  &:hover {
+    background-color: rgb(255, 232, 141);
+    cursor: pointer;
+  }
+}
+
+.active {
+  background-color: cornsilk;
+  cursor: pointer;
+  color: white;
+  text-shadow: black 1px 1px 1px;
+}
+

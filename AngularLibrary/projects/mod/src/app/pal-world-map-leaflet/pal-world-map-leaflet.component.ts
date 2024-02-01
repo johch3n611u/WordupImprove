@@ -25,18 +25,21 @@ import { BehaviorSubject, filter, map, take, tap } from 'rxjs';
   styleUrls: ['./pal-world-map-leaflet.component.scss'],
 })
 export class PalWorldMapLeafletComponent {
-  palsInfoPath = './assets/palworld/palword.json';
+  palsInfoPath = './assets/palworld';
   palsInfo$ = new BehaviorSubject<any>([]);
+  passiveSkills$ = new BehaviorSubject<any>([]);
   map: any;
+  lowerLeftDisplay = 'passiveSkills';
 
   constructor(private httpClient: HttpClient) {
     // get the json of pals info
     this.httpClient
-      .get(this.palsInfoPath)
+      .get(`${this.palsInfoPath}/palword.json`)
       .pipe(
+        take(1),
         tap((pals: any) =>
           pals.forEach((pal: any) => {
-            pal.color = this.getUniqueColor(1);
+            pal.color = this.getUniqueColor();
             if (pal.boss) {
               pal.boss.latlngs.forEach((latlng: any) => {
                 let bossMarker = L.marker(latlng, {
@@ -51,14 +54,21 @@ export class PalWorldMapLeafletComponent {
       )
       .subscribe((res: any) => {
         this.palsInfo$.next(res);
-        this.search.searched = JSON?.parse(JSON?.stringify(res));
+        this.search.palSearched = JSON?.parse(JSON?.stringify(res));
+      });
+    // get passiveSkills.json
+    this.httpClient
+      .get(`${this.palsInfoPath}/passiveSkills.json`)
+      .pipe(take(1))
+      .subscribe((res: any) => {
+        this.passiveSkills$.next(res);
+        this.search.skillSearched = JSON?.parse(JSON?.stringify(res));
       });
   }
 
   ngAfterViewInit(): void {
     this.initPalWorldMap();
     this.onMouseClick();
-    this.initBossesLayer();
   }
 
   ngOnInit(): void {}
@@ -112,6 +122,7 @@ export class PalWorldMapLeafletComponent {
     './assets/palworld/palpagos_islands_levels.webp',
     this.bounds
   );
+  tempMarkersLayer = L.layerGroup();
   habitatLayer = L.layerGroup();
   bossesMarkersLayer = L.layerGroup();
   vendorsMarkersLayer = L.layerGroup();
@@ -146,41 +157,38 @@ export class PalWorldMapLeafletComponent {
         icon: this.generateIcon('10001.png'),
       }).on('click', (markerClick) => {
         // remove from layergroup
-        this.bossesMarkersLayer.removeLayer(marker);
+        this.tempMarkersLayer.removeLayer(marker);
       });
-      this.bossesMarkersLayer.addLayer(marker).addTo(this.map);
+      this.tempMarkersLayer.addLayer(marker).addTo(this.map);
       console.log(marker.getLatLng());
-      console.log(this.bossesMarkersLayer.getLayers());
+      console.log(this.tempMarkersLayer.getLayers());
     });
   }
 
-  public initBossesLayer(): void {
-    this.palsInfo$.forEach((pal) => {
-      if (pal.boss) {
-        let bossMarker = L.marker(pal.boss.latlng, {
-          icon: this.generateIcon(pal.boss.image, `bosses`, 50),
-          title: pal.boss.level,
-        });
-        this.bossesMarkersLayer.addLayer(bossMarker).addTo(this.map);
-      }
-    });
-  }
-  private initPalWorldMap(): void {
+  public initPalWorldMap(): void {
     this.map = L.map('map', {
       layers: [this.levelsMap],
       crs: L.CRS.Simple,
     });
 
-    this.map.fitBounds(this.bounds);
+    this.moveToMapCenter();
 
     L.control
       .layers(this.baseLayers, this.overlays, { collapsed: false })
       .addTo(this.map);
   }
 
+  moveToMapCenter() {
+    let corner1 = L.latLng(0, 0);
+    let corner2 = L.latLng(1800, 1000);
+    let bounds = L.latLngBounds(corner1, corner2);
+    this.map.fitBounds(bounds);
+  }
+
   search: any = {
-    keyword: '',
-    searched: [],
+    palKeyword: '',
+    palSearched: [],
+    skillSearched: [],
   };
 
   searchPals() {
@@ -190,21 +198,21 @@ export class PalWorldMapLeafletComponent {
       pal.selected = false;
     });
     if (
-      this.search.keyword !== undefined &&
-      this.search.keyword !== null &&
-      this.search.keyword.replace(/\s*/g, '') !== ''
+      this.search.palKeyword !== undefined &&
+      this.search.palKeyword !== null &&
+      this.search.palKeyword.replace(/\s*/g, '') !== ''
     ) {
-      this.palsInfo$.pipe().subscribe((pals) => {
-        this.search?.keyword?.toLowerCase();
-        this.search.searched = [];
+      this.palsInfo$.pipe(take(1)).subscribe((pals) => {
+        this.search?.palKeyword?.toLowerCase();
+        this.search.palSearched = [];
         pals?.forEach((pal: any) => {
           delete pal.palFromSelectLayer;
           let result = JSON?.stringify(pal)?.toLowerCase();
 
-          let blank = this.search.keyword?.split(' ');
-          let comma = this.search.keyword?.split(',');
-          let connectComma = this.search.keyword?.split('，');
-          let pauseComma = this.search.keyword?.split('、');
+          let blank = this.search.palKeyword?.split(' ');
+          let comma = this.search.palKeyword?.split(',');
+          let connectComma = this.search.palKeyword?.split('，');
+          let pauseComma = this.search.palKeyword?.split('、');
 
           let searchWords: any = [];
 
@@ -234,15 +242,15 @@ export class PalWorldMapLeafletComponent {
               searchedCount++;
             }
           });
-          
+
           if (searchedCount === searchWords.length) {
-            this.search?.searched?.push(pal);
+            this.search?.palSearched?.push(pal);
           }
         });
       });
     } else {
-      this.search.searched = this.palsInfo$?.getValue();
-      this.search.keyword = '';
+      this.search.palSearched = this.palsInfo$?.getValue();
+      this.search.palKeyword = '';
     }
   }
 
@@ -280,7 +288,7 @@ export class PalWorldMapLeafletComponent {
         const palLayer = L.polygon(latlng, {
           color: palFromSelect.color,
           fillColor: palFromSelect.color,
-          fillOpacity: 0.7,
+          fillOpacity: 1,
         });
         palFromSelectLayer.addLayer(palLayer);
       });
@@ -317,7 +325,17 @@ export class PalWorldMapLeafletComponent {
     document.body.removeChild(input);
   }
 
-  filterEle: any = [
+  filterElements: any = [
+    { name: '無', color: 'rgb(205,102,84)' },
+    { name: '水', color: 'rgb(205,102,84)' },
+    { name: '火', color: 'rgb(205,102,84)' },
+    { name: '草', color: 'rgb(205,102,84)' },
+    { name: '地', color: 'rgb(205,102,84)' },
+    { name: '雷', color: 'rgb(205,102,84)' },
+    { name: '龍', color: 'rgb(205,102,84)' },
+    { name: '冰', color: 'rgb(205,102,84)' },
+    { name: '暗', color: 'rgb(205,102,84)' },
+    { name: '坐騎', color: 'rgb(205,102,84)' },
     { name: '烹調', color: 'rgb(205,102,84)' },
     { name: '澆水', color: 'rgb(205,102,84)' },
     { name: '播種', color: 'rgb(205,102,84)' },
@@ -330,24 +348,49 @@ export class PalWorldMapLeafletComponent {
     { name: '冷卻', color: 'rgb(205,102,84)' },
     { name: '搬運', color: 'rgb(205,102,84)' },
     { name: 'Boss', color: 'rgb(205,102,84)' },
-    { name: '暗', color: 'rgb(205,102,84)' },
-    { name: '冰', color: 'rgb(205,102,84)' },
-    { name: '水', color: 'rgb(205,102,84)' },
-    { name: '無', color: 'rgb(205,102,84)' },
-    { name: '草', color: 'rgb(205,102,84)' },
-    { name: '地', color: 'rgb(205,102,84)' },
-    { name: '雷', color: 'rgb(205,102,84)' },
-    { name: '火', color: 'rgb(205,102,84)' },
-    { name: '龍', color: 'rgb(205,102,84)' },
-    { name: '坐騎', color: 'rgb(205,102,84)' },
   ];
   filterSearchPals(ele: any) {
     ele.selected = !ele.selected;
     if (ele.selected) {
-      this.search.keyword += ` ${ele.name}`;
+      this.search.palKeyword += ` ${ele.name}`;
     } else {
-      this.search.keyword = this.search.keyword.replace(ele.name, '');
+      this.search.palKeyword = this.search.palKeyword.replace(ele.name, '');
     }
     this.searchPals();
+  }
+
+  filterSkillElements: any = [
+    { name: '攻擊', color: 'rgb(205,102,84)' },
+    { name: '傷害', color: 'rgb(205,102,84)' },
+    { name: '防禦', color: 'rgb(205,102,84)' },
+    { name: '砍伐', color: 'rgb(205,102,84)' },
+    { name: '工作', color: 'rgb(205,102,84)' },
+    { name: '速度', color: 'rgb(205,102,84)' },
+    { name: '移動', color: 'rgb(205,102,84)' },
+    { name: '地', color: 'rgb(205,102,84)' },
+    { name: '草', color: 'rgb(205,102,84)' },
+    { name: '雷', color: 'rgb(205,102,84)' },
+    { name: '火', color: 'rgb(205,102,84)' },
+    { name: '水', color: 'rgb(205,102,84)' },
+    { name: '龍', color: 'rgb(205,102,84)' },
+    { name: '冰', color: 'rgb(205,102,84)' },
+    { name: '無', color: 'rgb(205,102,84)' },
+    { name: '暗', color: 'rgb(205,102,84)' },
+    { name: 'SAN值', color: 'rgb(205,102,84)' },
+  ];
+
+  filterSkill(ele: any) {
+    ele.selected = !ele.selected;
+    let selected = this.filterSkillElements.filter((ele: any) => ele.selected);
+    if (selected) {
+      this.passiveSkills$.pipe(take(1)).subscribe((res: any) => {
+        let result = JSON?.stringify(res)?.toLowerCase();
+
+          let blank = this.search.palKeyword?.split(' ');
+          console.log(selected);
+      });
+    } else {
+      this.search.skillSearched = this.passiveSkills$.getValue();
+    }
   }
 }
