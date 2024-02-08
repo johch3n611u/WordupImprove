@@ -3,13 +3,12 @@
     <h2 class="logo">PalWorld
     </h2>
     <ul class="navbar">
-      <li (click)="lowerLeftDisplay = 'palMap'">帕魯地圖</li> |
-      <li (click)="lowerLeftDisplay = 'passiveSkills'">被動技能清單</li> |
-      <li>伺服器清單(建置中)</li> |
-      <li>帕魯守則/意見表單(建置中)</li> |
-      <li>配種表工具(建置中)</li> |
-      <li>多語系(建置中)</li> |
-      <li>
+      <li (click)="lowerLeftDisplay = 'palMap'">帕魯地圖</li>
+      <li (click)="lowerLeftDisplay = 'passiveSkills'">被動技能清單</li>
+      <li>伺服器清單(建置中)</li>
+      <li>帕魯守則/意見表單(建置中)</li>
+      <li>配種表工具(建置中)</li>
+      <li>多語系(建置中)</li>
     </ul>
   </div>
   <div class="main-wrap">
@@ -84,11 +83,8 @@
 </div>
 <div class="lower">
   <div class="lowerLeft">
-    <!-- <div class="map-container" [style.visibility]="lowerLeftDisplay === 'palMap' ? 'visible' : 'hidden'">
-      <div class="map-frame">
-        <div id="map"></div>
-      </div>
-    </div> -->
+    <div class="map-container" id="map" [style.visibility]="lowerLeftDisplay === 'palMap' ? 'visible' : 'hidden'">
+    </div>
     <div [style.visibility]="lowerLeftDisplay === 'passiveSkills' ? 'visible' : 'hidden'">
       <div>
         <span *ngFor="let ele of filterSkillElements;" class="filterElements" [ngClass]="{ 'active': ele.selected}"
