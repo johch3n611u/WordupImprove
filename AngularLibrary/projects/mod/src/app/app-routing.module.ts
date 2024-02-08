@@ -9,7 +9,7 @@ import { WordupImproveComponent } from './wordup-improve/wordup-improve.componen
 import { PalWorldMapLeafletComponent } from './pal-world-map-leaflet/pal-world-map-leaflet.component';
 
 const routes: Routes = [
-  { path: '', component: WordupImproveComponent },
+  { path: '', component: PalWorldMapLeafletComponent },
   { path: 'sample', component: SampleComponent, pathMatch: 'full' },
   { path: 'dynamic-masonry', component: DynamicMasonryComponent, pathMatch: 'full' },
   { path: 'memory-cards', component: MemoryCardsComponent, pathMatch: 'full' },

@@ -2,6 +2,49 @@
   display: flex;
   flex-direction: column;
 }
+// .map-container {
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   .map-frame {
+//     height: 100%;
+//     #map {
+//       position: absolute;
+//       width: 100%;
+//       max-height: 70vh;
+//       height: 100vh;
+//     }
+//     .leaflet-container {
+//       background: rgb(16, 37, 54);
+//     }
+//   }
+// }
+
+.main-container{
+  max-width: 1980px;
+  display: flex;
+}
+
+.main-wrap{
+  display: flex;
+  .wrap{
+    display: flex;
+    width: 100%;
+    .left{
+      width: 100%!important;
+      height: 100%!important;
+      .map-container{
+        height: 100%;
+        width: 100%;
+        background-color: rgb(16, 37, 57);
+        position: relative;
+        outline-style: none
+      }
+    }
+  }
+}
 
 img {
   width: auto;
@@ -58,79 +101,80 @@ img {
     padding: 0 0.5rem;
   }
 
-  .lowerLeft {
-    position: relative;
-    .map-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      .map-frame {
-        height: 100%;
-        #map {
-          position: absolute;
-          width: 100%;
-          max-height: 70vh;
-          height: 100vh;
-        }
-        .leaflet-container {
-          background: rgb(16, 37, 54);
-        }
-      }
-    }
-    .passiveSkills {
-      display: flex;
-      flex-wrap: wrap;
-      overflow: auto;
-      max-height: 60vh;
-      li {
-        width: 45%;
-        margin: 1rem;
 
-        .gold,
-        .white,
-        .red {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          font-size: 1.3rem;
-          border-radius: 5px;
-          padding: 1rem;
-          max-width: 15rem;
-          margin-bottom: 1rem;
-        }
+  // .lowerLeft {
+  //   position: relative;
+  //   .map-container {
+  //     position: absolute;
+  //     top: 0;
+  //     left: 0;
+  //     right: 0;
+  //     bottom: 0;
+  //     .map-frame {
+  //       height: 100%;
+  //       #map {
+  //         position: absolute;
+  //         width: 100%;
+  //         max-height: 70vh;
+  //         height: 100vh;
+  //       }
+  //       .leaflet-container {
+  //         background: rgb(16, 37, 54);
+  //       }
+  //     }
+  //   }
+  //   .passiveSkills {
+  //     display: flex;
+  //     flex-wrap: wrap;
+  //     overflow: auto;
+  //     max-height: 60vh;
+  //     li {
+  //       width: 45%;
+  //       margin: 1rem;
 
-        .gold {
-          color: yellow;
-          border-left: solid 0.5rem gold;
-          border-top: solid 2px gold;
-          border-right: solid 2px gold;
-          border-bottom: solid 2px gold;
-          text-shadow: gold 0px 0px 6px;
-          background-color: rgb(219, 219, 219);
-        }
-        .white {
-          color: gainsboro;
-          border-left: solid 0.5rem gainsboro;
-          border-top: solid 2px gainsboro;
-          border-right: solid 2px gainsboro;
-          border-bottom: solid 2px gainsboro;
-          text-shadow: gainsboro 0px 0px 6px;
-          background-color: rgb(92, 92, 92);
-        }
-        .red {
-          color: red;
-          border-left: solid 0.5rem red;
-          border-top: solid 2px red;
-          border-right: solid 2px red;
-          border-bottom: solid 2px red;
-          text-shadow: red 0px 0px 6px;
-          background-color: rgb(219, 219, 219);
-        }
-      }
-    }
-  }
+  //       .gold,
+  //       .white,
+  //       .red {
+  //         display: flex;
+  //         align-items: center;
+  //         justify-content: space-between;
+  //         font-size: 1.3rem;
+  //         border-radius: 5px;
+  //         padding: 1rem;
+  //         max-width: 15rem;
+  //         margin-bottom: 1rem;
+  //       }
+
+  //       .gold {
+  //         color: yellow;
+  //         border-left: solid 0.5rem gold;
+  //         border-top: solid 2px gold;
+  //         border-right: solid 2px gold;
+  //         border-bottom: solid 2px gold;
+  //         text-shadow: gold 0px 0px 6px;
+  //         background-color: rgb(219, 219, 219);
+  //       }
+  //       .white {
+  //         color: gainsboro;
+  //         border-left: solid 0.5rem gainsboro;
+  //         border-top: solid 2px gainsboro;
+  //         border-right: solid 2px gainsboro;
+  //         border-bottom: solid 2px gainsboro;
+  //         text-shadow: gainsboro 0px 0px 6px;
+  //         background-color: rgb(92, 92, 92);
+  //       }
+  //       .red {
+  //         color: red;
+  //         border-left: solid 0.5rem red;
+  //         border-top: solid 2px red;
+  //         border-right: solid 2px red;
+  //         border-bottom: solid 2px red;
+  //         text-shadow: red 0px 0px 6px;
+  //         background-color: rgb(219, 219, 219);
+  //       }
+  //     }
+  //   }
+  // }
   .lowerRight {
     .pals {
       overflow: auto;
