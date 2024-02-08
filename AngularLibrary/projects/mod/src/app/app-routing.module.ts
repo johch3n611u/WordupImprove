@@ -9,12 +9,14 @@ import { WordupImproveComponent } from './wordup-improve/wordup-improve.componen
 import { PalWorldMapLeafletComponent } from './pal-world-map-leaflet/pal-world-map-leaflet.component';
 
 const routes: Routes = [
-  { path: '', component: PalWorldMapLeafletComponent },
+  { path: '', component: WordupImproveComponent },
   { path: 'sample', component: SampleComponent, pathMatch: 'full' },
   { path: 'dynamic-masonry', component: DynamicMasonryComponent, pathMatch: 'full' },
   { path: 'memory-cards', component: MemoryCardsComponent, pathMatch: 'full' },
   { path: 'rwd-table', component: RwdTableComponent, pathMatch: 'full' },
-  { path: 'super-menu', component: SuperMenuComponent, pathMatch: 'full'}
+  { path: 'super-menu', component: SuperMenuComponent, pathMatch: 'full'},
+  { path: 'pal-tool', component: PalWorldMapLeafletComponent },
+  { path: 'en-word-hero', component: WordupImproveComponent },
 ];
 
 @NgModule({

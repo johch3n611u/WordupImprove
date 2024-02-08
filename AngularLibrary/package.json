@@ -18,7 +18,8 @@
     "start:cms": "ng serve cms --open",
     "start:brand": "ng serve brand --open",
     "start:mod": "ng serve mod --open",
-    "build:mod:enhelper": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/assets/angular/mod/EnglishLearningHelper/"
+    "build:mod:enhelper": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/en-word-hero/",
+    "build:mod:pal": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/pal-tool/"
   },
   "private": true,
   "dependencies": {
