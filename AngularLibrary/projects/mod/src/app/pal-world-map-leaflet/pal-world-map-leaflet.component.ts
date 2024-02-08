@@ -25,7 +25,7 @@ import { BehaviorSubject, filter, map, take, tap } from 'rxjs';
   styleUrls: ['./pal-world-map-leaflet.component.scss'],
 })
 export class PalWorldMapLeafletComponent {
-  palsInfoPath = './assets/palworld';
+  palsInfoPath = './assets/mods/palworld';
   palsInfo$ = new BehaviorSubject<any>([]);
   passiveSkills$ = new BehaviorSubject<any>([]);
   map: any;
@@ -101,7 +101,7 @@ export class PalWorldMapLeafletComponent {
     size: number = 30
   ) {
     return L.icon({
-      iconUrl: `./assets/palworld/${fileDir}/${imgName}`,
+      iconUrl: `./assets/mods/palworld/${fileDir}/${imgName}`,
       iconSize: [size, size], // icon 寬, 長
       shadowSize: [50, 64], // 陰影 寬, 長
       iconAnchor: [5, 5], // icon 中心偏移
@@ -115,11 +115,11 @@ export class PalWorldMapLeafletComponent {
   corner2 = L.latLng(1000, 1000);
   bounds = L.latLngBounds(this.corner1, this.corner2);
   defaultMap = L.imageOverlay(
-    './assets/palworld/palpagos_islands.webp',
+    './assets/mods/palworld/palpagos_islands.webp',
     this.bounds
   );
   levelsMap = L.imageOverlay(
-    './assets/palworld/palpagos_islands_levels.webp',
+    './assets/mods/palworld/palpagos_islands_levels.webp',
     this.bounds,
     {}
   );

@@ -21,11 +21,13 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { PalWorldMapLeafletComponent } from './pal-world-map-leaflet/pal-world-map-leaflet.component';
+import { HomeComponent } from './home/home.component';
 
 // https://stackoverflow.com/questions/60726180/angular-9-value-at-position-x-in-the-ngmodule-imports-is-not-a-reference  reload  vscode
 @NgModule({
   declarations: [
     AppComponent,
+    HomeComponent,
     SampleComponent,
     DynamicMasonryComponent,
     RwdTableComponent,

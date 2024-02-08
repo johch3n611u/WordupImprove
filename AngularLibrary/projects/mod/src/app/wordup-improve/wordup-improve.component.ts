@@ -48,7 +48,7 @@ import { GlgorithmsService, REGEXP_TYPE } from 'lib/feature';
   styleUrls: ['./wordup-improve.component.scss'],
 })
 export class WordupImproveComponent {
-  url = './assets/scoreData.json';
+  url = './assets/mods/scoreData.json';
   cards: any = [];
   sentence: any;
   sentenceAnswerDisplay: any = true;

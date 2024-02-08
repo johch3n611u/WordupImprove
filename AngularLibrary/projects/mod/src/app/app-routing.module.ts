@@ -7,9 +7,10 @@ import { MemoryCardsComponent } from './memory-cards/memory-cards.component';
 import { SuperMenuComponent } from './super-menu/super-menu.component';
 import { WordupImproveComponent } from './wordup-improve/wordup-improve.component';
 import { PalWorldMapLeafletComponent } from './pal-world-map-leaflet/pal-world-map-leaflet.component';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  { path: '', component: WordupImproveComponent },
+  { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'sample', component: SampleComponent, pathMatch: 'full' },
   { path: 'dynamic-masonry', component: DynamicMasonryComponent, pathMatch: 'full' },
   { path: 'memory-cards', component: MemoryCardsComponent, pathMatch: 'full' },

@@ -46,10 +46,10 @@ import { OrdersComponent } from './layouts/sky-land-layout/pages/account-page/bl
 import { EsgMarketingBannerComponent } from './layouts/sky-land-layout/pages/landing-page/esg-marketing-page/blocks/esg-marketing-banner/esg-marketing-banner.component';
 import { TRANSLATION_PROVIDERS, TranSetting } from 'lib/feature/translate/translate';
 import { TranslatePipe } from 'lib/feature/translate/translate.pipe';
-import { LANG_TW_NAME, LANG_TW_TRANS } from '../assets/i18n/lazg-tw';
-import { LANG_CN_NAME, LANG_CN_TRANS } from '../assets/i18n/lazg-cn';
-import { LANG_THAI_NAME, LANG_THAI_TRANS } from '../assets/i18n/lazg-thai';
-import { LANG_JAPANESE_NAME, LANG_JAPANESE_TRANS } from '../assets/i18n/lazg-japanese';
+import { LANG_TW_NAME, LANG_TW_TRANS } from '../assets/mods/i18n/lazg-tw';
+import { LANG_CN_NAME, LANG_CN_TRANS } from '../assets/mods/i18n/lazg-cn';
+import { LANG_THAI_NAME, LANG_THAI_TRANS } from '../assets/mods/i18n/lazg-thai';
+import { LANG_JAPANESE_NAME, LANG_JAPANESE_TRANS } from '../assets/mods/i18n/lazg-japanese';
 import { SingleColumnLayoutComponent } from './layouts/single-column-layout/single-column-layout.component';
 import { SkyLandLayoutComponent } from './layouts/sky-land-layout/sky-land-layout.component';
 import { FakeCreditCardVerificationPageComponent } from './layouts/single-column-layout/pages/fake-credit-card-verification-page/fake-credit-card-verification-page.component';
