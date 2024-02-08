@@ -1,3 +1,59 @@
+<div class="main-container">
+  <div class="left-side">
+    <h2 class="logo">PalWorld
+    </h2>
+    <ul class="navbar">
+      <li (click)="lowerLeftDisplay = 'palMap'">帕魯地圖</li>
+      <li (click)="lowerLeftDisplay = 'passiveSkills'">被動技能清單</li>
+      <li>伺服器清單(建置中)</li>
+      <li>帕魯守則/意見表單(建置中)</li>
+      <li>配種表工具(建置中)</li>
+      <li>多語系(建置中)</li>
+    </ul>
+  </div>
+  <div class="main-wrap">
+    <div class="wrap">
+      <div class="left">
+        <div class="map-container" id="map" [style.visibility]="lowerLeftDisplay === 'palMap' ? 'visible' : 'hidden'">
+        </div>
+      </div>
+      <div class="right">
+        <div class="upperRight">
+          <input autocomplete="new-password" type="text" placeholder="請雙擊查詢 Enter" [(ngModel)]="search.palKeyword"
+            (change)="searchPals()">
+          <div>
+            <span *ngFor="let ele of filterElements;" class="filterElements" [ngClass]="{ 'active': ele.selected}"
+              [style.background]="ele.selected?ele.color:''" (click)="filterSearchPals(ele)">{{ele.name}}</span>
+          </div>
+        </div>
+        <ul class="pals">
+          <li *ngFor="let pal of this.search.palSearched; let i = index" (click)="activePal(pal)"
+            [ngClass]="{ 'active': pal.selected}" [style.background]="pal.selected?pal.color:''">
+            <img class="palImg" [style]="pal.selected?'height: 150px':'height: 80px'"
+              [src]="'assets/palworld/pals/'+ pal.image" />
+            <div style="padding-left: 1rem;">
+              <p style="display: flex;align-items: center;">No {{pal.number}}, {{pal.name}}, {{pal.elements}}, {{pal.food}}
+                x
+                <img src="assets/palworld/pals/T_itemicon_Food_Meat_ChickenPal.webp">
+              </p>
+              <p>{{pal.workskills}}</p>
+              <ng-container *ngIf="pal.selected">
+                <p>{{pal.drops}}, 配種值：{{pal.combiRank}}</p>
+                <hr>
+                <p>{{pal.description}}</p>
+                <p>{{pal.partnerSkill}}</p>
+                <ng-container *ngIf="pal.mount">
+                  <hr>
+                  <p>{{pal.mount.type}}, 速度：{{pal.mount.speed}}</p>
+                </ng-container>
+              </ng-container>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="upper">
   <div class="upperLeft">
     <h2 class="logo">PalWorld
@@ -27,10 +83,7 @@
 </div>
 <div class="lower">
   <div class="lowerLeft">
-    <div class="map-container" [style.visibility]="lowerLeftDisplay === 'palMap' ? 'visible' : 'hidden'">
-      <div class="map-frame">
-        <div id="map"></div>
-      </div>
+    <div class="map-container" id="map" [style.visibility]="lowerLeftDisplay === 'palMap' ? 'visible' : 'hidden'">
     </div>
     <div [style.visibility]="lowerLeftDisplay === 'passiveSkills' ? 'visible' : 'hidden'">
       <div>
