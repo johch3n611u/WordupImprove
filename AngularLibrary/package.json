@@ -8,11 +8,11 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "build:lib": "ng build lib",
-    "build:ec": "ng build ec --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/assets/mods/angular/ec/",
-    "build:crm": "ng build crm --base-href=/assets/mods/angular/crm/",
-    "build:cms": "ng build cms --base-href=/assets/mods/angular/cms/",
+    "build:ec": "ng build ec --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/assets/angular/ec/",
+    "build:crm": "ng build crm --base-href=/assets/angular/crm/",
+    "build:cms": "ng build cms --base-href=/assets/angular/cms/",
     "build:mod": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress",
-    "build:brand": "ng build brand --base-href=/assets/mods/angular/brand/",
+    "build:brand": "ng build brand --base-href=/assets/angular/brand/",
     "start:ec": "ng serve ec --open",
     "start:crm": "ng serve crm --open",
     "start:cms": "ng serve cms --open",
@@ -20,7 +20,7 @@
     "start:mod": "ng serve mod --open",
     "build:mod:enhelper": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/en-word-hero/",
     "build:mod:pal": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/pal-tool/",
-    "build:mod:memory": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/assets/mods/angular/mod/memory-card/"
+    "build:mod:memory": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/assets/angular/mod/memory-card/"
   },
   "private": true,
   "dependencies": {

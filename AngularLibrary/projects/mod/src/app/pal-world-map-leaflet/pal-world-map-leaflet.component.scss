@@ -20,7 +20,6 @@
   .navbar{
     display: flex;
     color: #FFF;
-    gap: 15px;
     font-size: 1.3rem;
     li {
       font-weight: 700;
@@ -28,7 +27,7 @@
       font-size: 16px;
       margin: 0px 10px;
       padding: 5px 15px;
-      &:hover {
+      &:hover,&.navActive {
         border-left: 5px solid rgb(255, 232, 141);
         color: rgb(255, 232, 141);
         cursor: pointer;
@@ -37,39 +36,143 @@
   }
 }
 .main-wrap{
-  margin-bottom: 500px;
   width: 100%;
   display: flex;
   .wrap{
     margin: 15px;
-    margin-top: 50px;
+    margin-top: 1.3rem;
     display: flex;
     justify-content: space-between;
     width: 100%;
-    height: 70vh;
+    height: 85vh;
     .right{
+      .filterElementsBox{
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0.5rem 0;
+      }
+      .filterElements {
+        padding: 5px;
+        border-radius: 10px;
+        border: solid 1px;
+        font-size: 1rem;
+        margin: 5px;
+        &:hover {
+          background-color: rgb(255, 232, 141);
+          cursor: pointer;
+        }
+      }
+      width: 55%;
       .pals{
         padding: 10px;
         border: 1px solid #272a30;
-        margin-top: 30px;
-        max-height: 700px;
+        max-height: 55%;
         overflow-y: scroll;
+        li{
+          div{
+            margin-left: 1rem;
+            padding: 0.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            p{
+              padding: 0.25rem 0;
+            }
+          }
+          align-items: center;
+          padding: 5px 5px;
+          display: flex;
+          cursor: pointer;
+          .palImg {
+            height: 60px;
+            width: auto;
+            border-radius: 50%;
+            border: solid;
+            background-color: white;
+          }
+        }
       }
       input{
         font-size: 16px;
         height: 20px;
-        padding: 15px;
-        width: 100%;
+        padding: 10px;
+        width: 80%;
         border-radius: 50px;
       }
     }
     .left{
-      margin-right: 40px;
-      width: 60%!important;
+      ul{
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .filterElements {
+        padding: 5px;
+        border-radius: 10px;
+        border: solid 1px;
+        font-size: 1rem;
+        margin: 5px;
+        &:hover {
+          background-color: rgb(255, 232, 141);
+          cursor: pointer;
+        }
+      }
+      .passiveSkills {
+        display: flex;
+        flex-wrap: wrap;
+        overflow-y: scroll;
+        max-height: 70vh;
+        li {
+          width: 44%;
+          margin: 1rem;
+  
+          .gold,
+          .white,
+          .red {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 1.3rem;
+            border-radius: 5px;
+            padding: 1rem;
+            max-width: 15rem;
+            margin-bottom: 1rem;
+          }
+  
+          .gold {
+            color: yellow;
+            border-left: solid 0.5rem gold;
+            border-top: solid 2px gold;
+            border-right: solid 2px gold;
+            border-bottom: solid 2px gold;
+            text-shadow: gold 0px 0px 6px;
+            background-color: rgb(219, 219, 219);
+          }
+          .white {
+            color: gainsboro;
+            border-left: solid 0.5rem gainsboro;
+            border-top: solid 2px gainsboro;
+            border-right: solid 2px gainsboro;
+            border-bottom: solid 2px gainsboro;
+            text-shadow: gainsboro 0px 0px 6px;
+            background-color: rgb(92, 92, 92);
+          }
+          .red {
+            color: red;
+            border-left: solid 0.5rem red;
+            border-top: solid 2px red;
+            border-right: solid 2px red;
+            border-bottom: solid 2px red;
+            text-shadow: red 0px 0px 6px;
+            background-color: rgb(219, 219, 219);
+          }
+        }
+      }
+      margin-right: 1rem;
+      width: 100%!important;
       height: 100%!important;
       .map-container{
         height: 100%;
-        width: 100%;
+        width: 98%;
         background-color: rgb(16, 37, 57);
         position: relative;
         outline-style: none
@@ -213,7 +316,7 @@ img {
         }
 
         .palImg {
-          height: 150px;
+          height: 50px;
           width: auto;
           border-radius: 50%;
           border: solid;
@@ -224,20 +327,6 @@ img {
   }
 }
 
-.filterElements {
-  padding: 5px;
-  border-radius: 15px;
-  border: solid 1px;
-  font-size: 1.3rem;
-  margin-right: 0.8rem;
-  line-height: 3rem;
-  white-space: nowrap;
-  white-space: norma;
-  &:hover {
-    background-color: rgb(255, 232, 141);
-    cursor: pointer;
-  }
-}
 
 .active {
   background-color: cornsilk;
@@ -250,7 +339,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 3rem;
+  padding: 1rem;
   line-height: 2rem;
   nav {
     display: flex;
@@ -259,4 +348,17 @@ footer {
       cursor: pointer;
     }
   }
+}
+
+
+@include LargeDevices {
+
+}
+
+@include MediumDevices {
+
+}
+
+@include SmallDevices {
+
 }

@@ -64,7 +64,7 @@
   <div class="trackingInfo">
     <p class="subInfo">
       經過 {{ seconds }} 秒，未複習：{{this.familiarity.notReviewed}}
-      <lib-svg [src]="'./assets/mods/audio.svg'" (click)="setSpeakSelection()"></lib-svg>
+      <lib-svg [src]="'./assets/audio.svg'" (click)="setSpeakSelection()"></lib-svg>
     </p>
     <p class="subInfo" *ngIf="this.record?.avgAnswerSpeed?.length > 0">
       平均答題速度： {{this.record?.avgAnswerSpeedDisplay}} /s

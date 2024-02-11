@@ -1,8 +1,8 @@
 import { InjectionToken } from '@angular/core';
 
 // 引進我們的語言檔案包
-// import { LANG_TW_NAME, LANG_TW_TRANS } from '../../assets/mods/i18n/lazg-tw';
-// import { LANG_CN_NAME, LANG_CN_TRANS } from '../../assets/mods/i18n/lazg-cn';
+// import { LANG_TW_NAME, LANG_TW_TRANS } from '../../assets/i18n/lazg-tw';
+// import { LANG_CN_NAME, LANG_CN_TRANS } from '../../assets/i18n/lazg-cn';
 
 // translation token
 export const TRANSLATIONS = new InjectionToken('translations');
