@@ -18,9 +18,9 @@
     "start:cms": "ng serve cms --open",
     "start:brand": "ng serve brand --open",
     "start:mod": "ng serve mod --open",
-    "build:mod:enhelper": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=https://urwebapp.github.io/assets/mods/",
-    "build:mod:pal": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=https://urwebapp.github.io/assets/mods/",
-    "build:mod:memory": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=../assets/mods/"
+    "build:mod:enhelper": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/en-word-hero/",
+    "build:mod:pal": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/pal-tool/",
+    "build:mod:memory": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/assets/angular/mod/memory-card/"
   },
   "private": true,
   "dependencies": {

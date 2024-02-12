@@ -3,10 +3,19 @@
     <h2 class="logo">PalWorld
     </h2>
     <ul class="navbar">
-      <li (click)="lowerLeftDisplay = 'palMap'">帕魯地圖</li>
-      <li (click)="lowerLeftDisplay = 'passiveSkills'">被動技能清單</li>
+      <li [ngClass]="{'navActive':lowerLeftDisplay == 'palMap'}" (click)="lowerLeftDisplay = 'palMap'">帕魯地圖</li>
+      <li [ngClass]="{'navActive':lowerLeftDisplay == 'passiveSkills'}" (click)="lowerLeftDisplay = 'passiveSkills'">被動技能清單</li>
       <li>伺服器清單(建置中)</li>
-      <li>帕魯守則/意見表單(建置中)</li>
+      <li>帕魯守則 / 意見表單(建置中)</li>
+      <li>配種表工具(建置中)</li>
+      <li>多語系(建置中)</li>
+    </ul>
+    <i class="hambuger-menu">=</i>
+    <ul class="mobile-navbar">
+      <li [ngClass]="{'navActive':lowerLeftDisplay == 'palMap'}" (click)="lowerLeftDisplay = 'palMap'">帕魯地圖</li>
+      <li [ngClass]="{'navActive':lowerLeftDisplay == 'passiveSkills'}" (click)="lowerLeftDisplay = 'passiveSkills'">被動技能清單</li>
+      <li>伺服器清單(建置中)</li>
+      <li>帕魯守則 / 意見表單(建置中)</li>
       <li>配種表工具(建置中)</li>
       <li>多語系(建置中)</li>
     </ul>
@@ -14,27 +23,40 @@
   <div class="main-wrap">
     <div class="wrap">
       <div class="left">
-        <div class="map-container" id="map" [style.visibility]="lowerLeftDisplay === 'palMap' ? 'visible' : 'hidden'">
+        <div [style.position]="lowerLeftDisplay === 'passiveSkills'?'absolute':'relative'" class="map-container" id="map" [style.visibility]="lowerLeftDisplay === 'palMap' ? 'visible' : 'hidden'">
+        </div>
+        <div [style.display]="lowerLeftDisplay === 'passiveSkills' ? 'block' : 'none'">
+          <ul>
+            <li *ngFor="let ele of filterSkillElements;" class="filterElements" [ngClass]="{ 'active': ele.selected}"
+              [style.background]="ele.selected?ele.color:''" (click)="filterSkill(ele)">{{ele.name}}</li>
+          </ul>
+          <ul class="passiveSkills">
+            <li *ngFor="let skill of search.skillSearched;">
+              <p [ngClass]="{'gold': skill.rarity == '金色','white':skill.rarity == '白色','red':skill.rarity == '紅色'}">
+                {{skill.name}}
+                <!-- <lib-svg [src]="'./assets/mods/palworld/lv/lv'+skill.level+'.svg'"></lib-svg> -->
+              </p>
+              <p>{{skill.effect}}</p>
+            </li>
+          </ul>
         </div>
       </div>
       <div class="right">
         <div class="upperRight">
           <input autocomplete="new-password" type="text" placeholder="請雙擊查詢 Enter" [(ngModel)]="search.palKeyword"
             (change)="searchPals()">
-          <div>
-            <span *ngFor="let ele of filterElements;" class="filterElements" [ngClass]="{ 'active': ele.selected}"
-              [style.background]="ele.selected?ele.color:''" (click)="filterSearchPals(ele)">{{ele.name}}</span>
-          </div>
+          <ul class="filterElementsBox">
+            <li *ngFor="let ele of filterElements;" class="filterElements" [ngClass]="{ 'active': ele.selected}"
+              [style.background]="ele.selected?ele.color:''" (click)="filterSearchPals(ele)">{{ele.name}}</li>
+          </ul>
         </div>
         <ul class="pals">
           <li *ngFor="let pal of this.search.palSearched; let i = index" (click)="activePal(pal)"
             [ngClass]="{ 'active': pal.selected}" [style.background]="pal.selected?pal.color:''">
-            <img class="palImg" [style]="pal.selected?'height: 150px':'height: 80px'"
+            <img class="palImg" [style]="pal.selected?'height: 80px':'height: 40px'"
               [src]="'assets/palworld/pals/'+ pal.image" />
-            <div style="padding-left: 1rem;">
-              <p style="display: flex;align-items: center;">No {{pal.number}}, {{pal.name}}, {{pal.elements}}, {{pal.food}}
-                x
-                <img src="assets/palworld/pals/T_itemicon_Food_Meat_ChickenPal.webp">
+            <div  >
+              <p>No {{pal.number}}, {{pal.name}}, {{pal.elements}}屬性,食量:{{pal.food}}
               </p>
               <p>{{pal.workskills}}</p>
               <ng-container *ngIf="pal.selected">
@@ -52,80 +74,6 @@
         </ul>
       </div>
     </div>
-  </div>
-</div>
-<div class="upper">
-  <div class="upperLeft">
-    <h2 class="logo">PalWorld
-      <button type="button" (click)="copyLatlngs()">複製多邊形座標點</button>
-    </h2>
-    <ul class="nav">
-      <li (click)="lowerLeftDisplay = 'palMap'">帕魯地圖</li> |
-      <li (click)="lowerLeftDisplay = 'passiveSkills'">被動技能清單</li> |
-      <li>伺服器清單(建置中)</li> |
-      <li>帕魯守則/意見表單(建置中)</li> |
-      <li>配種表工具(建置中)</li> |
-      <li>多語系(建置中)</li> |
-      <li>
-        <ng-container>🌞</ng-container>
-        <ng-template #night>🌙</ng-template>
-      </li>
-    </ul>
-  </div>
-  <div class="upperRight">
-    <input autocomplete="new-password" type="text" placeholder="請雙擊查詢 Enter" [(ngModel)]="search.palKeyword"
-      (change)="searchPals()">
-    <div>
-      <span *ngFor="let ele of filterElements;" class="filterElements" [ngClass]="{ 'active': ele.selected}"
-        [style.background]="ele.selected?ele.color:''" (click)="filterSearchPals(ele)">{{ele.name}}</span>
-    </div>
-  </div>
-</div>
-<div class="lower">
-  <div class="lowerLeft">
-    <div class="map-container" id="map" [style.visibility]="lowerLeftDisplay === 'palMap' ? 'visible' : 'hidden'">
-    </div>
-    <div [style.visibility]="lowerLeftDisplay === 'passiveSkills' ? 'visible' : 'hidden'">
-      <div>
-        <span *ngFor="let ele of filterSkillElements;" class="filterElements" [ngClass]="{ 'active': ele.selected}"
-          [style.background]="ele.selected?ele.color:''" (click)="filterSkill(ele)">{{ele.name}}</span>
-      </div>
-      <ul class="passiveSkills">
-        <li *ngFor="let skill of search.skillSearched;">
-          <p [ngClass]="{'gold': skill.rarity == '金色','white':skill.rarity == '白色','red':skill.rarity == '紅色'}">
-            {{skill.name}}
-            <!-- <lib-svg [src]="'./assets/palworld/lv/lv'+skill.level+'.svg'"></lib-svg> -->
-          </p>
-          <p>{{skill.effect}}</p>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div class="lowerRight">
-    <ul class="pals">
-      <li *ngFor="let pal of this.search.palSearched; let i = index" (click)="activePal(pal)"
-        [ngClass]="{ 'active': pal.selected}" [style.background]="pal.selected?pal.color:''">
-        <img class="palImg" [style]="pal.selected?'height: 150px':'height: 80px'"
-          [src]="'assets/palworld/pals/'+ pal.image" />
-        <div style="padding-left: 1rem;">
-          <p style="display: flex;align-items: center;">No {{pal.number}}, {{pal.name}}, {{pal.elements}}, {{pal.food}}
-            x
-            <img src="assets/palworld/pals/T_itemicon_Food_Meat_ChickenPal.webp">
-          </p>
-          <p>{{pal.workskills}}</p>
-          <ng-container *ngIf="pal.selected">
-            <p>{{pal.drops}}, 配種值：{{pal.combiRank}}</p>
-            <hr>
-            <p>{{pal.description}}</p>
-            <p>{{pal.partnerSkill}}</p>
-            <ng-container *ngIf="pal.mount">
-              <hr>
-              <p>{{pal.mount.type}}, 速度：{{pal.mount.speed}}</p>
-            </ng-container>
-          </ng-container>
-        </div>
-      </li>
-    </ul>
   </div>
 </div>
 <footer>
