@@ -94,7 +94,7 @@
         <li *ngFor="let skill of search.skillSearched;">
           <p [ngClass]="{'gold': skill.rarity == '金色','white':skill.rarity == '白色','red':skill.rarity == '紅色'}">
             {{skill.name}}
-            <!-- <lib-svg [src]="'./assets/mods/palworld/lv/lv'+skill.level+'.svg'"></lib-svg> -->
+            <!-- <lib-svg [src]="'./assets/palworld/lv/lv'+skill.level+'.svg'"></lib-svg> -->
           </p>
           <p>{{skill.effect}}</p>
         </li>

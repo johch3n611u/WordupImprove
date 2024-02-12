@@ -16,8 +16,8 @@ const routes: Routes = [
   { path: 'memory-cards', component: MemoryCardsComponent, pathMatch: 'full' },
   { path: 'rwd-table', component: RwdTableComponent, pathMatch: 'full' },
   { path: 'super-menu', component: SuperMenuComponent, pathMatch: 'full'},
-  { path: 'pal-tool', component: PalWorldMapLeafletComponent },
-  { path: 'en-word-hero', component: WordupImproveComponent },
+  { path: 'pal-tool', component: PalWorldMapLeafletComponent, pathMatch: 'full' },
+  { path: 'en-word-hero', component: WordupImproveComponent, pathMatch: 'full' },
 ];
 
 @NgModule({

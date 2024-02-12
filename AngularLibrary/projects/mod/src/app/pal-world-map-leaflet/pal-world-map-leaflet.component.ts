@@ -1,23 +1,13 @@
-// https://www.digitalocean.com/community/tutorials/angular-angular-and-leaflet
-// https://dowyuu.github.io/program/2021/03/22/Leaflet-note/
-// https://gamewith.net/palworld/43313
-// https://jsfiddle.net/newluck77/rk9v0uyo/
-// https://forum.gamer.com.tw/C.php?bsn=71458&snA=11
-// https://paldb.cc/tw/ 雕像網站
-// https://leafletjs.cn/
-// 配種 https://palworld.fandom.com/wiki/Breeding
-// https://palworld.gg/
-// APP https://forum.gamer.com.tw/C.php?bsn=71458&snA=1410
-// https://paldex.io/
-// 配種 101 https://forum.gamer.com.tw/C.php?bsn=71458&snA=1437
-// 配種 https://forum.gamer.com.tw/C.php?bsn=71458&snA=1385
-// 雕像大大巴哈 po https://forum.gamer.com.tw/C.php?bsn=71458&snA=1079&tnum=12
-// https://palwiki.io/
-
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import * as L from 'leaflet';
 import { BehaviorSubject, filter, map, take, tap } from 'rxjs';
+
+// https://www.npmjs.com/package/google-spreadsheet
+// https://ithelp.ithome.com.tw/articles/10234325
+import { GoogleSpreadsheet } from 'google-spreadsheet';
+import { JWT } from 'google-auth-library';
+
 
 @Component({
   selector: 'mod-pal-world-map-leaflet',
@@ -25,7 +15,7 @@ import { BehaviorSubject, filter, map, take, tap } from 'rxjs';
   styleUrls: ['./pal-world-map-leaflet.component.scss'],
 })
 export class PalWorldMapLeafletComponent {
-  palsInfoPath = './assets/mods/palworld';
+  palsInfoPath = './assets/palworld';
   palsInfo$ = new BehaviorSubject<any>([]);
   passiveSkills$ = new BehaviorSubject<any>([]);
   map: any;
@@ -101,7 +91,7 @@ export class PalWorldMapLeafletComponent {
     size: number = 30
   ) {
     return L.icon({
-      iconUrl: `./assets/mods/palworld/${fileDir}/${imgName}`,
+      iconUrl: `./assets/palworld/${fileDir}/${imgName}`,
       iconSize: [size, size], // icon 寬, 長
       shadowSize: [50, 64], // 陰影 寬, 長
       iconAnchor: [5, 5], // icon 中心偏移
@@ -115,11 +105,11 @@ export class PalWorldMapLeafletComponent {
   corner2 = L.latLng(1000, 1000);
   bounds = L.latLngBounds(this.corner1, this.corner2);
   defaultMap = L.imageOverlay(
-    './assets/mods/palworld/palpagos_islands.webp',
+    './assets/palworld/palpagos_islands.webp',
     this.bounds
   );
   levelsMap = L.imageOverlay(
-    './assets/mods/palworld/palpagos_islands_levels.webp',
+    './assets/palworld/palpagos_islands_levels.webp',
     this.bounds,
     {}
   );
