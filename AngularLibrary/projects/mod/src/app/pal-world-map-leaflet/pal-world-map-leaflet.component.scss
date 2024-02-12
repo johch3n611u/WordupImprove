@@ -124,7 +124,7 @@
         li {
           width: 44%;
           margin: 1rem;
-  
+
           .gold,
           .white,
           .red {
@@ -137,7 +137,7 @@
             max-width: 15rem;
             margin-bottom: 1rem;
           }
-  
+
           .gold {
             color: yellow;
             border-left: solid 0.5rem gold;
@@ -236,7 +236,6 @@ img {
     width: 50%;
     padding: 0 0.5rem;
   }
-
   .lowerLeft {
     width: 100% !important;
     position: relative;
@@ -350,15 +349,28 @@ footer {
   }
 }
 
+.hambuger-menu{
+  display: none;
+  cursor: pointer;
+  padding: 3px;
+  color: #FFF;
+  border: 1px solid #FFF;
+}
 
 @include LargeDevices {
 
 }
 
 @include MediumDevices {
-
 }
 
 @include SmallDevices {
-
+  .hambuger-menu{
+    display: block;
+  }
+  .left-side{
+    .navbar{
+      display: none;
+    }
+  }
 }

@@ -10,7 +10,7 @@ import { PalWorldMapLeafletComponent } from './pal-world-map-leaflet/pal-world-m
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  { path: '', component: WordupImproveComponent, pathMatch: 'full' },
+  { path: '', component: PalWorldMapLeafletComponent, pathMatch: 'full' },
   { path: 'sample', component: SampleComponent, pathMatch: 'full' },
   { path: 'dynamic-masonry', component: DynamicMasonryComponent, pathMatch: 'full' },
   { path: 'memory-cards', component: MemoryCardsComponent, pathMatch: 'full' },
