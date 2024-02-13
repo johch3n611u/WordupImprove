@@ -4,8 +4,10 @@
     </h2>
     <ul class="navbar">
       <li [ngClass]="{'navActive':lowerLeftDisplay == 'palMap'}" (click)="lowerLeftDisplay = 'palMap'">帕魯地圖</li>
-      <li [ngClass]="{'navActive':lowerLeftDisplay == 'passiveSkills'}" (click)="lowerLeftDisplay = 'passiveSkills'">被動技能清單</li>
-      <li [ngClass]="{'navActive':lowerLeftDisplay == 'serversList'}" (click)="lowerLeftDisplay = 'serversList'">伺服器清單</li>
+      <li [ngClass]="{'navActive':lowerLeftDisplay == 'passiveSkills'}" (click)="lowerLeftDisplay = 'passiveSkills'">
+        被動技能清單</li>
+      <li [ngClass]="{'navActive':lowerLeftDisplay == 'serversList'}" (click)="lowerLeftDisplay = 'serversList'">伺服器清單
+      </li>
       <li>帕魯守則 / 意見表單(建置中)</li>
       <li>配種表工具(建置中)</li>
       <li>多語系(建置中)</li>
@@ -14,17 +16,20 @@
     <ul class="mobile-navbar" *ngIf="mobileListActive">
       <li (click)="mobileListActive = !mobileListActive">X</li>
       <li [ngClass]="{'navActive':lowerLeftDisplay == 'palMap'}" (click)="lowerLeftDisplay = 'palMap'">帕魯地圖</li>
-      <li [ngClass]="{'navActive':lowerLeftDisplay == 'passiveSkills'}" (click)="lowerLeftDisplay = 'passiveSkills'">被動技能清單</li>
-      <li [ngClass]="{'navActive':lowerLeftDisplay == 'serversList'}" (click)="lowerLeftDisplay = 'serversList'">伺服器清單</li>
+      <li [ngClass]="{'navActive':lowerLeftDisplay == 'passiveSkills'}" (click)="lowerLeftDisplay = 'passiveSkills'">
+        被動技能清單</li>
+      <li [ngClass]="{'navActive':lowerLeftDisplay == 'serversList'}" (click)="lowerLeftDisplay = 'serversList'">伺服器清單
+      </li>
       <li>帕魯守則 / 意見表單(建置中)</li>
       <li>配種表工具(建置中)</li>
       <li>多語系(建置中)</li>
     </ul>
   </div>
   <div class="main-wrap">
-    <div class="wrap">
+    <div class="wrap" [style.display]="lowerLeftDisplay !== 'serversList' ? 'flex' : 'none'">
       <div class="left">
-        <div [style.position]="lowerLeftDisplay === 'passiveSkills'?'absolute':'relative'" class="map-container" id="map" [style.visibility]="lowerLeftDisplay === 'palMap' ? 'visible' : 'hidden'">
+        <div [style.position]="lowerLeftDisplay === 'passiveSkills'?'absolute':'relative'" class="map-container"
+          id="map" [style.visibility]="lowerLeftDisplay === 'palMap' ? 'visible' : 'hidden'">
         </div>
         <div [style.display]="lowerLeftDisplay === 'passiveSkills' ? 'block' : 'none'">
           <ul>
@@ -56,7 +61,7 @@
             [ngClass]="{ 'active': pal.selected}" [style.background]="pal.selected?pal.color:''">
             <img class="palImg" [style]="pal.selected?'height: 80px':'height: 40px'"
               [src]="'assets/palworld/pals/'+ pal.image" />
-            <div  >
+            <div>
               <p>No {{pal.number}}, {{pal.name}}, {{pal.elements}}屬性,食量:{{pal.food}}
               </p>
               <p>{{pal.workskills}}</p>
@@ -74,6 +79,41 @@
           </li>
         </ul>
       </div>
+    </div>
+    <div class="wrap" [style.display]="lowerLeftDisplay === 'serversList' ? 'block' : 'none'">
+      <ul>
+        <li>
+          <span></span>
+        </li>
+        <li *ngFor="let server of (serversList$ | async);">
+          <span></span>
+        </li>
+      </ul>
+
+      <table class="rwdTable">
+        <tbody>
+          <td></td>
+          <td data-th="伺服器名稱">伺服器名稱</td>
+          <td data-th="伺服器開放時間">伺服器開放時間</td>
+          <td data-th="連線位置">連線位置</td>
+          <td data-th="遊戲版本">遊戲版本</td>
+          <td data-th="其他">其他</td>
+        </tbody>
+        <tr *ngFor="let server of (serversList$ | async);">
+          <td>
+            <img *ngIf="server?.image1" [src]="server?.image1"/>
+            <img *ngIf="server?.image2" [src]="server?.image2"/>
+            <img *ngIf="server?.image3" [src]="server?.image3"/>
+            <!-- https://stackoverflow.com/questions/37927657/img-unsafe-value-used-in-a-resource-url-context -->
+            <iframe *ngIf="server?.video" width="420" height="345" [src]="domSanitizer.bypassSecurityTrustResourceUrl(server?.video)"></iframe>
+          </td>
+          <td data-th="伺服器名稱">{{server?.name}}</td>
+          <td data-th="伺服器開放時間">{{server?.openingTime}}</td>
+          <td data-th="連線位置">{{server?.ipLocation}}</td>
+          <td data-th="遊戲版本">{{server?.version}}</td>
+          <td data-th="其他">{{server?.other}}</td>
+        </tr>
+      </table>
     </div>
   </div>
 </div>

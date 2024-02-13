@@ -401,3 +401,69 @@ footer {
     }
   }
 }
+
+
+$breakpointMobile: 480px; // adjust to your needs
+
+.rwdTable {
+  margin: 1em 0;
+  min-width: 300px;
+  // 設置 min-width 的目的是為了避免以下問題：
+  // 文字內容過於擁擠：如果不設置 min-width，當螢幕變得較小時，文字可能會變得過於擁擠，行距變小，字母間距變窄，從而降低可讀性。
+  // 圖像失真：某些圖像可能具有固定的寬高比。當螢幕變得較小時，如果不設置 min-width，圖像可能會被壓縮或拉伸，導致圖像失真或變形。
+  // 元素重疊：在較小的螢幕上，如果不設置 min-width，元素可能會彼此重疊，導致使用者無法正確操作網站。
+
+  tr {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+
+  th {
+    display: none; // for accessibility, use a visually hidden method here instead! Thanks, reddit!   
+  }
+
+  td {
+    display: block;
+
+    &:first-child {
+      padding-top: .5em;
+    }
+
+    &:last-child {
+      padding-bottom: .5em;
+    }
+
+    &:before {
+      content: attr(data-th)": "; // 藉由這個與 html 串聯前綴
+      font-weight: bold;
+
+      // optional stuff to make it look nicer
+      width: 6.5em; // magic number :( adjust according to your own content
+      display: inline-block;
+      // end options
+
+      @media (min-width: $breakpointMobile) {
+        display: none;
+      }
+    }
+  }
+
+  th,
+  td {
+    text-align: left;
+
+    // 寬度大於等於 $breakpointMobile 時
+    @media (min-width: $breakpointMobile) {
+      display: table-cell;
+      padding: .25em .5em;
+
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+  }
+}
