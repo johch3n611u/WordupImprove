@@ -365,11 +365,15 @@ footer {
 }
 
 @include SmallDevices {
+  .wrap{
+    display: block;
+  }
   .hambuger-menu{
     display: block;
   }
   .left-side{
     .mobile-navbar{
+      transition: all 1s;
       top: 0;
       background-color: #FFF;
       z-index: 10000;
@@ -387,6 +391,7 @@ footer {
     }
     justify-content: space-between;
     .navbar{
+      transition: all 1s;
       display: none;
     }
   }

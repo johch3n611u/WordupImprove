@@ -16,6 +16,7 @@ export class PalWorldMapLeafletComponent {
   serversList$ = new BehaviorSubject<any>([]);
   map: any;
   lowerLeftDisplay = 'palMap';
+  mobileListActive = false;
 
   constructor(private httpClient: HttpClient) {
     // get the json of pals info
