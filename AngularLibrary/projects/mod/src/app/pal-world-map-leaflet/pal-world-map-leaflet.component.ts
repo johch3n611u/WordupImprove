@@ -2,9 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import * as L from 'leaflet';
 import { BehaviorSubject, combineLatest, filter, map, take, tap } from 'rxjs';
-
-
-
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'mod-pal-world-map-leaflet',
@@ -15,6 +13,7 @@ export class PalWorldMapLeafletComponent {
   palsInfoPath = './assets/palworld';
   palsInfo$ = new BehaviorSubject<any>([]);
   passiveSkills$ = new BehaviorSubject<any>([]);
+  serversList$ = new BehaviorSubject<any>([]);
   map: any;
   lowerLeftDisplay = 'palMap';
 
@@ -51,6 +50,16 @@ export class PalWorldMapLeafletComponent {
         this.passiveSkills$.next(res);
         this.search.skillSearched = JSON?.parse(JSON?.stringify(res));
       });
+    // serversList
+    // https://hsuan9522.medium.com/google-sheet-v4-api-efdec9a96bf3
+    this.httpClient
+      .get(
+        `https://sheets.googleapis.com/v4/spreadsheets/${environment?.googleSheet?.spreadsheetId}/values/ServicesList?key=${environment?.googleSheet?.apiKey}`
+      )
+      .pipe()
+      .subscribe((serversForm: any) => {
+        this.serversList$.next(serversForm);
+      });
   }
 
   ngAfterViewInit(): void {
@@ -58,25 +67,7 @@ export class PalWorldMapLeafletComponent {
     this.onMouseClick();
   }
 
-// https://hsuan9522.medium.com/google-sheet-v4-api-efdec9a96bf3
-  ngGetSheet():void{
-
-
-
-      this.httpClient.get(`${this.palsInfoPath}/original-voyage-414114-3e172b02ba6d.json`)
-      .pipe(take(1))
-      .subscribe((res: any) => {
-        let sheetId = '259556266';
-        this.httpClient
-        .get(`https://sheets.googleapis.com/v4/spreadsheets/1eK0KhJPdQZ-imQsWBs61DhV17EAOYdYvjJyNev_Vu_Y/values/ServicesList?key=AIzaSyBoL86-f3222VcYrvMPxO5fWiXZRe-RpRs`)
-        .pipe()
-        .subscribe((test: any) => {
-          console.log(test);
-        });
-
-      });
-  }
-  ngOnInit(): void {this.ngGetSheet();}
+  ngOnInit(): void {}
 
   // private initRealMap(): void {
   //   const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'

@@ -9,5 +9,9 @@ export const environment = {
     messagingSenderId: "234200635804",
     appId: "1:234200635804:web:de0f00e10e1c415270d059",
     measurementId: "G-08GR7BHCDD"
+  },
+  googleSheet: {
+    spreadsheetId: "1eK0KhJPdQZ-imQsWBs61DhV17EAOYdYvjJyNev_Vu_Y",
+    apiKey: "AIzaSyBoL86-f3222VcYrvMPxO5fWiXZRe-RpRs"
   }
 };
