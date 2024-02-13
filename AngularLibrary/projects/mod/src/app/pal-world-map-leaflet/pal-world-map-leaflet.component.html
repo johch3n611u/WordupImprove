@@ -5,7 +5,7 @@
     <ul class="navbar">
       <li [ngClass]="{'navActive':lowerLeftDisplay == 'palMap'}" (click)="lowerLeftDisplay = 'palMap'">帕魯地圖</li>
       <li [ngClass]="{'navActive':lowerLeftDisplay == 'passiveSkills'}" (click)="lowerLeftDisplay = 'passiveSkills'">被動技能清單</li>
-      <li>伺服器清單(建置中)</li>
+      <li [ngClass]="{'navActive':lowerLeftDisplay == 'serversList'}" (click)="lowerLeftDisplay = 'serversList'">伺服器清單</li>
       <li>帕魯守則 / 意見表單(建置中)</li>
       <li>配種表工具(建置中)</li>
       <li>多語系(建置中)</li>
@@ -14,7 +14,7 @@
     <ul class="mobile-navbar">
       <li [ngClass]="{'navActive':lowerLeftDisplay == 'palMap'}" (click)="lowerLeftDisplay = 'palMap'">帕魯地圖</li>
       <li [ngClass]="{'navActive':lowerLeftDisplay == 'passiveSkills'}" (click)="lowerLeftDisplay = 'passiveSkills'">被動技能清單</li>
-      <li>伺服器清單(建置中)</li>
+      <li [ngClass]="{'navActive':lowerLeftDisplay == 'serversList'}" (click)="lowerLeftDisplay = 'serversList'">伺服器清單</li>
       <li>帕魯守則 / 意見表單(建置中)</li>
       <li>配種表工具(建置中)</li>
       <li>多語系(建置中)</li>
