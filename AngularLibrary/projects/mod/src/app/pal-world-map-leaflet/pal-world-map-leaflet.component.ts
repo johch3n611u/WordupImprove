@@ -57,7 +57,7 @@ export class PalWorldMapLeafletComponent {
       .get(
         `https://sheets.googleapis.com/v4/spreadsheets/${environment?.googleSheet?.spreadsheetId}/values/ServicesList?key=${environment?.googleSheet?.apiKey}`
       )
-      .pipe()
+      .pipe(take(1))
       .subscribe((serversForm: any) => {
         this.serversList$.next(serversForm);
       });
