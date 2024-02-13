@@ -1,12 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import * as L from 'leaflet';
-import { BehaviorSubject, filter, map, take, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, filter, map, take, tap } from 'rxjs';
 
-// https://www.npmjs.com/package/google-spreadsheet
-// https://ithelp.ithome.com.tw/articles/10234325
-import { GoogleSpreadsheet } from 'google-spreadsheet';
-import { JWT } from 'google-auth-library';
+
 
 
 @Component({
@@ -61,7 +58,25 @@ export class PalWorldMapLeafletComponent {
     this.onMouseClick();
   }
 
-  ngOnInit(): void {}
+// https://hsuan9522.medium.com/google-sheet-v4-api-efdec9a96bf3
+  ngGetSheet():void{
+
+
+
+      this.httpClient.get(`${this.palsInfoPath}/original-voyage-414114-3e172b02ba6d.json`)
+      .pipe(take(1))
+      .subscribe((res: any) => {
+        let sheetId = '259556266';
+        this.httpClient
+        .get(`https://sheets.googleapis.com/v4/spreadsheets/1eK0KhJPdQZ-imQsWBs61DhV17EAOYdYvjJyNev_Vu_Y/values/ServicesList?key=AIzaSyBoL86-f3222VcYrvMPxO5fWiXZRe-RpRs`)
+        .pipe()
+        .subscribe((test: any) => {
+          console.log(test);
+        });
+
+      });
+  }
+  ngOnInit(): void {this.ngGetSheet();}
 
   // private initRealMap(): void {
   //   const baseMapURl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
