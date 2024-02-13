@@ -362,11 +362,16 @@ footer {
 }
 
 @include MediumDevices {
+  .wrap{
+    display: flex;
+  }
 }
 
 @include SmallDevices {
-  .wrap{
-    display: block;
+  .main-wrap{
+    .wrap{
+      display: block;
+    }
   }
   .hambuger-menu{
     display: block;
