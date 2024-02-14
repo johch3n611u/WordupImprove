@@ -4,6 +4,7 @@ import * as L from 'leaflet';
 import { BehaviorSubject, combineLatest, filter, map, take, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
+import { DeviceCheckService } from 'lib/public-api';
 
 @Component({
   selector: 'mod-pal-world-map-leaflet',
@@ -23,6 +24,7 @@ export class PalWorldMapLeafletComponent {
   constructor(
     private httpClient: HttpClient,
     public domSanitizer: DomSanitizer,
+    public deviceCheckService: DeviceCheckService,
   ) {
     // get the json of pals info
     this.httpClient
