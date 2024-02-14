@@ -89,10 +89,17 @@
       <div class="right">
         <ul class="serversList">
           <li *ngFor="let server of (serversList$ | async);">
-            <!-- <swiper-container navigation="true" pagination="true" pagination-clickable="true">
+            <swiper-container navigation="true" pagination="true" pagination-clickable="true">
               <swiper-slide>
-            </swiper-slide> -->
-            <lib-carousel></lib-carousel>
+                <img src="https://picsum.photos/300/200" />
+              </swiper-slide>
+              <swiper-slide>
+                <img src="https://picsum.photos/300/200" />
+              </swiper-slide>
+              <swiper-slide>
+                <img style="height: unset;width: 30%;" *ngIf="server?.image1" [src]="server?.image1" />
+              </swiper-slide>
+            </swiper-container>
             <h3>{{server?.name}}</h3> <span>{{server?.version}}</span>
             <p>{{server?.openingTime}} | {{server?.ipLocation}} </p>
             <p [innerHTML]="server?.other"></p>
