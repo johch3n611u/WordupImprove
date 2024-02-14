@@ -1,3 +1,6 @@
+<ng-container *ngIf="!deviceCheckService.isMobile else mobile"></ng-container>
+<ng-template #mobile></ng-template>
+
 <div class="main-container">
   <div class="left-side">
     <h2 class="logo">PalWorld
@@ -89,19 +92,30 @@
       <div class="right">
         <ul class="serversList">
           <li *ngFor="let server of (serversList$ | async);">
-            <!-- <swiper-container navigation="true" pagination="true" pagination-clickable="true">
+            <swiper-container  navigation="true" pagination="true" pagination-clickable="true" style="width:300px;height: 300px;" autoplay-delay="2500" >
               <swiper-slide>
+<<<<<<< HEAD
             </swiper-slide> -->
             <!-- <lib-carousel></lib-carousel> -->
+=======
+                <img *ngIf="server?.image1" [src]="server?.image1" />
+              </swiper-slide>
+              <swiper-slide>
+                <img *ngIf="server?.image2" [src]="server?.image2" />
+              </swiper-slide>
+              <swiper-slide>
+                <img *ngIf="server?.image3" [src]="server?.image3" />
+              </swiper-slide>
+              <swiper-slide>
+                <!-- https://stackoverflow.com/questions/37927657/img-unsafe-value-used-in-a-resource-url-context -->
+                <iframe *ngIf="server?.video" width="300"
+                [src]="domSanitizer.bypassSecurityTrustResourceUrl(server?.video)"></iframe>
+              </swiper-slide>
+            </swiper-container>
+>>>>>>> 192176f9de4939648e04817c2bb66b34694ed1bf
             <h3>{{server?.name}}</h3> <span>{{server?.version}}</span>
             <p>{{server?.openingTime}} | {{server?.ipLocation}} </p>
             <p [innerHTML]="server?.other"></p>
-            <!-- <img style="height: unset;width: 30%;" *ngIf="server?.image1" [src]="server?.image1" />
-              <img style="height: unset;width: 30%;" *ngIf="server?.image2" [src]="server?.image2" />
-              <img style="height: unset;width: 30%;" *ngIf="server?.image3" [src]="server?.image3" /> -->
-              <!-- https://stackoverflow.com/questions/37927657/img-unsafe-value-used-in-a-resource-url-context -->
-              <!-- <iframe *ngIf="server?.video" width="600" height="400"
-                [src]="domSanitizer.bypassSecurityTrustResourceUrl(server?.video)"></iframe> -->
           </li>
         </ul>
       </div>

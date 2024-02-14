@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 
 import { SuperMenuComponent } from './super-menu/super-menu.component';
 
@@ -49,6 +49,7 @@ import { HomeComponent } from './home/home.component';
     SampleModule,
     LibraryModule,
     HighlightPipeModule
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
