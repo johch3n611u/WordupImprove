@@ -18,10 +18,10 @@
     <i class="hambuger-menu" (click)="mobileListActive = !mobileListActive">=</i>
     <ul class="mobile-navbar" *ngIf="mobileListActive">
       <li (click)="mobileListActive = !mobileListActive">X</li>
-      <li [ngClass]="{'navActive':lowerLeftDisplay == 'palMap'}" (click)="lowerLeftDisplay = 'palMap'">帕魯地圖</li>
-      <li [ngClass]="{'navActive':lowerLeftDisplay == 'passiveSkills'}" (click)="lowerLeftDisplay = 'passiveSkills'">
+      <li [ngClass]="{'navActive':lowerLeftDisplay == 'palMap'}" (click)="lowerLeftDisplay = 'palMap';mobileListActive = !mobileListActive">帕魯地圖</li>
+      <li [ngClass]="{'navActive':lowerLeftDisplay == 'passiveSkills'}" (click)="lowerLeftDisplay = 'passiveSkills';mobileListActive = !mobileListActive">
         被動技能清單</li>
-      <li [ngClass]="{'navActive':lowerLeftDisplay == 'serversList'}" (click)="lowerLeftDisplay = 'serversList'">伺服器清單
+      <li [ngClass]="{'navActive':lowerLeftDisplay == 'serversList'}" (click)="lowerLeftDisplay = 'serversList';mobileListActive = !mobileListActive">伺服器清單
       </li>
       <li>帕魯守則 / 意見表單(建置中)</li>
       <li>配種表工具(建置中)</li>
@@ -29,7 +29,7 @@
     </ul>
   </div>
   <div class="main-wrap">
-    <div class="wrap" [style.display]="lowerLeftDisplay !== 'serversList' ? 'flex' : 'none'">
+    <div class="wrap" [style.display]="lowerLeftDisplay !== 'serversList' ? (deviceCheckService.isMobile?'block':'flex') : 'none'">
       <div class="left">
         <div [style.position]="lowerLeftDisplay === 'passiveSkills'?'absolute':'relative'" class="map-container"
           id="map" [style.visibility]="lowerLeftDisplay === 'palMap' ? 'visible' : 'hidden'">
@@ -50,7 +50,7 @@
           </ul>
         </div>
       </div>
-      <div class="right">
+      <div class="right" *ngIf="!(lowerLeftDisplay=='passiveSkills'&&deviceCheckService.isMobile)">
         <div class="upperRight">
           <input autocomplete="new-password" type="text" placeholder="請雙擊查詢 Enter" [(ngModel)]="search.palKeyword"
             (change)="searchPals()">
@@ -83,7 +83,7 @@
         </ul>
       </div>
     </div>
-    <div class="wrap" [style.display]="lowerLeftDisplay === 'serversList' ? 'flex' : 'none'">
+    <div class="wrap" [style.display]="lowerLeftDisplay === 'serversList' ? (deviceCheckService.isMobile?'block':'flex') : 'none'">
       <div class="left">
         <div class="addYourServer">
           <a href="https://forms.gle/DM1fKvCPAUU5nGXk8" target="_blank">+ Add your Server</a>

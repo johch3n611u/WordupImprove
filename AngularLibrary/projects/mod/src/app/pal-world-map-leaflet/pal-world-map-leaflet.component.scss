@@ -389,6 +389,16 @@ swiper-slide {
   .main-wrap {
     .wrap {
       display: block;
+      .left{
+        height: 50% !important;
+        margin-bottom: 15px;
+      }
+      .right{
+        width: 100%;
+        .pals{
+          max-height: 35vh;
+        }
+      }
     }
   }
   .hambuger-menu {
