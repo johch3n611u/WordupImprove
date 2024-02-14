@@ -18,13 +18,13 @@ export class PalWorldMapLeafletComponent {
   serversList$ = new BehaviorSubject<any>([]);
   map: any;
   // lowerLeftDisplay = 'palMap';
-  lowerLeftDisplay = 'palMap';
+  lowerLeftDisplay = 'serversList';
   mobileListActive = false;
 
   constructor(
     private httpClient: HttpClient,
     public domSanitizer: DomSanitizer,
-    public deviceCheckService: DeviceCheckService,
+    public deviceCheckService: DeviceCheckService
   ) {
     // get the json of pals info
     this.httpClient
@@ -73,7 +73,7 @@ export class PalWorldMapLeafletComponent {
             let objString = '{';
             for (let j = 0; j < header?.length; j++) {
               objString += `"${header[j]}": "${
-                serversForm?.values[i][j].replace(/\n/g,'<br>') ?? ''
+                serversForm?.values[i][j].replace(/\n/g, '<br>') ?? ''
               }"`;
               if (j !== header?.length - 1) {
                 objString += ',';

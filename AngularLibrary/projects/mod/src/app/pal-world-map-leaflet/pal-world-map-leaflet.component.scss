@@ -376,7 +376,8 @@ swiper-slide {
   }
 }
 
-.swiper-button-next::after, .swiper-button-prev::after {
+.swiper-button-next::after,
+.swiper-button-prev::after {
   content: "";
 }
 
@@ -390,13 +391,13 @@ swiper-slide {
   .main-wrap {
     .wrap {
       display: block;
-      .left{
+      .left {
         height: 50% !important;
         margin-bottom: 15px;
       }
-      .right{
+      .right {
         width: 100%;
-        .pals{
+        .pals {
           max-height: 35vh;
         }
       }
