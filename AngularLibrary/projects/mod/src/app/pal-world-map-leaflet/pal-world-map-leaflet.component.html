@@ -94,10 +94,6 @@
           <li *ngFor="let server of (serversList$ | async);">
             <swiper-container  navigation="true" pagination="true" pagination-clickable="true" style="width:300px;height: 300px;" autoplay-delay="2500" >
               <swiper-slide>
-<<<<<<< HEAD
-            </swiper-slide> -->
-            <!-- <lib-carousel></lib-carousel> -->
-=======
                 <img *ngIf="server?.image1" [src]="server?.image1" />
               </swiper-slide>
               <swiper-slide>
@@ -112,7 +108,6 @@
                 [src]="domSanitizer.bypassSecurityTrustResourceUrl(server?.video)"></iframe>
               </swiper-slide>
             </swiper-container>
->>>>>>> 192176f9de4939648e04817c2bb66b34694ed1bf
             <h3>{{server?.name}}</h3> <span>{{server?.version}}</span>
             <p>{{server?.openingTime}} | {{server?.ipLocation}} </p>
             <p [innerHTML]="server?.other"></p>
