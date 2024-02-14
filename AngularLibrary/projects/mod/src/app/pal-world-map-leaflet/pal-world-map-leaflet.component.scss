@@ -3,23 +3,22 @@
   flex-direction: column;
 }
 
-
-.main-container{
+.main-container {
   max-width: 100%;
   // display: flex;
 }
-.left-side{
+.left-side {
   display: flex;
   align-items: center;
   background-color: #272a30;
-  .logo{
-    color: #FFF;
+  .logo {
+    color: #fff;
     font-size: 32px;
     padding: 15px;
   }
-  .navbar{
+  .navbar {
     display: flex;
-    color: #FFF;
+    color: #fff;
     font-size: 1.3rem;
     li {
       font-weight: 700;
@@ -27,7 +26,8 @@
       font-size: 16px;
       margin: 0px 10px;
       padding: 5px 15px;
-      &:hover,&.navActive {
+      &:hover,
+      &.navActive {
         border-left: 5px solid rgb(255, 232, 141);
         color: rgb(255, 232, 141);
         cursor: pointer;
@@ -35,18 +35,19 @@
     }
   }
 }
-.main-wrap{
+.main-wrap {
   width: 100%;
   display: flex;
-  .wrap{
+  overflow: auto;
+  .wrap {
     margin: 15px;
     margin-top: 1.3rem;
     display: flex;
     justify-content: space-between;
     width: 100%;
     height: 85vh;
-    .right{
-      .filterElementsBox{
+    .right {
+      .filterElementsBox {
         display: flex;
         flex-wrap: wrap;
         margin: 0.5rem 0;
@@ -63,19 +64,19 @@
         }
       }
       width: 55%;
-      .pals{
+      .pals {
         padding: 10px;
         border: 1px solid #272a30;
         max-height: 55%;
         overflow-y: scroll;
-        li{
-          div{
+        li {
+          div {
             margin-left: 1rem;
             padding: 0.25rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            p{
+            p {
               padding: 0.25rem 0;
             }
           }
@@ -92,7 +93,7 @@
           }
         }
       }
-      input{
+      input {
         font-size: 16px;
         height: 20px;
         padding: 10px;
@@ -100,8 +101,8 @@
         border-radius: 50px;
       }
     }
-    .left{
-      ul{
+    .left {
+      ul {
         display: flex;
         flex-wrap: wrap;
       }
@@ -168,14 +169,14 @@
         }
       }
       margin-right: 1rem;
-      width: 100%!important;
-      height: 100%!important;
-      .map-container{
+      width: 100% !important;
+      height: 100% !important;
+      .map-container {
         height: 100%;
         width: 98%;
         background-color: rgb(16, 37, 57);
         position: relative;
-        outline-style: none
+        outline-style: none;
       }
     }
   }
@@ -326,7 +327,6 @@ img {
   }
 }
 
-
 .active {
   background-color: cornsilk;
   cursor: pointer;
@@ -338,7 +338,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 1rem;
+  padding: 0 1rem;
   line-height: 2rem;
   nav {
     display: flex;
@@ -349,45 +349,55 @@ footer {
   }
 }
 
-.hambuger-menu{
+.hambuger-menu {
   display: none;
   cursor: pointer;
   padding: 3px;
-  color: #FFF;
-  border: 1px solid #FFF;
+  color: #fff;
+  border: 1px solid #fff;
+}
+
+.serversList {
+  li {
+    background-color: rgba(255, 255, 255, 0.999);
+    padding: 24px;
+    border-radius: 6px;
+    box-shadow: 2px 2px 8px 1px rgba(0, 0, 0, 0.05);
+    margin-bottom: 12px;
+    display: flex;
+  }
 }
 
 @include LargeDevices {
-
 }
 
 @include MediumDevices {
-  .wrap{
+  .wrap {
     display: flex;
   }
 }
 
 @include SmallDevices {
-  .main-wrap{
-    .wrap{
+  .main-wrap {
+    .wrap {
       display: block;
     }
   }
-  .hambuger-menu{
+  .hambuger-menu {
     display: block;
   }
-  .left-side{
-    .mobile-navbar{
+  .left-side {
+    .mobile-navbar {
       transition: all 1s;
       top: 0;
-      background-color: #FFF;
+      background-color: #fff;
       z-index: 10000;
       position: fixed;
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
-      li{
+      li {
         text-align: center;
         width: 100%;
         border-bottom: 1px solid black;
@@ -395,75 +405,9 @@ footer {
       }
     }
     justify-content: space-between;
-    .navbar{
+    .navbar {
       transition: all 1s;
       display: none;
-    }
-  }
-}
-
-
-$breakpointMobile: 480px; // adjust to your needs
-
-.rwdTable {
-  margin: 1em 0;
-  min-width: 300px;
-  // 設置 min-width 的目的是為了避免以下問題：
-  // 文字內容過於擁擠：如果不設置 min-width，當螢幕變得較小時，文字可能會變得過於擁擠，行距變小，字母間距變窄，從而降低可讀性。
-  // 圖像失真：某些圖像可能具有固定的寬高比。當螢幕變得較小時，如果不設置 min-width，圖像可能會被壓縮或拉伸，導致圖像失真或變形。
-  // 元素重疊：在較小的螢幕上，如果不設置 min-width，元素可能會彼此重疊，導致使用者無法正確操作網站。
-
-  tr {
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-  }
-
-  th {
-    display: none; // for accessibility, use a visually hidden method here instead! Thanks, reddit!   
-  }
-
-  td {
-    display: block;
-
-    &:first-child {
-      padding-top: .5em;
-    }
-
-    &:last-child {
-      padding-bottom: .5em;
-    }
-
-    &:before {
-      content: attr(data-th)": "; // 藉由這個與 html 串聯前綴
-      font-weight: bold;
-
-      // optional stuff to make it look nicer
-      width: 6.5em; // magic number :( adjust according to your own content
-      display: inline-block;
-      // end options
-
-      @media (min-width: $breakpointMobile) {
-        display: none;
-      }
-    }
-  }
-
-  th,
-  td {
-    text-align: left;
-
-    // 寬度大於等於 $breakpointMobile 時
-    @media (min-width: $breakpointMobile) {
-      display: table-cell;
-      padding: .25em .5em;
-
-      &:first-child {
-        padding-left: 0;
-      }
-
-      &:last-child {
-        padding-right: 0;
-      }
     }
   }
 }

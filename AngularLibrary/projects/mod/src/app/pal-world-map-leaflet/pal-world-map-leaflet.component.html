@@ -80,41 +80,31 @@
         </ul>
       </div>
     </div>
-    <div class="wrap" [style.display]="lowerLeftDisplay === 'serversList' ? 'block' : 'none'">
+    <div class="wrap" [style.display]="lowerLeftDisplay === 'serversList' ? 'flex' : 'none'">
       <div class="left">
         <div class="addYourServer">
           <a href="https://forms.gle/DM1fKvCPAUU5nGXk8" target="_blank">+ Add your Server</a>
         </div>
       </div>
       <div class="right">
-        <table class="rwdTable">
-          <tbody>
-            <td></td>
-            <td data-th="伺服器名稱">伺服器名稱</td>
-            <td data-th="伺服器開放時間">伺服器開放時間</td>
-            <td data-th="連線位置">連線位置</td>
-            <td data-th="遊戲版本">遊戲版本</td>
-            <td data-th="其他">其他</td>
-          </tbody>
-          <tr *ngFor="let server of (serversList$ | async);">
-            <td style="width: 15%;">
-              <img style="height: unset;width: 30%;" *ngIf="server?.image1" [src]="server?.image1" />
+        <ul class="serversList">
+          <li *ngFor="let server of (serversList$ | async);">
+            <!-- <swiper-container navigation="true" pagination="true" pagination-clickable="true">
+              <swiper-slide>
+            </swiper-slide> -->
+            <lib-carousel></lib-carousel>
+            <h3>{{server?.name}}</h3> <span>{{server?.version}}</span>
+            <p>{{server?.openingTime}} | {{server?.ipLocation}} </p>
+            <p [innerHTML]="server?.other"></p>
+            <!-- <img style="height: unset;width: 30%;" *ngIf="server?.image1" [src]="server?.image1" />
               <img style="height: unset;width: 30%;" *ngIf="server?.image2" [src]="server?.image2" />
-              <img style="height: unset;width: 30%;" *ngIf="server?.image3" [src]="server?.image3" />
+              <img style="height: unset;width: 30%;" *ngIf="server?.image3" [src]="server?.image3" /> -->
               <!-- https://stackoverflow.com/questions/37927657/img-unsafe-value-used-in-a-resource-url-context -->
-              <iframe *ngIf="server?.video" width="600" height="400"
-                [src]="domSanitizer.bypassSecurityTrustResourceUrl(server?.video)"></iframe>
-            </td>
-            <td data-th="伺服器名稱" style="width: 5%;">{{server?.name}}</td>
-            <td data-th="伺服器開放時間" style="width: 5%;">{{server?.openingTime}}</td>
-            <td data-th="連線位置" style="width: 5%;">{{server?.ipLocation}}</td>
-            <td data-th="遊戲版本" style="width: 5%;">{{server?.version}}</td>
-            <td data-th="其他" [innerHTML]="server?.other" style="width: 20%;"></td>
-          </tr>
-        </table>
+              <!-- <iframe *ngIf="server?.video" width="600" height="400"
+                [src]="domSanitizer.bypassSecurityTrustResourceUrl(server?.video)"></iframe> -->
+          </li>
+        </ul>
       </div>
-
-
     </div>
   </div>
 </div>
