@@ -81,39 +81,40 @@
       </div>
     </div>
     <div class="wrap" [style.display]="lowerLeftDisplay === 'serversList' ? 'block' : 'none'">
-      <ul>
-        <li>
-          <span></span>
-        </li>
-        <li *ngFor="let server of (serversList$ | async);">
-          <span></span>
-        </li>
-      </ul>
+      <div class="left">
+        <div class="addYourServer">
+          <a href="https://forms.gle/DM1fKvCPAUU5nGXk8" target="_blank">+ Add your Server</a>
+        </div>
+      </div>
+      <div class="right">
+        <table class="rwdTable">
+          <tbody>
+            <td></td>
+            <td data-th="伺服器名稱">伺服器名稱</td>
+            <td data-th="伺服器開放時間">伺服器開放時間</td>
+            <td data-th="連線位置">連線位置</td>
+            <td data-th="遊戲版本">遊戲版本</td>
+            <td data-th="其他">其他</td>
+          </tbody>
+          <tr *ngFor="let server of (serversList$ | async);">
+            <td style="width: 15%;">
+              <img style="height: unset;width: 30%;" *ngIf="server?.image1" [src]="server?.image1" />
+              <img style="height: unset;width: 30%;" *ngIf="server?.image2" [src]="server?.image2" />
+              <img style="height: unset;width: 30%;" *ngIf="server?.image3" [src]="server?.image3" />
+              <!-- https://stackoverflow.com/questions/37927657/img-unsafe-value-used-in-a-resource-url-context -->
+              <iframe *ngIf="server?.video" width="600" height="400"
+                [src]="domSanitizer.bypassSecurityTrustResourceUrl(server?.video)"></iframe>
+            </td>
+            <td data-th="伺服器名稱" style="width: 5%;">{{server?.name}}</td>
+            <td data-th="伺服器開放時間" style="width: 5%;">{{server?.openingTime}}</td>
+            <td data-th="連線位置" style="width: 5%;">{{server?.ipLocation}}</td>
+            <td data-th="遊戲版本" style="width: 5%;">{{server?.version}}</td>
+            <td data-th="其他" [innerHTML]="server?.other" style="width: 20%;"></td>
+          </tr>
+        </table>
+      </div>
 
-      <table class="rwdTable">
-        <tbody>
-          <td></td>
-          <td data-th="伺服器名稱">伺服器名稱</td>
-          <td data-th="伺服器開放時間">伺服器開放時間</td>
-          <td data-th="連線位置">連線位置</td>
-          <td data-th="遊戲版本">遊戲版本</td>
-          <td data-th="其他">其他</td>
-        </tbody>
-        <tr *ngFor="let server of (serversList$ | async);">
-          <td>
-            <img *ngIf="server?.image1" [src]="server?.image1"/>
-            <img *ngIf="server?.image2" [src]="server?.image2"/>
-            <img *ngIf="server?.image3" [src]="server?.image3"/>
-            <!-- https://stackoverflow.com/questions/37927657/img-unsafe-value-used-in-a-resource-url-context -->
-            <iframe *ngIf="server?.video" width="420" height="345" [src]="domSanitizer.bypassSecurityTrustResourceUrl(server?.video)"></iframe>
-          </td>
-          <td data-th="伺服器名稱">{{server?.name}}</td>
-          <td data-th="伺服器開放時間">{{server?.openingTime}}</td>
-          <td data-th="連線位置">{{server?.ipLocation}}</td>
-          <td data-th="遊戲版本">{{server?.version}}</td>
-          <td data-th="其他">{{server?.other}}</td>
-        </tr>
-      </table>
+
     </div>
   </div>
 </div>

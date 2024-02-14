@@ -16,7 +16,8 @@ export class PalWorldMapLeafletComponent {
   passiveSkills$ = new BehaviorSubject<any>([]);
   serversList$ = new BehaviorSubject<any>([]);
   map: any;
-  lowerLeftDisplay = 'palMap';
+  // lowerLeftDisplay = 'palMap';
+  lowerLeftDisplay = 'serversList';
   mobileListActive = false;
 
   constructor(
@@ -63,14 +64,14 @@ export class PalWorldMapLeafletComponent {
       )
       .pipe(take(1))
       .subscribe((serversForm: any) => {
+        let arrString = '[';
         try {
           let header = serversForm?.values.shift();
-          let arrString = '[';
           for (let i = 0; i < serversForm?.values?.length; i++) {
             let objString = '{';
             for (let j = 0; j < header?.length; j++) {
               objString += `"${header[j]}": "${
-                serversForm?.values[i][j] ?? ''
+                serversForm?.values[i][j].replace(/\n/g,'<br>') ?? ''
               }"`;
               if (j !== header?.length - 1) {
                 objString += ',';
@@ -83,11 +84,13 @@ export class PalWorldMapLeafletComponent {
             arrString += objString;
           }
           arrString += ']';
-
+          console.log(arrString);
           let serversList = JSON.parse(arrString);
           console.log('serversList', serversList);
           this.serversList$.next(serversList);
         } catch (err) {
+          console.log(serversForm);
+          // console.log(arrString);
           console.error(err);
         }
       });
