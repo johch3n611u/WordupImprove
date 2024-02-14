@@ -372,9 +372,6 @@ footer {
 }
 
 @include MediumDevices {
-  .wrap {
-    display: flex;
-  }
 }
 
 @include SmallDevices {
