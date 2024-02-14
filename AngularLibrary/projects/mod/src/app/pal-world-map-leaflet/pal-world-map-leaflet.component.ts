@@ -18,7 +18,7 @@ export class PalWorldMapLeafletComponent {
   serversList$ = new BehaviorSubject<any>([]);
   map: any;
   // lowerLeftDisplay = 'palMap';
-  lowerLeftDisplay = 'serversList';
+  lowerLeftDisplay = 'palMap';
   mobileListActive = false;
 
   constructor(
