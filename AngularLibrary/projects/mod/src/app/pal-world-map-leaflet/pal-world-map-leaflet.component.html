@@ -33,7 +33,7 @@
       [style.display]="lowerLeftDisplay !== 'serversList' ? (deviceCheckService.isMobile?'block':'flex') : 'none'">
       <div class="left">
         <div [style.position]="lowerLeftDisplay === 'passiveSkills'?'absolute':'relative'" class="map-container"
-          id="map" [style.visibility]="lowerLeftDisplay === 'palMap' ? 'visible' : 'hidden'">
+          id="map" [style.width]="lowerLeftDisplay === 'palMap' ? '98%' : '0%'">
         </div>
         <div [style.display]="lowerLeftDisplay === 'passiveSkills' ? 'block' : 'none'">
           <ul>

@@ -5,8 +5,13 @@
 
 .main-container {
   max-width: 100%;
+  padding-top: 5rem;
 }
 .left-side {
+  z-index: 10000;
+  top: 0;
+  position: fixed;
+  width: 100%;
   display: flex;
   align-items: center;
   background-color: #272a30;
@@ -139,13 +144,13 @@
           }
 
           .gold {
-            color: yellow;
+            color: rgb(255, 232, 141);
             border-left: solid 0.5rem gold;
             border-top: solid 2px gold;
             border-right: solid 2px gold;
             border-bottom: solid 2px gold;
             text-shadow: gold 0px 0px 6px;
-            background-color: rgb(219, 219, 219);
+            background-color: black;
           }
           .white {
             color: gainsboro;
@@ -269,12 +274,12 @@ img {
         }
 
         .gold {
-          color: yellow;
-          border-left: solid 0.5rem gold;
-          border-top: solid 2px gold;
-          border-right: solid 2px gold;
-          border-bottom: solid 2px gold;
-          text-shadow: gold 0px 0px 6px;
+          color: rgb(129, 103, 0);
+          border-left: solid 0.5rem rgb(255, 232, 141);
+          border-top: solid 2px rgb(255, 232, 141);
+          border-right: solid 2px rgb(255, 232, 141);
+          border-bottom: solid 2px rgb(255, 232, 141);
+          text-shadow: rgb(255, 232, 141) 0px 0px 6px;
           background-color: rgb(219, 219, 219);
         }
         .white {
@@ -310,7 +315,7 @@ img {
         align-items: center;
 
         &:hover {
-          background-color: rgb(255, 232, 141);
+          background-color: rgb(253, 232, 141);
           cursor: pointer;
         }
 
@@ -334,6 +339,8 @@ img {
 }
 
 footer {
+  color: #fff;
+  background-color: #272a30;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -415,6 +422,19 @@ swiper-slide {
       .left {
         height: 50% !important;
         margin-bottom: 15px;
+        .passiveSkills{
+          margin-top: 1rem;
+          justify-content: space-around;
+          li{
+            width: 39%;
+            .gold,
+            .white,
+            .red {
+              font-size: 1rem;
+              border-radius: 5px;
+            }
+          }
+        }
       }
       .right {
         width: 100%;
