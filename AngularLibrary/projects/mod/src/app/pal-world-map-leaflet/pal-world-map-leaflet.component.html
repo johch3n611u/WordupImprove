@@ -90,9 +90,9 @@
           <a href="https://forms.gle/DM1fKvCPAUU5nGXk8" target="_blank">+ Add your Server</a>
         </div>
         <ul class="serversList">
-          <li *ngFor="let server of (serversList$ | async);">
-            <swiper-container navigation="true" pagination="true" pagination-clickable="true"
-              style="width:300px;height: 300px;" autoplay-delay="2500">
+          <ng-container *ngIf="(serversList$ | async)?.length !== 0 else noServer">
+            <li *ngFor="let server of (serversList$ | async);">
+            <swiper-container navigation="true" pagination="true" pagination-clickable="true" autoplay-delay="2500">
               <swiper-slide>
                 <img *ngIf="server?.image1" [src]="server?.image1" />
               </swiper-slide>
@@ -111,7 +111,13 @@
             <h3>{{server?.name}}</h3> <span>{{server?.version}}</span>
             <p>{{server?.openingTime}} | {{server?.ipLocation}} </p>
             <p [innerHTML]="server?.other"></p>
-          </li>
+            </li>
+          </ng-container>
+          <ng-template #noServer>
+            <li style="display:flex;align-items: center;justify-content: center;font-size: 2rem;">
+              目前暫無伺服器歡迎投稿!!!!
+            </li>
+          </ng-template>
         </ul>
       </div>
     </div>

@@ -1,6 +1,11 @@
 :host {
   display: flex;
   flex-direction: column;
+
+  // https://swiperjs.com/swiper-api
+  --swiper-navigation-color: #fff !important;
+  --swiper-pagination-color: #fff !important;
+  --swiper-navigation-size: 2px !important;
 }
 
 .main-container {
@@ -365,6 +370,7 @@ footer {
 }
 
 .serversList {
+  margin-top: 1rem;
   li {
     background-color: rgba(255, 255, 255, 0.999);
     padding: 24px;
@@ -401,16 +407,20 @@ footer {
   max-width: 50rem;
 }
 
-swiper-slide {
-  img {
-    width: 100%;
-    height: auto;
+swiper-container {
+  width:200px;
+  swiper-slide {
+    img {
+      width: 100%;
+      height: auto;
+    }
   }
-}
-
-.swiper-button-next::after,
-.swiper-button-prev::after {
-  content: "";
+  
+  .swiper-button-next::after,
+  .swiper-button-prev::after {
+    content: "";
+    color: #fff !important;
+  }
 }
 
 @include LargeDevices {
@@ -474,5 +484,8 @@ swiper-slide {
       transition: all 1s;
       display: none;
     }
+  }
+  .addYourServer > a {
+    width: 100%;
   }
 }
