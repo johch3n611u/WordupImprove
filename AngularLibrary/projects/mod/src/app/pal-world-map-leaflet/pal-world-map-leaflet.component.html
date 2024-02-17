@@ -92,7 +92,7 @@
         <ul class="serversList">
           <ng-container *ngIf="(serversList$ | async)?.length !== 0 else noServer">
             <li *ngFor="let server of (serversList$ | async);">
-            <swiper-container navigation="true" pagination="true" pagination-clickable="true" autoplay-delay="2500">
+            <swiper-container navigation="false" pagination="true" pagination-clickable="true" autoplay-delay="2500">
               <swiper-slide>
                 <img *ngIf="server?.image1" [src]="server?.image1" />
               </swiper-slide>
@@ -108,10 +108,30 @@
                   [src]="domSanitizer.bypassSecurityTrustResourceUrl(server?.video)"></iframe>
               </swiper-slide>
             </swiper-container>
-            <h3>{{server?.name}}</h3> <span>{{server?.version}}</span>
-            <p>{{server?.openingTime}} | {{server?.ipLocation}} </p>
+            <div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Server Name</th>
+                    <th>Version</th>
+                    <th>Available Time</th>
+                    <th>Host</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>{{server?.name}}</th>
+                    <td>{{server?.version}}</td>
+                    <td>{{server?.openingTime}} </td>
+                    <td>{{server?.ipLocation}}</td>
+                  </tr>
+                </tbody>
+              </table>
+
             <p [innerHTML]="server?.other"></p>
-            </li>
+
+            </div>
+                        </li>
           </ng-container>
           <ng-template #noServer>
             <li style="display:flex;align-items: center;justify-content: center;font-size: 2rem;">
