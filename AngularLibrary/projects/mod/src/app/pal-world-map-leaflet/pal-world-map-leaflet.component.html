@@ -86,52 +86,52 @@
     </div>
     <div style="width: 100%;" [style.display]="lowerLeftDisplay === 'serversList' ? 'block' : 'none'">
       <div class="container">
-                <div class="addYourServer">
+        <div class="addYourServer">
           <a href="https://forms.gle/DM1fKvCPAUU5nGXk8" target="_blank">+ Add your Server</a>
         </div>
         <ul class="serversList">
           <ng-container *ngIf="(serversList$ | async)?.length !== 0 else noServer">
             <li *ngFor="let server of (serversList$ | async);">
-            <swiper-container navigation="false" pagination="true" pagination-clickable="true" autoplay-delay="2500">
-              <swiper-slide>
-                <img *ngIf="server?.image1" [src]="server?.image1" />
-              </swiper-slide>
-              <swiper-slide>
-                <img *ngIf="server?.image2" [src]="server?.image2" />
-              </swiper-slide>
-              <swiper-slide>
-                <img *ngIf="server?.image3" [src]="server?.image3" />
-              </swiper-slide>
-              <swiper-slide>
-                <!-- https://stackoverflow.com/questions/37927657/img-unsafe-value-used-in-a-resource-url-context -->
-                <iframe *ngIf="server?.video" width="300"
-                  [src]="domSanitizer.bypassSecurityTrustResourceUrl(server?.video)"></iframe>
-              </swiper-slide>
-            </swiper-container>
-            <div>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Server Name</th>
-                    <th>Version</th>
-                    <th>Available Time</th>
-                    <th>Host</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th>{{server?.name}}</th>
-                    <td>{{server?.version}}</td>
-                    <td>{{server?.openingTime}} </td>
-                    <td>{{server?.ipLocation}}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <swiper-container navigation="false" pagination="true" pagination-clickable="true" autoplay-delay="2500">
+                <swiper-slide>
+                  <img *ngIf="server?.image1" [src]="server?.image1" />
+                </swiper-slide>
+                <swiper-slide>
+                  <img *ngIf="server?.image2" [src]="server?.image2" />
+                </swiper-slide>
+                <swiper-slide>
+                  <img *ngIf="server?.image3" [src]="server?.image3" />
+                </swiper-slide>
+                <swiper-slide>
+                  <!-- https://stackoverflow.com/questions/37927657/img-unsafe-value-used-in-a-resource-url-context -->
+                  <iframe *ngIf="server?.video" width="300"
+                    [src]="domSanitizer.bypassSecurityTrustResourceUrl(server?.video)"></iframe>
+                </swiper-slide>
+              </swiper-container>
+              <div>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Server Name</th>
+                      <th>Version</th>
+                      <th>Available Time</th>
+                      <th>Host</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{server?.name}}</td>
+                      <td>{{server?.version}}</td>
+                      <td>{{server?.openingTime}} </td>
+                      <td>{{server?.ipLocation}}</td>
+                    </tr>
+                  </tbody>
+                </table>
 
-            <p [innerHTML]="server?.other"></p>
+                <p [innerHTML]="server?.other"></p>
 
-            </div>
-                        </li>
+              </div>
+            </li>
           </ng-container>
           <ng-template #noServer>
             <li style="display:flex;align-items: center;justify-content: center;font-size: 2rem;">

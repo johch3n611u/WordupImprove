@@ -370,14 +370,18 @@ footer {
 }
 
 .serversList {
+  padding: 0 1rem;
+  max-width: 700px;
   margin-top: 1rem;
   li {
+    overflow-x: auto;
     background-color: rgba(255, 255, 255, 0.999);
     padding: 24px;
     border-radius: 6px;
     box-shadow: 2px 2px 8px 1px rgba(0, 0, 0, 0.05);
     margin-bottom: 12px;
     display: flex;
+    justify-content: space-around;
     swiper-container{
       margin: 0 1rem;
     }
@@ -388,21 +392,17 @@ footer {
     width: 100%;
     border-spacing: 0;
     border: 1px solid #6b675d;
+    margin-bottom: 1rem;
   }
 
   th{
     background-color: #6b675d;
     color:#ffffff;
-    width:25vw;
-    height:75px;
+    padding: 0.5rem;
   }
-
-
-
   td{
     background-color:#f3f3f3;
-    width:25vw;
-    height:50px;
+    padding: 0.5rem;
     text-align:center;
     border-top: 1px dotted #6b675d;
     border-left: 1px dotted #6b675d;
@@ -540,7 +540,9 @@ swiper-container {
       display: none;
     }
   }
-  .addYourServer > a {
-    width: 100%;
+  .addYourServer>a{
+    width: 80%;
+    display: block;
+    margin: 0 auto;
   }
 }
