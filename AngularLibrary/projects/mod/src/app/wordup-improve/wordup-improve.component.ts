@@ -502,10 +502,6 @@ export class WordupImproveComponent {
 
           this.searchWord.display = this.searchWord.word;
           this.searchWord.word = '';
-
-          if (this.speakSelection) {
-            this.debounceBeSub$.next([this.speak, this.searchWord.word]);
-          }
         } else {
           alert(
             `字庫搜尋不到此單字，\n以下為[距離算法]選出字庫前五個相似度高的單字。`
@@ -513,9 +509,13 @@ export class WordupImproveComponent {
           this.searchWord.word = sortTemp[0].en;
         }
 
+        if (this.speakSelection) {
+          this.debounceBeSub$.next([this.speak, this.searchWord.display ?? this.searchWord.word]);
+        }
+
         this.unfamiliarReflash();
       }
-      this.goToAnchor('searchWordInput');
+      // this.goToAnchor('searchWordInput');
     } catch (err) {
       alert(err);
     }
