@@ -241,6 +241,10 @@ export class WordupImproveComponent {
   seeAnswer() {
     this.displayMode = DisplayMode.Answer;
     this.sentenceAnswerDisplay = true;
+
+    if (this.speakSelection) {
+      this.debounceBeSub$.next([this.speak, this.sentence?.en]);
+    }
   }
 
   unfamiliarSorting(a: any, b: any) {
@@ -287,6 +291,11 @@ export class WordupImproveComponent {
   answerTodayArray: any = [];
   answerCountToday: any = 0;
   answerScoreReset(answer: any) {
+
+    if (this.speakSelection) {
+      this.debounceBeSub$.next([this.speak, this.card.en]);
+    }
+
     try {
       this.record.avgAnswerSpeed.push(this.seconds);
       this.answerCountToday++;
