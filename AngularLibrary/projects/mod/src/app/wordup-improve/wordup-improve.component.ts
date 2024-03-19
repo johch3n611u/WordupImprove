@@ -358,8 +358,6 @@ export class WordupImproveComponent {
     let falseScoreTime = this.calculateTime(word?.updateTime);
     let falseScore;
     let familiarDays = falseScoreTime?.days ?? 0;
-    familiarDays = 60;
-
     if (familiarDays > 0 && familiarDays <= 7) {
       falseScore = (50 - this.mapScore(familiarDays, 7, 5, 50) + 4) * -1;
     } else if (familiarDays >= 15) {
