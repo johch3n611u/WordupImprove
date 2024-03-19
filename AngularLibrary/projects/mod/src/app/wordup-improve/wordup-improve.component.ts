@@ -978,6 +978,7 @@ export class WordupImproveComponent {
         (voice: any) => voice.name === this.config?.speakSelectVoice
       );
       let speechSynthesisUtterance = new SpeechSynthesisUtterance();
+      // https://stackoverflow.com/questions/52975068/speechsynthesis-in-android-chrome-cannot-change-english-voice-from-us-english
       if (voice) {
         speechSynthesisUtterance.voice = voice;
       }
