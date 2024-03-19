@@ -573,10 +573,10 @@ export class WordupImproveComponent {
     drawCardConfig
       ? (this.config = JSON.parse(drawCardConfig))
       : (this.config = {
-          dayScore: 1000,
-          questionsScore: 1000,
+          dayScore: 500,
+          questionsScore: 10,
           drawMode: 'completelyRandom',
-          autoDrawSeconds: 5,
+          autoDrawSeconds: 45,
           speakSelectVoice: 'Google UK English Male',
         });
 
