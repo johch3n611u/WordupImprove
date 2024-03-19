@@ -506,15 +506,15 @@ export class WordupImproveComponent {
 
           localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
           this.searchWord.explain = searched.cn;
-          alert('已扣 5 分');
+          // alert('已扣 5 分'); todo 彈出自動消失匡
           this.calculateFamiliarity();
 
           this.searchWord.display = this.searchWord.word;
           this.searchWord.word = '';
         } else {
-          alert(
-            `字庫搜尋不到此單字，\n以下為[距離算法]選出字庫前五個相似度高的單字。`
-          );
+          // alert(
+          //   `字庫搜尋不到此單字，\n以下為[距離算法]選出字庫前五個相似度高的單字。`
+          // ); todo 彈出自動消失匡
           this.searchWord.word = sortTemp[0].en;
         }
 
