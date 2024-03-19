@@ -876,6 +876,10 @@ export class WordupImproveComponent {
     setTimeout(() => {
       item.displayAnswer = !item.displayAnswer;
     }, 5000);
+
+    if (this.speakSelection) {
+      this.debounceBeSub$.next([this.speak, item?.en]);
+    }
   }
 
   answerUnfamiliarScoreReset(answer: any, keyword: string) {
