@@ -1,15 +1,14 @@
 <div class="box" [style.display]="isEnterRegistPage ? 'none' : 'flex'" (window:resize)="onResize($event)">
   <div class="toolBox">
-    <button *ngIf="displayMode !== DisplayMode.Answer"
-      (click)="seeAnswer()">
+    <button *ngIf="displayMode !== DisplayMode.Answer" (click)="seeAnswer()">
       {{ displayMode }}
     </button>
     <ng-container *ngIf="displayMode === DisplayMode.Answer">
       <button (click)="answerScoreReset(true)">
-        會 +{{ 6 - this.mapSeconds(this.seconds) }}
+        會 + {{ 6 - familiarScore }}
       </button>
       <button (click)="answerScoreReset(false)">
-        不會 -5
+        不會 {{ notFamiliarScore }}
       </button>
     </ng-container>
   </div>
@@ -49,7 +48,7 @@
         <p>{{ searchWord?.explain }}</p>
         <p *ngIf="searchWord?.score">
           Score：{{ searchWord?.score }}
-          <span>
+          <span> ,
             {{ searchWord?.updateTime?.days }} d /
             {{ searchWord?.updateTime?.hours }} h /
             {{ searchWord?.updateTime?.minutes }} m
@@ -256,7 +255,8 @@
         <p>朗讀語言選擇</p>
         <ul>
           <li *ngFor="let voice of voices">
-            <input [(ngModel)]="config.speakSelectVoice" [value]="voice?.name" style="margin: 1rem;" [id]="voice?.name" type="radio" name="speakSelectVoice"/>
+            <input [(ngModel)]="config.speakSelectVoice" [value]="voice?.name" style="margin: 1rem;" [id]="voice?.name"
+              type="radio" name="speakSelectVoice" />
             <label [for]="voice?.name">{{voice?.name}}</label>
           </li>
         </ul>

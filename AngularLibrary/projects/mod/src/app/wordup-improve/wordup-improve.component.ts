@@ -242,6 +242,9 @@ export class WordupImproveComponent {
     this.displayMode = DisplayMode.Answer;
     this.sentenceAnswerDisplay = true;
 
+    let word = this.answerScore.find((word: any) => word.en == this.card.en);
+    this.notFamiliarScore = this.notFamiliarScoreCalculations(word);
+
     if (this.speakSelection) {
       this.debounceBeSub$.next([this.speak, this.sentence?.en]);
     }
@@ -322,13 +325,18 @@ export class WordupImproveComponent {
       let word = this.answerScore.find((word: any) => word.en == this.card.en);
 
       // 回答的越快增加越多分，越慢扣越多
-      let trueScore = 6 - this.mapSeconds(this.seconds);
-      let falseScore = this.mapSeconds(this.seconds) * -1;
+      let trueScore = 6 - this.mapScore(this.seconds);
+      // let falseScore = this.mapScore(this.seconds) * -1;
       if (word) {
-        answer ? (word.score += trueScore) : (word.score -= 5);
+        // answer ? (word.score += trueScore) : (word.score -= 5);
+        // 30 內天類依比例扣分 7-15 天扣最低，7 天內與 15 至其餘天數 & 一天以內直接扣最大分
+        // 看答案時計算 notFamiliarScore 顯示後再拿來此處使用
+        answer ? (word.score += trueScore) : this.notFamiliarScore;
         word.updateTime = Date.now();
       } else {
-        let newWord = answer ? trueScore : falseScore;
+        // 第一次錯直接扣 50 
+        // let newWord = answer ? trueScore : falseScore;
+        let newWord = answer ? trueScore : -50;
         this.answerScore.push({
           en: this.card.en,
           score: newWord,
@@ -343,8 +351,54 @@ export class WordupImproveComponent {
     }
   }
 
-  familiarity: Familiarity | any = {};
+  familiarScore = 1;
+  notFamiliarScore = 0;
+  notFamiliarScoreCalculations(word: any) {
+    // 30 內天類依比例扣分 7-15 天扣最低，7 天內與 15 至其餘天數 & 一天以內直接扣最大分
+    let falseScoreTime = this.calculateTime(word?.updateTime);
+    let falseScore;
+    let familiarDays = falseScoreTime?.days ?? 0;
+    familiarDays = 60;
 
+    if (familiarDays > 0 && familiarDays <= 7) {
+      falseScore = (50 - this.mapScore(familiarDays, 7, 5, 50) + 4) * -1;
+    } else if (familiarDays >= 15) {
+      falseScore = this.mapScore(familiarDays, 30, 5, 50) * -1;
+    } else if (familiarDays <= 0) {
+      falseScore = -20;
+    } else {
+      falseScore = -10;
+    }
+
+    return falseScore;
+  }
+
+  mapScore(inputValue: number, maxInput: number = 120, minOutput: number = 1, maxOutput: number = 5) {
+    const minSeconds = 1;
+    // 將 inputSeconds 限制在最小秒數和最大秒數之間
+    const normalizedinputValue = Math.min(
+      Math.max(inputValue, minSeconds),
+      maxInput
+    );
+    // 計算輸入範圍和輸出範圍之間的比例
+    const inputRange = maxInput - minSeconds;
+    const outputRange = maxOutput - minOutput;
+
+    // 將秒數映射到輸出範圍內
+    let mappedValue = Math.ceil(((normalizedinputValue / inputRange) * outputRange));
+
+    if ((normalizedinputValue / inputRange) > 1) {
+      mappedValue = maxOutput;
+    }
+
+    if (mappedValue < minOutput) {
+      mappedValue = minOutput;
+    }
+
+    return mappedValue;
+  }
+
+  familiarity: Familiarity | any = {};
   calculateFamiliarity() {
     try {
       this.familiarity.total = this.cards.length;
@@ -450,7 +504,7 @@ export class WordupImproveComponent {
     similarWords: '',
   };
 
-    // https://stackoverflow.com/questions/3169786/clear-text-selection-with-javascript
+  // https://stackoverflow.com/questions/3169786/clear-text-selection-with-javascript
   searchWordMark() {
     try {
 
@@ -491,17 +545,17 @@ export class WordupImproveComponent {
           );
           const updateTime = JSON.stringify(word?.updateTime);
           if (word) {
-            word.score -= 5;
+            word.score -= this.notFamiliarScoreCalculations(word);
             this.searchWord.updateTime = this.calculateTime(updateTime);
             word.updateTime = Date.now();
             this.searchWord.score = word?.score;
           } else {
             this.answerScore.push({
               en: this.searchWord.word,
-              score: -5,
+              score: -50,
               updateTime: Date.now(),
             });
-            this.searchWord.score = -5;
+            this.searchWord.score = -50;
           }
 
           localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
@@ -573,18 +627,18 @@ export class WordupImproveComponent {
     drawCardConfig
       ? (this.config = JSON.parse(drawCardConfig))
       : (this.config = {
-          dayScore: 500,
-          questionsScore: 10,
-          drawMode: 'completelyRandom',
-          autoDrawSeconds: 45,
-          speakSelectVoice: 'Google UK English Male',
-        });
+        dayScore: 500,
+        questionsScore: 10,
+        drawMode: 'completelyRandom',
+        autoDrawSeconds: 45,
+        speakSelectVoice: 'Google UK English Male',
+      });
 
     if (!this.config.drawMode) {
       localStorage.removeItem('drawCardConfig');
       this.config = {
-        dayScore: 1000,
-        questionsScore: 1000,
+        dayScore: 500,
+        questionsScore: 10,
         drawMode: 'completelyRandom',
       };
     }
@@ -832,6 +886,10 @@ export class WordupImproveComponent {
     const self = this; // 儲存組件的參考
     this.timerId = setInterval(function () {
       self.seconds++;
+      // 每 20 秒檢查得分數
+      if (self.seconds % 20 === 0) {
+        self.familiarScore = self.mapScore(self.seconds);
+      }
     }, 1000);
   }
 
@@ -842,33 +900,6 @@ export class WordupImproveComponent {
       block: 'start',
       inline: 'start',
     });
-  }
-
-  mapSeconds(inputSeconds: number) {
-    const minSeconds = 1;
-    const maxSeconds = 120;
-    const minOutput = 1;
-    const maxOutput = 5;
-
-    // 將 inputSeconds 限制在最小秒數和最大秒數之間
-    const normalizedSeconds = Math.min(
-      Math.max(inputSeconds, minSeconds),
-      maxSeconds
-    );
-
-    // 計算輸入範圍和輸出範圍之間的比例
-    const inputRange = maxSeconds - minSeconds;
-    const outputRange = maxOutput - minOutput;
-
-    // 將秒數映射到輸出範圍內
-    const mappedValue =
-      Math.ceil(
-        ((normalizedSeconds - minSeconds + 1) * outputRange) / inputRange
-      ) +
-      minOutput -
-      1;
-
-    return mappedValue;
   }
 
   setUnfamiliarDisplayAnswer(item: any) {
@@ -884,7 +915,7 @@ export class WordupImproveComponent {
 
   answerUnfamiliarScoreReset(answer: any, keyword: string) {
     let word = this.answerScore.find((word: any) => word.en == keyword);
-    answer ? (word.score += 1) : (word.score -= 1);
+    answer ? (word.score += 10) : (word.score -= 10);
     word.updateTime = Date.now();
     localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
     this.calculateFamiliarity();
@@ -918,7 +949,6 @@ export class WordupImproveComponent {
     ) {
       this.searchWord.word = word;
       if (this.speakSelection) {
-        console.log(this.searchWord.word)
         this.debounceBeSub$.next([this.speak, this.searchWord.word]);
       }
     }
