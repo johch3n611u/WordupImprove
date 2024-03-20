@@ -543,7 +543,8 @@ export class WordupImproveComponent {
           );
           const updateTime = JSON.stringify(word?.updateTime);
           if (word) {
-            word.score -= this.notFamiliarScoreCalculations(word);
+            let notFamiliarScore = this.notFamiliarScoreCalculations(word);
+            word.score += notFamiliarScore > 0 ? notFamiliarScore * -1 : notFamiliarScore;
             this.searchWord.updateTime = this.calculateTime(updateTime);
             word.updateTime = Date.now();
             this.searchWord.score = word?.score;
