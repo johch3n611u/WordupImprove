@@ -914,7 +914,8 @@ export class WordupImproveComponent {
 
   answerUnfamiliarScoreReset(answer: any, keyword: string) {
     let word = this.answerScore.find((word: any) => word.en == keyword);
-    answer ? (word.score += 10) : (word.score -= 10);
+    let notFamiliarScore = this.notFamiliarScoreCalculations(word);
+    answer ? (word.score += 10) : (word.score += notFamiliarScore > 0 ? notFamiliarScore * -1 : notFamiliarScore);
     word.updateTime = Date.now();
     localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
     this.calculateFamiliarity();
