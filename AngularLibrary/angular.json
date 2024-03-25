@@ -373,7 +373,9 @@
               "mergeRules": {
                 "externals": "replace"
               }
-            }
+            },
+            "serviceWorker": true,
+            "ngswConfigPath": "projects/mod/ngsw-config.json"
           },
           "configurations": {
             "production": {
@@ -431,7 +433,8 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/mod/src/favicon.ico",
-              "projects/mod/src/assets"
+              "projects/mod/src/assets",
+              "projects/mod/src/manifest.webmanifest"
             ],
             "styles": [
               "projects/mod/src/styles.scss"

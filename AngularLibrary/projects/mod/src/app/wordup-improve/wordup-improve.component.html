@@ -5,7 +5,7 @@
     </button>
     <ng-container *ngIf="displayMode === DisplayMode.Answer">
       <button (click)="answerScoreReset(true)">
-        會 + {{ 6 - familiarScore }}
+        會 + {{ 11 - familiarScore }}
       </button>
       <button (click)="answerScoreReset(false)">
         不會 {{ notFamiliarScore }}
@@ -265,7 +265,7 @@
   </div>
 </div>
 
-<div class="login" [style.display]="isEnterRegistPage ? 'block' : 'none'">
+<div class="login" [style.display]="isEnterRegistPage && (answeredMostQuestions?.length > 0) ? 'block' : 'none'">
   <div class="rankingList" *ngIf="logs">
     <ol>
       <li class="answeredMostQuestions">答題最多</li>

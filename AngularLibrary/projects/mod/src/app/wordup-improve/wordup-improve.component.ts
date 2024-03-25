@@ -4,6 +4,7 @@ import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import {
   Subscriber,
   Subscription,
+  catchError,
   combineLatest,
   debounce,
   delay,
@@ -89,6 +90,10 @@ export class WordupImproveComponent {
   ngOnDestroy() {
     this.logsSub.unsubscribe();
     this.debounceSub.unsubscribe();
+    if (this.automaticDrawCardTimer) {
+      clearInterval(this.automaticDrawCardTimer);
+      this.timerId = null;
+    }
   }
 
   automaticDrawCardTimer: any;
@@ -244,6 +249,7 @@ export class WordupImproveComponent {
 
     let word = this.answerScore.find((word: any) => word.en == this.card.en);
     this.notFamiliarScore = this.notFamiliarScoreCalculations(word);
+    this.familiarScore = this.mapScore(this.seconds);
 
     if (this.speakSelection) {
       this.debounceBeSub$.next([this.speak, this.sentence?.en]);
@@ -325,7 +331,7 @@ export class WordupImproveComponent {
       let word = this.answerScore.find((word: any) => word.en == this.card.en);
 
       // 回答的越快增加越多分，越慢扣越多
-      let trueScore = 6 - this.mapScore(this.seconds);
+      let trueScore = 11 - this.mapScore(this.seconds, 100, 1, 10);
       // let falseScore = this.mapScore(this.seconds) * -1;
       if (word) {
         // answer ? (word.score += trueScore) : (word.score -= 5);
@@ -880,6 +886,7 @@ export class WordupImproveComponent {
   updateTimer() {
     if (this.timerId) {
       clearInterval(this.timerId);
+      this.timerId = null;
       this.seconds = 0;
     }
     const self = this; // 儲存組件的參考
@@ -887,7 +894,7 @@ export class WordupImproveComponent {
       self.seconds++;
       // 每 20 秒檢查得分數
       if (self.seconds % 20 === 0) {
-        self.familiarScore = self.mapScore(self.seconds);
+        self.familiarScore = self.mapScore(self.seconds, 100, 1, 10);
       }
     }, 1000);
   }
