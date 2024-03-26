@@ -62,7 +62,7 @@ export class ServiceWorkerService {
         promptEvent.prompt();
         // 確認使用者的選擇
         let askedInstallPWA = localStorage.getItem('askedInstallPWA');
-        if (askedInstallPWA) {
+        if (!askedInstallPWA) {
             promptEvent.userChoice.then((choice: any) => {
                 if (choice.outcome !== 'accepted') {
                     alert('如後續要安裝，請自行透過右上角設定自行安裝');
