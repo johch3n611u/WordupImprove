@@ -52,9 +52,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     HighlightPipeModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       // 詳細請看此次 commit 可以看到新增了哪些東西與設定, 目前 ng-sw 還存在蠻多問題，將就用
-      // https://github.com/angular/angular/issues/47455
-      // 原生 sw 似乎也很多問題 https://www.denis.es/blog/pwa-service-worker-problems-secrets-tricks-debugging/
-      // 瀏覽器會在關閉時更新 sw 所以如果要調適新版本需要關閉再開，並且因為 sw 可以監控前端的任何存取，所以被要求必須在 HTTPS 下運行 https://jonny-huang.github.io/angular/training/20_pwa2/
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).

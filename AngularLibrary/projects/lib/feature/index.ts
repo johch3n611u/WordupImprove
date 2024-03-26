@@ -3,3 +3,4 @@ export * from './picsum-img/picsum-img.service';
 export * from './algorithms/glgorithms.service';
 export * from './algorithms/glgorithms.service';
 export * from './highlight/index';
+export * from './service-worker/service-worker.service';

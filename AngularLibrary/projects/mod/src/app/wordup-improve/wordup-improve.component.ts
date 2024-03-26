@@ -41,7 +41,7 @@ import {
   updateProfile,
   user,
 } from '@angular/fire/auth';
-import { GlgorithmsService, REGEXP_TYPE } from 'lib/feature';
+import { GlgorithmsService, REGEXP_TYPE, ServiceWorkerService } from 'lib/feature';
 
 @Component({
   selector: 'mod-wordup-improve',
@@ -65,7 +65,8 @@ export class WordupImproveComponent {
   constructor(
     private httpClient: HttpClient,
     public themeService: ThemeService,
-    private glgorithmsService: GlgorithmsService
+    private glgorithmsService: GlgorithmsService,
+    private serviceWorkerService: ServiceWorkerService,
   ) {
     this.httpClient
       .get(this.url)
@@ -895,6 +896,12 @@ export class WordupImproveComponent {
       // 每 20 秒檢查得分數
       if (self.seconds % 20 === 0) {
         self.familiarScore = self.mapScore(self.seconds, 100, 1, 10);
+      }
+      // 初始化 service work
+      if(self.seconds == 100) {
+        const installBtn = document.querySelector(".answerScoreResetBtn");
+        console.log('ServiceWorkerService constructor', installBtn)
+        installBtn?.addEventListener("click", () => self.serviceWorkerService.swPrompt());
       }
     }, 1000);
   }

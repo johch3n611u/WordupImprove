@@ -1,6 +1,6 @@
 <div class="box" [style.display]="isEnterRegistPage ? 'none' : 'flex'" (window:resize)="onResize($event)">
   <div class="toolBox">
-    <button *ngIf="displayMode !== DisplayMode.Answer" (click)="seeAnswer()">
+    <button class="answerScoreResetBtn" *ngIf="displayMode !== DisplayMode.Answer" (click)="seeAnswer()">
       {{ displayMode }}
     </button>
     <ng-container *ngIf="displayMode === DisplayMode.Answer">

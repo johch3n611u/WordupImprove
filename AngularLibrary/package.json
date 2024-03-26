@@ -11,7 +11,7 @@
     "build:ec": "ng build ec --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/ec-demo/",
     "build:crm": "ng build crm --base-href=/assets/angular/crm/",
     "build:cms": "ng build cms --base-href=/assets/angular/cms/",
-    "build:mod": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress",
+    "build:mod": "禁用配合 github 路徑應該使用底下帶有--base-href的 ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress",
     "build:brand": "ng build brand --base-href=/assets/angular/brand/",
     "start:ec": "ng serve ec --open",
     "start:crm": "ng serve crm --open",

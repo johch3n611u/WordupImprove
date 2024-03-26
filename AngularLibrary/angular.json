@@ -361,7 +361,8 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/mod/src/favicon.ico",
-              "projects/mod/src/assets"
+              "projects/mod/src/assets",
+              "projects/mod/src/manifest.webmanifest"
             ],
             "styles": [
               "./node_modules/leaflet/dist/leaflet.css",
