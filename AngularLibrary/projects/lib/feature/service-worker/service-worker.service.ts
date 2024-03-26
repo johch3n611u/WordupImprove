@@ -1,6 +1,6 @@
-import { ApplicationRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
-import { BehaviorSubject, take } from 'rxjs';
+import { take } from 'rxjs';
 // import { concat, filter, first, interval, map, take } from 'rxjs';
 // import { Platform } from '@angular/cdk/platform';
 
@@ -11,8 +11,6 @@ import { BehaviorSubject, take } from 'rxjs';
     providedIn: 'root'
 })
 export class ServiceWorkerService {
-
-    promptEvent$ = new BehaviorSubject<any>(undefined);
 
     // 參考
     // https://angular.io/guide/service-worker-communications
@@ -28,49 +26,71 @@ export class ServiceWorkerService {
     // https://rodrigokamada.medium.com/adding-the-progressive-web-application-pwa-to-an-angular-application-7a060b111b63
     // https://github.com/rodrigokamada/angular-pwa/tree/main
     // https://stackoverflow.com/questions/58729197/the-prompt-method-must-be-called-with-a-user-gesture-error-in-angular-pwa
+    // https://stackoverflow.com/questions/60379994/determining-pwa-installation-status
+    // https://fullstackladder.dev/blog/2019/07/28/angular-pwa-service-worke-registration-options/
 
     constructor(
         public swUpdate: SwUpdate,
         // private platform: Platform,
         // appRef: ApplicationRef,
     ) {
-        console.log('ServiceWorkerService constructor');
+        // 如果會觸發 beforeinstallprompt 代表還未安裝
+        window.addEventListener('beforeinstallprompt', async (event: any) => {
+            console.log('beforeinstallprompt');
+            event.preventDefault();
+            // 強迫必須有點擊按鈕才能觸發 prompt
+            const installBtn = document.querySelector(".answerScoreResetBtn");
+            installBtn?.addEventListener("click", () => {
+                let askedInstallPWA = localStorage.getItem('askedInstallPWA');
+                console.log('answerScoreResetBtn click', askedInstallPWA);
+                if (!askedInstallPWA) {
+                    // 新增應用程序安裝
+                    event.prompt();
+                    event.userChoice.then((choice: any) => {
+                        // 確認使用者的選擇
+                        if (choice.outcome !== 'accepted') {
+                            alert('如後續要安裝應用程式，請透過右上角設定自行安裝');
+                        }
+                        localStorage.setItem('askedInstallPWA', 'true');
+                    });
+                }
+
+                installBtn?.removeEventListener("click", () => console.log('remove installBtn listener'));
+            });
+        });
     }
 
-    swPrompt() {
+    judgmentUpdate() {
+        console.log('judgmentUpdate');
         this.swUpdate.checkForUpdate().then((updateFound) => {
-            console.log(updateFound ? '有新版本可用' : '已經是最新版本了');
+            if (updateFound) {
+                if (confirm('有新版本可用，要更新嗎？')) {
+                    window.location.reload();
+                }
+            } else {
+                alert('已經是最新版本了')
+            }
         });
-
+        
         this.swUpdate.versionUpdates.pipe(take(1)).subscribe(evt => {
             switch (evt.type) {
                 case 'VERSION_DETECTED':
-                    console.log(`下載新的應用程式版本: ${evt.version.hash}`);
+                    console.info(`下載新的應用程式版本: ${evt.version.hash}`);
                     break;
                 case 'VERSION_READY':
-                    console.log(`目前應用程式版本: ${evt.currentVersion.hash}`);
-                    console.log(`新的應用程式版本可供使用: ${evt.latestVersion.hash}`);
+                    console.info(`目前應用程式版本: ${evt.currentVersion.hash}`);
+                    console.info(`新的應用程式版本可供使用: ${evt.latestVersion.hash}`);
                     break;
                 case 'VERSION_INSTALLATION_FAILED':
-                    console.log(`應用程式版本安裝失敗: '${evt.version.hash}': ${evt.error}`);
+                    console.info(`應用程式版本安裝失敗: '${evt.version.hash}': ${evt.error}`);
                     break;
             }
         });
-
-        let promptEvent = this.promptEvent$.getValue();
-        // 新增應用程序安裝
-        promptEvent.prompt();
-        // 確認使用者的選擇
-        let askedInstallPWA = localStorage.getItem('askedInstallPWA');
-        if (!askedInstallPWA) {
-            promptEvent.userChoice.then((choice: any) => {
-                if (choice.outcome !== 'accepted') {
-                    alert('如後續要安裝，請自行透過右上角設定自行安裝');
-                }
-                localStorage.setItem('askedInstallPWA', 'true');
-            });
-        }
     }
+
+    // this.swUpdate.checkForUpdate().then((updateFound) => {
+    //     console.log(updateFound ? '有新版本可用' : '已經是最新版本了');
+    // });
 
     // this.isOnline = false;
     // Allow the app to stabilize first, before starting
@@ -162,5 +182,4 @@ export class ServiceWorkerService {
     //   });
     //   this.loadModalPwa();
     // }
-
 }

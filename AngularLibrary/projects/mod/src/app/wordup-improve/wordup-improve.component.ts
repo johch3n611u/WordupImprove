@@ -97,6 +97,10 @@ export class WordupImproveComponent {
     }
   }
 
+  ngAfterViewInit() {
+    this.serviceWorkerService.judgmentUpdate();
+  }
+
   automaticDrawCardTimer: any;
   record: any = {
     drawCountRecord: [],
@@ -899,9 +903,7 @@ export class WordupImproveComponent {
       }
       // 初始化 service work
       if(self.seconds == 100) {
-        const installBtn = document.querySelector(".answerScoreResetBtn");
-        console.log('ServiceWorkerService constructor', installBtn)
-        installBtn?.addEventListener("click", () => self.serviceWorkerService.swPrompt());
+
       }
     }, 1000);
   }
