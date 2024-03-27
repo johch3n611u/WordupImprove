@@ -67,8 +67,6 @@ export class ServiceWorkerService {
                 if (confirm('有新版本可用，要更新嗎？')) {
                     window.location.reload();
                 }
-            } else {
-                alert('已經是最新版本了')
             }
         });
         

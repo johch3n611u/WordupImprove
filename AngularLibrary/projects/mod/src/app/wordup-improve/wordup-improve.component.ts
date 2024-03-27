@@ -49,7 +49,7 @@ import { GlgorithmsService, REGEXP_TYPE, ServiceWorkerService } from 'lib/featur
   styleUrls: ['./wordup-improve.component.scss'],
 })
 export class WordupImproveComponent {
-  url = './assets/scoreData.json';
+  url = './assets/enHelper/scoreData.json';
   cards: any = [];
   sentence: any;
   sentenceAnswerDisplay: any = true;
