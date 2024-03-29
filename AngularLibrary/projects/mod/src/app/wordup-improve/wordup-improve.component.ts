@@ -9,7 +9,9 @@ import {
   debounce,
   delay,
   filter,
+  map,
   of,
+  switchMap,
   take,
   tap,
   timer,
@@ -86,6 +88,8 @@ export class WordupImproveComponent {
       });
 
     this.themeService.SetTheme(this.themeService.GetTheme());
+
+    this.autoDownloadLog();
   }
 
   ngOnDestroy() {
@@ -413,8 +417,8 @@ export class WordupImproveComponent {
       this.familiarity.total = this.cards.length;
       // 未複習到 0 / undefined
       let zero = this.answerScore.filter((res: any) => res.score === 0).length;
-      let undefined = this.cards.length - this.answerScore.length;
-      this.familiarity.notReviewed = zero + undefined;
+      let notfind = this.cards.length - this.answerScore.length;
+      this.familiarity.notReviewed = zero + notfind;
       // 超不熟悉 -5
       this.familiarity.veryUnfamiliar = this.answerScore.filter(
         (res: any) => res.score <= -5
@@ -748,7 +752,7 @@ export class WordupImproveComponent {
       await signInWithEmailAndPassword(this.auth, this.email, this.password);
       this.user$ = authState(this.auth);
       this.refleshUser();
-      this.refleshLogs();
+      // this.refleshLogs();
     } catch (err) {
       alert(err);
     }
@@ -776,7 +780,7 @@ export class WordupImproveComponent {
         this.password
       );
       this.refleshUser();
-      this.refleshLogs();
+      // this.refleshLogs();
     } catch (err) {
       alert(err);
     }
@@ -784,7 +788,7 @@ export class WordupImproveComponent {
 
   enterRegistPage() {
     this.refleshUser();
-    this.refleshLogs();
+    // this.refleshLogs(); 沒有人使用註解減少流量消耗
     this.isEnterRegistPage = true;
   }
 
@@ -824,7 +828,7 @@ export class WordupImproveComponent {
           email: email,
           answerScore: this.answerScore,
         });
-        this.refleshLogs();
+        // this.refleshLogs();
         alert('更新成功');
         this.isEnterRegistPage = false;
       }
@@ -845,6 +849,52 @@ export class WordupImproveComponent {
         alert('未找到紀錄');
       }
     }
+  }
+
+  tempFamiliarity: any = {};
+  autoDownloadLog() {
+    this.user$.pipe(
+      take(1),
+      filter(user => !!user),
+      switchMap(user => {
+        let logs$ = collectionData(collection(this.firestore, 'Logs'));
+        return logs$.pipe(
+          filter(logs => logs.length > 0),
+          tap(logs => {
+            this.tempFamiliarity = {};
+            const log: any = logs.find((log: any) => log.email === user?.email);
+            const tempAnswerScore = JSON.parse(JSON.stringify(log.answerScore));
+            // 未複習到 0 / undefined
+            const zero = tempAnswerScore.filter((res: any) => res.score === 0).length;
+            const notfind = this.cards.length - tempAnswerScore.length;
+            this.tempFamiliarity.notReviewed = zero + notfind;
+            // 超不熟悉 -5
+            this.tempFamiliarity.veryUnfamiliar = tempAnswerScore.filter(
+              (res: any) => res.score <= -5
+            ).length;
+            // 不熟悉 -
+            this.tempFamiliarity.unfamiliar = tempAnswerScore.filter(
+              (res: any) => res.score < 0 && res.score > -5
+            ).length;
+            // 熟悉 +
+            this.tempFamiliarity.familiar = tempAnswerScore.filter(
+              (res: any) => res.score > 0 && res.score < 5
+            ).length;
+            // 超熟悉 +5
+            this.tempFamiliarity.veryFamiliar = tempAnswerScore.filter(
+              (res: any) => res.score >= 5
+            ).length;
+
+            if (this.tempFamiliarity.notReviewed < this.familiarity.notReviewed) {
+              this.answerScore = JSON.parse(JSON.stringify(log.answerScore));
+              localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
+              this.calculateFamiliarity();
+              this.unfamiliarReflash();
+            }
+          }),
+        );
+      })
+    ).subscribe();
   }
 
   changeDisplayName() {
@@ -902,7 +952,7 @@ export class WordupImproveComponent {
         self.familiarScore = self.mapScore(self.seconds, 100, 1, 10);
       }
       // 初始化 service work
-      if(self.seconds == 100) {
+      if (self.seconds == 100) {
 
       }
     }, 1000);

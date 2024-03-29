@@ -265,8 +265,9 @@
   </div>
 </div>
 
-<div class="login" [style.display]="isEnterRegistPage && (answeredMostQuestions?.length > 0) ? 'block' : 'none'">
-  <div class="rankingList" *ngIf="logs">
+<!-- isEnterRegistPage && (answeredMostQuestions?.length > 0) ? 'block' : 'none' -->
+<div class="login" [style.display]="isEnterRegistPage ? 'block' : 'none'">
+  <!-- <div class="rankingList" *ngIf="logs">
     <ol>
       <li class="answeredMostQuestions">答題最多</li>
       <li *ngFor="let item of answeredMostQuestions; let i = index">
@@ -285,19 +286,25 @@
         {{ i + 1 }}.{{ item.email }} => {{ item.negative }}
       </li>
     </ol>
+  </div> -->
+  <div>
+    <p>Online：超不熟悉 / {{tempFamiliarity?.veryUnfamiliar}},不熟悉 / {{tempFamiliarity?.unfamiliar}},熟悉 /
+      {{tempFamiliarity?.familiar}},超熟悉 / {{tempFamiliarity?.veryFamiliar}}</p>
+    <p>Local：超不熟悉 / {{familiarity?.veryUnfamiliar}},不熟悉 / {{familiarity?.unfamiliar}},熟悉 / {{familiarity?.familiar}},超熟悉 / {{familiarity?.veryFamiliar}}</p>
   </div>
   <div class="user" *ngIf="!(user$ | async); else userLogining">
     <input autocomplete="new-password" type="email" placeholder="email" [(ngModel)]="email" />
     <input autocomplete="new-password" type="password" placeholder="password" [(ngModel)]="password" />
   </div>
   <ng-template #userLogining>
-    您好尊敬的 {{ user?.displayName ?? user?.email }}
+    <!-- 您好尊敬的 {{ user?.displayName ?? user?.email }} -->
   </ng-template>
   <p class="info">
     第一次使用請先註冊帳號，並將本地資料上傳即可更新榜單與使用下載服務
   </p>
   <div>
-    <ng-container *ngIf="(user$ | async) && logs; else unLogin">
+    <!-- (user$ | async) && logs; else unLogin -->
+    <ng-container *ngIf="(user$ | async); else unLogin">
       <button (click)="updateLog()">上傳紀錄</button>
       <button (click)="downloadLog()">下載紀錄</button>
       <button (click)="logout()">登出</button>

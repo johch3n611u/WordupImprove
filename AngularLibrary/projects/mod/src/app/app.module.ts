@@ -52,11 +52,13 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     HighlightPipeModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       // 詳細請看此次 commit 可以看到新增了哪些東西與設定, 目前 ng-sw 還存在蠻多問題，將就用
+      // https://github.com/angular/angular/issues/47455
+      // chrome dev tool -> Application -> Storage -> clear site data -> after you have disabled the service worker via ServiceWorkerModule's enabled property. that's the most effective way i've found to have the SW removed.
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000',
-       // you already set this config
+      // you already set this config
     })
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
