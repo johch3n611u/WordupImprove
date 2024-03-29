@@ -89,7 +89,7 @@ export class WordupImproveComponent {
 
     this.themeService.SetTheme(this.themeService.GetTheme());
 
-    this.autoDownloadLog();
+    this.autoUpdateLog();
   }
 
   ngOnDestroy() {
@@ -646,6 +646,7 @@ export class WordupImproveComponent {
         drawMode: 'completelyRandom',
         autoDrawSeconds: 45,
         speakSelectVoice: 'Google UK English Male',
+        autoUpdateLog: false
       });
 
     if (!this.config.drawMode) {
@@ -852,13 +853,14 @@ export class WordupImproveComponent {
   }
 
   tempFamiliarity: any = {};
-  autoDownloadLog() {
+  autoUpdateLog() {
     this.user$.pipe(
       take(1),
       filter(user => !!user),
       switchMap(user => {
         let logs$ = collectionData(collection(this.firestore, 'Logs'));
         return logs$.pipe(
+          take(1),
           filter(logs => logs.length > 0),
           tap(logs => {
             this.tempFamiliarity = {};
@@ -885,15 +887,28 @@ export class WordupImproveComponent {
               (res: any) => res.score >= 5
             ).length;
 
+            console.log()
             if (this.tempFamiliarity.notReviewed < this.familiarity.notReviewed) {
               this.answerScore = JSON.parse(JSON.stringify(log.answerScore));
               localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
               this.calculateFamiliarity();
               this.unfamiliarReflash();
+              alert('自動同步遠端狀態(下載)');
+            } else if(this.tempFamiliarity.notReviewed > this.familiarity.notReviewed) {
+              if (this.config?.autoUpdateLog) {
+                console.log('test');
+                this.logsCollection = collection(this.firestore, 'Logs');
+                setDoc(doc(this.logsCollection, user?.uid), {
+                  email: user?.email,
+                  answerScore: this.answerScore,
+                }).then(() => alert('自動同步遠端狀態(上傳)'));
+              }
             }
           }),
+          take(1),
         );
-      })
+      }),
+      take(1),
     ).subscribe();
   }
 

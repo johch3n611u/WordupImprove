@@ -236,6 +236,8 @@
         </button>
       </p>
       <!-- <textarea [(ngModel)]="configDisplay"></textarea> -->
+      <label for="autoUpdateLog">自動上傳遠端紀錄</label>
+      <input id="autoUpdateLog" type="checkbox" [(ngModel)]="config.autoUpdateLog" />
       <label for="dayScore">答題日期加權分數</label>
       <input id="dayScore" [(ngModel)]="config.dayScore" />
       <label for="questionsScore">錯誤加權分數</label>
@@ -287,10 +289,33 @@
       </li>
     </ol>
   </div> -->
-  <div>
-    <p>Online：超不熟悉 / {{tempFamiliarity?.veryUnfamiliar}},不熟悉 / {{tempFamiliarity?.unfamiliar}},熟悉 /
-      {{tempFamiliarity?.familiar}},超熟悉 / {{tempFamiliarity?.veryFamiliar}}</p>
-    <p>Local：超不熟悉 / {{familiarity?.veryUnfamiliar}},不熟悉 / {{familiarity?.unfamiliar}},熟悉 / {{familiarity?.familiar}},超熟悉 / {{familiarity?.veryFamiliar}}</p>
+  <div style="display: flex;justify-content: center;">
+    <table class="familiarityTable">
+      <tbody>
+        <td></td>
+        <td data-th="未複習到">未複習到</td>
+        <td data-th="超不熟悉">超不熟悉</td>
+        <td data-th="不熟悉">不熟悉</td>
+        <td data-th="熟悉">熟悉</td>
+        <td data-th="超熟悉">超熟悉</td>
+      </tbody>
+      <tr>
+        <td>Online</td>
+        <td data-th="未複習到">{{tempFamiliarity?.notReviewed}}</td>
+        <td data-th="超不熟悉">{{tempFamiliarity?.veryUnfamiliar}}</td>
+        <td data-th="不熟悉">{{tempFamiliarity?.unfamiliar}}</td>
+        <td data-th="熟悉">{{tempFamiliarity?.familiar}}</td>
+        <td data-th="超熟悉">{{tempFamiliarity?.veryFamiliar}}</td>
+      </tr>
+      <tr>
+        <td>Local</td>
+        <td data-th="未複習到">{{familiarity?.notReviewed}}</td>
+        <td data-th="超不熟悉">{{familiarity?.veryUnfamiliar}}</td>
+        <td data-th="不熟悉">{{familiarity?.unfamiliar}}</td>
+        <td data-th="熟悉">{{familiarity?.familiar}}</td>
+        <td data-th="超熟悉">{{familiarity?.veryFamiliar}}</td>
+      </tr>
+    </table>
   </div>
   <div class="user" *ngIf="!(user$ | async); else userLogining">
     <input autocomplete="new-password" type="email" placeholder="email" [(ngModel)]="email" />
