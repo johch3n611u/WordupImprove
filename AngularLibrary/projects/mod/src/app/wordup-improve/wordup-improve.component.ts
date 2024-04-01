@@ -546,7 +546,7 @@ export class WordupImproveComponent {
 
         let sortTemp = temp.sort((a: any, b: any) => b.cal - a.cal);
         this.searchWord.similarWords = `相似單字：${sortTemp
-          .slice(0, 5)
+          .slice(0, 10)
           .map((obj: any) => `[${obj.en}]${obj.cn}`)
           .join('，')}`;
 
@@ -894,7 +894,7 @@ export class WordupImproveComponent {
               this.calculateFamiliarity();
               this.unfamiliarReflash();
               alert('自動同步遠端狀態(下載)');
-            } else if(this.tempFamiliarity.notReviewed > this.familiarity.notReviewed) {
+            } else if (this.tempFamiliarity.notReviewed > this.familiarity.notReviewed) {
               if (this.config?.autoUpdateLog) {
                 console.log('test');
                 this.logsCollection = collection(this.firestore, 'Logs');
@@ -965,10 +965,6 @@ export class WordupImproveComponent {
       // 每 20 秒檢查得分數
       if (self.seconds % 20 === 0) {
         self.familiarScore = self.mapScore(self.seconds, 100, 1, 10);
-      }
-      // 初始化 service work
-      if (self.seconds == 100) {
-
       }
     }, 1000);
   }
@@ -1077,6 +1073,12 @@ export class WordupImproveComponent {
       this.debounceHandler();
     } else {
       this.debounceSub.unsubscribe();
+    }
+  }
+
+  speakXXX(XXX: string) {
+    if (this.speakSelection) {
+      this.debounceBeSub$.next([this.speak, XXX]);
     }
   }
 }

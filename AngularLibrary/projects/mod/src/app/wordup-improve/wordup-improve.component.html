@@ -22,6 +22,12 @@
           {{ card?.updateTime?.minutes }} m
         </span>
       </span>
+      <span>
+        , (單)
+        <lib-svg [src]="'./assets/enHelper/audio.svg'" (click)="speakXXX(card?.en)"></lib-svg>
+        (句)
+        <lib-svg [src]="'./assets/enHelper/audio.svg'" (click)="speakXXX(sentence?.en)"></lib-svg>
+      </span>
       <hr />
       <p [innerHtml]="sentence?.en | highlight : card?.en : REGEXP_TYPE.First"></p>
       <ng-container *ngIf="displayMode === DisplayMode.Answer">
