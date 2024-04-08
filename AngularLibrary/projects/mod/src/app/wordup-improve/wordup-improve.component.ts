@@ -1,6 +1,6 @@
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild, isDevMode } from '@angular/core';
 import {
   Subscriber,
   Subscription,
@@ -89,12 +89,14 @@ export class WordupImproveComponent {
 
     this.themeService.SetTheme(this.themeService.GetTheme());
 
-    this.autoUpdateLog();
+    if (!isDevMode()) {
+      this.autoUpdateLog();
+    }
   }
 
   ngOnDestroy() {
-    this.logsSub.unsubscribe();
-    this.debounceSub.unsubscribe();
+    this.logsSub$.unsubscribe();
+    this.debounceSub$.unsubscribe();
     if (this.automaticDrawCardTimer) {
       clearInterval(this.automaticDrawCardTimer);
       this.timerId = null;
@@ -260,8 +262,8 @@ export class WordupImproveComponent {
     this.notFamiliarScore = this.notFamiliarScoreCalculations(word);
     this.familiarScore = this.mapScore(this.seconds);
 
-    if (this.speakSelection) {
-      this.debounceBeSub$.next([this.speak, this.sentence?.en]);
+    if (this.config.seeAnswerSpeak) {
+      this.debounceBeSub$?.next([this.speak, this.sentence?.en]);
     }
   }
 
@@ -310,9 +312,7 @@ export class WordupImproveComponent {
   answerCountToday: any = 0;
   answerScoreReset(answer: any) {
 
-    if (this.speakSelection) {
-      this.debounceBeSub$.next([this.speak, this.card.en]);
-    }
+    this.debounceBeSub$?.next([this.speak, this.card.en]);
 
     try {
       this.record.avgAnswerSpeed.push(this.seconds);
@@ -586,9 +586,7 @@ export class WordupImproveComponent {
           this.searchWord.word = sortTemp[0].en;
         }
 
-        if (this.speakSelection) {
-          this.debounceBeSub$.next([this.speak, this.searchWord.display ?? this.searchWord.word]);
-        }
+        this.debounceBeSub$?.next([this.speak, this.searchWord.display ?? this.searchWord.word]);
 
         this.unfamiliarReflash();
       }
@@ -646,7 +644,9 @@ export class WordupImproveComponent {
         drawMode: 'completelyRandom',
         autoDrawSeconds: 45,
         speakSelectVoice: 'Google UK English Male',
-        autoUpdateLog: false
+        autoUpdateLog: false,
+        seeAnswerSpeak: false,
+        speakRate: 1,
       });
 
     if (!this.config.drawMode) {
@@ -655,6 +655,11 @@ export class WordupImproveComponent {
         dayScore: 500,
         questionsScore: 10,
         drawMode: 'completelyRandom',
+        autoDrawSeconds: 45,
+        speakSelectVoice: 'Google UK English Male',
+        autoUpdateLog: false,
+        seeAnswerSpeak: false,
+        speakRate: 1,
       };
     }
 
@@ -746,7 +751,7 @@ export class WordupImproveComponent {
   user!: User | null;
   logsCollection!: CollectionReference<DocumentData, DocumentData>;
 
-  logsSub!: Subscription;
+  logsSub$!: Subscription;
 
   async login() {
     try {
@@ -762,8 +767,8 @@ export class WordupImproveComponent {
   async logout() {
     try {
       await signOut(this.auth);
-      if (this.logsSub) {
-        this.logsSub.unsubscribe();
+      if (this.logsSub$) {
+        this.logsSub$.unsubscribe();
         this.user = null;
         this.logs = null;
       }
@@ -796,7 +801,7 @@ export class WordupImproveComponent {
   refleshLogs() {
     this.logsCollection = collection(this.firestore, 'Logs');
     this.logs$ = collectionData(this.logsCollection);
-    this.logsSub = this.logs$
+    this.logsSub$ = this.logs$
       .pipe(
         take(1),
         tap((logs) => {
@@ -984,9 +989,7 @@ export class WordupImproveComponent {
       item.displayAnswer = !item.displayAnswer;
     }, 5000);
 
-    if (this.speakSelection) {
-      this.debounceBeSub$.next([this.speak, item?.en]);
-    }
+    this.debounceBeSub$?.next([this.speak, item?.en]);
   }
 
   answerUnfamiliarScoreReset(answer: any, keyword: string) {
@@ -1002,7 +1005,6 @@ export class WordupImproveComponent {
   // https://gist.github.com/Eotones/d67be7262856a79a77abeeccef455ebf
   // https://stackoverflow.com/questions/5379120/get-the-highlighted-selected-text
   synth = window.speechSynthesis;
-  speakSelection: any = false;
   voices: any = [];
   @HostListener('window:mouseup', ['$event'])
   @HostListener('touchend', ['$event'])
@@ -1025,31 +1027,32 @@ export class WordupImproveComponent {
       word.replace(/\s*/g, '') !== ''
     ) {
       this.searchWord.word = word;
-      if (this.speakSelection) {
-        this.debounceBeSub$.next([this.speak, this.searchWord.word]);
-      }
+      this.debounceBeSub$?.next([this.speak, this.searchWord.word]);
     }
   }
 
   // https://stackoverflow.com/questions/41539680/speechsynthesis-speak-not-working-in-chrome
   debounceBeSub$: BehaviorSubject<any> = new BehaviorSubject([
     this.speak,
-    this.speakSelection,
+    'Turn on reading mode',
   ]);
-  debounceSub!: Subscription;
+  debounceSub$!: Subscription;
   debounceHandler() {
-    this.debounceSub = this.debounceBeSub$
+    let initMsg = 'Turn on reading mode';
+    this.debounceSub$ = this.debounceBeSub$
       ?.pipe(
         debounce(() => timer(1000)),
         tap(([fn, val]: any) => {
           // 因為 chrome 政策，無法使用匿名函式觸發 speak，但其他函式應該還是可以
           // fn(val)
+          val = val ?? initMsg;
           this.speak(val);
         })
       )
       ?.subscribe();
   }
 
+  tempSpeakMsg = '';
   speak(msg: string): void {
     if (this.synth) {
       this.voices = this.synth?.getVoices();
@@ -1062,24 +1065,36 @@ export class WordupImproveComponent {
         speechSynthesisUtterance.voice = voice;
       }
       speechSynthesisUtterance.text = msg;
+
+      // 念一次降速後念一次增速
+      if (this.tempSpeakMsg === msg) {
+        let speakRate = this.config?.speakRate ?? 1;
+        speakRate = (speakRate !== 0.5) ? 0.5 : 1;
+        this.config.speakRate = speakRate;
+      }
+      speechSynthesisUtterance.rate = this.config?.speakRate ?? 1;
+      
       this.synth?.speak(speechSynthesisUtterance);
+      this.tempSpeakMsg = msg;
     }
   }
 
   setSpeakSelection() {
-    this.speakSelection = !this.speakSelection;
-    alert(this.speakSelection ? '開啟點擊朗讀模式' : '關閉點擊朗讀模式');
-    if (this.speakSelection) {
+    let isReadingMode = this.debounceSub$ && !this.debounceSub$.closed;
+    alert(!isReadingMode ? '開啟點擊朗讀模式' : '關閉點擊朗讀模式');
+    if (!isReadingMode) {
       this.debounceHandler();
     } else {
-      this.debounceSub.unsubscribe();
+      this.debounceSub$.unsubscribe();
     }
   }
 
   speakXXX(XXX: string) {
-    if (this.speakSelection) {
-      this.debounceBeSub$.next([this.speak, XXX]);
+    if (!(this.debounceSub$ && !this.debounceSub$.closed)) {
+      this.debounceHandler();
     }
+
+    this.debounceBeSub$.next([this.speak, XXX]);
   }
 }
 

@@ -242,6 +242,10 @@
         </button>
       </p>
       <!-- <textarea [(ngModel)]="configDisplay"></textarea> -->
+      <label for="speakRate">語音語速</label>
+      <input id="speakRate" type="range" [(ngModel)]="config.speakRate" min="0.5" max="2" value="1" step="0.1" />
+      <label for="seeAnswerSpeak">看答案念句子</label>
+      <input id="seeAnswerSpeak" type="checkbox" [(ngModel)]="config.seeAnswerSpeak" />
       <label for="autoUpdateLog">自動上傳遠端紀錄</label>
       <input id="autoUpdateLog" type="checkbox" [(ngModel)]="config.autoUpdateLog" />
       <label for="dayScore">答題日期加權分數</label>
