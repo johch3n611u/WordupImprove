@@ -340,7 +340,7 @@ export class WordupImproveComponent {
       let word = this.answerScore.find((word: any) => word.en == this.card.en);
 
       // 回答的越快增加越多分，越慢扣越多
-      let trueScore = 11 - this.mapScore(this.seconds, 100, 1, 10);
+      let trueScore = 11 - this.mapScore(this.seconds, 200, 1, 10);
       // let falseScore = this.mapScore(this.seconds) * -1;
       if (word) {
         // answer ? (word.score += trueScore) : (word.score -= 5);
@@ -967,9 +967,9 @@ export class WordupImproveComponent {
     const self = this; // 儲存組件的參考
     this.timerId = setInterval(function () {
       self.seconds++;
-      // 每 20 秒檢查得分數
-      if (self.seconds % 20 === 0) {
-        self.familiarScore = self.mapScore(self.seconds, 100, 1, 10);
+      // 每 5 秒檢查得分數
+      if (self.seconds % 5 === 0) {
+        self.familiarScore = self.mapScore(self.seconds, 200, 1, 10);
       }
     }, 1000);
   }
@@ -1068,12 +1068,11 @@ export class WordupImproveComponent {
 
       // 念一次降速後念一次增速
       if (this.tempSpeakMsg === msg) {
-        let speakRate = this.config?.speakRate ?? 1;
-        speakRate = (speakRate !== 0.5) ? 0.5 : 1;
-        this.config.speakRate = speakRate;
+        speechSynthesisUtterance.rate = 0.5;
+      } else {
+        speechSynthesisUtterance.rate = this.config?.speakRate ?? 1;
       }
-      speechSynthesisUtterance.rate = this.config?.speakRate ?? 1;
-      
+
       this.synth?.speak(speechSynthesisUtterance);
       this.tempSpeakMsg = msg;
     }

@@ -1,21 +1,21 @@
 <div class="box" [style.display]="isEnterRegistPage ? 'none' : 'flex'" (window:resize)="onResize($event)">
   <div class="toolBox">
     <button class="answerScoreResetBtn" *ngIf="displayMode !== DisplayMode.Answer" (click)="seeAnswer()">
-      {{ displayMode }}
+      <span class="userCantSelect">{{ displayMode }}</span>
     </button>
     <ng-container *ngIf="displayMode === DisplayMode.Answer">
       <button (click)="answerScoreReset(true)">
-        會 + {{ 11 - familiarScore }}
+        <span class="userCantSelect">會 + {{ 11 - familiarScore }}</span>
       </button>
       <button (click)="answerScoreReset(false)">
-        不會 {{ notFamiliarScore }}
+        <span class="userCantSelect">不會 {{ notFamiliarScore }}</span>
       </button>
     </ng-container>
   </div>
 
   <div class="cardBox">
     <div *ngIf="card">
-      <span *ngIf="card?.score" class="subInfo">
+      <span *ngIf="card?.score" class="subInfo userCantSelect">
         Score：{{ card?.score }}
         <span>
           , {{ card?.updateTime?.days }} d / {{ card?.updateTime?.hours }} h /
@@ -49,7 +49,9 @@
       <hr />
       <div>
         <input autocomplete="new-password" type="text" [(ngModel)]="searchWord.word" #searchWordInput />
-        <button (click)="searchWordMark()">搜尋單字註記不會</button>
+        <button (click)="searchWordMark()">
+          <span class="userCantSelect">搜尋單字註記不會</span>
+        </button>
         <p [innerHTML]="searchWord?.display"></p>
         <p>{{ searchWord?.explain }}</p>
         <p *ngIf="searchWord?.score">
@@ -67,14 +69,14 @@
   </div>
 
   <div class="trackingInfo">
-    <p class="subInfo">
+    <p class="subInfo userCantSelect">
       經過 {{ seconds }} 秒，未複習：{{this.familiarity.notReviewed}}
       <lib-svg [src]="'./assets/enHelper/audio.svg'" (click)="setSpeakSelection()"></lib-svg>
     </p>
-    <p class="subInfo" *ngIf="this.record?.avgAnswerSpeed?.length > 0">
+    <p class="subInfo userCantSelect" *ngIf="this.record?.avgAnswerSpeed?.length > 0">
       平均答題速度： {{this.record?.avgAnswerSpeedDisplay}} /s
     </p>
-    <p *ngIf="answerCountToday > 0" class="subInfo">
+    <p *ngIf="answerCountToday > 0" class="subInfo userCantSelect">
       累積 x {{ answerCountToday }} 答題!!
     </p>
   </div>

@@ -363,3 +363,10 @@ $xl-range: 1280px;
     }
   }
 }
+
+.userCantSelect {
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
