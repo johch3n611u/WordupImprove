@@ -203,13 +203,17 @@ export class WordupImproveComponent {
           cumulativeScore +=
             answerInfo.score *
             -1 *
-            (this.config?.questionsScore ? this.config?.questionsScore : 1000);
+            (this.config?.questionsScore ? this.config?.questionsScore : 10);
           // 時間權重
           if (answerInfo.updateTime && answerInfo.score <= 0) {
-            let dayScore = this.config?.dayScore ? this.config?.dayScore : 1000;
+            let dayScore = this.config?.dayScore ? this.config?.dayScore : 50;
             let timeDifference = this.calculateTime(answerInfo?.updateTime);
             cumulativeScore += (timeDifference?.days ?? 1) * dayScore;
           }
+        } else {
+          // 未答題隨機基礎權重
+          let thousandWithinDraw = (Math.floor(Math.random() * 100) + 1) * (this.config?.questionsScore ? this.config?.questionsScore : 10);
+          cumulativeScore += thousandWithinDraw;
         }
 
         // 每次抽取結果
