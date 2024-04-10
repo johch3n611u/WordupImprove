@@ -13,6 +13,7 @@ import { FakeDataService } from './feature/fake-data/fake-data.service';
 import { ToThousandPipe } from './feature/to-thousand/to-thousand.pipe';
 import { TranslatePipe } from './feature/translate/translate.pipe';
 import { SvgComponent } from './feature/svg/svg.component';
+import { MathFloorPipe } from './feature/mathFloor';
 
 let components = [
   WrapperComponent,
@@ -24,6 +25,7 @@ let components = [
 let pipes = [
   ToThousandPipe,
   TranslatePipe,
+  MathFloorPipe,
 ];
 
 // providers 內宣告 Service 只能注入到 libraryModule 所屬元件，如要在其他站台，須直接 import service 不能透過 Module
