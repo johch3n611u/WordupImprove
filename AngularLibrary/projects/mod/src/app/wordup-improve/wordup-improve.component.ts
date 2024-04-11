@@ -158,13 +158,7 @@ export class WordupImproveComponent {
       // 錯誤優先模式
       if (this.config.drawMode === 'errorFirst') {
         // 將答題表與卡片關聯
-        this.cards.forEach((card: any) => {
-          let findAnswer = this.answerScore?.find(
-            (word: any) => word?.en === card?.en
-          );
-          card.score = findAnswer?.score ?? 0;
-          card.updateTime = this.calculateTime(findAnswer?.updateTime ?? undefined);
-        });
+        this.associateAnswerScoreWithCards();
         // 依照分數與答題時間排序
         this.cards?.sort((a: any, b: any) => this.unfamiliarSorting(a, b));
       }
@@ -268,6 +262,18 @@ export class WordupImproveComponent {
     }
   }
 
+  associateAnswerScoreWithCards() {
+    this.cards.forEach((card: any) => {
+      let findAnswer = this.answerScore?.find(
+        (word: any) => word?.en === card?.en
+      );
+      card.score = findAnswer?.score ?? 1;
+      card.updateTime = this.calculateTime(findAnswer?.updateTime ?? undefined);
+      let complexScore = card.score * card?.updateTime?.days;
+      card.complexScore = Number.isNaN(complexScore) ? 1 : complexScore;
+    });
+  }
+
   seeAnswer() {
     this.displayMode = DisplayMode.Answer;
     this.sentenceAnswerDisplay = true;
@@ -285,19 +291,8 @@ export class WordupImproveComponent {
   }
 
   unfamiliarSorting(a: any, b: any) {
-    // 負 0-50 先比時間
-    if (b?.score <= 0 && b?.score >= -50) {
-      if (b?.updateTime?.day === a?.updateTime?.day) {
-        if (b?.updateTime?.hours === a?.updateTime?.hours) {
-          return b?.updateTime?.minutes - a?.updateTime?.minutes;
-        } else {
-          return b?.updateTime?.hours - a?.updateTime?.hours;
-        }
-      } else {
-        return b?.updateTime?.day - a?.updateTime?.day;
-      }
-    } else {
-      if (a?.score === b?.score) {
+    if (a?.complexScore === b?.complexScore) {
+      if (a?.score !== b?.score) {
         if (b?.updateTime?.day === a?.updateTime?.day) {
           if (b?.updateTime?.hours === a?.updateTime?.hours) {
             return b?.updateTime?.minutes - a?.updateTime?.minutes;
@@ -310,8 +305,26 @@ export class WordupImproveComponent {
       } else {
         return a?.score - b?.score;
       }
+    } else {
+      return a?.complexScore - b?.complexScore;
     }
   }
+
+  // unfamiliarSorting(a: any, b: any) {
+  //   if (a?.score === b?.score) {
+  //     if (b?.updateTime?.day === a?.updateTime?.day) {
+  //       if (b?.updateTime?.hours === a?.updateTime?.hours) {
+  //         return b?.updateTime?.minutes - a?.updateTime?.minutes;
+  //       } else {
+  //         return b?.updateTime?.hours - a?.updateTime?.hours;
+  //       }
+  //     } else {
+  //       return b?.updateTime?.day - a?.updateTime?.day;
+  //     }
+  //   } else {
+  //     return a?.score - b?.score;
+  //   }
+  // }
 
   tempSentencesIndex: any = [];
   drawSentence() {
@@ -406,7 +419,9 @@ export class WordupImproveComponent {
     let falseScoreTime = this.calculateTime(word?.updateTime);
     let falseScore;
     let familiarDays = falseScoreTime?.days ?? 0;
-    if (familiarDays > 0 && familiarDays <= 7) {
+    if (!word) {
+      falseScore = -50;
+    } else if (familiarDays > 0 && familiarDays <= 7) {
       falseScore = (50 - this.mapScore(familiarDays, 7, 5, 50) + 4) * -1;
     } else if (familiarDays >= 15) {
       falseScore = this.mapScore(familiarDays, 30, 5, 50) * -1;
@@ -918,7 +933,6 @@ export class WordupImproveComponent {
               (res: any) => res.score >= 5
             ).length;
 
-            console.log()
             if (this.tempFamiliarity.notReviewed < this.familiarity.notReviewed) {
               this.answerScore = JSON.parse(JSON.stringify(log.answerScore));
               localStorage.setItem('answerScore', JSON.stringify(this.answerScore));

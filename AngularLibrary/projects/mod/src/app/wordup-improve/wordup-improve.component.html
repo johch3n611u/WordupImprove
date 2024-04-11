@@ -226,9 +226,6 @@
   <div style="max-width: 85vw">
     <div>
       <button class="unobviousBtn" (click)="enterRegistPage()">註冊登入</button>
-      <button class="unobviousBtn" (click)="resetAnswerScore()">
-        清空紀錄
-      </button>
       <button class="unobviousBtn" (click)="setTheme()">切換黑白模式</button>
       <br />
       <button class="unobviousBtn" (click)="clickDebug()">Debug</button>
@@ -273,6 +270,7 @@
       <label for="autoDrawSeconds">自動抽取秒數</label>
       <input id="autoDrawSeconds" type="number" [(ngModel)]="config.autoDrawSeconds" />
       <button type="button" (click)="automaticDrawCard()">自動抽取</button>
+      <button class="unobviousBtn" (click)="resetAnswerScore()">清空紀錄</button>
       <div *ngIf="voices.length > 0">
         <p>朗讀語言選擇</p>
         <ul>
