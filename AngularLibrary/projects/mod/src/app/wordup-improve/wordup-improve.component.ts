@@ -157,20 +157,51 @@ export class WordupImproveComponent {
     try {
       // 錯誤優先模式
       if (this.config.drawMode === 'errorFirst') {
+        this.familiarity.errorFirst = {};
+        this.familiarity.errorFirst.twentyMinutes = 0;
+        this.familiarity.errorFirst.oneHour = 0;
+        this.familiarity.errorFirst.oneDay = 0;
+        this.familiarity.errorFirst.sevenDays = 0;
+        this.familiarity.errorFirst.oneMonth = 0;
         // 將答題表與卡片關聯
         this.cards.forEach((card: any) => {
           let findAnswer = this.answerScore?.find(
             (word: any) => word?.en === card?.en
           );
 
-          card.score = findAnswer?.score ?? 1;
+          card.score = findAnswer?.score ?? 0;
           card.updateTime = this.calculateTime(findAnswer?.updateTime ?? undefined);
           // let days = card?.updateTime?.days ?? 0;
           // let ebinghausForgetRateScore = this.ebinghausForgetRate(days);
           // let complexScore = card.score / ebinghausForgetRateScore;
           // card.complexScore = Number.isNaN(complexScore) ? 1 : complexScore;
+
+          if (card.score <= 0) {
+            // 20分鐘後，42%被遺忘掉，58%被記住。
+            if (card.updateTime?.days === 0 && card.updateTime?.hours === 0 && card.updateTime?.minutes <= 20 && card.updateTime?.minutes > 0) {
+              this.familiarity.errorFirst.twentyMinutes++;
+            }
+            // 1小時後，56%被遺忘掉，44%被記住。
+            if (card.updateTime?.days < 1 && card.updateTime?.hours >= 1) {
+              this.familiarity.errorFirst.oneHour++;
+            }
+            // 1天後，74%被遺忘掉，26%被記住。
+            if (card.updateTime?.days >= 1 && card.updateTime?.days <= 7) {
+              this.familiarity.errorFirst.oneDay++;
+            }
+            // 1周後，77%被遺忘掉，23%被記住。
+            if (card.updateTime?.days >= 7 && card.updateTime?.days <= 30) {
+              this.familiarity.errorFirst.sevenDays++;
+            }
+            // 1個月後，79%被遺忘掉，21%被記住。
+            if (card.updateTime?.days >= 30) {
+              this.familiarity.errorFirst.oneMonth++;
+            }
+          }
+
         });
 
+        console.log(this.familiarity)
         // 依照分數與答題時間排序
         this.cards?.sort((a: any, b: any) => this.unfamiliarSorting(a, b));
       }
@@ -297,13 +328,6 @@ export class WordupImproveComponent {
   }
 
   unfamiliarSorting(a: any, b: any) {
-
-    // 20分鐘後，42%被遺忘掉，58%被記住。
-    // 1小時後，56%被遺忘掉，44%被記住。
-    // 1天後，74%被遺忘掉，26%被記住。
-    // 1周後，77%被遺忘掉，23%被記住。
-    // 1個月後，79%被遺忘掉，21%被記住。
-
     if (a?.score > 0) {
       return a?.score - b?.score;
     } else {

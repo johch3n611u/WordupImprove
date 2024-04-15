@@ -83,74 +83,85 @@
   <hr />
 
   <ng-container *ngIf="debugDisplay">
-    <table>
-      <thead>
-        <th colspan="7">
-          頭獎門檻：{{ debug?.thresholdScore }} / 平均抽取次數
-          {{ record?.drawCountRecordDisplay }} / 平均門檻
-          {{ record?.finalScoreRecordDisplay }} / 平均分數
-          {{ record?.finalScoreRecordDisplay / record?.drawCountRecordDisplay | floor }}
-        </th>
-      </thead>
-      <tbody>
-        <td data-th="抽取次數">抽取次數</td>
-        <td data-th="抽到的單字">抽到的單字</td>
-        <td data-th="最終分數">最終分數</td>
-        <td data-th="加權分數">加權分數</td>
-        <td data-th="句子頻率次數">句子頻率次數</td>
-        <td data-th="答題分數">答題分數</td>
-        <td data-th="上次答題時間">上次答題時間</td>
-      </tbody>
-      <tr *ngFor="let item of debug?.list">
-        <td data-th="抽取次數">{{ item?.drawCount }}</td>
-        <td data-th="抽到的單字">{{ item?.en }}</td>
-        <td data-th="最終分數">{{ item?.finalScore }}</td>
-        <td data-th="加權分數">
-          <span *ngIf="item?.noAnsRandomScore else ansRandomScore">
-            未答題 {{ item?.noAnsRandomScore }}
-          </span>
-          <ng-template #ansRandomScore>
-            答題 {{ item?.ansScore }} / 時間 {{ item?.timeDiffeScore }}
-          </ng-template>
-          => {{ item?.weightedScore }}
-        </td>
-        <td data-th="句子頻率次數">{{ item?.sentencesLength }}</td>
-        <td data-th="答題分數">{{ item?.score }}</td>
-        <td data-th="上次答題時間">
-          {{ item?.updateTime?.days }} d /
-          {{ item?.updateTime?.hours }} h /
-          {{ item?.updateTime?.minutes }} m
-        </td>
-      </tr>
-      <tfoot>
-        <!-- <th colspan="7" style="font-size: 15px; color: darkcyan">
-          X 加權分數 = 句子頻率次數 + ( 答題分數 * 答題加權
-          config.questionsScore.score：{{ config?.questionsScore }} ) + (
-          上次答題時間 D * 設定檔時間加權 config.dayScore.score：
-          {{ config.dayScore }} )
-        </th> -->
-      </tfoot>
-    </table>
 
-    <div class="list">
-      <p>頭獎門檻：{{ debug?.thresholdScore }}</p>
-      <p>平均抽取次數 {{ record?.drawCountRecordDisplay }}</p>
-      <p>平均門檻 {{ record?.finalScoreRecordDisplay }}</p>
-      <ol *ngFor="let item of debug?.list" style="border: 1px solid #ccc">
-        <li>抽取次數：{{ item?.drawCount }}</li>
-        <li>抽到的單字：{{ item?.en }}</li>
-        <li>最終分數：{{ item?.finalScore }}</li>
-        <li>加權分數：{{ item?.weightedScore }}</li>
-        <li>句子頻率次數：{{ item?.sentencesLength }}</li>
-        <li>答題分數：{{ item?.score }}</li>
-        <li>
-          上次答題時間：
-          {{ item?.updateTime?.days }} d /
-          {{ item?.updateTime?.hours }} h /
-          {{ item?.updateTime?.minutes }} m
-        </li>
-      </ol>
-    </div>
+    <ng-container *ngIf="this.config.drawMode === 'errorFirst' else randomDraw">
+      <p>20分鐘後，42%被遺忘掉，58%被記住。20 分鐘以內 {{familiarity.errorFirst.twentyMinutes}}</p>
+      <p>1小時後，56%被遺忘掉，44%被記住。1 天以內 {{familiarity.errorFirst.oneHour}}</p>
+      <p>1天後，74%被遺忘掉，26%被記住。介於 1 ~ 7 天 {{familiarity.errorFirst.oneDay}}</p>
+      <p>1周後，77%被遺忘掉，23%被記住。介於 7 ~ 30 天 {{familiarity.errorFirst.sevenDays}}</p>
+      <p>1個月後，79%被遺忘掉，21%被記住。大於 30 天 {{familiarity.errorFirst.oneMonth}}</p>
+    </ng-container>
+
+    <ng-template #randomDraw>
+      <table>
+        <thead>
+          <th colspan="7">
+            頭獎門檻：{{ debug?.thresholdScore }} / 平均抽取次數
+            {{ record?.drawCountRecordDisplay }} / 平均門檻
+            {{ record?.finalScoreRecordDisplay }} / 平均分數
+            {{ record?.finalScoreRecordDisplay / record?.drawCountRecordDisplay | floor }}
+          </th>
+        </thead>
+        <tbody>
+          <td data-th="抽取次數">抽取次數</td>
+          <td data-th="抽到的單字">抽到的單字</td>
+          <td data-th="最終分數">最終分數</td>
+          <td data-th="加權分數">加權分數</td>
+          <td data-th="句子頻率次數">句子頻率次數</td>
+          <td data-th="答題分數">答題分數</td>
+          <td data-th="上次答題時間">上次答題時間</td>
+        </tbody>
+        <tr *ngFor="let item of debug?.list">
+          <td data-th="抽取次數">{{ item?.drawCount }}</td>
+          <td data-th="抽到的單字">{{ item?.en }}</td>
+          <td data-th="最終分數">{{ item?.finalScore }}</td>
+          <td data-th="加權分數">
+            <span *ngIf="item?.noAnsRandomScore else ansRandomScore">
+              未答題 {{ item?.noAnsRandomScore }}
+            </span>
+            <ng-template #ansRandomScore>
+              答題 {{ item?.ansScore }} / 時間 {{ item?.timeDiffeScore }}
+            </ng-template>
+            => {{ item?.weightedScore }}
+          </td>
+          <td data-th="句子頻率次數">{{ item?.sentencesLength }}</td>
+          <td data-th="答題分數">{{ item?.score }}</td>
+          <td data-th="上次答題時間">
+            {{ item?.updateTime?.days }} d /
+            {{ item?.updateTime?.hours }} h /
+            {{ item?.updateTime?.minutes }} m
+          </td>
+        </tr>
+        <tfoot>
+          <!-- <th colspan="7" style="font-size: 15px; color: darkcyan">
+            X 加權分數 = 句子頻率次數 + ( 答題分數 * 答題加權
+            config.questionsScore.score：{{ config?.questionsScore }} ) + (
+            上次答題時間 D * 設定檔時間加權 config.dayScore.score：
+            {{ config.dayScore }} )
+          </th> -->
+        </tfoot>
+      </table>
+
+      <div class="list">
+        <p>頭獎門檻：{{ debug?.thresholdScore }}</p>
+        <p>平均抽取次數 {{ record?.drawCountRecordDisplay }}</p>
+        <p>平均門檻 {{ record?.finalScoreRecordDisplay }}</p>
+        <ol *ngFor="let item of debug?.list" style="border: 1px solid #ccc">
+          <li>抽取次數：{{ item?.drawCount }}</li>
+          <li>抽到的單字：{{ item?.en }}</li>
+          <li>最終分數：{{ item?.finalScore }}</li>
+          <li>加權分數：{{ item?.weightedScore }}</li>
+          <li>句子頻率次數：{{ item?.sentencesLength }}</li>
+          <li>答題分數：{{ item?.score }}</li>
+          <li>
+            上次答題時間：
+            {{ item?.updateTime?.days }} d /
+            {{ item?.updateTime?.hours }} h /
+            {{ item?.updateTime?.minutes }} m
+          </li>
+        </ol>
+      </div>
+    </ng-template>
 
     <hr style="width: 95%" />
   </ng-container>
