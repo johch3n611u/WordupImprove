@@ -60,7 +60,7 @@ export class WordupImproveComponent {
   answerScore: any = [];
   chart: any;
   theme = Theme;
-  config: any = {};
+  config: Config = {} as Config;
   allWords: any;
   REGEXP_TYPE = REGEXP_TYPE;
 
@@ -158,7 +158,19 @@ export class WordupImproveComponent {
       // 錯誤優先模式
       if (this.config.drawMode === 'errorFirst') {
         // 將答題表與卡片關聯
-        this.associateAnswerScoreWithCards();
+        this.cards.forEach((card: any) => {
+          let findAnswer = this.answerScore?.find(
+            (word: any) => word?.en === card?.en
+          );
+
+          card.score = findAnswer?.score ?? 1;
+          card.updateTime = this.calculateTime(findAnswer?.updateTime ?? undefined);
+          // let days = card?.updateTime?.days ?? 0;
+          // let ebinghausForgetRateScore = this.ebinghausForgetRate(days);
+          // let complexScore = card.score / ebinghausForgetRateScore;
+          // card.complexScore = Number.isNaN(complexScore) ? 1 : complexScore;
+        });
+
         // 依照分數與答題時間排序
         this.cards?.sort((a: any, b: any) => this.unfamiliarSorting(a, b));
       }
@@ -179,61 +191,60 @@ export class WordupImproveComponent {
       while (isLocked) {
 
         let drawNumber = 0;
+        let answerInfo;
 
         if (this.config.drawMode === 'errorFirst') {
-          drawNumber = drawCount;
+          drawNumber = 0;
         } else {
           drawNumber = this.getRandomNum(this.cards?.length - 1);
-        }
+          let preCumulativeScore = cumulativeScore;
 
-        let preCumulativeScore = cumulativeScore;
-
-        // 例句數量權重
-        let exSentsScore, ansScore, timeDiffeScore, recordAvgScore, noAnsRandomScore;
-        exSentsScore = Math.floor(this.cards[drawNumber]?.sentences?.length / 50);
-        cumulativeScore += exSentsScore;
-        // 答題權重
-        let answerInfo = this.answerScore.find((res: any) => res.en === this.cards[drawNumber].en);
-        if (answerInfo) {
-          ansScore = answerInfo.score * -1 * (this.config?.questionsScore ?? 10);
-          cumulativeScore += ansScore;
-          // 時間權重
-          if (answerInfo.updateTime && answerInfo.score <= 0) {
-            let dayScore = this.config?.dayScore ?? 50;
-            timeDiffeScore = Math.floor(((this.calculateTime(answerInfo?.updateTime)?.days ?? 1) * dayScore * (answerInfo.score * -1)) / 50);
-            cumulativeScore += timeDiffeScore;
+          // 例句數量權重
+          let exSentsScore, ansScore, timeDiffeScore, recordAvgScore, noAnsRandomScore;
+          exSentsScore = Math.floor(this.cards[drawNumber]?.sentences?.length / 50);
+          cumulativeScore += exSentsScore;
+          // 答題權重
+          answerInfo = this.answerScore.find((res: any) => res.en === this.cards[drawNumber].en);
+          if (answerInfo) {
+            ansScore = answerInfo.score * -1 * (this.config?.questionsScore ?? 10);
+            cumulativeScore += ansScore;
+            // 時間權重
+            if (answerInfo.updateTime && answerInfo.score <= 0) {
+              let dayScore = this.config?.dayScore ?? 50;
+              timeDiffeScore = Math.floor(((this.calculateTime(answerInfo?.updateTime)?.days ?? 1) * dayScore * (answerInfo.score * -1)) / 50);
+              cumulativeScore += timeDiffeScore;
+            }
+          } else {
+            // 未答題隨機基礎權重
+            recordAvgScore = Math.floor(this.record?.finalScoreRecordDisplay / this.record?.drawCountRecordDisplay);
+            noAnsRandomScore = Math.floor(Math.random() * (Number.isNaN(recordAvgScore) ? 1000 : recordAvgScore)) + 1;
+            cumulativeScore += noAnsRandomScore;
           }
-        } else {
-          // 未答題隨機基礎權重
-          recordAvgScore = Math.floor(this.record?.finalScoreRecordDisplay / this.record?.drawCountRecordDisplay);
-          noAnsRandomScore = Math.floor(Math.random() * (Number.isNaN(recordAvgScore) ? 1000 : recordAvgScore)) + 1;
-          cumulativeScore += noAnsRandomScore;
-        }
 
-        // 每次抽取結果
-        this.debug.list.push({
-          finalScore: cumulativeScore,
-          en: this.cards[drawNumber]?.en,
-          drawCount: drawCount++ + 1,
-          sentencesLength: exSentsScore,
-          score: answerInfo?.score,
-          updateTime: this.calculateTime(answerInfo?.updateTime),
-          weightedScore: cumulativeScore - preCumulativeScore,
-          ansScore: ansScore,
-          timeDiffeScore: timeDiffeScore,
-          noAnsRandomScore: noAnsRandomScore,
-          recordAvgScore: recordAvgScore,
-        });
+          // 每次抽取結果
+          this.debug.list.push({
+            finalScore: cumulativeScore,
+            en: this.cards[drawNumber]?.en,
+            drawCount: drawCount++ + 1,
+            sentencesLength: exSentsScore,
+            score: answerInfo?.score,
+            updateTime: this.calculateTime(answerInfo?.updateTime),
+            weightedScore: cumulativeScore - preCumulativeScore,
+            ansScore: ansScore,
+            timeDiffeScore: timeDiffeScore,
+            noAnsRandomScore: noAnsRandomScore,
+            recordAvgScore: recordAvgScore,
+          });
 
-        // 答題正的也能被抽到
-        if (cumulativeScore < 0) {
-          cumulativeScore = (this.config?.questionsScore ?? 10);
+          // 答題正的也能被抽到
+          if (cumulativeScore < 0) {
+            cumulativeScore = (this.config?.questionsScore ?? 10);
+          }
         }
 
         // 累積分數超過臨界值則得獎
         if (
-          thresholdScore <= cumulativeScore &&
-          this.cards[drawNumber]?.en !== this.card?.en
+          (thresholdScore <= cumulativeScore && this.cards[drawNumber]?.en !== this.card?.en) || this.config.drawMode === 'errorFirst'
         ) {
           this.card = JSON.parse(JSON.stringify(this.cards[drawNumber]));
           this.card.score = answerInfo?.score;
@@ -262,16 +273,11 @@ export class WordupImproveComponent {
     }
   }
 
-  associateAnswerScoreWithCards() {
-    this.cards.forEach((card: any) => {
-      let findAnswer = this.answerScore?.find(
-        (word: any) => word?.en === card?.en
-      );
-      card.score = findAnswer?.score ?? 1;
-      card.updateTime = this.calculateTime(findAnswer?.updateTime ?? undefined);
-      let complexScore = card.score * card?.updateTime?.days;
-      card.complexScore = Number.isNaN(complexScore) ? 1 : complexScore;
-    });
+  // 艾賓浩斯遺忘曲線
+  ebinghausForgetRate(t: number) {
+    const a = 1.25; // 初始下降率
+    const b = 0.1; // 下降速度
+    return Math.exp(-a * Math.pow(t, b));
   }
 
   seeAnswer() {
@@ -291,40 +297,63 @@ export class WordupImproveComponent {
   }
 
   unfamiliarSorting(a: any, b: any) {
-    if (a?.complexScore === b?.complexScore) {
-      if (a?.score !== b?.score) {
-        if (b?.updateTime?.day === a?.updateTime?.day) {
-          if (b?.updateTime?.hours === a?.updateTime?.hours) {
+
+    // 20分鐘後，42%被遺忘掉，58%被記住。
+    // 1小時後，56%被遺忘掉，44%被記住。
+    // 1天後，74%被遺忘掉，26%被記住。
+    // 1周後，77%被遺忘掉，23%被記住。
+    // 1個月後，79%被遺忘掉，21%被記住。
+
+    if (a?.score > 0) {
+      return a?.score - b?.score;
+    } else {
+      if (a?.updateTime?.days === b?.updateTime?.days) {
+        if (a?.score === b?.score) {
+          if (a?.updateTime?.hours === b?.updateTime?.hours) {
             return b?.updateTime?.minutes - a?.updateTime?.minutes;
           } else {
             return b?.updateTime?.hours - a?.updateTime?.hours;
           }
         } else {
-          return b?.updateTime?.day - a?.updateTime?.day;
+          return a?.score - b?.score;
         }
       } else {
-        return a?.score - b?.score;
+        return b?.updateTime?.days - a?.updateTime?.days;
       }
-    } else {
-      return a?.complexScore - b?.complexScore;
     }
-  }
 
-  // unfamiliarSorting(a: any, b: any) {
-  //   if (a?.score === b?.score) {
-  //     if (b?.updateTime?.day === a?.updateTime?.day) {
-  //       if (b?.updateTime?.hours === a?.updateTime?.hours) {
-  //         return b?.updateTime?.minutes - a?.updateTime?.minutes;
-  //       } else {
-  //         return b?.updateTime?.hours - a?.updateTime?.hours;
-  //       }
-  //     } else {
-  //       return b?.updateTime?.day - a?.updateTime?.day;
-  //     }
-  //   } else {
-  //     return a?.score - b?.score;
-  //   }
-  // }
+    // if (a?.complexScore === b?.complexScore) {
+    //   if (a?.score !== b?.score) {
+    //     if (b?.updateTime?.day === a?.updateTime?.day) {
+    //       if (b?.updateTime?.hours === a?.updateTime?.hours) {
+    //         return b?.updateTime?.minutes - a?.updateTime?.minutes;
+    //       } else {
+    //         return b?.updateTime?.hours - a?.updateTime?.hours;
+    //       }
+    //     } else {
+    //       return b?.updateTime?.day - a?.updateTime?.day;
+    //     }
+    //   } else {
+    //     return a?.score - b?.score;
+    //   }
+    // } else {
+    //   return a?.complexScore - b?.complexScore;
+    // }
+
+    // if (a?.score === b?.score) {
+    //   if (b?.updateTime?.day === a?.updateTime?.day) {
+    //     if (b?.updateTime?.hours === a?.updateTime?.hours) {
+    //       return b?.updateTime?.minutes - a?.updateTime?.minutes;
+    //     } else {
+    //       return b?.updateTime?.hours - a?.updateTime?.hours;
+    //     }
+    //   } else {
+    //     return b?.updateTime?.day - a?.updateTime?.day;
+    //   }
+    // } else {
+    //   return a?.score - b?.score;
+    // }
+  }
 
   tempSentencesIndex: any = [];
   drawSentence() {
@@ -469,19 +498,19 @@ export class WordupImproveComponent {
       this.familiarity.notReviewed = zero + notfind;
       // 超不熟悉 -5
       this.familiarity.veryUnfamiliar = this.answerScore.filter(
-        (res: any) => res.score <= -5
+        (res: any) => res.score <= -50
       ).length;
       // 不熟悉 -
       this.familiarity.unfamiliar = this.answerScore.filter(
-        (res: any) => res.score < 0 && res.score > -5
+        (res: any) => res.score < 0 && res.score > -50
       ).length;
       // 熟悉 +
       this.familiarity.familiar = this.answerScore.filter(
-        (res: any) => res.score > 0 && res.score < 5
+        (res: any) => res.score > 0 && res.score < 25
       ).length;
       // 超熟悉 +5
       this.familiarity.veryFamiliar = this.answerScore.filter(
-        (res: any) => res.score >= 5
+        (res: any) => res.score >= 50
       ).length;
 
       this.drawChat();
@@ -726,7 +755,7 @@ export class WordupImproveComponent {
 
   calculateTime(timestamp: any) {
     if (!timestamp) {
-      return undefined;
+      return { days: 0, hours: 0, minutes: 0 };
     }
 
     var timeDifference = Math.abs(Date.now() - timestamp); // 計算時間差（取絕對值）
@@ -883,6 +912,9 @@ export class WordupImproveComponent {
   }
 
   downloadLog() {
+    if (isDevMode()) {
+      this.refleshLogs();
+    }
     if (confirm('確定要更新本地紀錄嗎？(此動作不可逆)') && this.user) {
       const log = this.logs.find((log: any) => log.email === this.user?.email);
       if (log) {
@@ -918,19 +950,19 @@ export class WordupImproveComponent {
             this.tempFamiliarity.notReviewed = zero + notfind;
             // 超不熟悉 -5
             this.tempFamiliarity.veryUnfamiliar = tempAnswerScore.filter(
-              (res: any) => res.score <= -5
+              (res: any) => res.score <= -50
             ).length;
             // 不熟悉 -
             this.tempFamiliarity.unfamiliar = tempAnswerScore.filter(
-              (res: any) => res.score < 0 && res.score > -5
+              (res: any) => res.score < 0 && res.score > -50
             ).length;
             // 熟悉 +
             this.tempFamiliarity.familiar = tempAnswerScore.filter(
-              (res: any) => res.score > 0 && res.score < 5
+              (res: any) => res.score > 0 && res.score < 25
             ).length;
             // 超熟悉 +5
             this.tempFamiliarity.veryFamiliar = tempAnswerScore.filter(
-              (res: any) => res.score >= 5
+              (res: any) => res.score >= 50
             ).length;
 
             if (this.tempFamiliarity.notReviewed < this.familiarity.notReviewed) {
@@ -1148,4 +1180,15 @@ export interface Familiarity {
   veryUnfamiliar: number;
   familiar: number;
   veryFamiliar: number;
+}
+
+export class Config {
+  dayScore: number = 500;
+  questionsScore: number = 10;
+  drawMode: string = 'completelyRandom';
+  autoDrawSeconds: number = 45;
+  speakSelectVoice: string = 'Google UK English Male';
+  autoUpdateLog: boolean = false;
+  seeAnswerSpeak: boolean = false;
+  speakRate: number = 1;
 }
