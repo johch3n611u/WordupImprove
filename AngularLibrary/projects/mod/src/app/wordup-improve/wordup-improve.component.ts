@@ -201,9 +201,10 @@ export class WordupImproveComponent {
 
         });
 
-        console.log(this.familiarity)
         // 依照分數與答題時間排序
         this.cards?.sort((a: any, b: any) => this.unfamiliarSorting(a, b));
+
+        console.log(this.cards);
       }
 
       this.debug = { thresholdScore: 0, list: [] };
@@ -222,11 +223,9 @@ export class WordupImproveComponent {
       while (isLocked) {
 
         let drawNumber = 0;
-        let answerInfo;
+        let answerInfo = this.answerScore.find((res: any) => res.en === this.cards[drawNumber].en);
 
-        if (this.config.drawMode === 'errorFirst') {
-          drawNumber = 0;
-        } else {
+        if (this.config.drawMode !== 'errorFirst') {
           drawNumber = this.getRandomNum(this.cards?.length - 1);
           let preCumulativeScore = cumulativeScore;
 
@@ -234,8 +233,8 @@ export class WordupImproveComponent {
           let exSentsScore, ansScore, timeDiffeScore, recordAvgScore, noAnsRandomScore;
           exSentsScore = Math.floor(this.cards[drawNumber]?.sentences?.length / 50);
           cumulativeScore += exSentsScore;
+
           // 答題權重
-          answerInfo = this.answerScore.find((res: any) => res.en === this.cards[drawNumber].en);
           if (answerInfo) {
             ansScore = answerInfo.score * -1 * (this.config?.questionsScore ?? 10);
             cumulativeScore += ansScore;
@@ -328,7 +327,7 @@ export class WordupImproveComponent {
   }
 
   unfamiliarSorting(a: any, b: any) {
-    if (a?.score > 0) {
+    if (a?.score > 0 || b?.score > 0) {
       return a?.score - b?.score;
     } else {
       if (a?.updateTime?.days === b?.updateTime?.days) {
@@ -1004,6 +1003,8 @@ export class WordupImproveComponent {
                 }).then(() => alert('自動同步遠端狀態(上傳)'));
               }
             }
+
+            this.logs = logs;
           }),
           take(1),
         );

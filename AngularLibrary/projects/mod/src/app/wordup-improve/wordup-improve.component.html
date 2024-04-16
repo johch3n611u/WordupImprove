@@ -85,11 +85,17 @@
   <ng-container *ngIf="debugDisplay">
 
     <ng-container *ngIf="this.config.drawMode === 'errorFirst' else randomDraw">
-      <p>20分鐘後，42%被遺忘掉，58%被記住。20 分鐘以內 {{familiarity.errorFirst.twentyMinutes}}</p>
-      <p>1小時後，56%被遺忘掉，44%被記住。1 天以內 {{familiarity.errorFirst.oneHour}}</p>
-      <p>1天後，74%被遺忘掉，26%被記住。介於 1 ~ 7 天 {{familiarity.errorFirst.oneDay}}</p>
-      <p>1周後，77%被遺忘掉，23%被記住。介於 7 ~ 30 天 {{familiarity.errorFirst.sevenDays}}</p>
-      <p>1個月後，79%被遺忘掉，21%被記住。大於 30 天 {{familiarity.errorFirst.oneMonth}}</p>
+      <p>20 分鐘以內 {{familiarity.errorFirst.twentyMinutes}}</p>
+      <p>1 天以內 {{familiarity.errorFirst.oneHour}}</p>
+      <p>介於 1 ~ 7 天 {{familiarity.errorFirst.oneDay}}</p>
+      <p>介於 7 ~ 30 天 {{familiarity.errorFirst.sevenDays}}</p>
+      <p>大於 30 天 {{familiarity.errorFirst.oneMonth}}</p>
+      <hr>
+      <p>20分鐘後，42%被遺忘掉，58%被記住。</p>
+      <p>1小時後，56%被遺忘掉，44%被記住。</p>
+      <p>1天後，74%被遺忘掉，26%被記住。</p>
+      <p>1周後，77%被遺忘掉，23%被記住。</p>
+      <p>1個月後，79%被遺忘掉，21%被記住。</p>
     </ng-container>
 
     <ng-template #randomDraw>
