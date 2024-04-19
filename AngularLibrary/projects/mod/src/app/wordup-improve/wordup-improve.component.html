@@ -175,6 +175,7 @@
   <ng-container *ngIf="displayUnfamiliar">
     <table>
       <tbody>
+        <td></td>
         <td>顯示中文</td>
         <td data-th="英文">英文</td>
         <td data-th="句子頻率次數">句子頻率次數</td>
@@ -183,6 +184,7 @@
         <td data-th="中文" style="min-width: 20rem">中文</td>
       </tbody>
       <tr *ngFor="let item of unfamiliarList;let i = index;">
+        <td>{{i + 1}}</td>
         <td>
           <button class="unobviousBtn" (click)="setUnfamiliarDisplayAnswer(item)">
             看答案
@@ -210,6 +212,7 @@
 
     <div class="list">
       <ol *ngFor="let item of unfamiliarList;let i = index;" style="border: 1px solid #ccc">
+        <li>{{i + 1}}</li>
         <li>
           <button class="unobviousBtn" (click)="setUnfamiliarDisplayAnswer(item)">
             看答案
@@ -247,7 +250,7 @@
       <br />
       <button class="unobviousBtn" (click)="clickDebug()">Debug</button>
       <button class="unobviousBtn" (click)="clickImExport()">匯出匯入</button>
-      <button class="unobviousBtn" (click)="this.displayUnfamiliar = !this.displayUnfamiliar">
+      <button class="unobviousBtn" (click)="this.displayUnfamiliar = !this.displayUnfamiliar;">
         不熟榜
       </button>
     </div>

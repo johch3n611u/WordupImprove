@@ -115,6 +115,10 @@ table {
   width: 100%;
 }
 
+lib-svg {
+  width: 30px;
+}
+
 @include LargeDevices {
   .box {
     margin-top: 10vh;

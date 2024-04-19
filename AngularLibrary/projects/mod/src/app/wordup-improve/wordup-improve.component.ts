@@ -198,13 +198,10 @@ export class WordupImproveComponent {
               this.familiarity.errorFirst.oneMonth++;
             }
           }
-
         });
 
         // 依照分數與答題時間排序
         this.cards?.sort((a: any, b: any) => this.unfamiliarSorting(a, b));
-
-        console.log(this.cards);
       }
 
       this.debug = { thresholdScore: 0, list: [] };
@@ -227,6 +224,7 @@ export class WordupImproveComponent {
 
         if (this.config.drawMode !== 'errorFirst') {
           drawNumber = this.getRandomNum(this.cards?.length - 1);
+          answerInfo = this.answerScore.find((res: any) => res.en === this.cards[drawNumber].en);
           let preCumulativeScore = cumulativeScore;
 
           // 例句數量權重
@@ -330,18 +328,34 @@ export class WordupImproveComponent {
     if (a?.score > 0 || b?.score > 0) {
       return a?.score - b?.score;
     } else {
-      if (a?.updateTime?.days === b?.updateTime?.days) {
-        if (a?.score === b?.score) {
-          if (a?.updateTime?.hours === b?.updateTime?.hours) {
-            return b?.updateTime?.minutes - a?.updateTime?.minutes;
+      let tempSortA = a?.score - a?.updateTime?.days;
+      let tempSortB = b?.score - b?.updateTime?.days;
+      if (tempSortA === tempSortB) {
+        if (a?.updateTime?.days === b?.updateTime?.days) {
+          if (a?.score === b?.score) {
+            if (a?.updateTime?.hours === b?.updateTime?.hours) {
+              return b?.updateTime?.minutes - a?.updateTime?.minutes;
+            } else {
+              return b?.updateTime?.hours - a?.updateTime?.hours;
+            }
           } else {
-            return b?.updateTime?.hours - a?.updateTime?.hours;
+            return a?.score - b?.score;
           }
         } else {
-          return a?.score - b?.score;
+          return b?.updateTime?.days - a?.updateTime?.days;
         }
       } else {
-        return b?.updateTime?.days - a?.updateTime?.days;
+        let aUpdateTime = a?.updateTime?.days == 0 && a?.updateTime?.hours <= 1;
+        let bUpdateTime = b?.updateTime?.days == 0 && b?.updateTime?.hours <= 1;
+        if (aUpdateTime && bUpdateTime) {
+          return tempSortB - tempSortA;
+        } else if (aUpdateTime) {
+          return 1;
+        } else if (bUpdateTime) {
+          return -1;
+        } else {
+          return tempSortA - tempSortB;
+        }
       }
     }
 
@@ -444,7 +458,7 @@ export class WordupImproveComponent {
         // answer ? (word.score += trueScore) : (word.score -= 5);
         // 30 內天類依比例扣分 7-15 天扣最低，7 天內與 15 至其餘天數 & 一天以內直接扣最大分
         // 看答案時計算 notFamiliarScore 顯示後再拿來此處使用
-        answer ? (word.score += trueScore) : this.notFamiliarScore;
+        answer ? (word.score += trueScore) : word.score += this.notFamiliarScore;
         word.updateTime = Date.now();
       } else {
         // 第一次錯直接扣 50 
@@ -886,7 +900,7 @@ export class WordupImproveComponent {
   enterRegistPage() {
     this.refleshUser();
     if (isDevMode()) {
-      this.refleshLogs();
+      this.autoUpdateLog();
     }
     this.isEnterRegistPage = true;
   }
@@ -935,9 +949,6 @@ export class WordupImproveComponent {
   }
 
   downloadLog() {
-    if (isDevMode()) {
-      this.refleshLogs();
-    }
     if (confirm('確定要更新本地紀錄嗎？(此動作不可逆)') && this.user) {
       const log = this.logs.find((log: any) => log.email === this.user?.email);
       if (log) {
@@ -947,6 +958,7 @@ export class WordupImproveComponent {
         this.unfamiliarReflash();
         alert('更新成功');
         this.isEnterRegistPage = false;
+        this.drawCard();
       } else {
         alert('未找到紀錄');
       }
@@ -1005,6 +1017,7 @@ export class WordupImproveComponent {
             }
 
             this.logs = logs;
+            this.drawCard();
           }),
           take(1),
         );
