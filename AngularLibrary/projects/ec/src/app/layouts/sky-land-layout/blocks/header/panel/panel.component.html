@@ -37,13 +37,13 @@
           </a>
         </ul>
       </ul>
-      <ng-container *ngIf="themeService.GetTheme() == theme.light else dark">
-        <a class="level1Nav" (click)="themeService.SetTheme(theme.light);"><i class="fa-solid fa-sun"></i></a>
-        <a class="level1Nav" (click)="themeService.SetTheme(theme.dark)"><i class="fa-regular fa-moon"></i></a>
+      <ng-container *ngIf="themeService.getTheme() == theme.light else dark">
+        <a class="level1Nav" (click)="themeService.setTheme(theme.light);"><i class="fa-solid fa-sun"></i></a>
+        <a class="level1Nav" (click)="themeService.setTheme(theme.dark)"><i class="fa-regular fa-moon"></i></a>
       </ng-container>
       <ng-template #dark>
-        <a class="level1Nav" (click)="themeService.SetTheme(theme.light)"><i class="fa-regular fa-sun"></i></a>
-        <a class="level1Nav" (click)="themeService.SetTheme(theme.dark)"><i class="fa-solid fa-moon"></i></a>
+        <a class="level1Nav" (click)="themeService.setTheme(theme.light)"><i class="fa-regular fa-sun"></i></a>
+        <a class="level1Nav" (click)="themeService.setTheme(theme.dark)"><i class="fa-solid fa-moon"></i></a>
       </ng-template>
     </nav>
   </div>

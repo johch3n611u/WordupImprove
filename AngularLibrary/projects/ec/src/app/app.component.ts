@@ -13,6 +13,6 @@ export class AppComponent {
   }
 
   ngOnInit(): void {
-    this.themeService.SetTheme(this.themeService.GetTheme());
+    this.themeService.setTheme(this.themeService.getTheme());
   }
 }

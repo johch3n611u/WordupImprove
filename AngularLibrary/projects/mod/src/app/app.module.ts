@@ -23,6 +23,7 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { PalWorldMapLeafletComponent } from './pal-world-map-leaflet/pal-world-map-leaflet.component';
 import { HomeComponent } from './home/home.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { DatePipe } from '@angular/common';
 
 // https://stackoverflow.com/questions/60726180/angular-9-value-at-position-x-in-the-ngmodule-imports-is-not-a-reference  reload  vscode
 @NgModule({
@@ -37,7 +38,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     WordupImproveComponent,
     PalWorldMapLeafletComponent
   ],
-  providers: [],
+  providers: [
+    DatePipe
+  ],
   bootstrap: [AppComponent],
   imports: [
     BrowserModule,
@@ -59,7 +62,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000',
       // you already set this config
-    })
+    }),
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

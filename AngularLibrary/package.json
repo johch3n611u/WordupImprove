@@ -22,7 +22,7 @@
     "build:mod:pal": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/pal-tool/",
     "build:mod:memory": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress --base-href=/assets/angular/mod/memory-card/",
     "pwa:mod": "ng add @angular/pwa --project mod",
-    "start:mod:pwa":"ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress && npx http-server -p 8080 -c-1 dist/mod"
+    "start:mod:pwa": "ng build mod --aot --build-optimizer --common-chunk --vendor-chunk --optimization --progress && npx http-server -p 8080 -c-1 dist/mod"
   },
   "private": true,
   "dependencies": {

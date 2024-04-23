@@ -17,13 +17,13 @@ export class ThemeService {
 
   }
 
-  SetTheme(theme: Theme) {
+  setTheme(theme: Theme) {
     const htmlNode = document.getElementsByTagName('html')[0];
     htmlNode.setAttribute('data-theme', theme);
     localStorage.setItem('FAVORITE_THEME', theme);
   }
 
-  GetTheme(): Theme {
+  getTheme(): Theme {
     const cacheTheme = localStorage.getItem('FAVORITE_THEME');
     if (cacheTheme) {
       return cacheTheme === Theme.dark ? Theme.dark : Theme.light;
