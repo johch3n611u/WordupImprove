@@ -2,15 +2,10 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, HostListener, ViewChild, isDevMode } from '@angular/core';
 import {
-  Subscriber,
   Subscription,
-  catchError,
   combineLatest,
   debounce,
-  delay,
   filter,
-  map,
-  of,
   switchMap,
   take,
   tap,
@@ -44,6 +39,8 @@ import {
   user,
 } from '@angular/fire/auth';
 import { GlgorithmsService, REGEXP_TYPE, ServiceWorkerService } from 'lib/feature';
+import { DatePipe } from '@angular/common';
+import { CommonService } from 'lib/feature/common/common.service';
 
 @Component({
   selector: 'mod-wordup-improve',
@@ -52,7 +49,7 @@ import { GlgorithmsService, REGEXP_TYPE, ServiceWorkerService } from 'lib/featur
 })
 export class WordupImproveComponent {
   url = './assets/enHelper/scoreData.json';
-  cards: any = [];
+  cards: Array<Card> = [];
   sentence: any;
   sentenceAnswerDisplay: any = true;
   DisplayMode = DisplayMode;
@@ -60,7 +57,6 @@ export class WordupImproveComponent {
   answerScore: any = [];
   chart: any;
   theme = Theme;
-  config: Config = {} as Config;
   allWords: any;
   REGEXP_TYPE = REGEXP_TYPE;
 
@@ -69,34 +65,20 @@ export class WordupImproveComponent {
     public themeService: ThemeService,
     private glgorithmsService: GlgorithmsService,
     private serviceWorkerService: ServiceWorkerService,
+    private datePipe: DatePipe,
+    private commonService: CommonService,
   ) {
-    this.httpClient
-      .get(this.url)
-      .pipe(
-        tap((res: any) => {
-          // this.cards = res.sort(
-          //   (a: any, b: any) => b?.sentences?.length - a?.sentences?.length
-          // );
-          this.cards = res;
-          this.answerScore = JSON.parse(
-            localStorage.getItem('answerScore') ?? '[]'
-          );
-          this.configInit();
-        })
-      )
-      .subscribe((res: any) => {
-        this.drawCard();
-      });
+    this.initCards();
 
-    this.themeService.SetTheme(this.themeService.GetTheme());
+    this.themeService.setTheme(this.themeService.getTheme());
 
-    if (!isDevMode()) {
-      this.autoUpdateLog();
-    }
+    // if (!isDevMode()) {
+    //   this.autoUpdateLog();
+    // }
   }
 
   ngOnDestroy() {
-    this.logsSub$.unsubscribe();
+    this.combineUserAndLogs$.unsubscribe();
     this.debounceSub$.unsubscribe();
     if (this.automaticDrawCardTimer) {
       clearInterval(this.automaticDrawCardTimer);
@@ -108,7 +90,6 @@ export class WordupImproveComponent {
     this.serviceWorkerService.judgmentUpdate();
   }
 
-  automaticDrawCardTimer: any;
   record: any = {
     drawCountRecord: [],
     drawCountRecordDisplay: undefined,
@@ -117,19 +98,21 @@ export class WordupImproveComponent {
     avgAnswerSpeed: [],
     avgAnswerSpeedDisplay: undefined,
   };
-
   recordCalculate() {
-    this.record.drawCountRecordDisplay = this.getAverage(
-      this.record.drawCountRecord
+    this.record.drawCountRecordDisplay = Math.round(
+      this.record.drawCountRecord.reduce((sum: any, currentValue: any) => sum + currentValue, 0) / this.record.drawCountRecord.length
     );
-    this.record.finalScoreRecordDisplay = this.getAverage(
-      this.record.finalScoreRecord
+
+    this.record.finalScoreRecordDisplay = Math.round(
+      this.record.finalScoreRecord.reduce((sum: any, currentValue: any) => sum + currentValue, 0) / this.record.finalScoreRecord.length
     );
-    this.record.avgAnswerSpeedDisplay = this.getAverage(
-      this.record.avgAnswerSpeed
+
+    this.record.avgAnswerSpeedDisplay = Math.round(
+      this.record.avgAnswerSpeed.reduce((sum: any, currentValue: any) => sum + currentValue, 0) / this.record.avgAnswerSpeed.length
     );
   }
 
+  automaticDrawCardTimer: any;
   automaticDrawCard() {
     if (this.automaticDrawCardTimer) {
       clearInterval(this.automaticDrawCardTimer);
@@ -145,167 +128,137 @@ export class WordupImproveComponent {
     }
   }
 
-  getAverage(array: number[]) {
-    return Math.round(
-      array.reduce((sum, currentValue) => sum + currentValue, 0) / array.length
-    );
+  initCards() {
+    this.httpClient
+      .get(this.url)
+      .pipe(
+        tap((res: any) => {
+          this.cards = res;
+          this.answerScore = JSON.parse(
+            localStorage.getItem('answerScore') ?? '[]'
+          );
+          this.cardslinkScore();
+          this.configInit();
+          this.editedCardsInit();
+        })
+      )
+      .subscribe((res: any) => {
+        this.drawCard();
+      });
+  }
+
+  // cards 資料太大包，是固定 json 檔案，搭配 firebase 上記錄分數的檔案
+  cardslinkScore() {
+    this.cards.forEach((card: Card) => {
+      let findAnswer = this.answerScore?.find(
+        (word: any) => word?.en === card?.en
+      );
+      card.score = findAnswer?.score ?? 0;
+      card.updateTime = this.calculateTime(findAnswer?.updateTime);
+    });
   }
 
   debug: any;
-  card: any;
+  card: Card = new Card();
   drawCard(): void {
-    try {
-      // 錯誤優先模式
-      if (this.config.drawMode === 'errorFirst') {
-        this.familiarity.errorFirst = {};
-        this.familiarity.errorFirst.twentyMinutes = 0;
-        this.familiarity.errorFirst.oneHour = 0;
-        this.familiarity.errorFirst.oneDay = 0;
-        this.familiarity.errorFirst.sevenDays = 0;
-        this.familiarity.errorFirst.oneMonth = 0;
-        // 將答題表與卡片關聯
-        this.cards.forEach((card: any) => {
-          let findAnswer = this.answerScore?.find(
-            (word: any) => word?.en === card?.en
-          );
+    // 錯誤優先模式
+    if (this.config.drawMode === 'errorFirst') {
+      // 依照分數與答題時間排序
+      this.cardslinkScore();
+      this.cards?.sort((a: any, b: any) => this.unfamiliarSorting(a, b));
+    }
 
-          card.score = findAnswer?.score ?? 0;
-          card.updateTime = this.calculateTime(findAnswer?.updateTime ?? undefined);
-          // let days = card?.updateTime?.days ?? 0;
-          // let ebinghausForgetRateScore = this.ebinghausForgetRate(days);
-          // let complexScore = card.score / ebinghausForgetRateScore;
-          // card.complexScore = Number.isNaN(complexScore) ? 1 : complexScore;
+    this.debug = { thresholdScore: 0, list: [] };
+    const totalScore = this.cards.reduce(
+      (sum: any, obj: any) => sum + obj?.sentences?.length,
+      0
+    );
 
-          if (card.score <= 0) {
-            // 20分鐘後，42%被遺忘掉，58%被記住。
-            if (card.updateTime?.days === 0 && card.updateTime?.hours === 0 && card.updateTime?.minutes <= 20 && card.updateTime?.minutes > 0) {
-              this.familiarity.errorFirst.twentyMinutes++;
-            }
-            // 1小時後，56%被遺忘掉，44%被記住。
-            if (card.updateTime?.days < 1 && card.updateTime?.hours >= 1) {
-              this.familiarity.errorFirst.oneHour++;
-            }
-            // 1天後，74%被遺忘掉，26%被記住。
-            if (card.updateTime?.days >= 1 && card.updateTime?.days <= 7) {
-              this.familiarity.errorFirst.oneDay++;
-            }
-            // 1周後，77%被遺忘掉，23%被記住。
-            if (card.updateTime?.days >= 7 && card.updateTime?.days <= 30) {
-              this.familiarity.errorFirst.sevenDays++;
-            }
-            // 1個月後，79%被遺忘掉，21%被記住。
-            if (card.updateTime?.days >= 30) {
-              this.familiarity.errorFirst.oneMonth++;
-            }
+    let cumulativeScore = 0;
+    const thresholdScore = Math.floor(Math.random() * totalScore);
+    this.debug.thresholdScore = thresholdScore;
+    this.record.finalScoreRecord.push(thresholdScore);
+    let drawCount = 0;
+    let isLocked = true;
+
+    while (isLocked) {
+
+      let drawNumber = 0;
+      let answerInfo = this.answerScore.find((res: any) => res.en === this.cards[drawNumber].en);
+
+      if (this.config.drawMode !== 'errorFirst') {
+        drawNumber = this.getRandomNum(this.cards?.length - 1);
+        answerInfo = this.answerScore.find((res: any) => res.en === this.cards[drawNumber].en);
+        let preCumulativeScore = cumulativeScore;
+
+        // 例句數量權重
+        let exSentsScore, ansScore, timeDiffeScore, recordAvgScore, noAnsRandomScore;
+        exSentsScore = Math.floor(this.cards[drawNumber]?.sentences?.length / 50);
+        cumulativeScore += exSentsScore;
+
+        // 答題權重
+        if (answerInfo) {
+          ansScore = answerInfo.score * -1 * (this.config?.questionsScore ?? 10);
+          cumulativeScore += ansScore;
+          // 時間權重
+          if (answerInfo.updateTime && answerInfo.score <= 0) {
+            let dayScore = this.config?.dayScore ?? 50;
+            timeDiffeScore = Math.floor(((this.calculateTime(answerInfo?.updateTime)?.days ?? 1) * dayScore * (answerInfo.score * -1)) / 50);
+            cumulativeScore += timeDiffeScore;
           }
+        } else {
+          // 未答題隨機基礎權重
+          recordAvgScore = Math.floor(this.record?.finalScoreRecordDisplay / this.record?.drawCountRecordDisplay);
+          noAnsRandomScore = Math.floor(Math.random() * (Number.isNaN(recordAvgScore) ? 1000 : recordAvgScore)) + 1;
+          cumulativeScore += noAnsRandomScore;
+        }
+
+        // 每次抽取結果
+        this.debug.list.push({
+          finalScore: cumulativeScore,
+          en: this.cards[drawNumber]?.en,
+          drawCount: drawCount++ + 1,
+          sentencesLength: exSentsScore,
+          score: answerInfo?.score,
+          updateTime: this.calculateTime(answerInfo?.updateTime),
+          weightedScore: cumulativeScore - preCumulativeScore,
+          ansScore: ansScore,
+          timeDiffeScore: timeDiffeScore,
+          noAnsRandomScore: noAnsRandomScore,
+          recordAvgScore: recordAvgScore,
         });
 
-        // 依照分數與答題時間排序
-        this.cards?.sort((a: any, b: any) => this.unfamiliarSorting(a, b));
-      }
-
-      this.debug = { thresholdScore: 0, list: [] };
-      const totalScore = this.cards.reduce(
-        (sum: any, obj: any) => sum + obj?.sentences?.length,
-        0
-      );
-
-      let cumulativeScore = 0;
-      const thresholdScore = Math.floor(Math.random() * totalScore);
-      this.debug.thresholdScore = thresholdScore;
-      this.record.finalScoreRecord.push(thresholdScore);
-      let drawCount = 0;
-      let isLocked = true;
-
-      while (isLocked) {
-
-        let drawNumber = 0;
-        let answerInfo = this.answerScore.find((res: any) => res.en === this.cards[drawNumber].en);
-
-        if (this.config.drawMode !== 'errorFirst') {
-          drawNumber = this.getRandomNum(this.cards?.length - 1);
-          answerInfo = this.answerScore.find((res: any) => res.en === this.cards[drawNumber].en);
-          let preCumulativeScore = cumulativeScore;
-
-          // 例句數量權重
-          let exSentsScore, ansScore, timeDiffeScore, recordAvgScore, noAnsRandomScore;
-          exSentsScore = Math.floor(this.cards[drawNumber]?.sentences?.length / 50);
-          cumulativeScore += exSentsScore;
-
-          // 答題權重
-          if (answerInfo) {
-            ansScore = answerInfo.score * -1 * (this.config?.questionsScore ?? 10);
-            cumulativeScore += ansScore;
-            // 時間權重
-            if (answerInfo.updateTime && answerInfo.score <= 0) {
-              let dayScore = this.config?.dayScore ?? 50;
-              timeDiffeScore = Math.floor(((this.calculateTime(answerInfo?.updateTime)?.days ?? 1) * dayScore * (answerInfo.score * -1)) / 50);
-              cumulativeScore += timeDiffeScore;
-            }
-          } else {
-            // 未答題隨機基礎權重
-            recordAvgScore = Math.floor(this.record?.finalScoreRecordDisplay / this.record?.drawCountRecordDisplay);
-            noAnsRandomScore = Math.floor(Math.random() * (Number.isNaN(recordAvgScore) ? 1000 : recordAvgScore)) + 1;
-            cumulativeScore += noAnsRandomScore;
-          }
-
-          // 每次抽取結果
-          this.debug.list.push({
-            finalScore: cumulativeScore,
-            en: this.cards[drawNumber]?.en,
-            drawCount: drawCount++ + 1,
-            sentencesLength: exSentsScore,
-            score: answerInfo?.score,
-            updateTime: this.calculateTime(answerInfo?.updateTime),
-            weightedScore: cumulativeScore - preCumulativeScore,
-            ansScore: ansScore,
-            timeDiffeScore: timeDiffeScore,
-            noAnsRandomScore: noAnsRandomScore,
-            recordAvgScore: recordAvgScore,
-          });
-
-          // 答題正的也能被抽到
-          if (cumulativeScore < 0) {
-            cumulativeScore = (this.config?.questionsScore ?? 10);
-          }
-        }
-
-        // 累積分數超過臨界值則得獎
-        if (
-          (thresholdScore <= cumulativeScore && this.cards[drawNumber]?.en !== this.card?.en) || this.config.drawMode === 'errorFirst'
-        ) {
-          this.card = JSON.parse(JSON.stringify(this.cards[drawNumber]));
-          this.card.score = answerInfo?.score;
-          this.card.updateTime = this.calculateTime(answerInfo?.updateTime);
-          isLocked = false;
-          this.record.drawCountRecord.push(drawCount);
+        // 答題正的也能被抽到
+        if (cumulativeScore < 0) {
+          cumulativeScore = (this.config?.questionsScore ?? 10);
         }
       }
 
-      // 排序 debug 榜單
-      this.debug.list = this.debug.list.sort(
-        (a: any, b: any) => b.drawCount - a.drawCount
-      );
-
-      this.searchWord = {};
-      this.displayMode = DisplayMode.Questions;
-      this.tempSentencesIndex = [];
-      this.recordCalculate();
-      this.drawSentence();
-      this.calculateFamiliarity();
-      this.unfamiliarReflash();
-      this.updateTimer();
-
-    } catch (err) {
-      alert(err);
+      // 累積分數超過臨界值則得獎
+      if (
+        (thresholdScore <= cumulativeScore && this.cards[drawNumber]?.en !== this.card?.en) || this.config.drawMode === 'errorFirst'
+      ) {
+        this.card = JSON.parse(JSON.stringify(this.cards[drawNumber]));
+        this.card.score = answerInfo?.score;
+        this.card.updateTime = this.calculateTime(answerInfo?.updateTime);
+        isLocked = false;
+        this.record.drawCountRecord.push(drawCount);
+      }
     }
-  }
 
-  // 艾賓浩斯遺忘曲線
-  ebinghausForgetRate(t: number) {
-    const a = 1.25; // 初始下降率
-    const b = 0.1; // 下降速度
-    return Math.exp(-a * Math.pow(t, b));
+    // 排序 debug 榜單
+    this.debug.list = this.debug.list.sort(
+      (a: any, b: any) => b.drawCount - a.drawCount
+    );
+
+    this.searchWord = {};
+    this.displayMode = DisplayMode.Questions;
+    this.tempSentencesIndex = [];
+    this.recordCalculate();
+    this.drawSentence();
+    this.calculateFamiliarity();
+    this.unfamiliarReflash();
+    this.updateTimer();
   }
 
   seeAnswer() {
@@ -314,7 +267,7 @@ export class WordupImproveComponent {
 
     let word = this.answerScore.find((word: any) => word.en == this.card.en);
     this.notFamiliarScore = this.notFamiliarScoreCalculations(word);
-    this.familiarScore = this.mapScore(this.seconds);
+    this.familiarScore = this.glgorithmsService.mapScore(this.seconds);
 
     if (this.config.seeAnswerSpeak) {
       this.debounceBeSub$?.next([this.speak, this.sentence?.en]);
@@ -328,8 +281,8 @@ export class WordupImproveComponent {
     if (a?.score > 0 || b?.score > 0) {
       return a?.score - b?.score;
     } else {
-      let tempSortA = a?.score - a?.updateTime?.days;
-      let tempSortB = b?.score - b?.updateTime?.days;
+      let tempSortA = (a?.score * 1.15) - a?.updateTime?.days;
+      let tempSortB = (b?.score * 1.15) - b?.updateTime?.days;
       if (tempSortA === tempSortB) {
         if (a?.updateTime?.days === b?.updateTime?.days) {
           if (a?.score === b?.score) {
@@ -358,38 +311,6 @@ export class WordupImproveComponent {
         }
       }
     }
-
-    // if (a?.complexScore === b?.complexScore) {
-    //   if (a?.score !== b?.score) {
-    //     if (b?.updateTime?.day === a?.updateTime?.day) {
-    //       if (b?.updateTime?.hours === a?.updateTime?.hours) {
-    //         return b?.updateTime?.minutes - a?.updateTime?.minutes;
-    //       } else {
-    //         return b?.updateTime?.hours - a?.updateTime?.hours;
-    //       }
-    //     } else {
-    //       return b?.updateTime?.day - a?.updateTime?.day;
-    //     }
-    //   } else {
-    //     return a?.score - b?.score;
-    //   }
-    // } else {
-    //   return a?.complexScore - b?.complexScore;
-    // }
-
-    // if (a?.score === b?.score) {
-    //   if (b?.updateTime?.day === a?.updateTime?.day) {
-    //     if (b?.updateTime?.hours === a?.updateTime?.hours) {
-    //       return b?.updateTime?.minutes - a?.updateTime?.minutes;
-    //     } else {
-    //       return b?.updateTime?.hours - a?.updateTime?.hours;
-    //     }
-    //   } else {
-    //     return b?.updateTime?.day - a?.updateTime?.day;
-    //   }
-    // } else {
-    //   return a?.score - b?.score;
-    // }
   }
 
   tempSentencesIndex: any = [];
@@ -417,10 +338,7 @@ export class WordupImproveComponent {
     }
   }
 
-  answerTodayArray: any = [];
-  answerCountToday: any = 0;
   answerScoreReset(answer: any) {
-
     // 避免不熟榜 lag
     this.displayUnfamiliar = false;
 
@@ -428,31 +346,11 @@ export class WordupImproveComponent {
 
     try {
       this.record.avgAnswerSpeed.push(this.seconds);
-      this.answerCountToday++;
-      const today = new Date().setHours(0, 0, 0, 0);
-      const apartDay = this.calculateTime(today);
-      const nowDay = this.answerTodayArray.find(
-        (ansToday: any) => ansToday.day === today
-      );
-
-      if (nowDay && apartDay?.days === 0) {
-        nowDay.count = this.answerCountToday;
-      } else {
-        this.answerTodayArray.push({
-          day: today,
-          count: this.answerCountToday,
-        });
-      }
-
-      localStorage.setItem(
-        'answerTodayArray',
-        JSON.stringify(this.answerTodayArray)
-      );
 
       let word = this.answerScore.find((word: any) => word.en == this.card.en);
 
       // 回答的越快增加越多分，越慢扣越多
-      let trueScore = 11 - this.mapScore(this.seconds, 200, 1, 10);
+      let trueScore = 11 - this.glgorithmsService.mapScore(this.seconds, 200, 1, 10);
       // let falseScore = this.mapScore(this.seconds) * -1;
       if (word) {
         // answer ? (word.score += trueScore) : (word.score -= 5);
@@ -488,9 +386,9 @@ export class WordupImproveComponent {
     if (!word) {
       falseScore = -50;
     } else if (familiarDays > 0 && familiarDays <= 7) {
-      falseScore = (50 - this.mapScore(familiarDays, 7, 5, 50) + 4) * -1;
+      falseScore = (50 - this.glgorithmsService.mapScore(familiarDays, 7, 5, 50) + 4) * -1;
     } else if (familiarDays >= 15) {
-      falseScore = this.mapScore(familiarDays, 30, 5, 50) * -1;
+      falseScore = this.glgorithmsService.mapScore(familiarDays, 30, 5, 50) * -1;
     } else if (familiarDays <= 0) {
       falseScore = -20;
     } else {
@@ -500,119 +398,104 @@ export class WordupImproveComponent {
     return falseScore;
   }
 
-  mapScore(inputValue: number, maxInput: number = 120, minOutput: number = 1, maxOutput: number = 5) {
-    const minSeconds = 1;
-    // 將 inputSeconds 限制在最小秒數和最大秒數之間
-    const normalizedinputValue = Math.min(
-      Math.max(inputValue, minSeconds),
-      maxInput
-    );
-    // 計算輸入範圍和輸出範圍之間的比例
-    const inputRange = maxInput - minSeconds;
-    const outputRange = maxOutput - minOutput;
-
-    // 將秒數映射到輸出範圍內
-    let mappedValue = Math.ceil(((normalizedinputValue / inputRange) * outputRange));
-
-    if ((normalizedinputValue / inputRange) > 1) {
-      mappedValue = maxOutput;
-    }
-
-    if (mappedValue < minOutput) {
-      mappedValue = minOutput;
-    }
-
-    return mappedValue;
-  }
-
-  familiarity: Familiarity | any = {};
+  familiarity: Familiarity = new Familiarity();
   calculateFamiliarity() {
-    try {
-      this.familiarity.total = this.cards.length;
-      // 未複習到 0 / undefined
-      let zero = this.answerScore.filter((res: any) => res.score === 0).length;
-      let notfind = this.cards.length - this.answerScore.length;
-      this.familiarity.notReviewed = zero + notfind;
-      // 超不熟悉 -5
-      this.familiarity.veryUnfamiliar = this.answerScore.filter(
-        (res: any) => res.score <= -50
-      ).length;
-      // 不熟悉 -
-      this.familiarity.unfamiliar = this.answerScore.filter(
-        (res: any) => res.score < 0 && res.score > -50
-      ).length;
-      // 熟悉 +
-      this.familiarity.familiar = this.answerScore.filter(
-        (res: any) => res.score > 0 && res.score < 25
-      ).length;
-      // 超熟悉 +5
-      this.familiarity.veryFamiliar = this.answerScore.filter(
-        (res: any) => res.score >= 50
-      ).length;
+    this.familiarity = new Familiarity();
+    this.familiarity.total = this.cards.length;
 
-      this.drawChat();
-    } catch (err) {
-      alert(err);
-    }
-  }
-
-  drawChat() {
-    try {
-      if (this.chart) {
-        this.chart.destroy();
+    for (const card of this.cards) {
+      if (card.score === 0) {
+        this.familiarity.notReviewed++; // 未複習到
+      } else if (card.score <= -50) {
+        this.familiarity.veryUnfamiliar++; // 超不熟悉
+      } else if (card.score < 0 && card.score > -50) {
+        this.familiarity.unfamiliar++; // 不熟悉
+      } else if (card.score > 0 && card.score < 25) {
+        this.familiarity.familiar++; // 熟悉 +
+      } else if (card.score >= 50) { // 超熟悉 +5
+        this.familiarity.veryFamiliar++;
       }
 
-      const labels = [
-        `未複習到 ${this.familiarity.notReviewed}`,
-        `超不熟悉 ${this.familiarity.veryUnfamiliar}`,
-        `不熟悉 ${this.familiarity.unfamiliar}`,
-        `熟悉 ${this.familiarity.familiar}`,
-        `超熟悉 ${this.familiarity.veryFamiliar}`,
-      ];
-
-      const data = [
-        this.familiarity.notReviewed,
-        this.familiarity.veryUnfamiliar,
-        this.familiarity.unfamiliar,
-        this.familiarity.familiar,
-        this.familiarity.veryFamiliar,
-      ];
-
-      this.chart = new Chart('canvas', {
-        type: 'pie',
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: '# of Votes',
-              data: data,
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'top',
-            },
-            title: {
-              display: true,
-              text: '熟悉度',
-            },
-          },
-          animation: {
-            duration: 0,
-          },
-        },
-      });
-    } catch (err) {
-      alert(err);
+      if (card.score <= 0) {
+        if (card.updateTime?.days === 0 && card.updateTime?.hours === 0 && card.updateTime?.minutes <= 20 && card.updateTime?.minutes > 0) {
+          this.familiarity.twentyMinutes++; // 20分鐘後，42%被遺忘掉，58%被記住。
+        }
+        if (card.updateTime?.days < 1 && card.updateTime?.hours >= 1) {
+          this.familiarity.oneHour++; // 1小時後，56%被遺忘掉，44%被記住。
+          this.config.answerCountToday = this.familiarity.oneHour;
+        }
+        if (card.updateTime?.days >= 1 && card.updateTime?.days <= 7) {
+          this.familiarity.oneDay++; // 1天後，74%被遺忘掉，26%被記住。
+        }
+        if (card.updateTime?.days >= 7 && card.updateTime?.days <= 30) {
+          this.familiarity.sevenDays++; // 1周後，77%被遺忘掉，23%被記住。
+        }
+        if (card.updateTime?.days >= 30) {
+          this.familiarity.oneMonth++; // 1個月後，79%被遺忘掉，21%被記住。
+        }
+      }
     }
+
+    // this.drawChat();
   }
 
+  // drawChat() {
+  //   try {
+  //     if (this.chart) {
+  //       this.chart.destroy();
+  //     }
+
+  //     const labels = [
+  //       `未複習到 ${this.familiarity.notReviewed}`,
+  //       `超不熟悉 ${this.familiarity.veryUnfamiliar}`,
+  //       `不熟悉 ${this.familiarity.unfamiliar}`,
+  //       `熟悉 ${this.familiarity.familiar}`,
+  //       `超熟悉 ${this.familiarity.veryFamiliar}`,
+  //     ];
+
+  //     const data = [
+  //       this.familiarity.notReviewed,
+  //       this.familiarity.veryUnfamiliar,
+  //       this.familiarity.unfamiliar,
+  //       this.familiarity.familiar,
+  //       this.familiarity.veryFamiliar,
+  //     ];
+
+  //     this.chart = new Chart('canvas', {
+  //       type: 'pie',
+  //       data: {
+  //         labels: labels,
+  //         datasets: [
+  //           {
+  //             label: '# of Votes',
+  //             data: data,
+  //             borderWidth: 1,
+  //           },
+  //         ],
+  //       },
+  //       options: {
+  //         responsive: true,
+  //         plugins: {
+  //           legend: {
+  //             position: 'top',
+  //           },
+  //           title: {
+  //             display: true,
+  //             text: '熟悉度',
+  //           },
+  //         },
+  //         animation: {
+  //           duration: 0,
+  //         },
+  //       },
+  //     });
+  //   } catch (err) {
+  //     alert(err);
+  //   }
+  // }
+
   onResize(event: any) {
-    this.drawChat();
+    // this.drawChat();
   }
 
   resetAnswerScore() {
@@ -631,21 +514,21 @@ export class WordupImproveComponent {
     similarWords: '',
   };
 
+  // @ViewChild('searchWordInput') searchWordInput!: ElementRef;
   // https://stackoverflow.com/questions/3169786/clear-text-selection-with-javascript
   searchWordMark() {
-    try {
+    if (window.getSelection()?.empty) {  // Chrome
+      window.getSelection()?.empty();
+    }
 
-      if (window.getSelection()?.empty) {  // Chrome
-        window.getSelection()?.empty();
-      }
-
-      if (
-        this.searchWord.word !== undefined &&
-        this.searchWord.word !== null &&
-        this.searchWord.word.replace(/\s*/g, '') !== ''
-      ) {
-        let temp: any = [];
-        this.cards.forEach((el: any) => {
+    if (
+      this.searchWord.word !== undefined &&
+      this.searchWord.word !== null &&
+      this.searchWord.word.replace(/\s*/g, '') !== ''
+    ) {
+      let temp: any = [];
+      this.cards.forEach((el: any) => {
+        try {
           let cal = this.glgorithmsService.calculateSimilarity(
             el?.en,
             this.searchWord.word
@@ -656,67 +539,66 @@ export class WordupImproveComponent {
             searchWord: this.searchWord.word,
             cal: cal,
           });
-        });
+        } catch (ex) {
+          console.log(el);
+        }
+      });
 
-        let sortTemp = temp.sort((a: any, b: any) => b.cal - a.cal);
-        this.searchWord.similarWords = `相似單字：${sortTemp
-          .slice(0, 10)
-          .map((obj: any) => `[${obj.en}]${obj.cn}`)
-          .join('，')}`;
+      let sortTemp = temp.sort((a: any, b: any) => b.cal - a.cal);
+      this.searchWord.similarWords = `相似單字：${sortTemp
+        .slice(0, 10)
+        .map((obj: any) => `[${obj.en}]${obj.cn}`)
+        .join('，')}`;
 
-        const pattern = new RegExp(`\\b${this.searchWord.word}\\b`, 'gi');
-        const searched = this.cards.find((card: any) => card.en.match(pattern));
-        if (searched) {
-          const word = this.answerScore.find((word: any) =>
-            word.en.match(pattern)
-          );
-          const updateTime = JSON.stringify(word?.updateTime);
-          if (word) {
-            let notFamiliarScore = this.notFamiliarScoreCalculations(word);
-            word.score += notFamiliarScore > 0 ? notFamiliarScore * -1 : notFamiliarScore;
-            this.searchWord.updateTime = this.calculateTime(updateTime);
-            word.updateTime = Date.now();
-            this.searchWord.score = word?.score;
-          } else {
-            this.answerScore.push({
-              en: this.searchWord.word,
-              score: -50,
-              updateTime: Date.now(),
-            });
-            this.searchWord.score = -50;
-          }
-
-          localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
-          this.searchWord.explain = searched.cn;
-          // alert('已扣 5 分'); todo 彈出自動消失匡
-          this.calculateFamiliarity();
-
-          this.searchWord.display = this.searchWord.word;
-          this.searchWord.word = '';
+      const pattern = new RegExp(`\\b${this.searchWord.word}\\b`, 'gi');
+      const searched = this.cards.find((card: any) => card.en.match(pattern));
+      if (searched) {
+        const word = this.answerScore.find((word: any) =>
+          word.en.match(pattern)
+        );
+        const updateTime = JSON.stringify(word?.updateTime);
+        if (word) {
+          let notFamiliarScore = this.notFamiliarScoreCalculations(word);
+          word.score += notFamiliarScore > 0 ? notFamiliarScore * -1 : notFamiliarScore;
+          this.searchWord.updateTime = this.calculateTime(updateTime);
+          word.updateTime = Date.now();
+          this.searchWord.score = word?.score;
         } else {
-          // alert(
-          //   `字庫搜尋不到此單字，\n以下為[距離算法]選出字庫前五個相似度高的單字。`
-          // ); todo 彈出自動消失匡
-          this.searchWord.word = sortTemp[0].en;
+          this.answerScore.push({
+            en: this.searchWord.word,
+            score: -50,
+            updateTime: Date.now(),
+          });
+          this.searchWord.score = -50;
         }
 
-        this.debounceBeSub$?.next([this.speak, this.searchWord.display ?? this.searchWord.word]);
+        localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
+        this.searchWord.explain = searched.cn;
+        // alert('已扣 5 分'); todo 彈出自動消失匡
+        this.calculateFamiliarity();
 
-        this.unfamiliarReflash();
+        this.searchWord.display = this.searchWord.word;
+        this.searchWord.word = '';
+      } else {
+        // alert(
+        //   `字庫搜尋不到此單字，\n以下為[距離算法]選出字庫前五個相似度高的單字。`
+        // ); todo 彈出自動消失匡
+        this.searchWord.word = sortTemp[0].en;
       }
-      // this.goToAnchor('searchWordInput');
-    } catch (err) {
-      alert(err);
+
+      this.debounceBeSub$?.next([this.speak, this.searchWord.display ?? this.searchWord.word]);
+      this.unfamiliarReflash();
     }
+    // this.commonService.goToAnchor(this.searchWordInput);
   }
 
-  nowTheme = this.themeService.GetTheme();
+  nowTheme = this.themeService.getTheme();
 
   setTheme() {
     this.nowTheme === this.theme.dark
       ? (this.nowTheme = this.theme.light)
       : (this.nowTheme = this.theme.dark);
-    this.themeService.SetTheme(this.nowTheme);
+    this.themeService.setTheme(this.nowTheme);
   }
 
   isExportAnswerScore = false;
@@ -735,58 +617,23 @@ export class WordupImproveComponent {
     }
   }
 
-  debugDisplay = JSON.parse(localStorage.getItem('clickDebug') ?? 'false');
+  debugDisplay = false;
   clickDebug() {
     this.debugDisplay = !this.debugDisplay;
-    localStorage.setItem('clickDebug', this.debugDisplay);
+  }
+
+  config: Config = new Config();
+  configInit() {
+    let drawCardConfig: any = localStorage.getItem('drawCardConfig');
+    if (drawCardConfig) {
+      this.config = JSON.parse(drawCardConfig)
+    }
   }
 
   importConfig() {
     if (confirm('確定要更改設定檔嗎？')) {
       localStorage.setItem('drawCardConfig', JSON.stringify(this.config));
       this.drawCard();
-    }
-  }
-
-  configInit() {
-    let drawCardConfig: any = localStorage.getItem('drawCardConfig');
-    drawCardConfig
-      ? (this.config = JSON.parse(drawCardConfig))
-      : (this.config = {
-        dayScore: 500,
-        questionsScore: 10,
-        drawMode: 'completelyRandom',
-        autoDrawSeconds: 45,
-        speakSelectVoice: 'Google UK English Male',
-        autoUpdateLog: false,
-        seeAnswerSpeak: false,
-        speakRate: 1,
-      });
-
-    if (!this.config.drawMode) {
-      localStorage.removeItem('drawCardConfig');
-      this.config = {
-        dayScore: 500,
-        questionsScore: 10,
-        drawMode: 'completelyRandom',
-        autoDrawSeconds: 45,
-        speakSelectVoice: 'Google UK English Male',
-        autoUpdateLog: false,
-        seeAnswerSpeak: false,
-        speakRate: 1,
-      };
-    }
-
-    this.answerTodayArray = JSON.parse(
-      localStorage.getItem('answerTodayArray') ?? `[]`
-    );
-    if (this.answerTodayArray.length > 0) {
-      let nowDay = this.answerTodayArray?.find(
-        (ansToday: any) => ansToday.day == new Date().setHours(0, 0, 0, 0)
-      );
-      if (nowDay) {
-        this.answerCountToday = nowDay.count;
-      }
     }
   }
 
@@ -845,25 +692,17 @@ export class WordupImproveComponent {
    * // https://www.positronx.io/full-angular-firebase-authentication-system/
    */
 
-  email: any;
-  password: any;
-  isEnterRegistPage: boolean = false;
-  logs$!: Observable<any>;
-  logs!: any;
+  firebaseAuth: FirebaseAuth = new FirebaseAuth();
+  combineUserAndLogs$!: Subscription;
   firestore: Firestore = inject(Firestore);
   private auth: Auth = inject(Auth);
   user$ = user(this.auth);
-  user!: User | null;
   logsCollection!: CollectionReference<DocumentData, DocumentData>;
-
-  logsSub$!: Subscription;
 
   async login() {
     try {
-      await signInWithEmailAndPassword(this.auth, this.email, this.password);
+      await signInWithEmailAndPassword(this.auth, this.firebaseAuth.email, this.firebaseAuth.password);
       this.user$ = authState(this.auth);
-      this.refleshUser();
-      // this.refleshLogs();
     } catch (err) {
       alert(err);
     }
@@ -872,10 +711,8 @@ export class WordupImproveComponent {
   async logout() {
     try {
       await signOut(this.auth);
-      if (this.logsSub$) {
-        this.logsSub$.unsubscribe();
-        this.user = null;
-        this.logs = null;
+      if (this.combineUserAndLogs$) {
+        this.combineUserAndLogs$.unsubscribe();
       }
       alert('登出成功');
     } catch (err) {
@@ -887,183 +724,177 @@ export class WordupImproveComponent {
     try {
       await createUserWithEmailAndPassword(
         this.auth,
-        this.email,
-        this.password
+        this.firebaseAuth.email,
+        this.firebaseAuth.password
       );
-      this.refleshUser();
-      // this.refleshLogs();
     } catch (err) {
       alert(err);
     }
   }
 
   enterRegistPage() {
-    this.refleshUser();
-    if (isDevMode()) {
-      this.autoUpdateLog();
-    }
-    this.isEnterRegistPage = true;
-  }
-
-  refleshLogs() {
-    this.logsCollection = collection(this.firestore, 'Logs');
-    this.logs$ = collectionData(this.logsCollection);
-    this.logsSub$ = this.logs$
-      .pipe(
-        take(1),
-        tap((logs) => {
-          this.logs = logs;
-          this.countRankingList();
-        })
-      )
-      .subscribe();
-  }
-
-  refleshUser() {
-    if (!this.user) {
-      this.user$
-        .pipe(
-          tap((user) => {
-            this.user = user;
-          }),
-          take(1)
-        )
-        .subscribe();
-    }
+    // if (isDevMode()) {
+    //   this.autoUpdateLog();
+    // }
+    this.firebaseAuth.isEnterRegistPage = true;
   }
 
   async updateLog() {
     if (confirm('確定要更新雲端紀錄嗎？(此動作不可逆)')) {
-      if (this.user) {
-        let email = this.user?.email ?? '???';
-        this.logsCollection = collection(this.firestore, 'Logs');
-        await setDoc(doc(this.logsCollection, this.user.uid), {
-          email: email,
-          answerScore: this.answerScore,
-        });
-        // this.refleshLogs();
-        alert('更新成功');
-        this.isEnterRegistPage = false;
-      }
+      user(this.auth).pipe(
+        take(1),
+        tap(async (user) => {
+          if (user) {
+            this.logsCollection = collection(this.firestore, 'Logs');
+            await setDoc(doc(this.logsCollection, user.uid), {
+              email: user.email,
+              answerScore: this.answerScore,
+              editedCards: this.editedCards.cards,
+            });
+            alert('更新成功');
+            this.firebaseAuth.isEnterRegistPage = false;
+          }
+        }),
+        take(1),
+      ).subscribe();
     }
   }
 
   downloadLog() {
-    if (confirm('確定要更新本地紀錄嗎？(此動作不可逆)') && this.user) {
-      const log = this.logs.find((log: any) => log.email === this.user?.email);
-      if (log) {
-        this.answerScore = JSON.parse(JSON.stringify(log.answerScore));
-        localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
-        this.calculateFamiliarity();
-        this.unfamiliarReflash();
-        alert('更新成功');
-        this.isEnterRegistPage = false;
-        this.drawCard();
-      } else {
-        alert('未找到紀錄');
-      }
-    }
-  }
+    if (confirm('確定要更新本地紀錄嗎？(此動作不可逆)')) {
+      this.combineUserAndLogs$ = combineLatest([
+        this.user$,
+        collectionData(collection(this.firestore, 'Logs'))
+      ]).pipe(
+        take(1),
+        tap(async ([user, logs]) => {
+          const log: any = logs.find((log: any) => log.email === user?.email);
+          if (log) {
+            this.answerScore = JSON.parse(JSON.stringify(log.answerScore));
+            localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
 
-  tempFamiliarity: any = {};
-  autoUpdateLog() {
-    this.user$.pipe(
-      take(1),
-      filter(user => !!user),
-      switchMap(user => {
-        let logs$ = collectionData(collection(this.firestore, 'Logs'));
-        return logs$.pipe(
-          take(1),
-          filter(logs => logs.length > 0),
-          tap(logs => {
-            this.tempFamiliarity = {};
-            const log: any = logs.find((log: any) => log.email === user?.email);
-            const tempAnswerScore = JSON.parse(JSON.stringify(log.answerScore));
-            // 未複習到 0 / undefined
-            const zero = tempAnswerScore.filter((res: any) => res.score === 0).length;
-            const notfind = this.cards.length - tempAnswerScore.length;
-            this.tempFamiliarity.notReviewed = zero + notfind;
-            // 超不熟悉 -5
-            this.tempFamiliarity.veryUnfamiliar = tempAnswerScore.filter(
-              (res: any) => res.score <= -50
-            ).length;
-            // 不熟悉 -
-            this.tempFamiliarity.unfamiliar = tempAnswerScore.filter(
-              (res: any) => res.score < 0 && res.score > -50
-            ).length;
-            // 熟悉 +
-            this.tempFamiliarity.familiar = tempAnswerScore.filter(
-              (res: any) => res.score > 0 && res.score < 25
-            ).length;
-            // 超熟悉 +5
-            this.tempFamiliarity.veryFamiliar = tempAnswerScore.filter(
-              (res: any) => res.score >= 50
-            ).length;
-
-            if (this.tempFamiliarity.notReviewed < this.familiarity.notReviewed) {
-              this.answerScore = JSON.parse(JSON.stringify(log.answerScore));
-              localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
-              this.calculateFamiliarity();
-              this.unfamiliarReflash();
-              alert('自動同步遠端狀態(下載)');
-            } else if (this.tempFamiliarity.notReviewed > this.familiarity.notReviewed) {
-              if (this.config?.autoUpdateLog) {
-                this.logsCollection = collection(this.firestore, 'Logs');
-                setDoc(doc(this.logsCollection, user?.uid), {
-                  email: user?.email,
-                  answerScore: this.answerScore,
-                }).then(() => alert('自動同步遠端狀態(上傳)'));
+            if (log.editedCards) {
+              let tempEditedCards = JSON.parse(JSON.stringify(log.editedCards));
+              if (tempEditedCards.length > this.editedCards.cards.length) {
+                this.editedCards.cards = tempEditedCards;
+                this.editedCards.card = new Card();
+                localStorage.setItem('editedCards', JSON.stringify(this.editedCards));
               }
             }
 
-            this.logs = logs;
+            this.calculateFamiliarity();
+            this.unfamiliarReflash();
+            alert('更新成功');
+            this.firebaseAuth.isEnterRegistPage = false;
             this.drawCard();
-          }),
-          take(1),
-        );
-      }),
-      take(1),
-    ).subscribe();
-  }
-
-  changeDisplayName() {
-    // if (res !== null) {
-    //   updateProfile(res, { displayName: 'AAA' });
-    // }
-  }
-
-  answeredMostQuestions: any;
-  mostPositivePoints: any;
-  mostNegativePoints: any;
-
-  countRankingList() {
-    if (this.logs) {
-      this.answeredMostQuestions = this.logs.sort(
-        (a: any, b: any) => a.answerScore.length - b.answerScore.length
-      );
-
-      this.logs.forEach((log: any) => {
-        let positive = 0,
-          negative = 0;
-        log.answerScore.forEach((item: any) => {
-          if (item.score >= 0) {
-            positive += item.score;
           } else {
-            negative += item.score;
+            alert('未找到紀錄');
           }
-        });
-        log.positive = positive ?? 0;
-        log.negative = negative ?? 0;
-      });
-
-      this.mostPositivePoints = this.logs.sort(
-        (a: any, b: any) => a.positive - b.positive
-      );
-      this.mostNegativePoints = this.logs.sort(
-        (a: any, b: any) => a.negative - b.negative
-      );
+        }),
+        take(1),
+      ).subscribe();
     }
   }
+
+  // tempFamiliarity: Familiarity = new Familiarity();
+  // autoUpdateLog() {
+  //   this.user$.pipe(
+  //     take(1),
+  //     filter(user => !!user),
+  //     switchMap(user => {
+  //       let logs$ = collectionData(collection(this.firestore, 'Logs'));
+  //       return logs$.pipe(
+  //         take(1),
+  //         filter(logs => logs.length > 0),
+  //         tap(logs => {
+  //           this.tempFamiliarity = new Familiarity();
+  //           const log: any = logs.find((log: any) => log.email === user?.email);
+  //           const tempAnswerScore = JSON.parse(JSON.stringify(log.answerScore));
+  //           // 未複習到 0 / undefined
+  //           const zero = tempAnswerScore.filter((res: any) => res.score === 0).length;
+  //           const notfind = this.cards.length - tempAnswerScore.length;
+  //           this.tempFamiliarity.notReviewed = zero + notfind;
+  //           // 超不熟悉 -5
+  //           this.tempFamiliarity.veryUnfamiliar = tempAnswerScore.filter(
+  //             (res: any) => res.score <= -50
+  //           ).length;
+  //           // 不熟悉 -
+  //           this.tempFamiliarity.unfamiliar = tempAnswerScore.filter(
+  //             (res: any) => res.score < 0 && res.score > -50
+  //           ).length;
+  //           // 熟悉 +
+  //           this.tempFamiliarity.familiar = tempAnswerScore.filter(
+  //             (res: any) => res.score > 0 && res.score < 25
+  //           ).length;
+  //           // 超熟悉 +5
+  //           this.tempFamiliarity.veryFamiliar = tempAnswerScore.filter(
+  //             (res: any) => res.score >= 50
+  //           ).length;
+
+  //           if (this.tempFamiliarity.notReviewed < this.familiarity.notReviewed) {
+  //             this.answerScore = JSON.parse(JSON.stringify(log.answerScore));
+  //             let tempEditedCards = JSON.parse(JSON.stringify(log.editedCards));
+  //             if (tempEditedCards.length > this.editedCards.cards.length) {
+  //               this.editedCards.cards = tempEditedCards;
+  //             }
+  //             this.editedCards.card = new Card();
+  //             localStorage.setItem('editedCards', JSON.stringify(this.editedCards));
+  //             localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
+  //             this.calculateFamiliarity();
+  //             this.unfamiliarReflash();
+  //             alert('自動同步遠端狀態(下載)');
+  //           } else if (this.tempFamiliarity.notReviewed > this.familiarity.notReviewed) {
+  //             if (this.config?.autoUpdateLog) {
+  //               this.logsCollection = collection(this.firestore, 'Logs');
+  //               setDoc(doc(this.logsCollection, user?.uid), {
+  //                 email: user?.email,
+  //                 answerScore: this.answerScore,
+  //                 editedCards: this.editedCards.cards,
+  //               }).then(() => alert('自動同步遠端狀態(上傳)'));
+  //             }
+  //           }
+
+  //           this.drawCard();
+  //         }),
+  //         take(1),
+  //       );
+  //     }),
+  //     take(1),
+  //   ).subscribe();
+  // }
+
+  // answeredMostQuestions: any;
+  // mostPositivePoints: any;
+  // mostNegativePoints: any;
+
+  // countRankingList() {
+  //   if (this.logs) {
+  //     this.answeredMostQuestions = this.logs.sort(
+  //       (a: any, b: any) => a.answerScore.length - b.answerScore.length
+  //     );
+
+  //     this.logs.forEach((log: any) => {
+  //       let positive = 0,
+  //         negative = 0;
+  //       log.answerScore.forEach((item: any) => {
+  //         if (item.score >= 0) {
+  //           positive += item.score;
+  //         } else {
+  //           negative += item.score;
+  //         }
+  //       });
+  //       log.positive = positive ?? 0;
+  //       log.negative = negative ?? 0;
+  //     });
+
+  //     this.mostPositivePoints = this.logs.sort(
+  //       (a: any, b: any) => a.positive - b.positive
+  //     );
+  //     this.mostNegativePoints = this.logs.sort(
+  //       (a: any, b: any) => a.negative - b.negative
+  //     );
+  //   }
+  // }
 
   timerId: any;
   seconds = 0;
@@ -1078,18 +909,9 @@ export class WordupImproveComponent {
       self.seconds++;
       // 每 5 秒檢查得分數
       if (self.seconds % 5 === 0) {
-        self.familiarScore = self.mapScore(self.seconds, 200, 1, 10);
+        self.familiarScore = self.glgorithmsService.mapScore(self.seconds, 200, 1, 10);
       }
     }, 1000);
-  }
-
-  @ViewChild('searchWordInput') searchWordInput!: ElementRef;
-  goToAnchor(anchor: string) {
-    this.searchWordInput.nativeElement.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-      inline: 'start',
-    });
   }
 
   setUnfamiliarDisplayAnswer(item: any) {
@@ -1204,6 +1026,132 @@ export class WordupImproveComponent {
 
     this.debounceBeSub$.next([this.speak, XXX]);
   }
+
+  searchChineseObj = { word: '', similarWords: '' };
+  searchChinese() {
+    if (
+      this.searchChineseObj.word !== undefined &&
+      this.searchChineseObj.word !== null &&
+      this.searchChineseObj.word.replace(/\s*/g, '') !== ''
+    ) {
+      let temp: any = [];
+      this.searchChineseObj.similarWords = '找無';
+      this.cards.forEach((el: any) => {
+        try {
+          let cn = el.cn.join(',');
+          if (this.searchChineseObj.word.match(new RegExp(el.cn, 'i')) || cn.match(new RegExp(this.searchChineseObj.word, 'i'))) {
+            temp.push(`[${el.en}]${el.cn}`);
+          }
+        } catch (ex) {
+          console.log(typeof (el.cn), el.en)
+        }
+      });
+
+      if (temp.length > 0) {
+        this.searchChineseObj.similarWords = '相似單字：' + temp.join('、');
+      }
+    } else {
+      this.searchChineseObj.similarWords = '';
+    }
+  }
+
+
+  editedCards: any = { date: '', cards: [], card: new Card(), notEditMode: true, displayAddNewCard: false, displayUpdateCnEdite: false };
+  editedCardsInit() {
+    let temp = localStorage.getItem('editedCards');
+    if (temp) {
+      this.editedCards = JSON.parse(temp);
+    }
+
+    this.editedCards.displayAddNewCard = false;
+    this.editedCards.card = new Card();
+    this.editedCards.notEditMode = true;
+    this.refreshCnEdited();
+  }
+
+  updateCnEdite(card: any) {
+    this.editedCards.displayUpdateCnEdite = false;
+    this.editedCards.notEditMode = true;
+
+    this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm');
+    let tempCard = this.editedCards.cards.find((c: any) => c.en === card.en.trim().toLowerCase());
+    let tempCard2 = this.cards.find((c: any) => c.en === card.en.trim().toLowerCase());
+
+    if (tempCard) {
+      tempCard.cn = [card.cn];
+    } else {
+      this.editedCards.cards.push(tempCard2);
+    }
+
+    let editedCards = JSON.stringify(this.editedCards);
+    localStorage.setItem('editedCards', editedCards);
+    this.editedCards.card = new Card();
+    this.refreshCnEdited();
+  }
+
+  refreshCnEdited() {
+    this.editedCards.cards.forEach((c: any) => {
+      let tempCard = this.cards.find((card: any) => card.en === c.en);
+      if (tempCard) {
+        tempCard.cn = c.cn;
+      } else {
+        this.cards.push(c);
+      }
+    });
+  }
+
+  addNewCard() {
+    this.editedCards.displayUpdateCnEdite = false;
+    if (this.editedCards.card.en.replace(/\s*/g, '') !== '' && confirm('確認新增卡片?')) {
+      let tempCard = this.cards.find((card: any) => card.en === this.editedCards.card.en.trim().toLowerCase());
+      if (this.editedCards.card.cn.toString() === '') {
+        if (tempCard) {
+          alert('卡片已存在，是否更新中文？');
+          console.log(tempCard.cn)
+          this.editedCards.displayUpdateCnEdite = true;
+          this.editedCards.card = new Card();
+          this.editedCards.card.en = tempCard.en.trim().toLowerCase();
+          let temp = tempCard.cn.join(', ');
+          this.editedCards.card.cn = [];
+          this.editedCards.card.cn.push(temp);
+        } else {
+          alert('卡片不存在');
+        }
+      } else {
+        if (!tempCard) {
+          this.editedCards.card.en = this.editedCards.card.en.trim().toLowerCase();
+          this.editedCards.cards.push(this.editedCards.card);
+          this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm');
+          let editedCards = JSON.stringify(this.editedCards);
+          localStorage.setItem('editedCards', editedCards);
+          this.editedCards.card = new Card();
+          // this.editedCards.displayAddNewCard = !this.editedCards.displayAddNewCard;
+          this.refreshCnEdited();
+        } else {
+          alert('卡片已存在，是否更新中文？');
+          this.editedCards.displayUpdateCnEdite = true;
+          this.editedCards.card = new Card();
+          this.editedCards.card.en = tempCard.en.trim().toLowerCase();
+          let temp = tempCard.cn.join(', ');
+          this.editedCards.card.cn = [];
+          this.editedCards.card.cn.push(temp);
+        }
+      }
+    }
+  }
+
+  cancelAddNewCard() {
+    this.editedCards.displayAddNewCard = !this.editedCards.displayAddNewCard;
+    this.editedCards.card = new Card();
+  }
+
+  exportNewCards() {
+    if (confirm('確定要匯出新增的卡片嗎？將會刪除暫存')) {
+      const tempCards = this.cards.map(({ cn, en, sentences }) => ({ cn, en, sentences }));
+      console.log(JSON.stringify(tempCards));
+      localStorage.removeItem('editedCards');
+    }
+  }
 }
 
 export enum DisplayMode {
@@ -1211,17 +1159,22 @@ export enum DisplayMode {
   Questions = '看答案',
 }
 
-export interface Familiarity {
-  total: number;
-  notReviewed: number;
-  unfamiliar: number;
-  veryUnfamiliar: number;
-  familiar: number;
-  veryFamiliar: number;
+export class Familiarity {
+  total: number = 0;
+  notReviewed: number = 0;
+  unfamiliar: number = 0;
+  veryUnfamiliar: number = 0;
+  familiar: number = 0;
+  veryFamiliar: number = 0;
+  twentyMinutes: number = 0;
+  oneHour: number = 0;
+  oneDay: number = 0;
+  sevenDays: number = 0;
+  oneMonth: number = 0;
 }
 
 export class Config {
-  dayScore: number = 500;
+  dayScore: number | undefined = 500;
   questionsScore: number = 10;
   drawMode: string = 'completelyRandom';
   autoDrawSeconds: number = 45;
@@ -1229,4 +1182,28 @@ export class Config {
   autoUpdateLog: boolean = false;
   seeAnswerSpeak: boolean = false;
   speakRate: number = 1;
+  debugDisplay: boolean = false;
+  answerCountToday: number = 0;
+}
+
+export class Card {
+  cn: Array<string> = [''];
+  displayAnswer: boolean = false;
+  en: string = '';
+  score: number = 0;
+  sentencesLength: number = 0;
+  updateTime: ElapsedTime = new ElapsedTime();
+  sentences: Array<any> = [{ en: '', cn: '' }];
+}
+
+export class ElapsedTime {
+  days: number = 0;
+  hours: number = 0;
+  minutes: number = 0;
+}
+
+export class FirebaseAuth {
+  email: string = '';
+  password: string = '';
+  isEnterRegistPage: boolean = false;
 }

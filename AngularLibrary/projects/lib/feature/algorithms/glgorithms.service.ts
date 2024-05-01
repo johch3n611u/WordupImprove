@@ -36,4 +36,37 @@ export class GlgorithmsService {
     const similarity = 1 - dp[m][n] / maxLen;
     return similarity;
   }
+
+  // 艾賓浩斯遺忘曲線
+  ebinghausForgetRate(t: number) {
+    const a = 1.25; // 初始下降率
+    const b = 0.1; // 下降速度
+    return Math.exp(-a * Math.pow(t, b));
+  }
+
+  // 在最大和最小值限制內抓比例對照值
+  mapScore(inputValue: number, maxInput: number = 120, minOutput: number = 1, maxOutput: number = 5) {
+    const minSeconds = 1;
+    // 將 inputSeconds 限制在最小秒數和最大秒數之間
+    const normalizedinputValue = Math.min(
+      Math.max(inputValue, minSeconds),
+      maxInput
+    );
+    // 計算輸入範圍和輸出範圍之間的比例
+    const inputRange = maxInput - minSeconds;
+    const outputRange = maxOutput - minOutput;
+
+    // 將秒數映射到輸出範圍內
+    let mappedValue = Math.ceil(((normalizedinputValue / inputRange) * outputRange));
+
+    if ((normalizedinputValue / inputRange) > 1) {
+      mappedValue = maxOutput;
+    }
+
+    if (mappedValue < minOutput) {
+      mappedValue = minOutput;
+    }
+
+    return mappedValue;
+  }
 }
