@@ -39,22 +39,24 @@
         <button *ngIf="sentenceAnswerDisplay && card.sentences.length > 1" (click)="drawSentence()">
           更多例句 ({{ card.sentences.length }})
         </button>
-        <button *ngIf="!sentenceAnswerDisplay" (click)="sentenceAnswerDisplay = true">
+        <button *ngIf="!sentenceAnswerDisplay" (click)="showExanpleAnswers()">
           例句答案
         </button>
-        <hr />
-        <p>{{ card.en }}</p>
-        <p>
-          <ng-container *ngIf="editedCards.notEditMode else editMode">
-            {{ card.cn }}
-          </ng-container>
-          <ng-template #editMode>
-            <input [(ngModel)]="card.cn" />
-            <lib-svg [src]="'./assets/enHelper/ok.svg'" (click)="updateCnEdite(card)"></lib-svg>
-          </ng-template>
-          <lib-svg [src]="'./assets/enHelper/edit.svg'"
-            (click)="editedCards.notEditMode = !editedCards.notEditMode"></lib-svg>
-        </p>
+        <ng-container *ngIf="sentenceAnswerDisplay">
+          <hr />
+          <p>{{ card.en }}</p>
+          <p>
+            <ng-container *ngIf="editedCards.notEditMode else editMode">
+              {{ card.cn }}
+            </ng-container>
+            <ng-template #editMode>
+              <input [(ngModel)]="card.cn" />
+              <lib-svg [src]="'./assets/enHelper/ok.svg'" (click)="updateCnEdite(card)"></lib-svg>
+            </ng-template>
+            <lib-svg [src]="'./assets/enHelper/edit.svg'"
+              (click)="editedCards.notEditMode = !editedCards.notEditMode"></lib-svg>
+          </p>
+        </ng-container>
       </ng-container>
       <hr />
       <div>
@@ -174,10 +176,22 @@
   </ng-container>
 
   <ng-container *ngIf="displayUnfamiliar">
+
+    <div>
+      <button class="unobviousBtn" (click)="sortByMostNegative()">
+        負分最多排列
+      </button>
+
+      <button class="unobviousBtn" (click)="unfamiliarReflash()">
+        天數負分兼容排列
+      </button>
+    </div>
+
     <table>
       <tbody>
         <td></td>
         <td>顯示中文</td>
+        <td data-th="加權分數">加權分數</td>
         <td data-th="英文">英文</td>
         <td data-th="句子頻率次數">句子頻率次數</td>
         <td data-th="答題分數">答題分數</td>
@@ -191,6 +205,7 @@
             看答案
           </button>
         </td>
+        <td data-th="加權分數">{{ (item?.score * 1.15) - item?.updateTime?.days }}</td>
         <td data-th="英文">{{ item?.en }}</td>
         <td data-th="句子頻率次數">{{ item?.sentencesLength }}</td>
         <td data-th="答題分數">
@@ -219,6 +234,7 @@
             看答案
           </button>
         </li>
+        <li>加權分數：{{ (item?.score * 1.15) - item?.updateTime?.days }}</li>
         <li>英文：{{ item?.en }}</li>
         <li>句子頻率次數：{{ item?.sentencesLength }}</li>
         <li>答題分數：
@@ -348,7 +364,7 @@
       </tr>
     </table>
   </div>
-  <div class="user" *ngIf="!(user$ | async); else userLogining">
+  <div class="user" *ngIf="!(user$ | async);">
     <input autocomplete="new-password" type="email" placeholder="email" [(ngModel)]="firebaseAuth.email" />
     <input autocomplete="new-password" type="password" placeholder="password" [(ngModel)]="firebaseAuth.password" />
   </div>

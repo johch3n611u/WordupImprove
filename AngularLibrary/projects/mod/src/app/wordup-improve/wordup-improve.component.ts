@@ -274,6 +274,11 @@ export class WordupImproveComponent {
     this.displayUnfamiliar = false;
   }
 
+  showExanpleAnswers() {
+    this.sentenceAnswerDisplay = true;
+    this.debounceBeSub$?.next([this.speak, this.sentence?.en]);
+  }
+
   unfamiliarSorting(a: any, b: any) {
     if (a?.score > 0 || b?.score > 0) {
       return a?.score - b?.score;
@@ -677,6 +682,10 @@ export class WordupImproveComponent {
     this.unfamiliarList.sort((a: any, b: any) => this.unfamiliarSorting(a, b));
   }
 
+  sortByMostNegative() {
+    this.unfamiliarList.sort((a: any, b: any) => a.score - b.score);
+  }
+
   /**
    * Firebase Auth & CRUD
    * // https://console.firebase.google.com/u/0/project/angular-vector-249608/firestore/data/~2FLogs~2FBIjfl9Y432Rtt3lwZJx0klt0j8M2
@@ -731,35 +740,31 @@ export class WordupImproveComponent {
     this.firebaseAuth.isEnterRegistPage = true;
   }
 
-  async updateLog() {
-    if (confirm('確定要更新雲端紀錄嗎？(此動作不可逆)')) {
-      try {
-        user(this.auth).pipe(
-          take(1),
-          tap(async (user) => {
-            if (user) {
-              this.logsCollection = collection(this.firestore, 'Logs');
-              await setDoc(doc(this.logsCollection, user.uid), {
-                email: user.email,
-                answerScore: this.answerScore,
-                editedCards: this.editedCards.cards,
-                editedCardsDate: this.editedCards.date,
-              });
-              alert('更新成功');
-              this.firebaseAuth.isEnterRegistPage = false;
-            }
-          }),
-          take(1),
-        ).subscribe();
-      } catch (ex) {
-        console.error('answerScore', this.answerScore)
-        console.error('editedCards', this.editedCards.cards)
-      }
+  async updateLog(direct: boolean = true) {
+    if (direct || confirm('確定要更新雲端紀錄嗎？(此動作不可逆)')) {
+      user(this.auth).pipe(
+        take(1),
+        tap(async (user) => {
+          if (user) {
+            this.logsCollection = collection(this.firestore, 'Logs');
+            const editedCardsString = JSON.stringify(this.editedCards?.cards);
+            await setDoc(doc(this.logsCollection, user.uid), {
+              email: user.email,
+              answerScore: this.answerScore,
+              editedCards: editedCardsString,
+              editedCardsDate: this.editedCards?.date,
+            });
+            alert('更新成功');
+            this.firebaseAuth.isEnterRegistPage = false;
+          }
+        }),
+        take(1),
+      ).subscribe();
     }
   }
 
-  downloadLog() {
-    if (confirm('確定要更新本地紀錄嗎？(此動作不可逆)')) {
+  downloadLog(direct: boolean = true) {
+    if (direct || confirm('確定要更新本地紀錄嗎？(此動作不可逆)')) {
       this.combineUserAndLogs$ = combineLatest([
         this.user$,
         collectionData(collection(this.firestore, 'Logs'))
@@ -771,15 +776,11 @@ export class WordupImproveComponent {
             this.answerScore = JSON.parse(JSON.stringify(log.answerScore));
             localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
 
-            if (log.editedCards) {
-              let tempEditedCards = JSON.parse(JSON.stringify(log.editedCards));
-              if (tempEditedCards.length > this.editedCards.cards.length) {
-                this.editedCards.cards = tempEditedCards;
-                this.editedCards.card = new Card();
-                this.editedCards.date = log.editedCardsDate;
-                localStorage.setItem('editedCards', JSON.stringify(this.editedCards));
-              }
-            }
+            let tempEditedCards = JSON.parse(log.editedCards);
+            this.editedCards.cards = tempEditedCards;
+            this.editedCards.card = new Card();
+            this.editedCards.date = log.editedCardsDate;
+            localStorage.setItem('editedCards', JSON.stringify(this.editedCards));
 
             this.calculateFamiliarity();
             this.unfamiliarReflash();
@@ -972,7 +973,7 @@ export class WordupImproveComponent {
     this.editedCards.displayUpdateCnEdite = false;
     this.editedCards.notEditMode = true;
 
-    this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm');
+    this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss');
     let tempCard = this.editedCards.cards.find((c: any) => c.en === card.en.trim().toLowerCase());
     let tempCard2 = this.cards.find((c: any) => c.en === card.en.trim().toLowerCase());
 
@@ -982,7 +983,6 @@ export class WordupImproveComponent {
       let newCard: any = new Card();
       newCard.en = tempCard2?.en;
       newCard.cn = [card.cn];
-      newCard.sentences = tempCard2?.sentences;
       this.editedCards.cards.push(newCard);
     }
 
@@ -1081,7 +1081,7 @@ export class WordupImproveComponent {
       } else {
         if (!tempCard) {
           this.editedCards.cards.push(this.editedCards.card);
-          this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm');
+          this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss');
           localStorage.setItem('editedCards', JSON.stringify(this.editedCards));
           this.editedCards.card = new Card();
           this.refreshCnEdited();
@@ -1100,8 +1100,11 @@ export class WordupImproveComponent {
   exportNewCards() {
     if (confirm('確定要匯出新增的卡片嗎？將會刪除暫存')) {
       const tempCards = this.cards.map(({ cn, en, sentences }) => ({ cn, en, sentences }));
-      console.log(JSON.stringify(tempCards));
+      console.log(JSON.stringify(tempCards)); // 不能移除，方便重新增加 json
       localStorage.removeItem('editedCards');
+      this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss');
+      this.editedCards.cards = '';
+      this.updateLog(true);
     }
   }
 }

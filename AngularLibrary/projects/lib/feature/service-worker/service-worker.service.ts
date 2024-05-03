@@ -42,7 +42,6 @@ export class ServiceWorkerService {
                 const installBtn = document.querySelector(".answerScoreResetBtn");
                 installBtn?.addEventListener("click", () => {
                     let askedInstallPWA = localStorage.getItem('askedInstallPWA');
-                    console.log('answerScoreResetBtn click', askedInstallPWA);
                     if (!askedInstallPWA) {
                         // 新增應用程序安裝
                         event.prompt();
