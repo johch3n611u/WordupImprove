@@ -146,7 +146,7 @@ export class WordupImproveComponent {
   cardslinkScore() {
     this.cards.forEach((card: Card) => {
       let findAnswer = this.answerScore?.find(
-        (word: any) => word?.en === card?.en
+        (word: any) => word?.en.toLowerCase() === card?.en.toLowerCase()
       );
       card.score = findAnswer?.score ?? 0;
       card.updateTime = this.calculateTime(findAnswer?.updateTime);
@@ -179,11 +179,11 @@ export class WordupImproveComponent {
     while (isLocked) {
 
       let drawNumber = 0;
-      let answerInfo = this.answerScore.find((res: any) => res.en === this.cards[drawNumber].en);
+      let answerInfo = this.answerScore.find((res: any) => res.en.toLowerCase() === this.cards[drawNumber].en.toLowerCase());
 
       if (this.config.drawMode !== 'errorFirst') {
         drawNumber = this.glgorithmsService.getRandomNum(this.cards?.length - 1);
-        answerInfo = this.answerScore.find((res: any) => res.en === this.cards[drawNumber].en);
+        answerInfo = this.answerScore.find((res: any) => res.en.toLowerCase() === this.cards[drawNumber].en.toLowerCase());
         let preCumulativeScore = cumulativeScore;
 
         // 例句數量權重
@@ -211,7 +211,7 @@ export class WordupImproveComponent {
         // 每次抽取結果
         this.debug.list.push({
           finalScore: cumulativeScore,
-          en: this.cards[drawNumber]?.en,
+          en: this.cards[drawNumber]?.en.toLowerCase(),
           drawCount: drawCount++ + 1,
           sentencesLength: exSentsScore,
           score: answerInfo?.score,
@@ -231,7 +231,7 @@ export class WordupImproveComponent {
 
       // 累積分數超過臨界值則得獎
       if (
-        (thresholdScore <= cumulativeScore && this.cards[drawNumber]?.en !== this.card?.en) || this.config.drawMode === 'errorFirst'
+        (thresholdScore <= cumulativeScore && this.cards[drawNumber]?.en.toLowerCase() !== this.card?.en.toLowerCase()) || this.config.drawMode === 'errorFirst'
       ) {
         this.card = JSON.parse(JSON.stringify(this.cards[drawNumber]));
         this.card.score = answerInfo?.score;
@@ -262,12 +262,12 @@ export class WordupImproveComponent {
     this.displayMode = DisplayMode.Answer;
     this.sentenceAnswerDisplay = true;
 
-    let word = this.answerScore.find((word: any) => word.en == this.card.en);
+    let word = this.answerScore.find((word: any) => word.en.toLowerCase() == this.card.en.toLowerCase());
     this.notFamiliarScore = this.notFamiliarScoreCalculations(word);
     this.familiarScore = this.glgorithmsService.mapScore(this.seconds);
 
     if (this.config.seeAnswerSpeak) {
-      this.debounceBeSub$?.next([this.speak, this.sentence?.en]);
+      this.debounceBeSub$?.next([this.speak, this.sentence?.en.toLowerCase()]);
     }
 
     // 避免不熟榜 lag
@@ -276,41 +276,24 @@ export class WordupImproveComponent {
 
   showExanpleAnswers() {
     this.sentenceAnswerDisplay = true;
-    this.debounceBeSub$?.next([this.speak, this.sentence?.en]);
+    this.debounceBeSub$?.next([this.speak, this.sentence?.en.toLowerCase()]);
   }
 
   unfamiliarSorting(a: any, b: any) {
     if (a?.score > 0 || b?.score > 0) {
       return a?.score - b?.score;
     } else {
-      let tempSortA = (a?.score * 1.15) - a?.updateTime?.days;
-      let tempSortB = (b?.score * 1.15) - b?.updateTime?.days;
-      if (tempSortA === tempSortB) {
-        if (a?.updateTime?.days === b?.updateTime?.days) {
-          if (a?.score === b?.score) {
-            if (a?.updateTime?.hours === b?.updateTime?.hours) {
-              return b?.updateTime?.minutes - a?.updateTime?.minutes;
-            } else {
-              return b?.updateTime?.hours - a?.updateTime?.hours;
-            }
-          } else {
-            return a?.score - b?.score;
-          }
-        } else {
-          return b?.updateTime?.days - a?.updateTime?.days;
-        }
+      let tempSortA = (a?.score * 1.3) - a?.updateTime?.days;
+      let tempSortB = (b?.score * 1.3) - b?.updateTime?.days;
+      let aUpdateTime = a?.updateTime?.days == 0 && a?.updateTime?.hours == 0;
+      let bUpdateTime = b?.updateTime?.days == 0 && b?.updateTime?.hours == 0;
+
+      if (aUpdateTime) {
+        return 1;
+      } else if (bUpdateTime) {
+        return -1;
       } else {
-        let aUpdateTime = a?.updateTime?.days == 0 && a?.updateTime?.hours <= 1;
-        let bUpdateTime = b?.updateTime?.days == 0 && b?.updateTime?.hours <= 1;
-        if (aUpdateTime && bUpdateTime) {
-          return tempSortB - tempSortA;
-        } else if (aUpdateTime) {
-          return 1;
-        } else if (bUpdateTime) {
-          return -1;
-        } else {
-          return tempSortA - tempSortB;
-        }
+        return tempSortA - tempSortB;
       }
     }
   }
@@ -327,7 +310,7 @@ export class WordupImproveComponent {
       while (!this.sentence) {
         randomNumber = this.glgorithmsService.getRandomNum(this.card?.sentences?.length - 1);
         if (this.tempSentencesIndex.indexOf(randomNumber) == -1) {
-          if (this.sentence?.en != this.card?.sentences[randomNumber]?.en) {
+          if (this.sentence?.en.toLowerCase() != this.card?.sentences[randomNumber]?.en.toLowerCase()) {
             this.sentence = this.card?.sentences[randomNumber];
             this.tempSentencesIndex.push(randomNumber);
           }
@@ -344,12 +327,12 @@ export class WordupImproveComponent {
     // 避免不熟榜 lag
     this.displayUnfamiliar = false;
 
-    this.debounceBeSub$?.next([this.speak, this.card.en]);
+    this.debounceBeSub$?.next([this.speak, this.card.en.toLowerCase()]);
 
     try {
       this.record.avgAnswerSpeed.push(this.seconds);
 
-      let word = this.answerScore.find((word: any) => word.en == this.card.en);
+      let word = this.answerScore.find((word: any) => word.en.toLowerCase() == this.card.en.toLowerCase());
 
       // 回答的越快增加越多分，越慢扣越多
       let trueScore = 11 - this.glgorithmsService.mapScore(this.seconds, 200, 1, 10);
@@ -365,7 +348,7 @@ export class WordupImproveComponent {
         // let newWord = answer ? trueScore : falseScore;
         let newWord = answer ? trueScore : -50;
         this.answerScore.push({
-          en: this.card.en,
+          en: this.card.en.toLowerCase(),
           score: newWord,
           updateTime: Date.now(),
         });
@@ -533,11 +516,11 @@ export class WordupImproveComponent {
       this.cards.forEach((el: any) => {
         try {
           let cal = this.glgorithmsService.calculateSimilarity(
-            el?.en,
+            el?.en.toLowerCase(),
             this.searchWord.word
           );
           temp.push({
-            en: el?.en,
+            en: el?.en.toLowerCase(),
             cn: el?.cn,
             searchWord: this.searchWord.word,
             cal: cal,
@@ -550,20 +533,19 @@ export class WordupImproveComponent {
       let sortTemp = temp.sort((a: any, b: any) => b.cal - a.cal);
       this.searchWord.similarWords = `相似單字：${sortTemp
         .slice(0, 10)
-        .map((obj: any) => `[${obj.en}]${obj.cn}`)
+        .map((obj: any) => `[${obj.en.toLowerCase()}]${obj.cn}`)
         .join('，')}`;
 
       const pattern = new RegExp(`\\b${this.searchWord.word}\\b`, 'gi');
-      const searched = this.cards.find((card: any) => card.en.match(pattern));
+      const searched = this.cards.find((card: any) => card.en.toLowerCase().match(pattern));
       if (searched) {
         const word = this.answerScore.find((word: any) =>
-          word.en.match(pattern)
+          word.en.toLowerCase().match(pattern)
         );
         const updateTime = JSON.stringify(word?.updateTime);
         if (word) {
           let notFamiliarScore = this.notFamiliarScoreCalculations(word);
           word.score += notFamiliarScore > 0 ? notFamiliarScore * -1 : notFamiliarScore;
-          this.searchWord.updateTime = this.calculateTime(updateTime);
           word.updateTime = Date.now();
           this.searchWord.score = word?.score;
         } else {
@@ -575,6 +557,7 @@ export class WordupImproveComponent {
           this.searchWord.score = -50;
         }
 
+        this.searchWord.updateTime = this.calculateTime(updateTime);
         localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
         this.searchWord.explain = searched.cn;
         // alert('已扣 5 分'); todo 彈出自動消失匡
@@ -586,7 +569,7 @@ export class WordupImproveComponent {
         // alert(
         //   `字庫搜尋不到此單字，\n以下為[距離算法]選出字庫前五個相似度高的單字。`
         // ); todo 彈出自動消失匡
-        this.searchWord.word = sortTemp[0].en;
+        this.searchWord.word = sortTemp[0].en.toLowerCase();
       }
 
       this.debounceBeSub$?.next([this.speak, this.searchWord.display ?? this.searchWord.word]);
@@ -666,10 +649,10 @@ export class WordupImproveComponent {
   unfamiliarReflash() {
     this.unfamiliarList = [];
     this.answerScore.forEach((el: any) => {
-      let card = this.cards.find((res: any) => res.en === el.en);
-      if (card?.en) {
+      let card = this.cards.find((res: any) => res.en.toLowerCase() === el.en.toLowerCase());
+      if (card?.en.toLowerCase()) {
         this.unfamiliarList.push({
-          en: card?.en,
+          en: card?.en.toLowerCase(),
           cn: card?.cn,
           sentencesLength: card?.sentences?.length,
           score: el?.score,
@@ -820,11 +803,11 @@ export class WordupImproveComponent {
       item.displayAnswer = !item.displayAnswer;
     }, 5000);
 
-    this.debounceBeSub$?.next([this.speak, item?.en]);
+    this.debounceBeSub$?.next([this.speak, item?.en.toLowerCase()]);
   }
 
   answerUnfamiliarScoreReset(answer: any, keyword: string) {
-    let word = this.answerScore.find((word: any) => word.en == keyword);
+    let word = this.answerScore.find((word: any) => word.en.toLowerCase() == keyword.toLowerCase());
     let notFamiliarScore = this.notFamiliarScoreCalculations(word);
     answer ? (word.score += 10) : (word.score += notFamiliarScore > 0 ? notFamiliarScore * -1 : notFamiliarScore);
     word.updateTime = Date.now();
@@ -940,10 +923,10 @@ export class WordupImproveComponent {
         try {
           let cn = el.cn.join(',');
           if (this.searchChineseObj.word.match(new RegExp(el.cn, 'i')) || cn.match(new RegExp(this.searchChineseObj.word, 'i'))) {
-            temp.push(`[${el.en}]${el.cn}`);
+            temp.push(`[${el.en.toLowerCase()}]${el.cn}`);
           }
         } catch (ex) {
-          console.log(typeof (el.cn), el.en)
+          console.log(typeof (el.cn), el.en.toLowerCase())
         }
       });
 
@@ -974,14 +957,14 @@ export class WordupImproveComponent {
     this.editedCards.notEditMode = true;
 
     this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss');
-    let tempCard = this.editedCards.cards.find((c: any) => c.en === card.en.trim().toLowerCase());
-    let tempCard2 = this.cards.find((c: any) => c.en === card.en.trim().toLowerCase());
+    let tempCard = this.editedCards.cards.find((c: any) => c.en.toLowerCase() === card.en.trim().toLowerCase());
+    let tempCard2 = this.cards.find((c: any) => c.en.toLowerCase() === card.en.trim().toLowerCase());
 
     if (tempCard) {
       tempCard.cn = [card.cn];
     } else {
       let newCard: any = new Card();
-      newCard.en = tempCard2?.en;
+      newCard.en = tempCard2?.en.toLowerCase();
       newCard.cn = [card.cn];
       this.editedCards.cards.push(newCard);
     }
@@ -993,76 +976,22 @@ export class WordupImproveComponent {
   }
 
   refreshCnEdited() {
-    // this.editedCards.cards.forEach((c: any) => {
-    //   let tempCard = this.cards.find((card: any) => card.en === c.en);
-    //   if (tempCard) {
-    //     tempCard.cn = c.cn;
-    //   } else {
-    //     this.cards.push(c);
-    //   }
-    // });
-
-    // 這樣做的好處是將 cards 中每張卡片的 en 屬性作為索引，這樣就可以直接通過 en 屬性查找，
-    // 而不需要每次都使用 find 方法在 this.cards 中搜索。這樣可以提高效率，特別是在 this.cards 非常大的情況下。
-
-    const cardIndex: any = {};
-    this.cards.forEach((card) => {
-      cardIndex[card.en] = card;
-    });
-
-    this.editedCards.cards.forEach((card: Card) => {
-      if (cardIndex[card.en]) {
-        cardIndex[card.en].cn = card.cn;
+    this.editedCards.cards.forEach((editedCard: any) => {
+      let tempCard = this.cards.find((card: any) => card.en.toLowerCase() === editedCard.en.toLowerCase());
+      if (tempCard) {
+        tempCard.cn = editedCard.cn;
       } else {
-        this.cards.push(card);
+        this.cards.push(editedCard);
       }
     });
   }
 
   addNewCard() {
-    // this.editedCards.displayUpdateCnEdite = false;
-    // if (this.editedCards.card.en.replace(/\s*/g, '') !== '' && confirm('確認新增卡片?')) {
-    //   let tempCard = this.cards.find((card: any) => card.en === this.editedCards.card.en.trim().toLowerCase());
-    //   if (this.editedCards.card.cn.toString() === '') {
-    //     if (tempCard) {
-    //       alert('卡片已存在，是否更新中文？');
-    //       console.log(tempCard.cn)
-    //       this.editedCards.displayUpdateCnEdite = true;
-    //       this.editedCards.card = new Card();
-    //       this.editedCards.card.en = tempCard.en.trim().toLowerCase();
-    //       let temp = tempCard.cn.join(', ');
-    //       this.editedCards.card.cn = [];
-    //       this.editedCards.card.cn.push(temp);
-    //     } else {
-    //       alert('卡片不存在，請繼續新增');
-    //     }
-    //   } else {
-    //     if (!tempCard) {
-    //       this.editedCards.card.en = this.editedCards.card.en.trim().toLowerCase();
-    //       this.editedCards.cards.push(this.editedCards.card);
-    //       this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm');
-    //       let editedCards = JSON.stringify(this.editedCards);
-    //       localStorage.setItem('editedCards', editedCards);
-    //       this.editedCards.card = new Card();
-    //       // this.editedCards.displayAddNewCard = !this.editedCards.displayAddNewCard;
-    //       this.refreshCnEdited();
-    //     } else {
-    //       alert('卡片已存在，是否更新中文？');
-    //       this.editedCards.displayUpdateCnEdite = true;
-    //       this.editedCards.card = new Card();
-    //       this.editedCards.card.en = tempCard.en.trim().toLowerCase();
-    //       let temp = tempCard.cn.join(', ');
-    //       this.editedCards.card.cn = [];
-    //       this.editedCards.card.cn.push(temp);
-    //     }
-    //   }
-    // }
-
     const { en, cn } = this.editedCards.card;
     const trimmedEn = en.trim().toLowerCase();
 
     if (trimmedEn.replace(/\s*/g, '') !== '' && confirm('確認新增卡片?')) {
-      const tempCard = this.cards.find((card: any) => card.en === trimmedEn);
+      const tempCard = this.cards.find((card: any) => card.en.toLowerCase() === trimmedEn);
 
       const handleExistingCard = () => {
         alert('卡片已存在，是否更新中文？');
@@ -1099,7 +1028,17 @@ export class WordupImproveComponent {
 
   exportNewCards() {
     if (confirm('確定要匯出新增的卡片嗎？將會刪除暫存')) {
-      const tempCards = this.cards.map(({ cn, en, sentences }) => ({ cn, en, sentences }));
+      const seenWords = new Set();
+      const tempCards = this.cards.map(({ cn, en, sentences }) => {
+        if (!seenWords.has(en)) {
+          seenWords.add(en);
+          return { cn, en: en.toLowerCase(), sentences };
+        } else {
+          console.log({ cn, en, sentences });
+          // 返回 null 或者其他值，表示這個物件被過濾掉了
+          return null;
+        }
+      }).filter(Boolean);
       console.log(JSON.stringify(tempCards)); // 不能移除，方便重新增加 json
       localStorage.removeItem('editedCards');
       this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss');
