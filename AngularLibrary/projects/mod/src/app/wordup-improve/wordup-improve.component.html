@@ -24,9 +24,9 @@
       </span>
       <span>
         (單)
-        <lib-svg [src]="'./assets/enHelper/audio.svg'" (click)="speakXXX(card.en)"></lib-svg>
+        <lib-svg [src]="'./assets/enHelper/audio.svg'" (click)="speakMsg(card.en)"></lib-svg>
         (句)
-        <lib-svg [src]="'./assets/enHelper/audio.svg'" (click)="speakXXX(sentence?.en)"></lib-svg>
+        <lib-svg [src]="'./assets/enHelper/audio.svg'" (click)="speakMsg(sentence?.en)"></lib-svg>
       </span>
       <hr />
       <p [innerHtml]="sentence?.en | highlight : card.en : REGEXP_TYPE.First"></p>
@@ -179,11 +179,11 @@
 
     <div>
       <button class="unobviousBtn" (click)="sortByMostNegative()">
-        負分最多排列
+        依照負分最多排列
       </button>
 
       <button class="unobviousBtn" (click)="unfamiliarReflash()">
-        天數負分兼容排列
+        依照天數負分兼容排列
       </button>
     </div>
 

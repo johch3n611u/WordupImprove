@@ -84,13 +84,16 @@ export class WordupImproveComponent {
 
   record: any = {
     drawCountRecord: [],
-    drawCountRecordDisplay: undefined,
+    drawCountRecordDisplay: undefined, // 繪製計數的平均數
     finalScoreRecord: [],
-    finalScoreRecordDisplay: undefined,
+    finalScoreRecordDisplay: undefined, // 最終分數的平均數
     avgAnswerSpeed: [],
-    avgAnswerSpeedDisplay: undefined,
+    avgAnswerSpeedDisplay: undefined, // 平均回答速度的平均數
   };
-  recordCalculate() {
+  /**
+  * 計算並更新記錄的平均值
+  */
+  recordCalculate(): void {
     this.record.drawCountRecordDisplay = Math.round(
       this.record.drawCountRecord.reduce((sum: any, currentValue: any) => sum + currentValue, 0) / this.record.drawCountRecord.length
     );
@@ -105,7 +108,10 @@ export class WordupImproveComponent {
   }
 
   automaticDrawCardTimer: any;
-  automaticDrawCard() {
+  /**
+  * 控制自動抽卡功能的開始和結束
+  */
+  automaticDrawCard(): void {
     if (this.automaticDrawCardTimer) {
       clearInterval(this.automaticDrawCardTimer);
       this.automaticDrawCardTimer = undefined;
@@ -123,7 +129,10 @@ export class WordupImproveComponent {
   url = './assets/enHelper/scoreData.json';
   cards: Array<Card> = [];
   answerScore: any = [];
-  initCards() {
+  /**
+  * 初始化卡片資料
+  */
+  initCards(): void {
     this.httpClient
       .get(this.url)
       .pipe(
@@ -142,8 +151,10 @@ export class WordupImproveComponent {
       });
   }
 
-  // cards 資料太大包，是固定 json 檔案，搭配 firebase 上記錄分數的檔案
-  cardslinkScore() {
+  /**
+  * 將卡片資料與分數資料關聯，cards 資料太大包，是固定 json 檔案，搭配 firebase 上記錄分數的檔案
+  */
+  cardslinkScore(): void {
     this.cards.forEach((card: Card) => {
       let findAnswer = this.answerScore?.find(
         (word: any) => word?.en.toLowerCase() === card?.en.toLowerCase()
@@ -155,6 +166,9 @@ export class WordupImproveComponent {
 
   debug: any;
   card: Card = new Card();
+  /** 
+  * 根據邏輯抽取卡片資料
+  */
   drawCard(): void {
     // 錯誤優先模式
     if (this.config.drawMode === 'errorFirst') {
@@ -256,30 +270,13 @@ export class WordupImproveComponent {
     this.updateTimer();
   }
 
-  sentence: any;
-  sentenceAnswerDisplay: any = true;
-  seeAnswer() {
-    this.displayMode = DisplayMode.Answer;
-    this.sentenceAnswerDisplay = true;
-
-    let word = this.answerScore.find((word: any) => word.en.toLowerCase() == this.card.en.toLowerCase());
-    this.notFamiliarScore = this.notFamiliarScoreCalculations(word);
-    this.familiarScore = this.glgorithmsService.mapScore(this.seconds);
-
-    if (this.config.seeAnswerSpeak) {
-      this.debounceBeSub$?.next([this.speak, this.sentence?.en.toLowerCase()]);
-    }
-
-    // 避免不熟榜 lag
-    this.displayUnfamiliar = false;
-  }
-
-  showExanpleAnswers() {
-    this.sentenceAnswerDisplay = true;
-    this.debounceBeSub$?.next([this.speak, this.sentence?.en.toLowerCase()]);
-  }
-
-  unfamiliarSorting(a: any, b: any) {
+  /**
+  * 依邏輯排列卡片
+  * @param a 單字 A
+  * @param b 單字 B
+  * @returns 排序方式
+  */
+  unfamiliarSorting(a: any, b: any): number {
     if (a?.score > 0 || b?.score > 0) {
       return a?.score - b?.score;
     } else {
@@ -298,8 +295,40 @@ export class WordupImproveComponent {
     }
   }
 
+  sentence: any;
+  sentenceAnswerDisplay: any = true;
+  /**
+  * 顯示卡片答案
+  */
+  seeAnswer(): void {
+    this.displayMode = DisplayMode.Answer;
+    this.sentenceAnswerDisplay = true;
+
+    let word = this.answerScore.find((word: any) => word.en.toLowerCase() == this.card.en.toLowerCase());
+    this.notFamiliarScore = this.notFamiliarScoreCalculations(word);
+    this.familiarScore = this.glgorithmsService.mapScore(this.seconds);
+
+    if (this.config.seeAnswerSpeak) {
+      this.debounceBeSub$?.next([this.speak, this.sentence?.en.toLowerCase()]);
+    }
+
+    // 避免不熟榜 lag
+    this.displayUnfamiliar = false;
+  }
+
+  /**
+  * 顯示卡片例句
+  */
+  showExanpleAnswers(): void {
+    this.sentenceAnswerDisplay = true;
+    this.debounceBeSub$?.next([this.speak, this.sentence?.en.toLowerCase()]);
+  }
+
   tempSentencesIndex: any = [];
-  drawSentence() {
+  /**
+  * 抽取卡片例句
+  */
+  drawSentence(): void {
     try {
       this.sentenceAnswerDisplay = false;
       this.sentence = undefined;
@@ -323,7 +352,11 @@ export class WordupImproveComponent {
     }
   }
 
-  answerScoreReset(answer: any) {
+  /** 
+  * 回答並更新卡片熟悉度
+  * @param answer 熟悉 / 不熟悉
+  */
+  answerScoreReset(answer: boolean): void {
     // 避免不熟榜 lag
     this.displayUnfamiliar = false;
 
@@ -363,7 +396,12 @@ export class WordupImproveComponent {
 
   familiarScore = 1;
   notFamiliarScore = 0;
-  notFamiliarScoreCalculations(word: any) {
+  /** 
+  * 不熟悉扣分邏輯
+  * @param word 單字
+  * @returns 扣分分數
+  */
+  notFamiliarScoreCalculations(word: any): number {
     // 30 內天類依比例扣分 7-15 天扣最低，7 天內與 15 至其餘天數 & 一天以內直接扣最大分
     let falseScoreTime = this.calculateTime(word?.updateTime);
     let falseScore;
@@ -384,7 +422,10 @@ export class WordupImproveComponent {
   }
 
   familiarity: Familiarity = new Familiarity();
-  calculateFamiliarity() {
+  /**
+  * 計算卡片的熟悉度和記憶曲線
+  */
+  calculateFamiliarity(): void {
     this.familiarity = new Familiarity();
     this.familiarity.total = this.cards.length;
 
@@ -425,6 +466,9 @@ export class WordupImproveComponent {
   }
 
   // chart: any;
+  /**
+  * 依照熟悉度繪製圖表
+  */
   // drawChat() {
   //   try {
   //     if (this.chart) {
@@ -480,12 +524,19 @@ export class WordupImproveComponent {
   //   }
   // }
 
-  onResize(event: any) {
+  /**
+  * 瀏覽器大小改變時重新繪製圖表 @HostListener('window:resize', ['$event'])
+  * @param event 瀏覽器大小改變時觸發事件
+  */
+  onResize(event: Event): void {
     // this.drawChat();
   }
 
-  resetAnswerScore() {
-    if (confirm('確定要刪除紀錄嗎？')) {
+  /**
+  * 刪除本地分數紀錄
+  */
+  resetAnswerScore(): void {
+    if (confirm('確定要刪除分數紀錄嗎？')) {
       this.answerScore = [];
       localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
       this.calculateFamiliarity();
@@ -499,10 +550,12 @@ export class WordupImproveComponent {
     score: '',
     similarWords: '',
   };
-
-  // @ViewChild('searchWordInput') searchWordInput!: ElementRef;
-  // https://stackoverflow.com/questions/3169786/clear-text-selection-with-javascript
-  searchWordMark() {
+  /**
+  * 搜尋相似單字並扣除熟悉度分數
+  * @ViewChild('searchWordInput') searchWordInput!: ElementRef;
+  * https://stackoverflow.com/questions/3169786/clear-text-selection-with-javascript
+  */
+  searchWordMark(): void {
     if (window.getSelection()?.empty) {  // Chrome
       window.getSelection()?.empty();
     }
@@ -542,7 +595,7 @@ export class WordupImproveComponent {
         const word = this.answerScore.find((word: any) =>
           word.en.toLowerCase().match(pattern)
         );
-        const updateTime = JSON.stringify(word?.updateTime);
+        const updateTime = JSON.parse(JSON.stringify(word?.updateTime));
         if (word) {
           let notFamiliarScore = this.notFamiliarScoreCalculations(word);
           word.score += notFamiliarScore > 0 ? notFamiliarScore * -1 : notFamiliarScore;
@@ -580,7 +633,10 @@ export class WordupImproveComponent {
 
   theme = Theme;
   nowTheme = this.themeService.getTheme();
-  setTheme() {
+  /**
+  * 設定主題
+  */
+  setTheme(): void {
     this.nowTheme === this.theme.dark
       ? (this.nowTheme = this.theme.light)
       : (this.nowTheme = this.theme.dark);
@@ -589,12 +645,18 @@ export class WordupImproveComponent {
 
   isExportAnswerScore = false;
   answerScoreDisplay: any = [];
-  clickImExport() {
+  /**
+  * 開啟匯入匯出熟悉度輸入框
+  */
+  clickImExport(): void {
     this.isExportAnswerScore = !this.isExportAnswerScore;
     this.answerScoreDisplay = JSON.stringify([...this.answerScore]);
   }
 
-  importAnswerScore() {
+  /**
+  * 更新本地熟悉度分數
+  */
+  importAnswerScore(): void {
     if (confirm('確定要匯入(紀錄更改後無法返回)？')) {
       this.answerScore = [...JSON.parse(this.answerScoreDisplay)];
       localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
@@ -604,26 +666,40 @@ export class WordupImproveComponent {
   }
 
   debugDisplay = false;
-  clickDebug() {
+  /**
+  * 開啟偵錯介面
+  */
+  clickDebug(): void {
     this.debugDisplay = !this.debugDisplay;
   }
 
   config: Config = new Config();
-  configInit() {
+  /**
+  * 初始化設定檔
+  */
+  configInit(): void {
     let drawCardConfig: any = localStorage.getItem('drawCardConfig');
     if (drawCardConfig) {
       this.config = JSON.parse(drawCardConfig)
     }
   }
 
-  importConfig() {
+  /**
+  * 更改設定檔
+  */
+  importConfig(): void {
     if (confirm('確定要更改設定檔嗎？')) {
       localStorage.setItem('drawCardConfig', JSON.stringify(this.config));
       this.drawCard();
     }
   }
 
-  calculateTime(timestamp: any) {
+  /**
+   * 計算經過時間
+   * @param timestamp 時間差戳
+   * @returns 時間差
+   */
+  calculateTime(timestamp: number): ElapsedTime {
     if (!timestamp) {
       return { days: 0, hours: 0, minutes: 0 };
     }
@@ -646,7 +722,10 @@ export class WordupImproveComponent {
 
   displayUnfamiliar: any = false;
   unfamiliarList: any = [];
-  unfamiliarReflash() {
+  /**
+   * 不熟悉榜單依照天數負分兼容排列
+   */
+  unfamiliarReflash(): void {
     this.unfamiliarList = [];
     this.answerScore.forEach((el: any) => {
       let card = this.cards.find((res: any) => res.en.toLowerCase() === el.en.toLowerCase());
@@ -665,123 +744,19 @@ export class WordupImproveComponent {
     this.unfamiliarList.sort((a: any, b: any) => this.unfamiliarSorting(a, b));
   }
 
-  sortByMostNegative() {
-    this.unfamiliarList.sort((a: any, b: any) => a.score - b.score);
-  }
-
   /**
-   * Firebase Auth & CRUD
-   * // https://console.firebase.google.com/u/0/project/angular-vector-249608/firestore/data/~2FLogs~2FBIjfl9Y432Rtt3lwZJx0klt0j8M2
-   * // https://github.com/angular/angularfire/blob/master/docs/firestore.md#cloud-firestore
-   * // https://www.positronx.io/full-angular-firebase-authentication-system/
+   * 不熟悉榜單依照負分最多排列
    */
-
-  firebaseAuth: FirebaseAuth = new FirebaseAuth();
-  combineUserAndLogs$!: Subscription;
-  firestore: Firestore = inject(Firestore);
-  private auth: Auth = inject(Auth);
-  user$ = user(this.auth);
-  logsCollection!: CollectionReference<DocumentData, DocumentData>;
-
-  async login() {
-    try {
-      await signInWithEmailAndPassword(this.auth, this.firebaseAuth.email, this.firebaseAuth.password);
-      this.user$ = authState(this.auth);
-    } catch (err) {
-      alert(err);
-    }
-  }
-
-  async logout() {
-    try {
-      await signOut(this.auth);
-      if (this.combineUserAndLogs$) {
-        this.combineUserAndLogs$.unsubscribe();
-      }
-      alert('登出成功');
-    } catch (err) {
-      alert(err);
-    }
-  }
-
-  async signUp() {
-    try {
-      await createUserWithEmailAndPassword(
-        this.auth,
-        this.firebaseAuth.email,
-        this.firebaseAuth.password
-      );
-    } catch (err) {
-      alert(err);
-    }
-  }
-
-  enterRegistPage() {
-    // if (isDevMode()) {
-    //   this.autoUpdateLog();
-    // }
-    this.firebaseAuth.isEnterRegistPage = true;
-  }
-
-  async updateLog(direct: boolean = true) {
-    if (direct || confirm('確定要更新雲端紀錄嗎？(此動作不可逆)')) {
-      user(this.auth).pipe(
-        take(1),
-        tap(async (user) => {
-          if (user) {
-            this.logsCollection = collection(this.firestore, 'Logs');
-            const editedCardsString = JSON.stringify(this.editedCards?.cards);
-            await setDoc(doc(this.logsCollection, user.uid), {
-              email: user.email,
-              answerScore: this.answerScore,
-              editedCards: editedCardsString,
-              editedCardsDate: this.editedCards?.date,
-            });
-            alert('更新成功');
-            this.firebaseAuth.isEnterRegistPage = false;
-          }
-        }),
-        take(1),
-      ).subscribe();
-    }
-  }
-
-  downloadLog(direct: boolean = true) {
-    if (direct || confirm('確定要更新本地紀錄嗎？(此動作不可逆)')) {
-      this.combineUserAndLogs$ = combineLatest([
-        this.user$,
-        collectionData(collection(this.firestore, 'Logs'))
-      ]).pipe(
-        take(1),
-        tap(async ([user, logs]) => {
-          const log: any = logs.find((log: any) => log.email === user?.email);
-          if (log) {
-            this.answerScore = JSON.parse(JSON.stringify(log.answerScore));
-            localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
-
-            let tempEditedCards = JSON.parse(log.editedCards);
-            this.editedCards.cards = tempEditedCards;
-            this.editedCards.card = new Card();
-            this.editedCards.date = log.editedCardsDate;
-            localStorage.setItem('editedCards', JSON.stringify(this.editedCards));
-
-            this.calculateFamiliarity();
-            this.unfamiliarReflash();
-            alert('更新成功');
-            this.firebaseAuth.isEnterRegistPage = false;
-            this.drawCard();
-          } else {
-            alert('未找到紀錄');
-          }
-        }),
-        take(1),
-      ).subscribe();
-    }
+  sortByMostNegative(): void {
+    this.unfamiliarList.sort((a: any, b: any) => a.score - b.score);
   }
 
   timerId: any;
   seconds = 0;
-  updateTimer() {
+  /**
+  * 計算回答過程經過時間
+  */
+  updateTimer(): void {
     if (this.timerId) {
       clearInterval(this.timerId);
       this.timerId = null;
@@ -797,20 +772,29 @@ export class WordupImproveComponent {
     }, 1000);
   }
 
-  setUnfamiliarDisplayAnswer(item: any) {
-    item.displayAnswer = !item.displayAnswer;
+  /**
+  * 不熟悉榜查看答案
+  * @param word 單字
+  */
+  setUnfamiliarDisplayAnswer(word: any): void {
+    word.displayAnswer = !word.displayAnswer;
     setTimeout(() => {
-      item.displayAnswer = !item.displayAnswer;
+      word.displayAnswer = !word.displayAnswer;
     }, 5000);
 
-    this.debounceBeSub$?.next([this.speak, item?.en.toLowerCase()]);
+    this.debounceBeSub$?.next([this.speak, word?.en.toLowerCase()]);
   }
 
-  answerUnfamiliarScoreReset(answer: any, keyword: string) {
-    let word = this.answerScore.find((word: any) => word.en.toLowerCase() == keyword.toLowerCase());
+  /**
+  * 不熟悉榜答題
+  * @param answer 不熟悉 / 熟悉
+  * @param word 單字
+  */
+  answerUnfamiliarScoreReset(answer: boolean, word: string): void {
+    let keyWord = this.answerScore.find((word: any) => word.en.toLowerCase() == word.toLowerCase());
     let notFamiliarScore = this.notFamiliarScoreCalculations(word);
-    answer ? (word.score += 10) : (word.score += notFamiliarScore > 0 ? notFamiliarScore * -1 : notFamiliarScore);
-    word.updateTime = Date.now();
+    answer ? (keyWord.score += 10) : (keyWord.score += notFamiliarScore > 0 ? notFamiliarScore * -1 : notFamiliarScore);
+    keyWord.updateTime = Date.now();
     localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
     this.calculateFamiliarity();
     this.unfamiliarReflash();
@@ -820,9 +804,13 @@ export class WordupImproveComponent {
   // https://stackoverflow.com/questions/5379120/get-the-highlighted-selected-text
   synth = window.speechSynthesis;
   voices: any = [];
+  /**
+  * 監聽滑鼠並選取單字
+  * @param event 滑鼠按下事件
+  */
   @HostListener('window:mouseup', ['$event'])
   @HostListener('touchend', ['$event'])
-  mouseUp(event: MouseEvent) {
+  mouseUp(event: MouseEvent): void {
     let d: any = document;
     let selection: any = null;
     let word = '';
@@ -851,7 +839,10 @@ export class WordupImproveComponent {
     'Turn on reading mode',
   ]);
   debounceSub$!: Subscription;
-  debounceHandler() {
+  /**
+  * 延遲處理訂閱流，防抖 Debounce 節流 Throttle
+  */
+  debounceHandler(): void {
     let initMsg = 'Turn on reading mode';
     this.debounceSub$ = this.debounceBeSub$
       ?.pipe(
@@ -867,6 +858,10 @@ export class WordupImproveComponent {
   }
 
   tempSpeakMsg = '';
+  /**
+  * 語音朗讀
+  * @param msg 訊息
+  */
   speak(msg: string): void {
     if (this.synth) {
       this.voices = this.synth?.getVoices();
@@ -892,7 +887,10 @@ export class WordupImproveComponent {
     }
   }
 
-  setSpeakSelection() {
+  /**
+  * 開啟朗讀模式
+  */
+  setSpeakSelection(): void {
     let isReadingMode = this.debounceSub$ && !this.debounceSub$.closed;
     alert(!isReadingMode ? '開啟點擊朗讀模式' : '關閉點擊朗讀模式');
     if (!isReadingMode) {
@@ -902,16 +900,23 @@ export class WordupImproveComponent {
     }
   }
 
-  speakXXX(XXX: string) {
+  /**
+  * 朗讀訊息
+  * @param msg 訊息 
+  */
+  speakMsg(msg: string): void {
     if (!(this.debounceSub$ && !this.debounceSub$.closed)) {
       this.debounceHandler();
     }
 
-    this.debounceBeSub$.next([this.speak, XXX]);
+    this.debounceBeSub$.next([this.speak, msg]);
   }
 
   searchChineseObj = { word: '', similarWords: '' };
-  searchChinese() {
+  /**
+  * 搜尋相似中文
+  */
+  searchChinese(): void {
     if (
       this.searchChineseObj.word !== undefined &&
       this.searchChineseObj.word !== null &&
@@ -940,7 +945,10 @@ export class WordupImproveComponent {
 
 
   editedCards: any = { date: '', cards: [], card: new Card(), notEditMode: true, displayAddNewCard: false, displayUpdateCnEdite: false };
-  editedCardsInit() {
+  /**
+  * 修改單字資料初始化
+  */
+  editedCardsInit(): void {
     let temp = localStorage.getItem('editedCards');
     if (temp) {
       this.editedCards = JSON.parse(temp);
@@ -952,7 +960,11 @@ export class WordupImproveComponent {
     this.refreshCnEdited();
   }
 
-  updateCnEdite(card: any) {
+  /**
+  * 編輯單字中文
+  * @param card 單字
+  */
+  updateCnEdite(card: any): void {
     this.editedCards.displayUpdateCnEdite = false;
     this.editedCards.notEditMode = true;
 
@@ -975,7 +987,10 @@ export class WordupImproveComponent {
     this.refreshCnEdited();
   }
 
-  refreshCnEdited() {
+  /**
+  * 修改單字資料同步卡片資料
+  */
+  refreshCnEdited(): void {
     this.editedCards.cards.forEach((editedCard: any) => {
       let tempCard = this.cards.find((card: any) => card.en.toLowerCase() === editedCard.en.toLowerCase());
       if (tempCard) {
@@ -983,10 +998,14 @@ export class WordupImproveComponent {
       } else {
         this.cards.push(editedCard);
       }
+      this.editedCards.displayAddNewCard = false;
     });
   }
 
-  addNewCard() {
+  /**
+  * 新增單字
+  */
+  addNewCard(): void {
     const { en, cn } = this.editedCards.card;
     const trimmedEn = en.trim().toLowerCase();
 
@@ -1021,12 +1040,18 @@ export class WordupImproveComponent {
     }
   }
 
-  cancelAddNewCard() {
+  /**
+  * 關閉新增單字介面
+  */
+  cancelAddNewCard(): void {
     this.editedCards.displayAddNewCard = !this.editedCards.displayAddNewCard;
     this.editedCards.card = new Card();
   }
 
-  exportNewCards() {
+  /**
+  * 匯出修改過的卡片並更新紀錄
+  */
+  exportNewCards(): void {
     if (confirm('確定要匯出新增的卡片嗎？將會刪除暫存')) {
       const seenWords = new Set();
       const tempCards = this.cards.map(({ cn, en, sentences }) => {
@@ -1044,6 +1069,115 @@ export class WordupImproveComponent {
       this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss');
       this.editedCards.cards = '';
       this.updateLog(true);
+    }
+  }
+
+  /**
+  * Firebase Auth & CRUD
+  * https://console.firebase.google.com/u/0/project/angular-vector-249608/firestore/data/~2FLogs~2FBIjfl9Y432Rtt3lwZJx0klt0j8M2
+  * https://github.com/angular/angularfire/blob/master/docs/firestore.md#cloud-firestore
+  * https://www.positronx.io/full-angular-firebase-authentication-system/
+  */
+  firebaseAuth: FirebaseAuth = new FirebaseAuth();
+  combineUserAndLogs$!: Subscription;
+  firestore: Firestore = inject(Firestore);
+  private auth: Auth = inject(Auth);
+  user$ = user(this.auth);
+  logsCollection!: CollectionReference<DocumentData, DocumentData>;
+
+  async login(): Promise<void> {
+    try {
+      await signInWithEmailAndPassword(this.auth, this.firebaseAuth.email, this.firebaseAuth.password);
+      this.user$ = authState(this.auth);
+    } catch (err) {
+      alert(err);
+    }
+  }
+
+  async logout(): Promise<void> {
+    try {
+      await signOut(this.auth);
+      if (this.combineUserAndLogs$) {
+        this.combineUserAndLogs$.unsubscribe();
+      }
+      alert('登出成功');
+    } catch (err) {
+      alert(err);
+    }
+  }
+
+  async signUp(): Promise<void> {
+    try {
+      await createUserWithEmailAndPassword(
+        this.auth,
+        this.firebaseAuth.email,
+        this.firebaseAuth.password
+      );
+    } catch (err) {
+      alert(err);
+    }
+  }
+
+  enterRegistPage(): void {
+    // if (isDevMode()) {
+    //   this.autoUpdateLog();
+    // }
+    this.firebaseAuth.isEnterRegistPage = true;
+  }
+
+  async updateLog(direct: boolean = true): Promise<void> {
+    if (direct || confirm('確定要更新雲端紀錄嗎？(此動作不可逆)')) {
+      user(this.auth).pipe(
+        take(1),
+        tap(async (user) => {
+          if (user) {
+            this.logsCollection = collection(this.firestore, 'Logs');
+            const editedCardsString = JSON.stringify(this.editedCards?.cards);
+            await setDoc(doc(this.logsCollection, user.uid), {
+              email: user.email,
+              answerScore: this.answerScore,
+              editedCards: editedCardsString,
+              editedCardsDate: this.editedCards?.date,
+            });
+            alert('更新成功');
+            this.firebaseAuth.isEnterRegistPage = false;
+          }
+        }),
+        take(1),
+      ).subscribe();
+    }
+  }
+
+  downloadLog(direct: boolean = true): void {
+    if (direct || confirm('確定要更新本地紀錄嗎？(此動作不可逆)')) {
+      this.combineUserAndLogs$ = combineLatest([
+        this.user$,
+        collectionData(collection(this.firestore, 'Logs'))
+      ]).pipe(
+        take(1),
+        tap(async ([user, logs]) => {
+          const log: any = logs.find((log: any) => log.email === user?.email);
+          if (log) {
+            this.answerScore = JSON.parse(JSON.stringify(log.answerScore));
+            localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
+
+            let tempEditedCards = JSON.parse(log.editedCards);
+            this.editedCards.cards = tempEditedCards;
+            this.editedCards.card = new Card();
+            this.editedCards.date = log.editedCardsDate;
+            localStorage.setItem('editedCards', JSON.stringify(this.editedCards));
+
+            this.calculateFamiliarity();
+            this.unfamiliarReflash();
+            alert('更新成功');
+            this.firebaseAuth.isEnterRegistPage = false;
+            this.drawCard();
+          } else {
+            alert('未找到紀錄');
+          }
+        }),
+        take(1),
+      ).subscribe();
     }
   }
 }
@@ -1091,13 +1225,9 @@ export class Card {
 }
 
 export class ElapsedTime {
-  days: number = 0;
-  hours: number = 0;
-  minutes: number = 0;
+  days: number = 0; hours: number = 0; minutes: number = 0;
 }
 
 export class FirebaseAuth {
-  email: string = '';
-  password: string = '';
-  isEnterRegistPage: boolean = false;
+  email: string = ''; password: string = ''; isEnterRegistPage: boolean = false;
 }
