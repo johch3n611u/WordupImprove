@@ -991,7 +991,7 @@ export class WordupImproveComponent {
   * 修改單字資料同步卡片資料
   */
   refreshCnEdited(): void {
-    this.editedCards.cards.forEach((editedCard: any) => {
+    this.editedCards?.cards?.forEach((editedCard: any) => {
       let tempCard = this.cards.find((card: any) => card.en.toLowerCase() === editedCard.en.toLowerCase());
       if (tempCard) {
         tempCard.cn = editedCard.cn;
@@ -1162,7 +1162,7 @@ export class WordupImproveComponent {
             localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
 
             let tempEditedCards = JSON.parse(log.editedCards);
-            this.editedCards.cards = tempEditedCards;
+            this.editedCards.cards = tempEditedCards || [];
             this.editedCards.card = new Card();
             this.editedCards.date = log.editedCardsDate;
             localStorage.setItem('editedCards', JSON.stringify(this.editedCards));
