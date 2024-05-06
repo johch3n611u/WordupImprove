@@ -595,12 +595,12 @@ export class WordupImproveComponent {
         const word = this.answerScore.find((word: any) =>
           word.en.toLowerCase().match(pattern)
         );
-        const updateTime = JSON.parse(JSON.stringify(word?.updateTime));
         if (word) {
           let notFamiliarScore = this.notFamiliarScoreCalculations(word);
           word.score += notFamiliarScore > 0 ? notFamiliarScore * -1 : notFamiliarScore;
-          word.updateTime = Date.now();
           this.searchWord.score = word?.score;
+          this.searchWord.updateTime = this.calculateTime(word?.updateTime);
+          word.updateTime = Date.now();
         } else {
           this.answerScore.push({
             en: this.searchWord.word,
@@ -608,9 +608,9 @@ export class WordupImproveComponent {
             updateTime: Date.now(),
           });
           this.searchWord.score = -50;
+          this.searchWord.updateTime = this.calculateTime(undefined);
         }
 
-        this.searchWord.updateTime = this.calculateTime(updateTime);
         localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
         this.searchWord.explain = searched.cn;
         // alert('已扣 5 分'); todo 彈出自動消失匡
@@ -699,7 +699,7 @@ export class WordupImproveComponent {
    * @param timestamp 時間差戳
    * @returns 時間差
    */
-  calculateTime(timestamp: number): ElapsedTime {
+  calculateTime(timestamp: number | undefined): ElapsedTime {
     if (!timestamp) {
       return { days: 0, hours: 0, minutes: 0 };
     }
