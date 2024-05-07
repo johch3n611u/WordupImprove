@@ -141,6 +141,7 @@ export class WordupImproveComponent {
           this.answerScore = JSON.parse(
             localStorage.getItem('answerScore') ?? '[]'
           );
+          this.calculateAverageNegativeScore();
           this.cardslinkScore();
           this.configInit();
           this.editedCardsInit();
@@ -149,6 +150,16 @@ export class WordupImproveComponent {
       .subscribe((res: any) => {
         this.drawCard();
       });
+  }
+
+  answerScoreAverage = 0;
+  /**
+  * 計算平均負分
+  */
+  calculateAverageNegativeScore(): void {
+    const negativeScores = this.answerScore?.filter((item: any) => item.score < 0);
+    const sum = negativeScores?.reduce((total: number, item: any) => total + item.score, 0);
+    this.answerScoreAverage = Math.floor(sum / negativeScores?.length);
   }
 
   /**
@@ -282,6 +293,7 @@ export class WordupImproveComponent {
     } else {
       let tempSortA = (a?.score * 1.3) - a?.updateTime?.days;
       let tempSortB = (b?.score * 1.3) - b?.updateTime?.days;
+
       let aUpdateTime = a?.updateTime?.days == 0 && a?.updateTime?.hours == 0;
       let bUpdateTime = b?.updateTime?.days == 0 && b?.updateTime?.hours == 0;
 
@@ -369,17 +381,15 @@ export class WordupImproveComponent {
 
       // 回答的越快增加越多分，越慢扣越多
       let trueScore = 11 - this.glgorithmsService.mapScore(this.seconds, 200, 1, 10);
-      // let falseScore = this.mapScore(this.seconds) * -1;
       if (word) {
-        // answer ? (word.score += trueScore) : (word.score -= 5);
         // 30 內天類依比例扣分 7-15 天扣最低，7 天內與 15 至其餘天數 & 一天以內直接扣最大分
         // 看答案時計算 notFamiliarScore 顯示後再拿來此處使用
         answer ? (word.score += trueScore) : word.score += this.notFamiliarScore;
         word.updateTime = Date.now();
       } else {
-        // 第一次錯直接扣 50 
-        // let newWord = answer ? trueScore : falseScore;
-        let newWord = answer ? trueScore : -50;
+        // 第一次錯直接扣平均分
+        this.calculateAverageNegativeScore();
+        let newWord = answer ? trueScore : (this.answerScoreAverage ?? -50);
         this.answerScore.push({
           en: this.card.en.toLowerCase(),
           score: newWord,
@@ -602,12 +612,13 @@ export class WordupImproveComponent {
           this.searchWord.updateTime = this.calculateTime(word?.updateTime);
           word.updateTime = Date.now();
         } else {
+          this.calculateAverageNegativeScore();
           this.answerScore.push({
             en: this.searchWord.word,
-            score: -50,
+            score: (this.answerScoreAverage ?? -50),
             updateTime: Date.now(),
           });
-          this.searchWord.score = -50;
+          this.searchWord.score = (this.answerScoreAverage ?? -50);
           this.searchWord.updateTime = this.calculateTime(undefined);
         }
 

@@ -16,7 +16,7 @@
 
   <div class="cardBox">
     <div *ngIf="card">
-      <span *ngIf="card.score" class="subInfo userCantSelect">
+      <span class="subInfo userCantSelect">
         Score：{{ card.score }},
         <span>
           {{ card.updateTime.days }} d / {{ card.updateTime.hours }} h /{{ card.updateTime.minutes }} m,
@@ -89,7 +89,7 @@
       平均答題速度： {{this.record?.avgAnswerSpeedDisplay}} /s
     </p>
     <p *ngIf="config.answerCountToday > 0" class="subInfo userCantSelect">
-      累積 x {{ config.answerCountToday }} 答題!!
+      累積 x {{ config.answerCountToday }} 答題!!, 平均錯誤分數 {{ answerScoreAverage }}
     </p>
   </div>
 
@@ -205,7 +205,7 @@
             看答案
           </button>
         </td>
-        <td data-th="加權分數">{{ (item?.score * 1.15) - item?.updateTime?.days }}</td>
+        <td data-th="加權分數">{{ (item?.score * 1.3) - item?.updateTime?.days }}</td>
         <td data-th="英文">{{ item?.en }}</td>
         <td data-th="句子頻率次數">{{ item?.sentencesLength }}</td>
         <td data-th="答題分數">
@@ -234,7 +234,7 @@
             看答案
           </button>
         </li>
-        <li>加權分數：{{ (item?.score * 1.15) - item?.updateTime?.days }}</li>
+        <li>加權分數：{{ (item?.score * 1.3) - item?.updateTime?.days }}</li>
         <li>英文：{{ item?.en }}</li>
         <li>句子頻率次數：{{ item?.sentencesLength }}</li>
         <li>答題分數：
@@ -266,15 +266,9 @@
       <button class="unobviousBtn" (click)="setTheme()">切換黑白模式</button>
       <br />
       <button class="unobviousBtn" (click)="clickDebug()">Debug</button>
-      <button class="unobviousBtn" (click)="clickImExport()">匯出匯入</button>
       <button class="unobviousBtn" (click)="this.displayUnfamiliar = !this.displayUnfamiliar;">
         不熟榜
       </button>
-    </div>
-    <div *ngIf="isExportAnswerScore" style="display: flex; flex-direction: column">
-      <textarea [(ngModel)]="answerScoreDisplay"></textarea>
-      <button class="unobviousBtn" (click)="importAnswerScore()">匯入</button>
-      <hr style="width: 95%" />
     </div>
     <!-- <canvas id="canvas">{{ chart }}</canvas> -->
     <div style="display: flex; flex-direction: column; align-items: center" *ngIf="debugDisplay">
@@ -307,6 +301,12 @@
       <input id="autoDrawSeconds" type="number" [(ngModel)]="config.autoDrawSeconds" />
       <button type="button" (click)="automaticDrawCard()">自動抽取</button>
       <button class="unobviousBtn" (click)="resetAnswerScore()">清空紀錄</button>
+      <button class="unobviousBtn" (click)="clickImExport()">匯出匯入</button>
+      <div *ngIf="isExportAnswerScore" style="display: flex; flex-direction: column">
+        <textarea [(ngModel)]="answerScoreDisplay"></textarea>
+        <button class="unobviousBtn" (click)="importAnswerScore()">匯入</button>
+        <hr style="width: 95%" />
+      </div>
       <div *ngIf="voices.length > 0">
         <p>朗讀語言選擇</p>
         <ul>
