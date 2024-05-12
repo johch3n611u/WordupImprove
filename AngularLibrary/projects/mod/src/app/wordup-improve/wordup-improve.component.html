@@ -6,7 +6,7 @@
     </button>
     <ng-container *ngIf="displayMode === DisplayMode.Answer">
       <button (click)="answerScoreReset(true)">
-        <span class="userCantSelect">會 + {{ 11 - familiarScore }}</span>
+        <span class="userCantSelect">會 + {{ familiarScore }}</span>
       </button>
       <button (click)="answerScoreReset(false)">
         <span class="userCantSelect">不會 {{ notFamiliarScore }}</span>
@@ -88,8 +88,11 @@
     <p class="subInfo userCantSelect" *ngIf="this.record?.avgAnswerSpeed?.length > 0">
       平均答題速度： {{this.record?.avgAnswerSpeedDisplay}} /s
     </p>
-    <p *ngIf="config.answerCountToday > 0" class="subInfo userCantSelect">
-      累積 x {{ config.answerCountToday }} 答題!!, 平均錯誤分數 {{ answerScoreAverage }}
+    <p class="subInfo userCantSelect">
+      (每日 {{ config.answerCountToday?.count }} / 最大 {{ config.answerCountAll }} ) 答題
+    </p>
+    <p class="subInfo userCantSelect">
+      (平均 {{ answerScoreAverage }} /最大 {{ maxNegativeScore }} ) 錯誤分數
     </p>
   </div>
 
@@ -297,6 +300,8 @@
           value="completelyRandom" />
         <label for="completelyRandom">完全隨機</label>
       </div>
+      <label for="unfamiliarSortingHours">陌生的排序時間</label>
+      <input id="unfamiliarSortingHours" type="number" [(ngModel)]="config.unfamiliarSortingHours" />
       <label for="autoDrawSeconds">自動抽取秒數</label>
       <input id="autoDrawSeconds" type="number" [(ngModel)]="config.autoDrawSeconds" />
       <button type="button" (click)="automaticDrawCard()">自動抽取</button>

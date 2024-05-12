@@ -82,6 +82,63 @@ export class WordupImproveComponent {
     this.serviceWorkerService.judgmentUpdate();
   }
 
+  config: Config = new Config();
+  /**
+  * 初始化設定檔
+  */
+  configInit(): void {
+    let drawCardConfig: any = localStorage.getItem('drawCardConfig');
+    if (drawCardConfig) {
+      this.config = JSON.parse(drawCardConfig)
+    }
+  }
+
+  /**
+  * 更改設定檔
+  */
+  importConfig(direct: boolean = false): void {
+    if (direct || confirm('確定要更改設定檔嗎？')) {
+      localStorage.setItem('drawCardConfig', JSON.stringify(this.config));
+      direct ?? this.drawCard();
+    }
+  }
+
+  /**
+   * 計算當日累積答題數
+   */
+  calculateAnswerCountToday(): void {
+    !this.config.answerCountAll ?? (this.config.answerCountAll = 0);
+    this.config.answerCountAll++;
+    const todayTimstamp = this.config?.answerCountToday?.timestamp;
+    const today = this.calculateTime(todayTimstamp);
+    if (today.days > 1 || !todayTimstamp) {
+      this.config.answerCountToday = { timestamp: Date.now(), count: 0 };
+    } else {
+      this.config.answerCountToday.count++;
+    }
+
+    this.importConfig(true);
+  }
+
+  automaticDrawCardTimer: any;
+  /**
+  * 控制自動抽卡功能的開始和結束
+  */
+  automaticDrawCard(): void {
+    if (this.automaticDrawCardTimer) {
+      clearInterval(this.automaticDrawCardTimer);
+      this.automaticDrawCardTimer = undefined;
+    } else {
+      if (confirm('自動抽取開始，若要結束請重複點擊按鈕')) {
+        this.record.drawCountRecord = [];
+        this.record.finalScoreRecord = [];
+        this.automaticDrawCardTimer = setInterval(() => {
+          this.drawCard();
+        }, this.config.autoDrawSeconds * 1000);
+      }
+    }
+  }
+
   record: any = {
     drawCountRecord: [],
     drawCountRecordDisplay: undefined, // 繪製計數的平均數
@@ -105,25 +162,6 @@ export class WordupImproveComponent {
     this.record.avgAnswerSpeedDisplay = Math.round(
       this.record.avgAnswerSpeed.reduce((sum: any, currentValue: any) => sum + currentValue, 0) / this.record.avgAnswerSpeed.length
     );
-  }
-
-  automaticDrawCardTimer: any;
-  /**
-  * 控制自動抽卡功能的開始和結束
-  */
-  automaticDrawCard(): void {
-    if (this.automaticDrawCardTimer) {
-      clearInterval(this.automaticDrawCardTimer);
-      this.automaticDrawCardTimer = undefined;
-    } else {
-      if (confirm('自動抽取開始，若要結束請重複點擊按鈕')) {
-        this.record.drawCountRecord = [];
-        this.record.finalScoreRecord = [];
-        this.automaticDrawCardTimer = setInterval(() => {
-          this.drawCard();
-        }, this.config.autoDrawSeconds * 1000);
-      }
-    }
   }
 
   url = './assets/enHelper/scoreData.json';
@@ -153,13 +191,22 @@ export class WordupImproveComponent {
   }
 
   answerScoreAverage = 0;
+  maxNegativeScore = 0;
   /**
   * 計算平均負分
   */
   calculateAverageNegativeScore(): void {
+    // const negativeScores = this.answerScore?.filter((item: any) => item.score < 0);
+    // this.maxNegativeScore = Math.min(...negativeScores.map((item: any) => item.score));
+    // const sum = negativeScores?.reduce((total: number, item: any) => total + item.score, 0);
+    // this.answerScoreAverage = Math.floor(sum / negativeScores?.length);
+
     const negativeScores = this.answerScore?.filter((item: any) => item.score < 0);
-    const sum = negativeScores?.reduce((total: number, item: any) => total + item.score, 0);
-    this.answerScoreAverage = Math.floor(sum / negativeScores?.length);
+    if (negativeScores.length > 0) {
+      const sum = negativeScores.reduce((total: number, item: any) => total + item.score, 0);
+      this.answerScoreAverage = Math.floor(sum / negativeScores.length);
+      this.maxNegativeScore = Math.min(...negativeScores.map((item: any) => item.score));
+    }
   }
 
   /**
@@ -294,8 +341,8 @@ export class WordupImproveComponent {
       let tempSortA = (a?.score * 1.3) - a?.updateTime?.days;
       let tempSortB = (b?.score * 1.3) - b?.updateTime?.days;
 
-      let aUpdateTime = a?.updateTime?.days == 0 && a?.updateTime?.hours == 0;
-      let bUpdateTime = b?.updateTime?.days == 0 && b?.updateTime?.hours == 0;
+      let aUpdateTime = a?.updateTime?.days == 0 && a?.updateTime?.hours == (this.config?.unfamiliarSortingHours ?? 0);
+      let bUpdateTime = b?.updateTime?.days == 0 && b?.updateTime?.hours == (this.config?.unfamiliarSortingHours ?? 0);
 
       if (aUpdateTime) {
         return 1;
@@ -318,7 +365,7 @@ export class WordupImproveComponent {
 
     let word = this.answerScore.find((word: any) => word.en.toLowerCase() == this.card.en.toLowerCase());
     this.notFamiliarScore = this.notFamiliarScoreCalculations(word);
-    this.familiarScore = this.glgorithmsService.mapScore(this.seconds);
+    this.familiarScore = 21 - this.glgorithmsService.mapScore(this.seconds, 200, 1, 20);
 
     if (this.config.seeAnswerSpeak) {
       this.debounceBeSub$?.next([this.speak, this.sentence?.en.toLowerCase()]);
@@ -333,7 +380,9 @@ export class WordupImproveComponent {
   */
   showExanpleAnswers(): void {
     this.sentenceAnswerDisplay = true;
-    this.debounceBeSub$?.next([this.speak, this.sentence?.en.toLowerCase()]);
+    if (this.config.seeAnswerSpeak) {
+      this.debounceBeSub$?.next([this.speak, this.sentence?.en.toLowerCase()]);
+    }
   }
 
   tempSentencesIndex: any = [];
@@ -380,16 +429,14 @@ export class WordupImproveComponent {
       let word = this.answerScore.find((word: any) => word.en.toLowerCase() == this.card.en.toLowerCase());
 
       // 回答的越快增加越多分，越慢扣越多
-      let trueScore = 11 - this.glgorithmsService.mapScore(this.seconds, 200, 1, 10);
       if (word) {
         // 30 內天類依比例扣分 7-15 天扣最低，7 天內與 15 至其餘天數 & 一天以內直接扣最大分
         // 看答案時計算 notFamiliarScore 顯示後再拿來此處使用
-        answer ? (word.score += trueScore) : word.score += this.notFamiliarScore;
+        answer ? (word.score += this.familiarScore) : word.score += this.notFamiliarScore;
         word.updateTime = Date.now();
       } else {
-        // 第一次錯直接扣平均分
-        this.calculateAverageNegativeScore();
-        let newWord = answer ? trueScore : (this.answerScoreAverage ?? -50);
+        // 第一次錯直接扣最大分
+        let newWord = answer ? this.familiarScore : (this.maxNegativeScore ?? -50);
         this.answerScore.push({
           en: this.card.en.toLowerCase(),
           score: newWord,
@@ -398,6 +445,8 @@ export class WordupImproveComponent {
       }
 
       localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
+      this.calculateAnswerCountToday();
+      this.calculateAverageNegativeScore();
       this.drawCard();
     } catch (err) {
       alert(err);
@@ -413,19 +462,14 @@ export class WordupImproveComponent {
   */
   notFamiliarScoreCalculations(word: any): number {
     // 30 內天類依比例扣分 7-15 天扣最低，7 天內與 15 至其餘天數 & 一天以內直接扣最大分
-    let falseScoreTime = this.calculateTime(word?.updateTime);
+    const falseScoreTime = this.calculateTime(word?.updateTime);
     let falseScore;
-    let familiarDays = falseScoreTime?.days ?? 0;
+
     if (!word) {
-      falseScore = -50;
-    } else if (familiarDays > 0 && familiarDays <= 7) {
-      falseScore = (50 - this.glgorithmsService.mapScore(familiarDays, 7, 5, 50) + 4) * -1;
-    } else if (familiarDays >= 15) {
-      falseScore = this.glgorithmsService.mapScore(familiarDays, 30, 5, 50) * -1;
-    } else if (familiarDays <= 0) {
-      falseScore = -20;
+      falseScore = this.maxNegativeScore ?? -50;
     } else {
-      falseScore = -10;
+      const day = Math.min(falseScoreTime?.days ?? 0, 100);
+      falseScore = (this.glgorithmsService.mapScore(day, 100, 20, this.maxNegativeScore * -1)) * -1;
     }
 
     return falseScore;
@@ -458,7 +502,6 @@ export class WordupImproveComponent {
         }
         if (card.updateTime?.days < 1 && card.updateTime?.hours >= 1) {
           this.familiarity.oneHour++; // 1小時後，56%被遺忘掉，44%被記住。
-          this.config.answerCountToday = this.familiarity.oneHour;
         }
         if (card.updateTime?.days >= 1 && card.updateTime?.days <= 7) {
           this.familiarity.oneDay++; // 1天後，74%被遺忘掉，26%被記住。
@@ -612,13 +655,12 @@ export class WordupImproveComponent {
           this.searchWord.updateTime = this.calculateTime(word?.updateTime);
           word.updateTime = Date.now();
         } else {
-          this.calculateAverageNegativeScore();
           this.answerScore.push({
             en: this.searchWord.word,
-            score: (this.answerScoreAverage ?? -50),
+            score: (this.maxNegativeScore ?? -50),
             updateTime: Date.now(),
           });
-          this.searchWord.score = (this.answerScoreAverage ?? -50);
+          this.searchWord.score = (this.maxNegativeScore ?? -50);
           this.searchWord.updateTime = this.calculateTime(undefined);
         }
 
@@ -626,7 +668,7 @@ export class WordupImproveComponent {
         this.searchWord.explain = searched.cn;
         // alert('已扣 5 分'); todo 彈出自動消失匡
         this.calculateFamiliarity();
-
+        this.calculateAverageNegativeScore();
         this.searchWord.display = this.searchWord.word;
         this.searchWord.word = '';
       } else {
@@ -661,7 +703,7 @@ export class WordupImproveComponent {
   */
   clickImExport(): void {
     this.isExportAnswerScore = !this.isExportAnswerScore;
-    this.answerScoreDisplay = JSON.stringify([...this.answerScore]);
+    this.answerScoreDisplay = JSON.stringify([...this.answerScore.sort((a: any, b: any) => a.score - b.score)]);
   }
 
   /**
@@ -682,27 +724,6 @@ export class WordupImproveComponent {
   */
   clickDebug(): void {
     this.debugDisplay = !this.debugDisplay;
-  }
-
-  config: Config = new Config();
-  /**
-  * 初始化設定檔
-  */
-  configInit(): void {
-    let drawCardConfig: any = localStorage.getItem('drawCardConfig');
-    if (drawCardConfig) {
-      this.config = JSON.parse(drawCardConfig)
-    }
-  }
-
-  /**
-  * 更改設定檔
-  */
-  importConfig(): void {
-    if (confirm('確定要更改設定檔嗎？')) {
-      localStorage.setItem('drawCardConfig', JSON.stringify(this.config));
-      this.drawCard();
-    }
   }
 
   /**
@@ -778,7 +799,7 @@ export class WordupImproveComponent {
       self.seconds++;
       // 每 5 秒檢查得分數
       if (self.seconds % 5 === 0) {
-        self.familiarScore = self.glgorithmsService.mapScore(self.seconds, 200, 1, 10);
+        self.familiarScore = 21 - self.glgorithmsService.mapScore(self.seconds, 200, 1, 20);
       }
     }, 1000);
   }
@@ -802,8 +823,8 @@ export class WordupImproveComponent {
   * @param word 單字
   */
   answerUnfamiliarScoreReset(answer: boolean, word: string): void {
-    let keyWord = this.answerScore.find((word: any) => word.en.toLowerCase() == word.toLowerCase());
-    let notFamiliarScore = this.notFamiliarScoreCalculations(word);
+    let keyWord = this.answerScore.find((w: any) => w.en.toLowerCase() == word.toLowerCase());
+    let notFamiliarScore = this.notFamiliarScoreCalculations(keyWord);
     answer ? (keyWord.score += 10) : (keyWord.score += notFamiliarScore > 0 ? notFamiliarScore * -1 : notFamiliarScore);
     keyWord.updateTime = Date.now();
     localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
@@ -1065,21 +1086,32 @@ export class WordupImproveComponent {
   exportNewCards(): void {
     if (confirm('確定要匯出新增的卡片嗎？將會刪除暫存')) {
       const seenWords = new Set();
+      let securityKey = true;
+      let repeatCards: any = [];
       const tempCards = this.cards.map(({ cn, en, sentences }) => {
         if (!seenWords.has(en)) {
           seenWords.add(en);
           return { cn, en: en.toLowerCase(), sentences };
         } else {
-          console.log({ cn, en, sentences });
-          // 返回 null 或者其他值，表示這個物件被過濾掉了
+          console.log('重複卡片', { cn, en, sentences: sentences });
+          repeatCards.push({ cn, en, sentences: sentences });
+          securityKey = false;
           return null;
         }
       }).filter(Boolean);
+
+      if (securityKey || confirm('有重複未加入卡片是否重置上傳？')) {
+        localStorage.removeItem('editedCards');
+        this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss');
+        this.editedCards.cards = '';
+        this.updateLog(true);
+      } else {
+        repeatCards.forEach((repeatCard: any) => {
+          console.log('重複未加入的卡片', this.cards.find(c => c.en === repeatCard.en));
+        });
+      }
+
       console.log(JSON.stringify(tempCards)); // 不能移除，方便重新增加 json
-      localStorage.removeItem('editedCards');
-      this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss');
-      this.editedCards.cards = '';
-      this.updateLog(true);
     }
   }
 
@@ -1136,7 +1168,7 @@ export class WordupImproveComponent {
     this.firebaseAuth.isEnterRegistPage = true;
   }
 
-  async updateLog(direct: boolean = true): Promise<void> {
+  async updateLog(direct: boolean = false): Promise<void> {
     if (direct || confirm('確定要更新雲端紀錄嗎？(此動作不可逆)')) {
       user(this.auth).pipe(
         take(1),
@@ -1159,7 +1191,7 @@ export class WordupImproveComponent {
     }
   }
 
-  downloadLog(direct: boolean = true): void {
+  downloadLog(direct: boolean = false): void {
     if (direct || confirm('確定要更新本地紀錄嗎？(此動作不可逆)')) {
       this.combineUserAndLogs$ = combineLatest([
         this.user$,
@@ -1222,7 +1254,9 @@ export class Config {
   seeAnswerSpeak: boolean = false;
   speakRate: number = 1;
   debugDisplay: boolean = false;
-  answerCountToday: number = 0;
+  answerCountToday: any = { timestamp: Date.now(), count: 0 };
+  answerCountAll: number = 0;
+  unfamiliarSortingHours = 0;
 }
 
 export class Card {
