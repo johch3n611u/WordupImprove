@@ -341,8 +341,8 @@ export class WordupImproveComponent {
       let tempSortA = (a?.score * 1.3) - a?.updateTime?.days;
       let tempSortB = (b?.score * 1.3) - b?.updateTime?.days;
 
-      let aUpdateTime = a?.updateTime?.days == 0 && a?.updateTime?.hours == (this.config?.unfamiliarSortingHours ?? 0);
-      let bUpdateTime = b?.updateTime?.days == 0 && b?.updateTime?.hours == (this.config?.unfamiliarSortingHours ?? 0);
+      let aUpdateTime = a?.updateTime?.days == 0 && a?.updateTime?.hours <= (this.config?.unfamiliarSortingHours ?? 0);
+      let bUpdateTime = b?.updateTime?.days == 0 && b?.updateTime?.hours <= (this.config?.unfamiliarSortingHours ?? 0);
 
       if (aUpdateTime) {
         return 1;
