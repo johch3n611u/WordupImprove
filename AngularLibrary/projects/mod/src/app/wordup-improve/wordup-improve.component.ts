@@ -426,13 +426,16 @@ export class WordupImproveComponent {
     try {
       this.record.avgAnswerSpeed.push(this.seconds);
 
-      let word = this.answerScore.find((word: any) => word.en.toLowerCase() == this.card.en.toLowerCase());
+      let word = this.answerScore.find((w: any) => w.en.toLowerCase() == this.card.en.toLowerCase());
 
       // 回答的越快增加越多分，越慢扣越多
       if (word) {
         // 30 內天類依比例扣分 7-15 天扣最低，7 天內與 15 至其餘天數 & 一天以內直接扣最大分
         // 看答案時計算 notFamiliarScore 顯示後再拿來此處使用
         answer ? (word.score += this.familiarScore) : word.score += this.notFamiliarScore;
+        if (this.card.updateTime.days > 100 && !answer) {
+          word.score = this.maxNegativeScore;
+        }
         word.updateTime = Date.now();
       } else {
         // 第一次錯直接扣最大分
@@ -645,14 +648,18 @@ export class WordupImproveComponent {
       const pattern = new RegExp(`\\b${this.searchWord.word}\\b`, 'gi');
       const searched = this.cards.find((card: any) => card.en.toLowerCase().match(pattern));
       if (searched) {
-        const word = this.answerScore.find((word: any) =>
+        let word = this.answerScore.find((word: any) =>
           word.en.toLowerCase().match(pattern)
         );
         if (word) {
           let notFamiliarScore = this.notFamiliarScoreCalculations(word);
+          const time = this.calculateTime(word?.updateTime);
           word.score += notFamiliarScore > 0 ? notFamiliarScore * -1 : notFamiliarScore;
+          if (time.days > 100) {
+            word.score = this.maxNegativeScore;
+          }
           this.searchWord.score = word?.score;
-          this.searchWord.updateTime = this.calculateTime(word?.updateTime);
+          this.searchWord.updateTime = time;
           word.updateTime = Date.now();
         } else {
           this.answerScore.push({
@@ -824,8 +831,7 @@ export class WordupImproveComponent {
   */
   answerUnfamiliarScoreReset(answer: boolean, word: string): void {
     let keyWord = this.answerScore.find((w: any) => w.en.toLowerCase() == word.toLowerCase());
-    let notFamiliarScore = this.notFamiliarScoreCalculations(keyWord);
-    answer ? (keyWord.score += 10) : (keyWord.score += notFamiliarScore > 0 ? notFamiliarScore * -1 : notFamiliarScore);
+    answer ? (keyWord.score += 30) : (keyWord.score -= 30);
     keyWord.updateTime = Date.now();
     localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
     this.calculateFamiliarity();
