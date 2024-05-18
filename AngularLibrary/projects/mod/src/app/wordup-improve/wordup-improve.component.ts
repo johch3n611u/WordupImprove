@@ -100,6 +100,7 @@ export class WordupImproveComponent {
     if (direct || confirm('確定要更改設定檔嗎？')) {
       localStorage.setItem('drawCardConfig', JSON.stringify(this.config));
       direct ?? this.drawCard();
+      this.debugDisplay = false;
     }
   }
 
@@ -326,6 +327,7 @@ export class WordupImproveComponent {
     this.calculateFamiliarity();
     this.unfamiliarReflash();
     this.updateTimer();
+    this.debounceBeSub$?.next([this.speak, this.card.en]);
   }
 
   /**
@@ -341,12 +343,18 @@ export class WordupImproveComponent {
       let tempSortA = (a?.score * 1.3) - a?.updateTime?.days;
       let tempSortB = (b?.score * 1.3) - b?.updateTime?.days;
 
-      let aUpdateTime = a?.updateTime?.days == 0 && a?.updateTime?.hours <= (this.config?.unfamiliarSortingHours ?? 0);
-      let bUpdateTime = b?.updateTime?.days == 0 && b?.updateTime?.hours <= (this.config?.unfamiliarSortingHours ?? 0);
+      let aH = a?.updateTime?.days == 0 && a?.updateTime?.hours <= (this.config?.unfamiliarSortingHours ?? 1);
+      let aM = a?.updateTime?.minutes <= (this.config?.unfamiliarSortingMinutes ?? 0);
+      let bH = b?.updateTime?.days == 0 && b?.updateTime?.hours <= (this.config?.unfamiliarSortingHours ?? 1);
+      let bM = b?.updateTime?.minutes <= (this.config?.unfamiliarSortingMinutes ?? 0);
 
-      if (aUpdateTime) {
+      if (aH && aM) {
+        console.log(a)
+        console.log(a?.updateTime)
         return 1;
-      } else if (bUpdateTime) {
+      } else if (bH && bM) {
+        console.log(b)
+        console.log(b?.updateTime)
         return -1;
       } else {
         return tempSortA - tempSortB;
@@ -367,9 +375,9 @@ export class WordupImproveComponent {
     this.notFamiliarScore = this.notFamiliarScoreCalculations(word);
     this.familiarScore = 21 - this.glgorithmsService.mapScore(this.seconds, 200, 1, 20);
 
-    if (this.config.seeAnswerSpeak) {
-      this.debounceBeSub$?.next([this.speak, this.sentence?.en.toLowerCase()]);
-    }
+    let speakWords = '';
+    this.config.seeAnswerSpeak ? speakWords = this.sentence?.en.toLowerCase() : speakWords = this.card.en.toLowerCase();
+    this.debounceBeSub$?.next([this.speak, speakWords]);
 
     // 避免不熟榜 lag
     this.displayUnfamiliar = false;
@@ -912,6 +920,7 @@ export class WordupImproveComponent {
         speechSynthesisUtterance.voice = voice;
       }
       speechSynthesisUtterance.text = msg;
+      speechSynthesisUtterance.volume = (this.config?.speakVolume ?? 10) / 10;
 
       // 念一次降速後念一次增速
       if (this.tempSpeakMsg === msg) {
@@ -1256,13 +1265,15 @@ export class Config {
   drawMode: string = 'completelyRandom';
   autoDrawSeconds: number = 45;
   speakSelectVoice: string = 'Google UK English Male';
+  speakVolume: number = 10;
   autoUpdateLog: boolean = false;
   seeAnswerSpeak: boolean = false;
   speakRate: number = 1;
   debugDisplay: boolean = false;
   answerCountToday: any = { timestamp: Date.now(), count: 0 };
   answerCountAll: number = 0;
-  unfamiliarSortingHours = 0;
+  unfamiliarSortingHours = 1;
+  unfamiliarSortingMinutes = 0;
 }
 
 export class Card {
