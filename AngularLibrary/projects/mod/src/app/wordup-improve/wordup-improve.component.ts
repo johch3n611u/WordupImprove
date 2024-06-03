@@ -475,8 +475,8 @@ export class WordupImproveComponent {
     if (!word) {
       falseScore = this.maxNegativeScore ?? -50;
     } else {
-      const day = Math.min(falseScoreTime?.days ?? 0, 30);
-      falseScore = (this.glgorithmsService.mapScore(day, 30, 20, this.maxNegativeScore * -1)) * -1;
+      const day = Math.min(falseScoreTime?.days ?? 0, 90);
+      falseScore = (this.glgorithmsService.mapScore(day, 90, 20, this.maxNegativeScore * -1)) * -1;
     }
 
     return falseScore;
