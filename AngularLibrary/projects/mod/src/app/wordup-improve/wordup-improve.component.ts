@@ -340,8 +340,8 @@ export class WordupImproveComponent {
     if (a?.score > 0 || b?.score > 0) {
       return a?.score - b?.score;
     } else {
-      let tempSortA = (a?.score * 1.3) - a?.updateTime?.days;
-      let tempSortB = (b?.score * 1.3) - b?.updateTime?.days;
+      let tempSortA = a?.score - a?.updateTime?.days;
+      let tempSortB = b?.score - b?.updateTime?.days;
 
       let aH = a?.updateTime?.days == 0 && a?.updateTime?.hours <= (this.config?.unfamiliarSortingHours ?? 1);
       let aM = a?.updateTime?.minutes <= (this.config?.unfamiliarSortingMinutes ?? 0);
@@ -349,12 +349,8 @@ export class WordupImproveComponent {
       let bM = b?.updateTime?.minutes <= (this.config?.unfamiliarSortingMinutes ?? 0);
 
       if (aH && aM) {
-        console.log(a)
-        console.log(a?.updateTime)
         return 1;
       } else if (bH && bM) {
-        console.log(b)
-        console.log(b?.updateTime)
         return -1;
       } else {
         return tempSortA - tempSortB;
@@ -479,8 +475,8 @@ export class WordupImproveComponent {
     if (!word) {
       falseScore = this.maxNegativeScore ?? -50;
     } else {
-      const day = Math.min(falseScoreTime?.days ?? 0, 100);
-      falseScore = (this.glgorithmsService.mapScore(day, 100, 20, this.maxNegativeScore * -1)) * -1;
+      const day = Math.min(falseScoreTime?.days ?? 0, 30);
+      falseScore = (this.glgorithmsService.mapScore(day, 30, 20, this.maxNegativeScore * -1)) * -1;
     }
 
     return falseScore;
@@ -1229,6 +1225,7 @@ export class WordupImproveComponent {
             this.unfamiliarReflash();
             alert('更新成功');
             this.firebaseAuth.isEnterRegistPage = false;
+            this.cardslinkScore();
             this.drawCard();
           } else {
             alert('未找到紀錄');
