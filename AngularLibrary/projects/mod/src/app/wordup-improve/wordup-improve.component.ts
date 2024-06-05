@@ -369,7 +369,7 @@ export class WordupImproveComponent {
 
     let word = this.answerScore.find((word: any) => word.en.toLowerCase() == this.card.en.toLowerCase());
     this.notFamiliarScore = this.notFamiliarScoreCalculations(word);
-    this.familiarScore = 21 - this.glgorithmsService.mapScore(this.seconds, 200, 1, 20);
+    this.familiarScore = 21 - this.glgorithmsService.mapScore(this.seconds, 120, 1, 50);
 
     let speakWords = '';
     this.config.seeAnswerSpeak ? speakWords = this.sentence?.en.toLowerCase() : speakWords = this.card.en.toLowerCase();
@@ -609,6 +609,7 @@ export class WordupImproveComponent {
     display: '',
     score: '',
     similarWords: '',
+    notFamiliarScore: 0,
   };
   /**
   * 搜尋相似單字並扣除熟悉度分數
@@ -656,9 +657,9 @@ export class WordupImproveComponent {
           word.en.toLowerCase().match(pattern)
         );
         if (word) {
-          let notFamiliarScore = this.notFamiliarScoreCalculations(word);
+          this.searchWord.notFamiliarScore = this.notFamiliarScoreCalculations(word);
           const time = this.calculateTime(word?.updateTime);
-          word.score += notFamiliarScore > 0 ? notFamiliarScore * -1 : notFamiliarScore;
+          word.score += this.searchWord.notFamiliarScore > 0 ? this.searchWord.notFamiliarScore * -1 : this.searchWord.notFamiliarScore;
           if (time.days > 100) {
             word.score = this.maxNegativeScore;
           }
@@ -810,7 +811,7 @@ export class WordupImproveComponent {
       self.seconds++;
       // 每 5 秒檢查得分數
       if (self.seconds % 5 === 0) {
-        self.familiarScore = 21 - self.glgorithmsService.mapScore(self.seconds, 200, 1, 20);
+        self.familiarScore = 21 - self.glgorithmsService.mapScore(self.seconds, 120, 1, 50);
       }
     }, 1000);
   }

@@ -67,7 +67,8 @@
         <p [innerHTML]="searchWord?.display"></p>
         <p>{{ searchWord?.explain }}</p>
         <p *ngIf="searchWord?.score">
-          Score：{{ searchWord?.score }}
+          Score： ( {{ searchWord?.score - searchWord.notFamiliarScore }} {{searchWord.notFamiliarScore}} ) = {{
+          searchWord?.score }}
           <span> ,
             {{ searchWord?.updateTime?.days }} d /
             {{ searchWord?.updateTime?.hours }} h /
