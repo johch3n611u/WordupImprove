@@ -105,17 +105,22 @@ export class WordupImproveComponent {
   }
 
   /**
-   * 計算當日累積答題數
-   */
-  calculateAnswerCountToday(): void {
+  * 計算當日累積答題數
+  * @param wordEn 單字
+  */
+  calculateAnswerCountToday(wordEn: string): void {
     !this.config.answerCountAll ?? (this.config.answerCountAll = 0);
-    this.config.answerCountAll++;
     const todayTimstamp = this.config?.answerCountToday?.timestamp;
-    const today = this.calculateTime(todayTimstamp);
+    const today = this.calculateTime(todayTimstamp, true);
     if (today.days > 1 || !todayTimstamp) {
-      this.config.answerCountToday = { timestamp: Date.now(), count: 0 };
+      this.config.answerCountToday = { timestamp: Date.now(), count: 1, words: [wordEn] };
     } else {
-      this.config.answerCountToday.count++;
+      if (!this.config.answerCountToday.words?.includes(wordEn)) {
+        this.config.answerCountToday.count++;
+        this.config.answerCountToday.words ?? (this.config.answerCountToday.words = []);
+        this.config.answerCountToday.words.push(wordEn);
+        this.config.answerCountAll++;
+      }
     }
 
     this.importConfig(true);
@@ -220,6 +225,10 @@ export class WordupImproveComponent {
       );
       card.score = findAnswer?.score ?? 0;
       card.updateTime = this.calculateTime(findAnswer?.updateTime);
+
+      // 中文模式
+      // let separators = /，|；|;/g;
+      // card.cn = Array.from(new Set(card.cn.join(",").replace(separators, ",").split(",")));
     });
   }
 
@@ -327,7 +336,8 @@ export class WordupImproveComponent {
     this.calculateFamiliarity();
     this.unfamiliarReflash();
     this.updateTimer();
-    this.debounceBeSub$?.next([this.speak, this.card.en]);
+    let speakWords = this.config.seeAnswerSpeak ? this.sentence.en : this.card.en;
+    this.debounceBeSub$?.next([this.speak, speakWords]);
   }
 
   /**
@@ -369,7 +379,7 @@ export class WordupImproveComponent {
 
     let word = this.answerScore.find((word: any) => word.en.toLowerCase() == this.card.en.toLowerCase());
     this.notFamiliarScore = this.notFamiliarScoreCalculations(word);
-    this.familiarScore = 21 - this.glgorithmsService.mapScore(this.seconds, 120, 1, 50);
+    this.familiarScore = 51 - this.glgorithmsService.mapScore(this.seconds, 120, 1, 50);
 
     let speakWords = '';
     this.config.seeAnswerSpeak ? speakWords = this.sentence?.en.toLowerCase() : speakWords = this.card.en.toLowerCase();
@@ -437,7 +447,7 @@ export class WordupImproveComponent {
         // 30 內天類依比例扣分 7-15 天扣最低，7 天內與 15 至其餘天數 & 一天以內直接扣最大分
         // 看答案時計算 notFamiliarScore 顯示後再拿來此處使用
         answer ? (word.score += this.familiarScore) : word.score += this.notFamiliarScore;
-        if (this.card.updateTime.days > 100 && !answer) {
+        if (this.card.updateTime.days > 50 && !answer) {
           word.score = this.maxNegativeScore;
         }
         word.updateTime = Date.now();
@@ -452,7 +462,7 @@ export class WordupImproveComponent {
       }
 
       localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
-      this.calculateAnswerCountToday();
+      this.calculateAnswerCountToday(word.en);
       this.calculateAverageNegativeScore();
       this.drawCard();
     } catch (err) {
@@ -475,8 +485,8 @@ export class WordupImproveComponent {
     if (!word) {
       falseScore = this.maxNegativeScore ?? -50;
     } else {
-      const day = Math.min(falseScoreTime?.days ?? 0, 90);
-      falseScore = (this.glgorithmsService.mapScore(day, 90, 20, this.maxNegativeScore * -1)) * -1;
+      const day = Math.min(falseScoreTime?.days ?? 0, 50);
+      falseScore = (this.glgorithmsService.mapScore(day, 50, 20, this.maxNegativeScore * -1)) * -1;
     }
 
     return falseScore;
@@ -660,7 +670,7 @@ export class WordupImproveComponent {
           this.searchWord.notFamiliarScore = this.notFamiliarScoreCalculations(word);
           const time = this.calculateTime(word?.updateTime);
           word.score += this.searchWord.notFamiliarScore > 0 ? this.searchWord.notFamiliarScore * -1 : this.searchWord.notFamiliarScore;
-          if (time.days > 100) {
+          if (time.days > 50) {
             word.score = this.maxNegativeScore;
           }
           this.searchWord.score = word?.score;
@@ -743,12 +753,15 @@ export class WordupImproveComponent {
    * @param timestamp 時間差戳
    * @returns 時間差
    */
-  calculateTime(timestamp: number | undefined): ElapsedTime {
+  calculateTime(timestamp: number | undefined, oClock: boolean = false): ElapsedTime {
     if (!timestamp) {
       return { days: 0, hours: 0, minutes: 0 };
     }
 
-    var timeDifference = Math.abs(Date.now() - timestamp); // 計算時間差（取絕對值）
+    const date = new Date();
+    const startOfToday = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0).getTime();
+    const currentTime = oClock ? startOfToday : Date.now();
+    const timeDifference = Math.abs(currentTime - timestamp); // 計算時間差（取絕對值）
 
     // 轉換為相差的天數、小時和分鐘
     var days = Math.floor(timeDifference / (24 * 60 * 60 * 1000));
@@ -811,7 +824,7 @@ export class WordupImproveComponent {
       self.seconds++;
       // 每 5 秒檢查得分數
       if (self.seconds % 5 === 0) {
-        self.familiarScore = 21 - self.glgorithmsService.mapScore(self.seconds, 120, 1, 50);
+        self.familiarScore = 51 - self.glgorithmsService.mapScore(self.seconds, 120, 1, 50);
       }
     }, 1000);
   }
@@ -906,7 +919,7 @@ export class WordupImproveComponent {
   * @param msg 訊息
   */
   speak(msg: string): void {
-    if (this.synth) {
+    if (this.synth && !this.commonService.containsChinese(msg)) {
       this.voices = this.synth?.getVoices();
       let voice: any = this.voices?.find(
         (voice: any) => voice.name === this.config?.speakSelectVoice
@@ -1127,6 +1140,23 @@ export class WordupImproveComponent {
     }
   }
 
+  findCnSameCards(cardCn: any): any {
+    let test: any = [];
+    this.cards.forEach((el: any) => {
+      try {
+        let cn1 = cardCn.join(',');
+        let cn2 = el.cn.join(',');
+        if (cn1.match(new RegExp(el.cn, 'i')) || cn2.match(new RegExp(cn1, 'i')) && cn1 !== cn2) {
+          test.push(`[${el.en.toLowerCase()}]${el.cn}`);
+        }
+      } catch (ex) {
+        console.log(typeof (el.cn), el.en.toLowerCase())
+      }
+    });
+
+    return test;
+  }
+
   /**
   * Firebase Auth & CRUD
   * https://console.firebase.google.com/u/0/project/angular-vector-249608/firestore/data/~2FLogs~2FBIjfl9Y432Rtt3lwZJx0klt0j8M2
@@ -1268,7 +1298,7 @@ export class Config {
   seeAnswerSpeak: boolean = false;
   speakRate: number = 1;
   debugDisplay: boolean = false;
-  answerCountToday: any = { timestamp: Date.now(), count: 0 };
+  answerCountToday: any = { timestamp: Date.now(), count: 0, words: [] };
   answerCountAll: number = 0;
   unfamiliarSortingHours = 1;
   unfamiliarSortingMinutes = 0;

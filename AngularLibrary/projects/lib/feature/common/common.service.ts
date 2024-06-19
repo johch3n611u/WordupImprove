@@ -23,4 +23,12 @@ export class CommonService {
     });
   }
 
+  /**
+   * 使用正則表達式檢查字串中是否包含中文字符
+   * @param str - 要判斷的字串
+   */
+  containsChinese(str: string): boolean {
+    return /[\u4E00-\u9FFF]/.test(str);
+  }
+
 }

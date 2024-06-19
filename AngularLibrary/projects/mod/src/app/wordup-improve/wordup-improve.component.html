@@ -1,3 +1,10 @@
+<!-- <div *ngIf="true">中文模式
+  抽到{{ card.cn }}
+  <p *ngFor="let i of findCnSameCards(card.cn)">
+    {{i}}
+  </p>
+</div> -->
+
 <div class="box" [style.display]="(editedCards.displayAddNewCard || firebaseAuth.isEnterRegistPage) ? 'none' : 'flex'"
   (window:resize)="onResize($event)">
   <div class="toolBox">
