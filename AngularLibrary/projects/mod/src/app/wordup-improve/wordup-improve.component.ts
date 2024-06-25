@@ -667,13 +667,13 @@ export class WordupImproveComponent {
           word.en.toLowerCase().match(pattern)
         );
         if (word) {
+          this.searchWord.score = word?.score;
           this.searchWord.notFamiliarScore = this.notFamiliarScoreCalculations(word);
           const time = this.calculateTime(word?.updateTime);
           word.score += this.searchWord.notFamiliarScore > 0 ? this.searchWord.notFamiliarScore * -1 : this.searchWord.notFamiliarScore;
           if (time.days > 50) {
             word.score = this.maxNegativeScore;
           }
-          this.searchWord.score = word?.score;
           this.searchWord.updateTime = time;
           word.updateTime = Date.now();
         } else {
