@@ -671,7 +671,7 @@ export class WordupImproveComponent {
           this.searchWord.notFamiliarScore = this.notFamiliarScoreCalculations(word);
           const time = this.calculateTime(word?.updateTime);
           word.score += this.searchWord.notFamiliarScore > 0 ? this.searchWord.notFamiliarScore * -1 : this.searchWord.notFamiliarScore;
-          if (word.score < this.maxNegativeScore) {
+          if (word.score < this.maxNegativeScore + 50) {
             word.score = this.maxNegativeScore;
           }
           this.searchWord.updateTime = time;
