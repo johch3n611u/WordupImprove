@@ -225,10 +225,6 @@ export class WordupImproveComponent {
       );
       card.score = findAnswer?.score ?? 0;
       card.updateTime = this.calculateTime(findAnswer?.updateTime);
-
-      // 中文模式
-      // let separators = /，|；|;/g;
-      // card.cn = Array.from(new Set(card.cn.join(",").replace(separators, ",").split(",")));
     });
   }
 
@@ -338,6 +334,8 @@ export class WordupImproveComponent {
     this.updateTimer();
     let speakWords = this.config.seeAnswerSpeak ? this.sentence.en : this.card.en;
     this.debounceBeSub$?.next([this.speak, speakWords]);
+
+    this.findSameWords();
   }
 
   /**
@@ -671,7 +669,7 @@ export class WordupImproveComponent {
           this.searchWord.notFamiliarScore = this.notFamiliarScoreCalculations(word);
           const time = this.calculateTime(word?.updateTime);
           word.score += this.searchWord.notFamiliarScore > 0 ? this.searchWord.notFamiliarScore * -1 : this.searchWord.notFamiliarScore;
-          if (word.score < this.maxNegativeScore + 50) {
+          if (word.score < this.maxNegativeScore - 50) {
             word.score = this.maxNegativeScore;
           }
           this.searchWord.updateTime = time;
@@ -1116,7 +1114,8 @@ export class WordupImproveComponent {
       const tempCards = this.cards.map(({ cn, en, sentences }) => {
         if (!seenWords.has(en)) {
           seenWords.add(en);
-          return { cn, en: en.toLowerCase(), sentences };
+          let newCn = Array.from(new Set(cn.join(",").replace(/，|；|;/g, ",").split(",")));
+          return { cn: newCn, en: en.toLowerCase(), sentences };
         } else {
           console.log('重複卡片', { cn, en, sentences: sentences });
           repeatCards.push({ cn, en, sentences: sentences });
@@ -1140,21 +1139,48 @@ export class WordupImproveComponent {
     }
   }
 
-  findCnSameCards(cardCn: any): any {
-    let test: any = [];
+  findSameWordsObj: any = {
+    Cn: [],
+    En: []
+  };
+  findSameWords(): any {
     this.cards.forEach((el: any) => {
       try {
-        let cn1 = cardCn.join(',');
+        // CN
+        let cn = this.card.cn.join(',');
         let cn2 = el.cn.join(',');
-        if (cn1.match(new RegExp(el.cn, 'i')) || cn2.match(new RegExp(cn1, 'i')) && cn1 !== cn2) {
-          test.push(`[${el.en.toLowerCase()}]${el.cn}`);
-        }
+        let calCn = this.glgorithmsService.calculateSimilarity(
+          cn,
+          cn2
+        );
+        this.findSameWordsObj.Cn.push({
+          en: el?.en.toLowerCase(),
+          cn: el?.cn,
+          cal: calCn,
+        });
+        // EN
+        let calEn = this.glgorithmsService.calculateSimilarity(
+          el?.en.toLowerCase(),
+          this.card.en
+        );
+        this.findSameWordsObj.En.push({
+          en: el?.en.toLowerCase(),
+          cn: el?.cn,
+          cal: calEn,
+        });
       } catch (ex) {
-        console.log(typeof (el.cn), el.en.toLowerCase())
+        console.log(el);
       }
     });
 
-    return test;
+    this.findSameWordsObj.Cn = this.findSameWordsObj.Cn
+      .sort((a: any, b: any) => b.cal - a.cal)
+      .filter((c: any) => c.en.toLowerCase() !== this.card.en.toLowerCase())
+      .slice(0, 10);
+    this.findSameWordsObj.En = this.findSameWordsObj.En
+      .sort((a: any, b: any) => b.cal - a.cal)
+      .filter((c: any) => c.en.toLowerCase() !== this.card.en.toLowerCase())
+      .slice(0, 10);
   }
 
   /**
