@@ -1114,7 +1114,13 @@ export class WordupImproveComponent {
       const tempCards = this.cards.map(({ cn, en, sentences }) => {
         if (!seenWords.has(en)) {
           seenWords.add(en);
-          let newCn = Array.from(new Set(cn.join(",").replace(/，|；|;/g, ",").split(",")));
+
+          let newCn = Array.from(new Set(cn.join(",")
+          .replace(/，|；|;/g, ",")
+          .replace(/v:|n:|adj:|adv:/g, "")
+          .trim()
+          .split(",")));
+
           return { cn: newCn, en: en.toLowerCase(), sentences };
         } else {
           console.log('重複卡片', { cn, en, sentences: sentences });
@@ -1140,10 +1146,14 @@ export class WordupImproveComponent {
   }
 
   findSameWordsObj: any = {
-    Cn: [],
-    En: []
+    cn: [],
+    en: []
   };
   findSameWords(): any {
+
+    this.findSameWordsObj.cn = [];
+    this.findSameWordsObj.en = [];
+
     this.cards.forEach((el: any) => {
       try {
         // CN
@@ -1153,7 +1163,7 @@ export class WordupImproveComponent {
           cn,
           cn2
         );
-        this.findSameWordsObj.Cn.push({
+        this.findSameWordsObj.cn.push({
           en: el?.en.toLowerCase(),
           cn: el?.cn,
           cal: calCn,
@@ -1163,7 +1173,7 @@ export class WordupImproveComponent {
           el?.en.toLowerCase(),
           this.card.en
         );
-        this.findSameWordsObj.En.push({
+        this.findSameWordsObj.en.push({
           en: el?.en.toLowerCase(),
           cn: el?.cn,
           cal: calEn,
@@ -1173,11 +1183,11 @@ export class WordupImproveComponent {
       }
     });
 
-    this.findSameWordsObj.Cn = this.findSameWordsObj.Cn
+    this.findSameWordsObj.cn = this.findSameWordsObj.cn
       .sort((a: any, b: any) => b.cal - a.cal)
       .filter((c: any) => c.en.toLowerCase() !== this.card.en.toLowerCase())
       .slice(0, 10);
-    this.findSameWordsObj.En = this.findSameWordsObj.En
+    this.findSameWordsObj.en = this.findSameWordsObj.en
       .sort((a: any, b: any) => b.cal - a.cal)
       .filter((c: any) => c.en.toLowerCase() !== this.card.en.toLowerCase())
       .slice(0, 10);
