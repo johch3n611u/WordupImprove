@@ -402,27 +402,23 @@ export class WordupImproveComponent {
   * 抽取卡片例句
   */
   drawSentence(): void {
-    try {
-      this.sentenceAnswerDisplay = false;
-      this.sentence = undefined;
-      let randomNumber;
-      if (this.tempSentencesIndex?.length == this.card?.sentences?.length) {
-        this.tempSentencesIndex = [];
-      }
-      while (!this.sentence) {
-        randomNumber = this.glgorithmsService.getRandomNum(this.card?.sentences?.length - 1);
-        if (this.tempSentencesIndex.indexOf(randomNumber) == -1) {
-          if (this.sentence?.en.toLowerCase() != this.card?.sentences[randomNumber]?.en.toLowerCase()) {
-            this.sentence = this.card?.sentences[randomNumber];
-            this.tempSentencesIndex.push(randomNumber);
-          }
+    this.sentenceAnswerDisplay = false;
+    this.sentence = undefined;
+    let randomNumber;
+    if (this.tempSentencesIndex?.length == this.card?.sentences?.length) {
+      this.tempSentencesIndex = [];
+    }
+    while (!this.sentence) {
+      randomNumber = this.glgorithmsService.getRandomNum(this.card?.sentences?.length - 1);
+      if (this.tempSentencesIndex.indexOf(randomNumber) == -1) {
+        if (this.sentence?.en.toLowerCase() != this.card?.sentences[randomNumber]?.en.toLowerCase()) {
+          this.sentence = this.card?.sentences[randomNumber];
+          this.tempSentencesIndex.push(randomNumber);
         }
       }
-
-      this.searchWord = {};
-    } catch (err) {
-      alert(err);
     }
+
+    this.searchWord = {};
   }
 
   /** 
@@ -435,37 +431,33 @@ export class WordupImproveComponent {
 
     this.debounceBeSub$?.next([this.speak, this.card.en.toLowerCase()]);
 
-    try {
-      this.record.avgAnswerSpeed.push(this.seconds);
+    this.record.avgAnswerSpeed.push(this.seconds);
 
-      let word = this.answerScore.find((w: any) => w.en.toLowerCase() == this.card.en.toLowerCase());
+    let word = this.answerScore.find((w: any) => w.en.toLowerCase() == this.card.en.toLowerCase());
 
-      // 回答的越快增加越多分，越慢扣越多
-      if (word) {
-        // 30 內天類依比例扣分 7-15 天扣最低，7 天內與 15 至其餘天數 & 一天以內直接扣最大分
-        // 看答案時計算 notFamiliarScore 顯示後再拿來此處使用
-        answer ? (word.score += this.familiarScore) : word.score += this.notFamiliarScore;
-        if (this.card.updateTime.days > 50 && !answer) {
-          word.score = this.maxNegativeScore;
-        }
-        word.updateTime = Date.now();
-      } else {
-        // 第一次錯直接扣最大分
-        let newWord = answer ? this.familiarScore : (this.maxNegativeScore ?? -50);
-        this.answerScore.push({
-          en: this.card.en.toLowerCase(),
-          score: newWord,
-          updateTime: Date.now(),
-        });
+    // 回答的越快增加越多分，越慢扣越多
+    if (word) {
+      // 30 內天類依比例扣分 7-15 天扣最低，7 天內與 15 至其餘天數 & 一天以內直接扣最大分
+      // 看答案時計算 notFamiliarScore 顯示後再拿來此處使用
+      answer ? (word.score += this.familiarScore) : word.score += this.notFamiliarScore;
+      if (this.card.updateTime.days > 50 && !answer) {
+        word.score = this.maxNegativeScore;
       }
-
-      localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
-      this.calculateAnswerCountToday(word.en);
-      this.calculateAverageNegativeScore();
-      this.drawCard();
-    } catch (err) {
-      alert(err);
+      word.updateTime = Date.now();
+    } else {
+      // 第一次錯直接扣最大分
+      let newWord = answer ? this.familiarScore : (this.maxNegativeScore ?? -50);
+      this.answerScore.push({
+        en: this.card.en.toLowerCase(),
+        score: newWord,
+        updateTime: Date.now(),
+      });
     }
+
+    localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
+    this.calculateAnswerCountToday(word?.en);
+    this.calculateAverageNegativeScore();
+    this.drawCard();
   }
 
   familiarScore = 1;
@@ -538,7 +530,6 @@ export class WordupImproveComponent {
   * 依照熟悉度繪製圖表
   */
   // drawChat() {
-  //   try {
   //     if (this.chart) {
   //       this.chart.destroy();
   //     }
@@ -587,9 +578,6 @@ export class WordupImproveComponent {
   //         },
   //       },
   //     });
-  //   } catch (err) {
-  //     alert(err);
-  //   }
   // }
 
   /**
@@ -636,20 +624,16 @@ export class WordupImproveComponent {
     ) {
       let temp: any = [];
       this.cards.forEach((el: any) => {
-        try {
-          let cal = this.glgorithmsService.calculateSimilarity(
-            el?.en.toLowerCase(),
-            this.searchWord.word
-          );
-          temp.push({
-            en: el?.en.toLowerCase(),
-            cn: el?.cn,
-            searchWord: this.searchWord.word,
-            cal: cal,
-          });
-        } catch (ex) {
-          console.log(el);
-        }
+        let cal = this.glgorithmsService.calculateSimilarity(
+          el?.en.toLowerCase(),
+          this.searchWord.word
+        );
+        temp.push({
+          en: el?.en.toLowerCase(),
+          cn: el?.cn,
+          searchWord: this.searchWord.word,
+          cal: cal,
+        });
       });
 
       let sortTemp = temp.sort((a: any, b: any) => b.cal - a.cal);
@@ -980,13 +964,9 @@ export class WordupImproveComponent {
       let temp: any = [];
       this.searchChineseObj.similarWords = '找無';
       this.cards.forEach((el: any) => {
-        try {
-          let cn = el.cn.join(',');
-          if (this.searchChineseObj.word.match(new RegExp(el.cn, 'i')) || cn.match(new RegExp(this.searchChineseObj.word, 'i'))) {
-            temp.push(`[${el.en.toLowerCase()}]${el.cn}`);
-          }
-        } catch (ex) {
-          console.log(typeof (el.cn), el.en.toLowerCase())
+        let cn = el.cn.join(',');
+        if (this.searchChineseObj.word.match(new RegExp(el.cn, 'i')) || cn.match(new RegExp(this.searchChineseObj.word, 'i'))) {
+          temp.push(`[${el.en.toLowerCase()}]${el.cn}`);
         }
       });
 
@@ -1116,10 +1096,10 @@ export class WordupImproveComponent {
           seenWords.add(en);
 
           let newCn = Array.from(new Set(cn.join(",")
-          .replace(/，|；|;/g, ",")
-          .replace(/v:|n:|adj:|adv:|a:|aux:|ad:|prep:/g, "")
-          .trim()
-          .split(",")));
+            .replace(/，|；|;/g, ",")
+            .replace(/v:|n:|adj:|adv:|a:|aux:|ad:|prep:/g, "")
+            .trim()
+            .split(",")));
 
           return { cn: newCn, en: en.toLowerCase(), sentences };
         } else {
@@ -1155,32 +1135,28 @@ export class WordupImproveComponent {
     this.findSameWordsObj.en = [];
 
     this.cards.forEach((el: any) => {
-      try {
-        // CN
-        let cn = this.card.cn.join(',');
-        let cn2 = el.cn.join(',');
-        let calCn = this.glgorithmsService.calculateSimilarity(
-          cn,
-          cn2
-        );
-        this.findSameWordsObj.cn.push({
-          en: el?.en.toLowerCase(),
-          cn: el?.cn,
-          cal: calCn,
-        });
-        // EN
-        let calEn = this.glgorithmsService.calculateSimilarity(
-          el?.en.toLowerCase(),
-          this.card.en
-        );
-        this.findSameWordsObj.en.push({
-          en: el?.en.toLowerCase(),
-          cn: el?.cn,
-          cal: calEn,
-        });
-      } catch (ex) {
-        console.log(el);
-      }
+      // CN
+      let cn = this.card.cn.join(',');
+      let cn2 = el.cn.join(',');
+      let calCn = this.glgorithmsService.calculateSimilarity(
+        cn,
+        cn2
+      );
+      this.findSameWordsObj.cn.push({
+        en: el?.en.toLowerCase(),
+        cn: el?.cn,
+        cal: calCn,
+      });
+      // EN
+      let calEn = this.glgorithmsService.calculateSimilarity(
+        el?.en.toLowerCase(),
+        this.card.en
+      );
+      this.findSameWordsObj.en.push({
+        en: el?.en.toLowerCase(),
+        cn: el?.cn,
+        cal: calEn,
+      });
     });
 
     this.findSameWordsObj.cn = this.findSameWordsObj.cn
@@ -1207,36 +1183,24 @@ export class WordupImproveComponent {
   logsCollection!: CollectionReference<DocumentData, DocumentData>;
 
   async login(): Promise<void> {
-    try {
-      await signInWithEmailAndPassword(this.auth, this.firebaseAuth.email, this.firebaseAuth.password);
-      this.user$ = authState(this.auth);
-    } catch (err) {
-      alert(err);
-    }
+    await signInWithEmailAndPassword(this.auth, this.firebaseAuth.email, this.firebaseAuth.password);
+    this.user$ = authState(this.auth);
   }
 
   async logout(): Promise<void> {
-    try {
-      await signOut(this.auth);
-      if (this.combineUserAndLogs$) {
-        this.combineUserAndLogs$.unsubscribe();
-      }
-      alert('登出成功');
-    } catch (err) {
-      alert(err);
+    await signOut(this.auth);
+    if (this.combineUserAndLogs$) {
+      this.combineUserAndLogs$.unsubscribe();
     }
+    alert('登出成功');
   }
 
   async signUp(): Promise<void> {
-    try {
-      await createUserWithEmailAndPassword(
-        this.auth,
-        this.firebaseAuth.email,
-        this.firebaseAuth.password
-      );
-    } catch (err) {
-      alert(err);
-    }
+    await createUserWithEmailAndPassword(
+      this.auth,
+      this.firebaseAuth.email,
+      this.firebaseAuth.password
+    );
   }
 
   enterRegistPage(): void {
