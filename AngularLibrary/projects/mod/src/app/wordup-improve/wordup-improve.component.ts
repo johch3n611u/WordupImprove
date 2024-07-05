@@ -377,7 +377,7 @@ export class WordupImproveComponent {
 
     let word = this.answerScore.find((word: any) => word.en.toLowerCase() == this.card.en.toLowerCase());
     this.notFamiliarScore = this.notFamiliarScoreCalculations(word);
-    this.familiarScore = 51 - this.glgorithmsService.mapScore(this.seconds, 120, 1, 50);
+    this.familiarScore = 70 - this.glgorithmsService.mapScore(this.seconds, 120, 1, 50);
 
     let speakWords = '';
     this.config.seeAnswerSpeak ? speakWords = this.sentence?.en.toLowerCase() : speakWords = this.card.en.toLowerCase();
@@ -822,7 +822,7 @@ export class WordupImproveComponent {
       self.seconds++;
       // 每 5 秒檢查得分數
       if (self.seconds % 5 === 0) {
-        self.familiarScore = 51 - self.glgorithmsService.mapScore(self.seconds, 120, 1, 50);
+        self.familiarScore = 70 - self.glgorithmsService.mapScore(self.seconds, 120, 1, 50);
       }
     }, 1000);
   }
@@ -1117,7 +1117,7 @@ export class WordupImproveComponent {
 
           let newCn = Array.from(new Set(cn.join(",")
           .replace(/，|；|;/g, ",")
-          .replace(/v:|n:|adj:|adv:/g, "")
+          .replace(/v:|n:|adj:|adv:|a:|aux:|ad:|prep:/g, "")
           .trim()
           .split(",")));
 
