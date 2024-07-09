@@ -339,6 +339,20 @@
           </li>
         </ul>
       </div>
+      <p>鍵盤快捷鍵設定</p>
+      <label for="seeAnswer">看答案</label>
+      <input id="seeAnswer" [(ngModel)]="config.keyboardControl.seeAnswer" placeholder="seeAnswer" value="a" />
+      <label for="answerScoreResetTrue">會</label>
+      <input id="answerScoreResetTrue" [(ngModel)]="config.keyboardControl.answerScoreResetTrue"
+        placeholder="answerScoreResetTrue" value="s" />
+      <label for="answerScoreResetFalse">不會</label>
+      <input id="answerScoreResetFalse" [(ngModel)]="config.keyboardControl.answerScoreResetFalse"
+        placeholder="answerScoreResetFalse" value="d" />
+      <label for="drawSentence">更多例句</label>
+      <input id="drawSentence" [(ngModel)]="config.keyboardControl.drawSentence" placeholder="drawSentence" value="f" />
+      <label for="showExanpleAnswers">例句答案</label>
+      <input id="showExanpleAnswers" [(ngModel)]="config.keyboardControl.showExanpleAnswers"
+        placeholder="showExanpleAnswers" value="g" />
     </div>
   </div>
 

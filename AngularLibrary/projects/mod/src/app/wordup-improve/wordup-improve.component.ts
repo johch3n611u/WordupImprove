@@ -90,6 +90,15 @@ export class WordupImproveComponent {
     let drawCardConfig: any = localStorage.getItem('drawCardConfig');
     if (drawCardConfig) {
       this.config = JSON.parse(drawCardConfig)
+      if (!this.config.keyboardControl) {
+        this.config.keyboardControl = {};
+        this.config.keyboardControl.seeAnswer = 'a';
+        this.config.keyboardControl.answerScoreResetTrue = 's';
+        this.config.keyboardControl.answerScoreResetFalse = 'd';
+        this.config.keyboardControl.drawSentence = 'f';
+        this.config.keyboardControl.showExanpleAnswers = 'g';
+        this.importConfig(true);
+      }
     }
   }
 
@@ -587,6 +596,31 @@ export class WordupImproveComponent {
   onResize(event: Event): void {
     // this.drawChat();
   }
+
+  /**
+  * 監聽鍵盤按下
+  * @param event 鍵盤按下事件
+  */
+  @HostListener('window:keydown', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    let eveKey = event.key.toLowerCase();
+    if (eveKey === this.config?.keyboardControl?.seeAnswer?.toLowerCase()) {
+      this.seeAnswer();
+    }
+    if (eveKey === this.config?.keyboardControl?.answerScoreResetTrue?.toLowerCase()) {
+      this.answerScoreReset(true);
+    }
+    if (eveKey === this.config?.keyboardControl?.answerScoreResetFalse?.toLowerCase()) {
+      this.answerScoreReset(false);
+    }
+    if (eveKey === this.config?.keyboardControl?.drawSentence?.toLowerCase()) {
+      this.drawSentence();
+    }
+    if (eveKey === this.config?.keyboardControl?.showExanpleAnswers?.toLowerCase()) {
+      this.showExanpleAnswers();
+    }
+  }
+
 
   /**
   * 刪除本地分數紀錄
@@ -1302,6 +1336,13 @@ export class Config {
   answerCountAll: number = 0;
   unfamiliarSortingHours = 1;
   unfamiliarSortingMinutes = 0;
+  keyboardControl: any = {
+    seeAnswer: 'a',
+    answerScoreResetTrue: 's',
+    answerScoreResetFalse: 'd',
+    drawSentence: 'f',
+    showExanpleAnswers: 'g'
+  }
 }
 
 export class Card {
