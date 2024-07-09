@@ -597,27 +597,30 @@ export class WordupImproveComponent {
     // this.drawChat();
   }
 
+  keyboardControl = false;
   /**
   * 監聽鍵盤按下
   * @param event 鍵盤按下事件
   */
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
-    let eveKey = event.key.toLowerCase();
-    if (eveKey === this.config?.keyboardControl?.seeAnswer?.toLowerCase()) {
-      this.seeAnswer();
-    }
-    if (eveKey === this.config?.keyboardControl?.answerScoreResetTrue?.toLowerCase()) {
-      this.answerScoreReset(true);
-    }
-    if (eveKey === this.config?.keyboardControl?.answerScoreResetFalse?.toLowerCase()) {
-      this.answerScoreReset(false);
-    }
-    if (eveKey === this.config?.keyboardControl?.drawSentence?.toLowerCase()) {
-      this.drawSentence();
-    }
-    if (eveKey === this.config?.keyboardControl?.showExanpleAnswers?.toLowerCase()) {
-      this.showExanpleAnswers();
+    if (this.keyboardControl) {
+      let eveKey = event.key.toLowerCase();
+      if (eveKey === this.config?.keyboardControl?.seeAnswer?.toLowerCase()) {
+        this.seeAnswer();
+      }
+      if (eveKey === this.config?.keyboardControl?.answerScoreResetTrue?.toLowerCase()) {
+        this.answerScoreReset(true);
+      }
+      if (eveKey === this.config?.keyboardControl?.answerScoreResetFalse?.toLowerCase()) {
+        this.answerScoreReset(false);
+      }
+      if (eveKey === this.config?.keyboardControl?.drawSentence?.toLowerCase()) {
+        this.drawSentence();
+      }
+      if (eveKey === this.config?.keyboardControl?.showExanpleAnswers?.toLowerCase()) {
+        this.showExanpleAnswers();
+      }
     }
   }
 
