@@ -1078,7 +1078,7 @@ export class WordupImproveComponent {
   * 新增單字
   */
   addNewCard(): void {
-    const { en, cn } = this.editedCards.card;
+    const { en, cn, sentences } = this.editedCards.card;
     const trimmedEn = en.trim().toLowerCase();
 
     if (trimmedEn.replace(/\s*/g, '') !== '' && confirm('確認新增卡片?')) {
@@ -1099,7 +1099,10 @@ export class WordupImproveComponent {
           alert('卡片不存在，請繼續新增');
         }
       } else {
-        if (!tempCard) {
+
+        if (!sentences[0]?.en || !sentences[0]?.cn) {
+          alert('請確定更新或新增欄位')
+        } else if (!tempCard) {
           this.editedCards.cards.push(this.editedCards.card);
           this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss');
           localStorage.setItem('editedCards', JSON.stringify(this.editedCards));
