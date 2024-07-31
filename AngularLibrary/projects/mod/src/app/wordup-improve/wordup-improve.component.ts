@@ -97,9 +97,14 @@ export class WordupImproveComponent {
         this.config.keyboardControl.answerScoreResetFalse = 'd';
         this.config.keyboardControl.drawSentence = 'f';
         this.config.keyboardControl.showExanpleAnswers = 'g';
+        this.config.keyboardControl.speakMsgWord = 'q';
+        this.config.keyboardControl.speakMsgSentence = 'w';
         this.importConfig(true);
       }
     }
+
+    this.lastUpdateLogTime = localStorage.getItem('lastUpdateLogTime') ?? '';
+    this.lastdownloadLogTime = localStorage.getItem('lastdownloadLogTime') ?? '';
   }
 
   /**
@@ -448,10 +453,16 @@ export class WordupImproveComponent {
     if (word) {
       // 30 內天類依比例扣分 7-15 天扣最低，7 天內與 15 至其餘天數 & 一天以內直接扣最大分
       // 看答案時計算 notFamiliarScore 顯示後再拿來此處使用
-      answer ? (word.score += this.familiarScore) : word.score += this.notFamiliarScore;
-      if (this.card.updateTime.days > 50 && !answer) {
-        word.score = this.maxNegativeScore;
+
+      if (answer) {
+        word.score += this.familiarScore;
+      } else {
+        word.score += this.notFamiliarScore;
+        if (word.score < this.maxNegativeScore || this.card.updateTime.days > 50) {
+          word.score = this.maxNegativeScore;
+        }
       }
+
       word.updateTime = Date.now();
     } else {
       // 第一次錯直接扣最大分
@@ -620,6 +631,12 @@ export class WordupImproveComponent {
       }
       if (eveKey === this.config?.keyboardControl?.showExanpleAnswers?.toLowerCase()) {
         this.showExanpleAnswers();
+      }
+      if (eveKey === this.config?.keyboardControl?.speakMsgWord?.toLowerCase()) {
+        this.speakMsg(this.card.en);
+      }
+      if (eveKey === this.config?.keyboardControl?.speakMsgSentence?.toLowerCase()) {
+        this.speakMsg(this.sentence?.en);
       }
     }
   }
@@ -1221,6 +1238,8 @@ export class WordupImproveComponent {
   private auth: Auth = inject(Auth);
   user$ = user(this.auth);
   logsCollection!: CollectionReference<DocumentData, DocumentData>;
+  lastUpdateLogTime: string = '';
+  lastdownloadLogTime: string = '';
 
   async login(): Promise<void> {
     await signInWithEmailAndPassword(this.auth, this.firebaseAuth.email, this.firebaseAuth.password);
@@ -1256,6 +1275,8 @@ export class WordupImproveComponent {
         take(1),
         tap(async (user) => {
           if (user) {
+            localStorage.setItem('lastUpdateLogTime', this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss') ?? '');
+
             this.logsCollection = collection(this.firestore, 'Logs');
             const editedCardsString = JSON.stringify(this.editedCards?.cards);
             await setDoc(doc(this.logsCollection, user.uid), {
@@ -1291,6 +1312,7 @@ export class WordupImproveComponent {
             this.editedCards.card = new Card();
             this.editedCards.date = log.editedCardsDate;
             localStorage.setItem('editedCards', JSON.stringify(this.editedCards));
+            localStorage.setItem('lastdownloadLogTime', this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss') ?? '');
 
             this.calculateFamiliarity();
             this.unfamiliarReflash();
@@ -1347,7 +1369,9 @@ export class Config {
     answerScoreResetTrue: 's',
     answerScoreResetFalse: 'd',
     drawSentence: 'f',
-    showExanpleAnswers: 'g'
+    showExanpleAnswers: 'g',
+    speakMsgWord: 'q',
+    speakMsgSentence: 'w',
   }
 }
 

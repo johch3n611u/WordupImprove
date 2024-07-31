@@ -72,7 +72,7 @@
       </ng-container>
       <hr />
       <div>
-        <input autocomplete="new-password" type="text" [(ngModel)]="searchWord.word" #searchWordInput />
+        <input autocomplete="new-password" type="text" [(ngModel)]="searchWord.word" #searchWordInput (click)="keyboardControl = false"/>
         <button (click)="searchWordMark()">
           <span class="userCantSelect">搜尋單字註記不會</span>
         </button>
@@ -354,18 +354,23 @@
       <label for="showExanpleAnswers">例句答案</label>
       <input id="showExanpleAnswers" [(ngModel)]="config.keyboardControl.showExanpleAnswers"
         placeholder="showExanpleAnswers" value="g" />
+      <label for="speakMsgWord">念單字</label>
+      <input id="speakMsgWord" [(ngModel)]="config.keyboardControl.speakMsgWord" placeholder="speakMsgWord" value="q" />
+      <label for="speakMsgSentence">念句子</label>
+      <input id="speakMsgSentence" [(ngModel)]="config.keyboardControl.speakMsgSentence" placeholder="speakMsgSentence"
+        value="w" />
     </div>
   </div>
 
   <hr>
 
   <div>
-    <input autocomplete="new-password" type="text" [(ngModel)]="searchChineseObj.word" />
+    <input autocomplete="new-password" type="text" [(ngModel)]="searchChineseObj.word" (click)="keyboardControl = false"/>
     <button (click)="searchChinese()">
       <span class="userCantSelect">搜尋中文相似單字</span>
     </button>
     <p>{{ searchChineseObj.similarWords }}</p>
-    <button (click)="editedCards.displayAddNewCard = !editedCards.displayAddNewCard">
+    <button (click)="editedCards.displayAddNewCard = !editedCards.displayAddNewCard;keyboardControl = false;">
       <span class="userCantSelect">新增新卡片</span>
     </button>
   </div>
@@ -405,6 +410,7 @@
     <input autocomplete="new-password" type="email" placeholder="email" [(ngModel)]="firebaseAuth.email" />
     <input autocomplete="new-password" type="password" placeholder="password" [(ngModel)]="firebaseAuth.password" />
   </div>
+  <p>最後上傳時間 {{this.lastUpdateLogTime}}, 最後下載時間 {{this.lastdownloadLogTime}}</p>
   <p class="info">
     第一次使用請先註冊帳號，並將本地資料上傳即可更新榜單與使用下載服務
   </p>
@@ -433,18 +439,19 @@
   <label for="sentencesEn">sentences en</label>
   <input autocomplete="off" type="text" id="sentencesEn" [(ngModel)]="editedCards.card?.sentences[0].en" />
   <div>
-    <button (click)="addNewCard()">
+    <button *ngIf="!editedCards.displayUpdateCnEdite" (click)="addNewCard()">
       <span class="userCantSelect">新增</span>
+    </button>
+    <button *ngIf="editedCards.displayUpdateCnEdite" (click)="updateCnEdite(editedCards.card)">
+      <span class="userCantSelect">更新中文</span>
     </button>
     <button (click)="cancelAddNewCard()">
       <span class="userCantSelect">取消</span>
     </button>
   </div>
   <p>新卡片數量：{{editedCards.cards?.length}}</p>
+  <hr>
   <button (click)="exportNewCards()">
     <span class="userCantSelect">匯出新增卡片 {{editedCards.date}}</span>
-  </button>
-  <button *ngIf="editedCards.displayUpdateCnEdite" (click)="updateCnEdite(editedCards.card)">
-    <span class="userCantSelect">更新中文</span>
   </button>
 </div>
