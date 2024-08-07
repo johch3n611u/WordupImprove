@@ -76,6 +76,9 @@
         <button (click)="searchWordMark()">
           <span class="userCantSelect">搜尋單字註記不會</span>
         </button>
+        <button (click)="openBlankUrl()">
+          <span class="userCantSelect">劍橋</span>
+        </button>
         <p [innerHTML]="searchWord?.display"></p>
         <p>{{ searchWord?.explain }}</p>
         <p *ngIf="searchWord?.score">

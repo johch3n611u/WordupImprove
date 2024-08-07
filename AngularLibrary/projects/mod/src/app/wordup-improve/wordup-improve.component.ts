@@ -220,7 +220,7 @@ export class WordupImproveComponent {
     // this.maxNegativeScore = Math.min(...negativeScores.map((item: any) => item.score));
     // const sum = negativeScores?.reduce((total: number, item: any) => total + item.score, 0);
     // this.answerScoreAverage = Math.floor(sum / negativeScores?.length);
-
+    
     const negativeScores = this.answerScore?.filter((item: any) => item.score < 0);
     if (negativeScores.length > 0) {
       const sum = negativeScores.reduce((total: number, item: any) => total + item.score, 0);
@@ -362,18 +362,27 @@ export class WordupImproveComponent {
     if (a?.score > 0 || b?.score > 0) {
       return a?.score - b?.score;
     } else {
-      let tempSortA = a?.score - a?.updateTime?.days;
-      let tempSortB = b?.score - b?.updateTime?.days;
+      let tempSortA = a?.score - a?.updateTime?.days - a?.updateTime?.hours - a?.updateTime?.minutes;
+      let tempSortB = b?.score - b?.updateTime?.days - b?.updateTime?.hours - b?.updateTime?.minutes;
+      return tempSortA - tempSortB;
 
-      let aH = a?.updateTime?.days == 0 && a?.updateTime?.hours <= (this.config?.unfamiliarSortingHours ?? 1);
-      let aM = a?.updateTime?.minutes <= (this.config?.unfamiliarSortingMinutes ?? 0);
-      let bH = b?.updateTime?.days == 0 && b?.updateTime?.hours <= (this.config?.unfamiliarSortingHours ?? 1);
-      let bM = b?.updateTime?.minutes <= (this.config?.unfamiliarSortingMinutes ?? 0);
+      let aH = a?.updateTime?.days == 0 && a?.updateTime?.hours >= (this.config?.unfamiliarSortingHours ?? 1);
+      let aM = a?.updateTime?.minutes >= (this.config?.unfamiliarSortingMinutes ?? 0);
+      let bH = b?.updateTime?.days == 0 && b?.updateTime?.hours >= (this.config?.unfamiliarSortingHours ?? 1);
+      let bM = b?.updateTime?.minutes >= (this.config?.unfamiliarSortingMinutes ?? 0);
 
-      if (aH && aM) {
-        return 1;
-      } else if (bH && bM) {
-        return -1;
+      if (aH) {
+        if (aM) {
+          return -1;
+        } else {
+          return 1;
+        }
+      } else if (bH) {
+        if (bM) {
+          return 1;
+        } else {
+          return -1;
+        }
       } else {
         return tempSortA - tempSortB;
       }
@@ -1057,7 +1066,7 @@ export class WordupImproveComponent {
     this.editedCards.displayUpdateCnEdite = false;
     this.editedCards.notEditMode = true;
 
-    this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss');
+    this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss');
     let tempCard = this.editedCards.cards.find((c: any) => c.en.toLowerCase() === card.en.trim().toLowerCase());
     let tempCard2 = this.cards.find((c: any) => c.en.toLowerCase() === card.en.trim().toLowerCase());
 
@@ -1073,6 +1082,7 @@ export class WordupImproveComponent {
     let editedCards = JSON.stringify(this.editedCards);
     localStorage.setItem('editedCards', editedCards);
     this.editedCards.card = new Card();
+    this.editedCards.displayUpdateCnEdite = false;
     this.refreshCnEdited();
   }
 
@@ -1121,7 +1131,7 @@ export class WordupImproveComponent {
           alert('請確定更新或新增欄位')
         } else if (!tempCard) {
           this.editedCards.cards.push(this.editedCards.card);
-          this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss');
+          this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss');
           localStorage.setItem('editedCards', JSON.stringify(this.editedCards));
           this.editedCards.card = new Card();
           this.refreshCnEdited();
@@ -1169,7 +1179,7 @@ export class WordupImproveComponent {
 
       if (securityKey || confirm('有重複未加入卡片是否重置上傳？')) {
         localStorage.removeItem('editedCards');
-        this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss');
+        this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss');
         this.editedCards.cards = '';
         this.updateLog(true);
       } else {
@@ -1226,6 +1236,16 @@ export class WordupImproveComponent {
       .slice(0, 10);
   }
 
+  openBlankUrl() {
+    if (
+      this.searchWord.word !== undefined &&
+      this.searchWord.word !== null &&
+      this.searchWord.word.replace(/\s*/g, '') !== ''
+    ) {
+      window.open(`https://dictionary.cambridge.org/dictionary/english-chinese-traditional/${this.searchWord.word}`, '_blank')
+    }
+  }
+
   /**
   * Firebase Auth & CRUD
   * https://console.firebase.google.com/u/0/project/angular-vector-249608/firestore/data/~2FLogs~2FBIjfl9Y432Rtt3lwZJx0klt0j8M2
@@ -1275,7 +1295,7 @@ export class WordupImproveComponent {
         take(1),
         tap(async (user) => {
           if (user) {
-            localStorage.setItem('lastUpdateLogTime', this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss') ?? '');
+            localStorage.setItem('lastUpdateLogTime', this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss') ?? '');
 
             this.logsCollection = collection(this.firestore, 'Logs');
             const editedCardsString = JSON.stringify(this.editedCards?.cards);
@@ -1312,7 +1332,7 @@ export class WordupImproveComponent {
             this.editedCards.card = new Card();
             this.editedCards.date = log.editedCardsDate;
             localStorage.setItem('editedCards', JSON.stringify(this.editedCards));
-            localStorage.setItem('lastdownloadLogTime', this.datePipe.transform(new Date(), 'yyyy-MM-ddThh:mm:ss') ?? '');
+            localStorage.setItem('lastdownloadLogTime', this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss') ?? '');
 
             this.calculateFamiliarity();
             this.unfamiliarReflash();
