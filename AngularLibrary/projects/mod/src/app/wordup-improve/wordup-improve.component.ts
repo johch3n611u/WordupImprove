@@ -220,7 +220,7 @@ export class WordupImproveComponent {
     // this.maxNegativeScore = Math.min(...negativeScores.map((item: any) => item.score));
     // const sum = negativeScores?.reduce((total: number, item: any) => total + item.score, 0);
     // this.answerScoreAverage = Math.floor(sum / negativeScores?.length);
-    
+
     const negativeScores = this.answerScore?.filter((item: any) => item.score < 0);
     if (negativeScores.length > 0) {
       const sum = negativeScores.reduce((total: number, item: any) => total + item.score, 0);
@@ -362,8 +362,8 @@ export class WordupImproveComponent {
     if (a?.score > 0 || b?.score > 0) {
       return a?.score - b?.score;
     } else {
-      let tempSortA = a?.score - a?.updateTime?.days - a?.updateTime?.hours - a?.updateTime?.minutes;
-      let tempSortB = b?.score - b?.updateTime?.days - b?.updateTime?.hours - b?.updateTime?.minutes;
+      let tempSortA = a?.score - Math.round(a.sentences.length / 1000) - a?.updateTime?.days - a?.updateTime?.hours - a?.updateTime?.minutes;
+      let tempSortB = b?.score - Math.round(b.sentences.length / 1000) - b?.updateTime?.days - b?.updateTime?.hours - b?.updateTime?.minutes;
       return tempSortA - tempSortB;
 
       let aH = a?.updateTime?.days == 0 && a?.updateTime?.hours >= (this.config?.unfamiliarSortingHours ?? 1);
@@ -984,8 +984,10 @@ export class WordupImproveComponent {
         speechSynthesisUtterance.rate = this.config?.speakRate ?? 1;
       }
 
-      this.synth?.speak(speechSynthesisUtterance);
-      this.tempSpeakMsg = msg;
+      for (let i = 1; i <= this.config.speakTimes; i++) {
+        this.synth?.speak(speechSynthesisUtterance);
+        this.tempSpeakMsg = msg;
+      }
     }
   }
 
@@ -1146,7 +1148,7 @@ export class WordupImproveComponent {
   * 關閉新增單字介面
   */
   cancelAddNewCard(): void {
-    this.editedCards.displayAddNewCard = !this.editedCards.displayAddNewCard;
+    this.editedCards.displayAddNewCard = false;
     this.editedCards.card = new Card();
   }
 
@@ -1164,7 +1166,7 @@ export class WordupImproveComponent {
 
           let newCn = Array.from(new Set(cn.join(",")
             .replace(/，|；|;/g, ",")
-            .replace(/v:|n:|adj:|adv:|a:|aux:|ad:|prep:/g, "")
+            .replace(/v:|n:|adj:|adv:|a:|aux:|ad:|prep:|conj:/g, "")
             .trim()
             .split(",")));
 
@@ -1236,13 +1238,13 @@ export class WordupImproveComponent {
       .slice(0, 10);
   }
 
-  openBlankUrl() {
+  openBlankUrl(url: string) {
     if (
       this.searchWord.word !== undefined &&
       this.searchWord.word !== null &&
       this.searchWord.word.replace(/\s*/g, '') !== ''
     ) {
-      window.open(`https://dictionary.cambridge.org/dictionary/english-chinese-traditional/${this.searchWord.word}`, '_blank')
+      window.open(`${url}${this.searchWord.word}`, '_blank')
     }
   }
 
@@ -1306,6 +1308,7 @@ export class WordupImproveComponent {
               editedCardsDate: this.editedCards?.date,
             });
             alert('更新成功');
+            this.refreshCnEdited();
             this.firebaseAuth.isEnterRegistPage = false;
           }
         }),
@@ -1337,6 +1340,7 @@ export class WordupImproveComponent {
             this.calculateFamiliarity();
             this.unfamiliarReflash();
             alert('更新成功');
+            this.refreshCnEdited();
             this.firebaseAuth.isEnterRegistPage = false;
             this.cardslinkScore();
             this.drawCard();
@@ -1376,6 +1380,7 @@ export class Config {
   autoDrawSeconds: number = 45;
   speakSelectVoice: string = 'Google UK English Male';
   speakVolume: number = 10;
+  speakTimes: number = 3;
   autoUpdateLog: boolean = false;
   seeAnswerSpeak: boolean = false;
   speakRate: number = 1;

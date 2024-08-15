@@ -73,12 +73,6 @@
       <hr />
       <div>
         <input autocomplete="new-password" type="text" [(ngModel)]="searchWord.word" #searchWordInput (click)="keyboardControl = false"/>
-        <button (click)="searchWordMark()">
-          <span class="userCantSelect">搜尋單字註記不會</span>
-        </button>
-        <button (click)="openBlankUrl()">
-          <span class="userCantSelect">劍橋</span>
-        </button>
         <p [innerHTML]="searchWord?.display"></p>
         <p>{{ searchWord?.explain }}</p>
         <p *ngIf="searchWord?.score">
@@ -92,6 +86,19 @@
         </p>
         <hr *ngIf="searchWord?.similarWords" />
         <p>{{ searchWord?.similarWords }}</p>
+        <button (click)="searchWordMark()">
+          <span class="userCantSelect">搜尋單字註記不會</span>
+        </button>
+        <br>
+        <button (click)="openBlankUrl('https://dictionary.cambridge.org/dictionary/english-chinese-traditional/')">
+          <span class="userCantSelect">劍橋</span>
+        </button>
+        <button (click)="openBlankUrl('https://www.google.com/search?q=Synonyms+')">
+          <span class="userCantSelect">同義詞 Synonyms</span>
+        </button>
+        <button (click)="openBlankUrl('https://www.google.com/search?q=Antonyms+')">
+          <span class="userCantSelect">反義詞 Antonyms</span>
+        </button>
       </div>
     </div>
   </div>
@@ -303,6 +310,8 @@
       <input id="speakRate" type="range" [(ngModel)]="config.speakRate" min="0.5" max="2" value="1" step="0.1" />
       <label for="speakVolume">語音聲量</label>
       <input id="speakVolume" type="range" [(ngModel)]="config.speakVolume" min="1" max="10" value="10" />
+      <label for="speakTimes">播放次數</label>
+      <input id="speakTimes" type="range" [(ngModel)]="config.speakTimes" min="1" max="10" value="10" />
       <label for="seeAnswerSpeak">看答案念句子</label>
       <input id="seeAnswerSpeak" type="checkbox" [(ngModel)]="config.seeAnswerSpeak" />
       <label for="autoUpdateLog">自動上傳遠端紀錄</label>
