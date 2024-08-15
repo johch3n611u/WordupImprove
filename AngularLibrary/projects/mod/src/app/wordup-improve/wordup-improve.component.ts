@@ -69,6 +69,10 @@ export class WordupImproveComponent {
     // }
   }
 
+test() {
+  console.log(this.cards.sort((a,b)=> a.sentences.length - b.sentences.length))
+}
+
   ngOnDestroy() {
     this.combineUserAndLogs$?.unsubscribe();
     this.debounceSub$?.unsubscribe();
@@ -362,8 +366,9 @@ export class WordupImproveComponent {
     if (a?.score > 0 || b?.score > 0) {
       return a?.score - b?.score;
     } else {
-      let tempSortA = a?.score - Math.round(a.sentences.length / 1000) - a?.updateTime?.days - a?.updateTime?.hours - a?.updateTime?.minutes;
-      let tempSortB = b?.score - Math.round(b.sentences.length / 1000) - b?.updateTime?.days - b?.updateTime?.hours - b?.updateTime?.minutes;
+
+      let tempSortA = a?.score - a.sentences?.length - a?.updateTime?.days - a?.updateTime?.hours - a?.updateTime?.minutes;
+      let tempSortB = b?.score - b.sentences?.length - b?.updateTime?.days - b?.updateTime?.hours - b?.updateTime?.minutes;
       return tempSortA - tempSortB;
 
       let aH = a?.updateTime?.days == 0 && a?.updateTime?.hours >= (this.config?.unfamiliarSortingHours ?? 1);
@@ -1183,7 +1188,7 @@ export class WordupImproveComponent {
         localStorage.removeItem('editedCards');
         this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss');
         this.editedCards.cards = '';
-        this.updateLog(true);
+        // this.updateLog(true);
       } else {
         repeatCards.forEach((repeatCard: any) => {
           console.log('重複未加入的卡片', this.cards.find(c => c.en === repeatCard.en));
