@@ -69,10 +69,6 @@ export class WordupImproveComponent {
     // }
   }
 
-test() {
-  console.log(this.cards.sort((a,b)=> a.sentences.length - b.sentences.length))
-}
-
   ngOnDestroy() {
     this.combineUserAndLogs$?.unsubscribe();
     this.debounceSub$?.unsubscribe();
@@ -1153,6 +1149,7 @@ test() {
   * 關閉新增單字介面
   */
   cancelAddNewCard(): void {
+    this.editedCards.displayUpdateCnEdite = false;
     this.editedCards.displayAddNewCard = false;
     this.editedCards.card = new Card();
   }
@@ -1188,7 +1185,7 @@ test() {
         localStorage.removeItem('editedCards');
         this.editedCards.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss');
         this.editedCards.cards = '';
-        // this.updateLog(true);
+        this.updateLog(true);
       } else {
         repeatCards.forEach((repeatCard: any) => {
           console.log('重複未加入的卡片', this.cards.find(c => c.en === repeatCard.en));
