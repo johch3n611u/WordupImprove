@@ -3,13 +3,16 @@
   <div class="toolBox">
     <button class="answerScoreResetBtn" *ngIf="displayMode !== DisplayMode.Answer" (click)="seeAnswer()">
       <span class="userCantSelect">{{ displayMode }}</span>
+      <span *ngIf="config?.keyboardControl?.seeAnswer">({{config?.keyboardControl?.seeAnswer}})</span>
     </button>
     <ng-container *ngIf="displayMode === DisplayMode.Answer">
       <button (click)="answerScoreReset(true)">
         <span class="userCantSelect">會 + {{ familiarScore }}</span>
+        <span *ngIf="config?.keyboardControl?.answerScoreResetTrue">({{config?.keyboardControl?.answerScoreResetTrue}})</span>
       </button>
       <button (click)="answerScoreReset(false)">
         <span class="userCantSelect">不會 {{ notFamiliarScore }}</span>
+        <span *ngIf="config?.keyboardControl?.answerScoreResetFalse">({{config?.keyboardControl?.answerScoreResetFalse}})</span>
       </button>
     </ng-container>
   </div>
@@ -25,8 +28,10 @@
       <span>
         (單)
         <lib-svg [src]="'./assets/enHelper/audio.svg'" (click)="speakMsg(card.en)"></lib-svg>
+        <span *ngIf="config?.keyboardControl?.speakMsgWord">({{config?.keyboardControl?.speakMsgWord}})</span>
         (句)
         <lib-svg [src]="'./assets/enHelper/audio.svg'" (click)="speakMsg(sentence?.en)"></lib-svg>
+        <span *ngIf="config?.keyboardControl?.speakMsgSentence">({{config?.keyboardControl?.speakMsgSentence}})</span>
       </span>
       <hr />
       <p [innerHtml]="sentence?.en | highlight : card.en : REGEXP_TYPE.First"></p>
@@ -38,9 +43,11 @@
         </p>
         <button *ngIf="sentenceAnswerDisplay && card.sentences.length > 1" (click)="drawSentence()">
           更多例句 ({{ card.sentences.length }})
+          <span *ngIf="config?.keyboardControl?.drawSentence">({{config?.keyboardControl?.drawSentence}})</span>
         </button>
         <button *ngIf="!sentenceAnswerDisplay" (click)="showExanpleAnswers()">
           例句答案
+          <span *ngIf="config?.keyboardControl?.showExanpleAnswers">({{config?.keyboardControl?.showExanpleAnswers}})</span>
         </button>
         <ng-container *ngIf="sentenceAnswerDisplay">
           <hr />

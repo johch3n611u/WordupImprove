@@ -1093,15 +1093,18 @@ export class WordupImproveComponent {
   * 修改單字資料同步卡片資料
   */
   refreshCnEdited(): void {
-    this.editedCards?.cards?.forEach((editedCard: any) => {
-      let tempCard = this.cards.find((card: any) => card.en.toLowerCase() === editedCard.en.toLowerCase());
-      if (tempCard) {
-        tempCard.cn = editedCard.cn;
-      } else {
-        this.cards.push(editedCard);
-      }
-      this.editedCards.displayAddNewCard = false;
-    });
+    if (this.editedCards?.cards) {
+      console.log(this.editedCards)
+      this.editedCards?.cards?.forEach((editedCard: any) => {
+        let tempCard = this.cards.find((card: any) => card.en.toLowerCase() === editedCard.en.toLowerCase());
+        if (tempCard) {
+          tempCard.cn = editedCard.cn;
+        } else {
+          this.cards.push(editedCard);
+        }
+        this.editedCards.displayAddNewCard = false;
+      });
+    }
   }
 
   /**
