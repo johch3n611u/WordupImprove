@@ -24,6 +24,7 @@ import { PalWorldMapLeafletComponent } from './pal-world-map-leaflet/pal-world-m
 import { HomeComponent } from './home/home.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { DatePipe } from '@angular/common';
+import { UrlSafePipe } from 'lib/feature/url-safe/url-safe.pipe';
 
 // https://stackoverflow.com/questions/60726180/angular-9-value-at-position-x-in-the-ngmodule-imports-is-not-a-reference  reload  vscode
 @NgModule({
@@ -39,7 +40,8 @@ import { DatePipe } from '@angular/common';
     PalWorldMapLeafletComponent
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    UrlSafePipe,
   ],
   bootstrap: [AppComponent],
   imports: [

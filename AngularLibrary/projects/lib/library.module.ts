@@ -14,6 +14,7 @@ import { ToThousandPipe } from './feature/to-thousand/to-thousand.pipe';
 import { TranslatePipe } from './feature/translate/translate.pipe';
 import { SvgComponent } from './feature/svg/svg.component';
 import { MathFloorPipe } from './feature/mathFloor';
+import { UrlSafePipe } from './feature/url-safe/url-safe.pipe';
 
 let components = [
   WrapperComponent,
@@ -26,6 +27,7 @@ let pipes = [
   ToThousandPipe,
   TranslatePipe,
   MathFloorPipe,
+  UrlSafePipe,
 ];
 
 // providers 內宣告 Service 只能注入到 libraryModule 所屬元件，如要在其他站台，須直接 import service 不能透過 Module

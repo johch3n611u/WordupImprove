@@ -1,3 +1,5 @@
+<!-- <mod-chinese-model></mod-chinese-model> -->
+
 <div class="box" [style.display]="(editedCards.displayAddNewCard || firebaseAuth.isEnterRegistPage) ? 'none' : 'flex'"
   (window:resize)="onResize($event)">
   <div class="toolBox">
@@ -8,11 +10,13 @@
     <ng-container *ngIf="displayMode === DisplayMode.Answer">
       <button (click)="answerScoreReset(true)">
         <span class="userCantSelect">會 + {{ familiarScore }}</span>
-        <span *ngIf="config?.keyboardControl?.answerScoreResetTrue">({{config?.keyboardControl?.answerScoreResetTrue}})</span>
+        <span
+          *ngIf="config?.keyboardControl?.answerScoreResetTrue">({{config?.keyboardControl?.answerScoreResetTrue}})</span>
       </button>
       <button (click)="answerScoreReset(false)">
         <span class="userCantSelect">不會 {{ notFamiliarScore }}</span>
-        <span *ngIf="config?.keyboardControl?.answerScoreResetFalse">({{config?.keyboardControl?.answerScoreResetFalse}})</span>
+        <span
+          *ngIf="config?.keyboardControl?.answerScoreResetFalse">({{config?.keyboardControl?.answerScoreResetFalse}})</span>
       </button>
     </ng-container>
   </div>
@@ -47,7 +51,8 @@
         </button>
         <button *ngIf="!sentenceAnswerDisplay" (click)="showExanpleAnswers()">
           例句答案
-          <span *ngIf="config?.keyboardControl?.showExanpleAnswers">({{config?.keyboardControl?.showExanpleAnswers}})</span>
+          <span
+            *ngIf="config?.keyboardControl?.showExanpleAnswers">({{config?.keyboardControl?.showExanpleAnswers}})</span>
         </button>
         <ng-container *ngIf="sentenceAnswerDisplay">
           <hr />
@@ -79,7 +84,8 @@
       </ng-container>
       <hr />
       <div>
-        <input autocomplete="new-password" type="text" [(ngModel)]="searchWord.word" #searchWordInput (click)="keyboardControl = false"/>
+        <input autocomplete="new-password" type="text" [(ngModel)]="searchWord.word" #searchWordInput
+          (click)="keyboardControl = false" />
         <button (click)="searchWordMark()">
           <span class="userCantSelect">搜尋單字註記不會</span>
         </button>
@@ -100,12 +106,18 @@
         <button (click)="openBlankUrl('https://dictionary.cambridge.org/dictionary/english-chinese-traditional/')">
           <span class="userCantSelect">劍橋</span>
         </button>
+        <button (click)="openIframeImg()">
+          <span class="userCantSelect">圖片</span>
+        </button>
         <button (click)="openBlankUrl('https://www.google.com/search?q=Synonyms+')">
           <span class="userCantSelect">同義詞 Synonyms</span>
         </button>
         <button (click)="openBlankUrl('https://www.google.com/search?q=Antonyms+')">
           <span class="userCantSelect">反義詞 Antonyms</span>
         </button>
+      </div>
+      <div class="iframeContainer" *ngIf="viewIframeImg">
+        <iframe class="iframeResponsive" [src]="imgSearchUrl" target="_parent"></iframe>
       </div>
     </div>
   </div>
@@ -384,7 +396,8 @@
   <hr>
 
   <div>
-    <input autocomplete="new-password" type="text" [(ngModel)]="searchChineseObj.word" (click)="keyboardControl = false"/>
+    <input autocomplete="new-password" type="text" [(ngModel)]="searchChineseObj.word"
+      (click)="keyboardControl = false" />
     <button (click)="searchChinese()">
       <span class="userCantSelect">搜尋中文相似單字</span>
     </button>
