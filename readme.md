@@ -13,6 +13,10 @@
 
 ## Angular MonoRepo 要點
 
+> 誤解：[mono 單一 repo 儲存庫](https://en.wikipedia.org/wiki/Monorepo) 意思是不同專案 project 同個方案 solution 共用程式碼
+> ag 內建用 application / library 實作 monorepo 的概念
+> 而 nx 則是更龐大, 針對大規模項目支持多框架、多應用、多技術棧 的項目架構, 支持 Angular，React、Node.js、NestJS、Express 等多種技術，允許在同一個工作區內管理多個應用和庫.
+
 1. 新增庫專案 `ng generate library <library> --prefix <library>` 
    * --prefix 會更改 app-xxx 為新前綴 library-xxx
 2. 新增程式專案 `ng generate application <app-name>` 
