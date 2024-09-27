@@ -1,15 +1,17 @@
-# PREFACE
+# [Topage](https://github.com/UrWebApp/Topage) => ( Angular SSG Based / MoNoLibrary )
+
+## PREFACE
 
 因為現有 HEXO 專案展示 AG MONOREPO 上遇到 JS 不可共用, 且 HEXO 不好維護問題, 所以想將 HEXO 與 AG MONOREPO 弄再一起, 進而發現 Angular 也提供 [SSG](https://angular.dev/guide/prerendering) 方案了, 進而有了以下研究.
 
-# PRERENDER
+## PRERENDER
 
 1. Scully: AG SSG Tool, 特徵簡易, 預渲染, 插件系統, 不支持動態渲染.
 2. AnalogJS: AG SSR/SSG Tool, Vite, 動態路由, 把一些 AG Prerender 需要實作的部分做掉了, 但必須要熟悉它的新用法.
 3. AG Universal: AG SSR 方案, 伺服器端動態生成頁面, 適合 seo / 快取, 前後端夾雜再一起有一些坑, 但近些時間都慢慢被補上了.
 3. AG Prerender: AG SSG 方案, 提前靜態生成頁面, 減少首次加載時間, 動態部分還是要靠 SSR, 部分內容需要自己實作, EX.MarkdownContentToHTML. ( P.S. 參考 REF.8 因為與 SSR 同流程, 所以必須要安裝 SSR, 但可不啟用單純使用 SSG )
 
-# CONCLUSION
+## CONCLUSION
 
 研究過 Scully, AnalogJS 後有了以下考量：
 
@@ -21,7 +23,7 @@
 
 最終採取使用原生 AG Prerender 方案, 檢視影響 SEO 的各種問題與 SSR/SSG 的坑. 
 
-# REF.
+## REF.
 
 1. [預渲染坑 #1](https://medium.com/kuraki5336/angular-%E9%80%8F%E9%81%8E-scully-%E5%81%9A%E9%A0%90%E6%B8%B2%E6%9F%93-pre-renders-1-cedbb7c0b5ea)
 2. [預渲染坑 #2](https://medium.com/kuraki5336/angular-%E9%80%8F%E9%81%8E-scully-%E5%81%9A%E9%A0%90%E6%B8%B2%E6%9F%93-pre-renders-2-f0222388be15)
