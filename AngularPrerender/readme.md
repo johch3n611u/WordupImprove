@@ -9,6 +9,10 @@
 3. AG Universal: AG SSR 方案, 伺服器端動態生成頁面, 適合 seo / 快取, 前後端夾雜再一起有一些坑, 但近些時間都慢慢被補上了.
 3. AG Prerender: AG SSG 方案, 提前靜態生成頁面, 減少首次加載時間, 動態部分還是要靠 SSR, 部分內容需要自己實作, EX.MarkdownContentToHTML.
 
+# CONCLUSION
+
+因為 XXX 所以 XXX 
+
 # REF.
 
 1. [預渲染坑#1](https://medium.com/kuraki5336/angular-%E9%80%8F%E9%81%8E-scully-%E5%81%9A%E9%A0%90%E6%B8%B2%E6%9F%93-pre-renders-1-cedbb7c0b5ea)
