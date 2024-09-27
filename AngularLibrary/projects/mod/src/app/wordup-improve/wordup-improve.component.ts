@@ -43,6 +43,7 @@ import { DatePipe } from '@angular/common';
 import { CommonService } from 'lib/feature/common/common.service';
 import { UrlSafePipe } from 'lib/feature/url-safe/url-safe.pipe';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DeviceCheckService } from 'lib/public-api';
 
 @Component({
   selector: 'mod-wordup-improve',
@@ -63,7 +64,7 @@ export class WordupImproveComponent {
     private datePipe: DatePipe,
     private commonService: CommonService,
     private urlSafePipe: UrlSafePipe,
-    private sanitizer: DomSanitizer
+    public deviceCheckService: DeviceCheckService,
   ) {
     this.initCards();
 
@@ -1248,6 +1249,16 @@ export class WordupImproveComponent {
       .slice(0, 10);
   }
 
+  additionalFeatures(urlFirst: string, urlLast: string = '') {
+    if (
+      this.searchWord.word !== undefined &&
+      this.searchWord.word !== null &&
+      this.searchWord.word.replace(/\s*/g, '') !== ''
+    ) {
+      this.deviceCheckService.isMobile ? this.openBlankUrl(urlFirst, urlLast) : this.openIframe(urlFirst, urlLast);
+    }
+  }
+
   openBlankUrl(urlFirst: string, urlLast: string = '') {
     if (
       this.searchWord.word !== undefined &&
@@ -1259,11 +1270,9 @@ export class WordupImproveComponent {
   }
 
   viewIframeImg = false;
-  openIframeImg() {
-
+  openIframe(urlFirst: string, urlLast: string = '') {
     // https://stackoverflow.com/questions/8700636/how-to-show-google-com-in-an-iframe
-    this.imgSearchUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.google.com/search?sca_esv=1ddba70af590f790&sca_upv=1&igu=1&q=${this.searchWord.word}&udm=2&fbs=AEQNm0DVrIRjdA3gRKfJJ-deMT8ZtYOjoIt1NWOMRkEKym4u5PkAZgxJOmIgPx6WieMhF6q1Hq7W6nME2Vp0eHuijF3ZElaTgD0zbj1gkQrti2r6HpgEQJ__FI2P2zVbzOTQnx-xQGuWfPA7_LjHL8X54xCjPigLtLX638JLYGhCvRlpvvGBo-fNpc7q_rU8dgffCadMYeMgxPqmupqDpgcFpVxKo2EBMA&sa=X&ved=2ahUKEwj91ZGlkuCIAxU4cPUHHd29CMAQtKgLegQIEhAB&biw=1920&bih=919&dpr=1`);
-
+    this.imgSearchUrl = this.urlSafePipe.transform(`${urlFirst}${this.searchWord.word}${urlLast}`, 'resourceUrl');
     this.viewIframeImg = true;
   }
 
