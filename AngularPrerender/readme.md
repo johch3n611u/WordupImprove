@@ -1,4 +1,4 @@
-# 後續詳情 [Topage](https://github.com/UrWebApp/Topage) => ( Angular SSG Based / MonoLibrary )
+# 後續詳情 [Topage](https://github.com/UrWebApp/Topage) => ( Angular SSG/Monorepo Based )
 
 ## PREFACE
 
