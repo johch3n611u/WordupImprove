@@ -1,4 +1,6 @@
-# 要點
+# [改由 SSG 專案整合 BLOG 繼續 /UrWebApp/Topage](https://github.com/UrWebApp/Topage/tree/main/AngularWorkspace)
+
+## 要點
 
 1. 所有東西 ( gitBranch、filesArchitecture、communicate ) 都越扁平越好並保持 DRY 原則，能夠快速釐清、整合、決策、執行，避免延伸非必要的任何事情
 2. 用新的 [pnpm](https://zhuanlan.zhihu.com/p/546400909) 進行模組管理，指令同 npm ( [NPM-vs-Yarm-vs-PNPM](https://www.atatus.com/blog/npm-vs-yarn-vs-pnpm/) )
