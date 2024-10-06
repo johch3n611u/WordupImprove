@@ -129,7 +129,7 @@ export class WordupImproveComponent {
   * @param wordEn 單字
   */
   calculateAnswerCountToday(wordEn: string): void {
-    !this.config.answerCountAll ?? (this.config.answerCountAll = 0);
+    if (!this.config.answerCountAll) { this.config.answerCountAll = 0 }
     const todayTimstamp = this.config?.answerCountToday?.timestamp;
     const today = this.calculateTime(todayTimstamp, true);
     if (today.days > 1 || !todayTimstamp) {
@@ -1276,6 +1276,17 @@ export class WordupImproveComponent {
     this.viewIframeImg = true;
   }
 
+  @ViewChild('searchWordInput',
+    // { static: true } 動態加載的不能用此參數尋找元素
+  ) copySelectedDOM!: ElementRef;
+  copySelectedText(type: string) {
+    console.log(this.copySelectedDOM)
+    this.copySelectedDOM.nativeElement.value = `${type} ${this.searchWord.word}`;
+    this.copySelectedDOM.nativeElement.select();
+    document.execCommand("copy");
+    window.open('https://chatgpt.com/');
+  }
+
   /**
   * Firebase Auth & CRUD
   * https://console.firebase.google.com/u/0/project/angular-vector-249608/firestore/data/~2FLogs~2FBIjfl9Y432Rtt3lwZJx0klt0j8M2
@@ -1290,6 +1301,10 @@ export class WordupImproveComponent {
   logsCollection!: CollectionReference<DocumentData, DocumentData>;
   lastUpdateLogTime: string = '';
   lastdownloadLogTime: string = '';
+
+  isLastUpdate() {
+    return new Date(this.lastUpdateLogTime) > new Date(this.lastdownloadLogTime);
+  }
 
   async login(): Promise<void> {
     await signInWithEmailAndPassword(this.auth, this.firebaseAuth.email, this.firebaseAuth.password);
