@@ -1,4 +1,6 @@
-# 要點
+# [改由 SSG 專案整合 BLOG 繼續 /UrWebApp/Topage](https://github.com/UrWebApp/Topage/tree/main/AngularWorkspace)
+
+## 要點
 
 1. 所有東西 ( gitBranch、filesArchitecture、communicate ) 都越扁平越好並保持 DRY 原則，能夠快速釐清、整合、決策、執行，避免延伸非必要的任何事情
 2. 用新的 [pnpm](https://zhuanlan.zhihu.com/p/546400909) 進行模組管理，指令同 npm ( [NPM-vs-Yarm-vs-PNPM](https://www.atatus.com/blog/npm-vs-yarn-vs-pnpm/) )
@@ -11,7 +13,11 @@
    * end-to-end `ng e2e` 端對端測試的套件最多人使用的是 Protractor
 8. 用 [Markdown All in One: Create Table of Contents](https://zhuanlan.zhihu.com/p/126353341) 自動產生 github 目錄
 
-## Angular MonoRepo 要點
+## Angular Libraries MonoRepo 要點
+
+> 誤解：[mono 單一 repo 儲存庫](https://en.wikipedia.org/wiki/Monorepo) 意思是不同專案 Project 同個方案 Solution 共用程式碼，
+> AG 內建用 Application / Libraries 實作 Monorepo 的概念，
+> 而 NX 則是更強大的 Monorepo 工具，針對大規模項目支持多框架、多應用、多技術棧的項目架構，支持依賴分析，支持 Angular，React、Node.js、NestJS、Express 等多種技術，允許在同一個工作區內管理多個應用和庫。
 
 1. 新增庫專案 `ng generate library <library> --prefix <library>` 
    * --prefix 會更改 app-xxx 為新前綴 library-xxx
