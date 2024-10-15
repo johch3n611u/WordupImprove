@@ -69,7 +69,7 @@
               (click)="editedCards.notEditMode = !editedCards.notEditMode"></lib-svg>
           </p>
         </ng-container>
-        <details>
+        <!-- <details>
           <summary class="subInfo userCantSelect" style="cursor: pointer;">中文相似單字</summary>
           <ul *ngFor="let i of this.findSameWordsObj.cn">
             <li>[{{i.en}}]{{i.cn}}</li>
@@ -80,7 +80,7 @@
           <ul *ngFor="let i of this.findSameWordsObj.en">
             <li>[{{i.en}}]{{i.cn}}</li>
           </ul>
-        </details>
+        </details> -->
       </ng-container>
       <hr />
       <div>
@@ -102,7 +102,7 @@
           </span>
         </p>
         <hr *ngIf="searchWord?.similarWords" />
-        <p>{{ searchWord?.similarWords }}</p>
+        <p style="max-width:70rem;">{{ searchWord?.similarWords }}</p>
         <button (click)="openBlankUrl('https://dictionary.cambridge.org/dictionary/english-chinese-traditional/')">
           <span class="userCantSelect">劍橋</span>
         </button>
@@ -112,7 +112,7 @@
         <button (click)="copySelectedText('逐字解釋')">
           <span class="userCantSelect">逐字解釋</span>
         </button>
-        <button (click)="copySelectedText('如何記憶')">
+        <button (click)="copySelectedText('如何記憶單字')">
           <span class="userCantSelect">如何記憶</span>
         </button>
         <!-- <button (click)="additionalFeatures('https://www.google.com/search?igu=1&?igu=1&q=Synonyms+')">
@@ -121,9 +121,6 @@
         <button (click)="additionalFeatures('https://www.google.com/search?igu=1&?q=Antonyms+')">
           <span class="userCantSelect">反義詞 Antonyms</span>
         </button> -->
-      </div>
-      <div class="iframeContainer" *ngIf="viewIframeImg">
-        <iframe class="iframeResponsive" [src]="imgSearchUrl" target="_parent"></iframe>
       </div>
     </div>
   </div>
@@ -142,6 +139,10 @@
     <p class="subInfo userCantSelect">
       (平均 {{ answerScoreAverage }} /最大 {{ maxNegativeScore }} ) 錯誤分數
     </p>
+  </div>
+
+  <div class="iframeContainer" *ngIf="viewIframeImg">
+    <iframe class="iframeResponsive" [src]="imgSearchUrl" target="_parent"></iframe>
   </div>
 
   <hr />

@@ -357,6 +357,8 @@ export class WordupImproveComponent {
     this.viewIframeImg = false;
 
     this.findSameWords();
+
+    this.openIframe('https://www.google.com/search?sca_esv=1ddba70af590f790&sca_upv=1&igu=1&q=','&udm=2&fbs=AEQNm0DVrIRjdA3gRKfJJ-deMT8ZtYOjoIt1NWOMRkEKym4u5PkAZgxJOmIgPx6WieMhF6q1Hq7W6nME2Vp0eHuijF3ZElaTgD0zbj1gkQrti2r6HpgEQJ__FI2P2zVbzOTQnx-xQGuWfPA7_LjHL8X54xCjPigLtLX638JLYGhCvRlpvvGBo-fNpc7q_rU8dgffCadMYeMgxPqmupqDpgcFpVxKo2EBMA&sa=X&ved=2ahUKEwj91ZGlkuCIAxU4cPUHHd29CMAQtKgLegQIEhAB&biw=1920&bih=919&dpr=1');
   }
 
   /**
@@ -738,6 +740,8 @@ export class WordupImproveComponent {
           this.searchWord.score = (this.maxNegativeScore ?? -50);
           this.searchWord.updateTime = this.calculateTime(undefined);
         }
+
+        this.openIframe('https://www.google.com/search?sca_esv=1ddba70af590f790&sca_upv=1&igu=1&q=','&udm=2&fbs=AEQNm0DVrIRjdA3gRKfJJ-deMT8ZtYOjoIt1NWOMRkEKym4u5PkAZgxJOmIgPx6WieMhF6q1Hq7W6nME2Vp0eHuijF3ZElaTgD0zbj1gkQrti2r6HpgEQJ__FI2P2zVbzOTQnx-xQGuWfPA7_LjHL8X54xCjPigLtLX638JLYGhCvRlpvvGBo-fNpc7q_rU8dgffCadMYeMgxPqmupqDpgcFpVxKo2EBMA&sa=X&ved=2ahUKEwj91ZGlkuCIAxU4cPUHHd29CMAQtKgLegQIEhAB&biw=1920&bih=919&dpr=1');
 
         localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
         this.searchWord.explain = searched.cn;
@@ -1272,7 +1276,7 @@ export class WordupImproveComponent {
   viewIframeImg = false;
   openIframe(urlFirst: string, urlLast: string = '') {
     // https://stackoverflow.com/questions/8700636/how-to-show-google-com-in-an-iframe
-    this.imgSearchUrl = this.urlSafePipe.transform(`${urlFirst}${this.searchWord.word}${urlLast}`, 'resourceUrl');
+    this.imgSearchUrl = this.urlSafePipe.transform(`${urlFirst}${this.searchWord.word??this.card.en}${urlLast}`, 'resourceUrl');
     this.viewIframeImg = true;
   }
 
@@ -1280,11 +1284,10 @@ export class WordupImproveComponent {
     // { static: true } 動態加載的不能用此參數尋找元素
   ) copySelectedDOM!: ElementRef;
   copySelectedText(type: string) {
-    console.log(this.copySelectedDOM)
     this.copySelectedDOM.nativeElement.value = `${type} ${this.searchWord.word}`;
     this.copySelectedDOM.nativeElement.select();
     document.execCommand("copy");
-    window.open('https://chatgpt.com/');
+    window.open('https://chatgpt.com/', '_blank');
   }
 
   /**
@@ -1340,7 +1343,8 @@ export class WordupImproveComponent {
         take(1),
         tap(async (user) => {
           if (user) {
-            localStorage.setItem('lastUpdateLogTime', this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss') ?? '');
+            localStorage.setItem('lastUpdateLogTime', this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') ?? '');
+            this.lastUpdateLogTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') ?? '';
 
             this.logsCollection = collection(this.firestore, 'Logs');
             const editedCardsString = JSON.stringify(this.editedCards?.cards);
@@ -1378,7 +1382,8 @@ export class WordupImproveComponent {
             this.editedCards.card = new Card();
             this.editedCards.date = log.editedCardsDate;
             localStorage.setItem('editedCards', JSON.stringify(this.editedCards));
-            localStorage.setItem('lastdownloadLogTime', this.datePipe.transform(new Date(), 'yyyy-MM-dd hh:mm:ss') ?? '');
+            localStorage.setItem('lastdownloadLogTime', this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') ?? '');
+            this.lastdownloadLogTime = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss') ?? '';
 
             this.calculateFamiliarity();
             this.unfamiliarReflash();
