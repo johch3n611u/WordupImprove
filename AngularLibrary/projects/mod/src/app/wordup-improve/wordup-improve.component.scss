@@ -197,4 +197,23 @@ lib-svg {
   .cardBox {
     padding-top: 0;
   }
+
+  .button-container {
+    margin: 1rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    /* 讓按鈕換行 */
+    gap: 10px;
+
+    /* 設定按鈕之間的間距 */
+    button {
+      /* 設定每個按鈕佔用 50% 的寬度減去間距 */
+      flex: 0 0 calc(50% - 10px);
+      margin: 0;
+    }
+  }
+
+  .trackingInfo > *{
+    font-size: 1.1rem;
+  }
 }

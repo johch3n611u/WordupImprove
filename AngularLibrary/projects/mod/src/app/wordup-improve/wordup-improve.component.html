@@ -82,7 +82,31 @@
           </ul>
         </details> -->
       </ng-container>
+
       <hr />
+
+      <div class="trackingInfo">
+        <p class="subInfo userCantSelect">
+          經過 {{ seconds }} 秒，未複習：{{this.familiarity.notReviewed}}
+          <lib-svg [src]="'./assets/enHelper/audio.svg'" (click)="setSpeakSelection()"></lib-svg>
+        </p>
+        <p class="subInfo userCantSelect" *ngIf="this.record?.avgAnswerSpeed?.length > 0">
+          平均答題速度： {{this.record?.avgAnswerSpeedDisplay}} /s
+        </p>
+        <p class="subInfo userCantSelect">
+          (每日 {{ config.answerCountToday?.count }} / 最大 {{ config.answerCountAll }} ) 答題
+        </p>
+        <p class="subInfo userCantSelect">
+          (平均 {{ answerScoreAverage }} /最大 {{ maxNegativeScore }} ) 錯誤分數
+        </p>
+      </div>
+
+      <div class="iframeContainer" *ngIf="viewIframeImg">
+        <iframe class="iframeResponsive" [src]="imgSearchUrl" target="_parent"></iframe>
+      </div>
+
+      <hr />
+
       <div>
         <input autocomplete="new-password" type="text" [(ngModel)]="searchWord.word" #searchWordInput
           (click)="keyboardControl = false" />
@@ -103,46 +127,29 @@
         </p>
         <hr *ngIf="searchWord?.similarWords" />
         <p style="max-width:70rem;">{{ searchWord?.similarWords }}</p>
-        <button (click)="openBlankUrl('https://dictionary.cambridge.org/dictionary/english-chinese-traditional/')">
-          <span class="userCantSelect">劍橋</span>
-        </button>
-        <button (click)="additionalFeatures('https://www.google.com/search?sca_esv=1ddba70af590f790&sca_upv=1&igu=1&q=','&udm=2&fbs=AEQNm0DVrIRjdA3gRKfJJ-deMT8ZtYOjoIt1NWOMRkEKym4u5PkAZgxJOmIgPx6WieMhF6q1Hq7W6nME2Vp0eHuijF3ZElaTgD0zbj1gkQrti2r6HpgEQJ__FI2P2zVbzOTQnx-xQGuWfPA7_LjHL8X54xCjPigLtLX638JLYGhCvRlpvvGBo-fNpc7q_rU8dgffCadMYeMgxPqmupqDpgcFpVxKo2EBMA&sa=X&ved=2ahUKEwj91ZGlkuCIAxU4cPUHHd29CMAQtKgLegQIEhAB&biw=1920&bih=919&dpr=1')">
-          <span class="userCantSelect">圖片</span>
-        </button>
-        <button (click)="copySelectedText('逐字解釋')">
-          <span class="userCantSelect">逐字解釋</span>
-        </button>
-        <button (click)="copySelectedText('如何記憶單字')">
-          <span class="userCantSelect">如何記憶</span>
-        </button>
-        <!-- <button (click)="additionalFeatures('https://www.google.com/search?igu=1&?igu=1&q=Synonyms+')">
-          <span class="userCantSelect">同義詞 Synonyms</span>
-        </button>
-        <button (click)="additionalFeatures('https://www.google.com/search?igu=1&?q=Antonyms+')">
-          <span class="userCantSelect">反義詞 Antonyms</span>
-        </button> -->
+        <div class="button-container">
+          <button (click)="openBlankUrl('https://dictionary.cambridge.org/dictionary/english-chinese-traditional/')">
+            <span class="userCantSelect">劍橋</span>
+          </button>
+          <button
+            (click)="additionalFeatures('https://www.google.com/search?sca_esv=1ddba70af590f790&sca_upv=1&igu=1&q=','&udm=2&fbs=AEQNm0DVrIRjdA3gRKfJJ-deMT8ZtYOjoIt1NWOMRkEKym4u5PkAZgxJOmIgPx6WieMhF6q1Hq7W6nME2Vp0eHuijF3ZElaTgD0zbj1gkQrti2r6HpgEQJ__FI2P2zVbzOTQnx-xQGuWfPA7_LjHL8X54xCjPigLtLX638JLYGhCvRlpvvGBo-fNpc7q_rU8dgffCadMYeMgxPqmupqDpgcFpVxKo2EBMA&sa=X&ved=2ahUKEwj91ZGlkuCIAxU4cPUHHd29CMAQtKgLegQIEhAB&biw=1920&bih=919&dpr=1')">
+            <span class="userCantSelect">圖片</span>
+          </button>
+          <button (click)="copySelectedText('逐字解釋')">
+            <span class="userCantSelect">逐字解釋</span>
+          </button>
+          <button (click)="copySelectedText('如何記憶單字')">
+            <span class="userCantSelect">如何記憶</span>
+          </button>
+          <!-- <button (click)="additionalFeatures('https://www.google.com/search?igu=1&?igu=1&q=Synonyms+')">
+            <span class="userCantSelect">同義詞 Synonyms</span>
+          </button>
+          <button (click)="additionalFeatures('https://www.google.com/search?igu=1&?q=Antonyms+')">
+            <span class="userCantSelect">反義詞 Antonyms</span>
+          </button> -->
+        </div>
       </div>
     </div>
-  </div>
-
-  <div class="trackingInfo">
-    <p class="subInfo userCantSelect">
-      經過 {{ seconds }} 秒，未複習：{{this.familiarity.notReviewed}}
-      <lib-svg [src]="'./assets/enHelper/audio.svg'" (click)="setSpeakSelection()"></lib-svg>
-    </p>
-    <p class="subInfo userCantSelect" *ngIf="this.record?.avgAnswerSpeed?.length > 0">
-      平均答題速度： {{this.record?.avgAnswerSpeedDisplay}} /s
-    </p>
-    <p class="subInfo userCantSelect">
-      (每日 {{ config.answerCountToday?.count }} / 最大 {{ config.answerCountAll }} ) 答題
-    </p>
-    <p class="subInfo userCantSelect">
-      (平均 {{ answerScoreAverage }} /最大 {{ maxNegativeScore }} ) 錯誤分數
-    </p>
-  </div>
-
-  <div class="iframeContainer" *ngIf="viewIframeImg">
-    <iframe class="iframeResponsive" [src]="imgSearchUrl" target="_parent"></iframe>
   </div>
 
   <hr />
@@ -312,6 +319,20 @@
     <hr />
   </ng-container>
 
+  <div>
+    <input autocomplete="new-password" type="text" [(ngModel)]="searchChineseObj.word"
+      (click)="keyboardControl = false" />
+    <button (click)="searchChinese()">
+      <span class="userCantSelect">搜尋中文相似單字</span>
+    </button>
+    <p>{{ searchChineseObj.similarWords }}</p>
+    <button (click)="editedCards.displayAddNewCard = !editedCards.displayAddNewCard;keyboardControl = false;">
+      <span class="userCantSelect">新增新卡片</span>
+    </button>
+  </div>
+
+  <hr>
+
   <div style="max-width: 85vw">
     <div>
       <button class="unobviousBtn" (click)="enterRegistPage()">註冊登入</button>
@@ -400,20 +421,6 @@
     </div>
   </div>
 
-  <hr>
-
-  <div>
-    <input autocomplete="new-password" type="text" [(ngModel)]="searchChineseObj.word"
-      (click)="keyboardControl = false" />
-    <button (click)="searchChinese()">
-      <span class="userCantSelect">搜尋中文相似單字</span>
-    </button>
-    <p>{{ searchChineseObj.similarWords }}</p>
-    <button (click)="editedCards.displayAddNewCard = !editedCards.displayAddNewCard;keyboardControl = false;">
-      <span class="userCantSelect">新增新卡片</span>
-    </button>
-  </div>
-
 </div>
 
 <div class="login" [style.display]="firebaseAuth.isEnterRegistPage ? 'block' : 'none'">
@@ -449,9 +456,10 @@
     <input autocomplete="new-password" type="email" placeholder="email" [(ngModel)]="firebaseAuth.email" />
     <input autocomplete="new-password" type="password" placeholder="password" [(ngModel)]="firebaseAuth.password" />
   </div>
-  <p >
+  <p>
     <span>
-      最後{{deviceCheckService.isMobile? '手機': '電腦'}}<ng-container *ngIf="isLastUpdate() else isLastDownload">上傳</ng-container><ng-template #isLastDownload>下載</ng-template>
+      最後{{deviceCheckService.isMobile? '手機': '電腦'}}<ng-container
+        *ngIf="isLastUpdate() else isLastDownload">上傳</ng-container><ng-template #isLastDownload>下載</ng-template>
     </span>, 最後上傳時間 {{this.lastUpdateLogTime}}, 最後下載時間 {{this.lastdownloadLogTime}}
   </p>
   <p class="info">

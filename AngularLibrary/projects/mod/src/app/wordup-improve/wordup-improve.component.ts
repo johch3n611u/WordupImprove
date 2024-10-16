@@ -358,7 +358,7 @@ export class WordupImproveComponent {
 
     this.findSameWords();
 
-    this.openIframe('https://www.google.com/search?sca_esv=1ddba70af590f790&sca_upv=1&igu=1&q=','&udm=2&fbs=AEQNm0DVrIRjdA3gRKfJJ-deMT8ZtYOjoIt1NWOMRkEKym4u5PkAZgxJOmIgPx6WieMhF6q1Hq7W6nME2Vp0eHuijF3ZElaTgD0zbj1gkQrti2r6HpgEQJ__FI2P2zVbzOTQnx-xQGuWfPA7_LjHL8X54xCjPigLtLX638JLYGhCvRlpvvGBo-fNpc7q_rU8dgffCadMYeMgxPqmupqDpgcFpVxKo2EBMA&sa=X&ved=2ahUKEwj91ZGlkuCIAxU4cPUHHd29CMAQtKgLegQIEhAB&biw=1920&bih=919&dpr=1');
+    this.openIframe('https://www.google.com/search?sca_esv=1ddba70af590f790&sca_upv=1&igu=1&q=', '&udm=2&fbs=AEQNm0DVrIRjdA3gRKfJJ-deMT8ZtYOjoIt1NWOMRkEKym4u5PkAZgxJOmIgPx6WieMhF6q1Hq7W6nME2Vp0eHuijF3ZElaTgD0zbj1gkQrti2r6HpgEQJ__FI2P2zVbzOTQnx-xQGuWfPA7_LjHL8X54xCjPigLtLX638JLYGhCvRlpvvGBo-fNpc7q_rU8dgffCadMYeMgxPqmupqDpgcFpVxKo2EBMA&sa=X&ved=2ahUKEwj91ZGlkuCIAxU4cPUHHd29CMAQtKgLegQIEhAB&biw=1920&bih=919&dpr=1');
   }
 
   /**
@@ -711,7 +711,7 @@ export class WordupImproveComponent {
 
       let sortTemp = temp.sort((a: any, b: any) => b.cal - a.cal);
       this.searchWord.similarWords = `相似單字：${sortTemp
-        .slice(0, 10)
+        .slice(0, 5)
         .map((obj: any) => `[${obj.en.toLowerCase()}]${obj.cn}`)
         .join('，')}`;
 
@@ -741,7 +741,7 @@ export class WordupImproveComponent {
           this.searchWord.updateTime = this.calculateTime(undefined);
         }
 
-        this.openIframe('https://www.google.com/search?sca_esv=1ddba70af590f790&sca_upv=1&igu=1&q=','&udm=2&fbs=AEQNm0DVrIRjdA3gRKfJJ-deMT8ZtYOjoIt1NWOMRkEKym4u5PkAZgxJOmIgPx6WieMhF6q1Hq7W6nME2Vp0eHuijF3ZElaTgD0zbj1gkQrti2r6HpgEQJ__FI2P2zVbzOTQnx-xQGuWfPA7_LjHL8X54xCjPigLtLX638JLYGhCvRlpvvGBo-fNpc7q_rU8dgffCadMYeMgxPqmupqDpgcFpVxKo2EBMA&sa=X&ved=2ahUKEwj91ZGlkuCIAxU4cPUHHd29CMAQtKgLegQIEhAB&biw=1920&bih=919&dpr=1');
+        this.openIframe('https://www.google.com/search?sca_esv=1ddba70af590f790&sca_upv=1&igu=1&q=', '&udm=2&fbs=AEQNm0DVrIRjdA3gRKfJJ-deMT8ZtYOjoIt1NWOMRkEKym4u5PkAZgxJOmIgPx6WieMhF6q1Hq7W6nME2Vp0eHuijF3ZElaTgD0zbj1gkQrti2r6HpgEQJ__FI2P2zVbzOTQnx-xQGuWfPA7_LjHL8X54xCjPigLtLX638JLYGhCvRlpvvGBo-fNpc7q_rU8dgffCadMYeMgxPqmupqDpgcFpVxKo2EBMA&sa=X&ved=2ahUKEwj91ZGlkuCIAxU4cPUHHd29CMAQtKgLegQIEhAB&biw=1920&bih=919&dpr=1');
 
         localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
         this.searchWord.explain = searched.cn;
@@ -1041,9 +1041,33 @@ export class WordupImproveComponent {
       let temp: any = [];
       this.searchChineseObj.similarWords = '找無';
       this.cards.forEach((el: any) => {
-        let cn = el.cn.join(',');
-        if (this.searchChineseObj.word.match(new RegExp(el.cn, 'i')) || cn.match(new RegExp(this.searchChineseObj.word, 'i'))) {
-          temp.push(`[${el.en.toLowerCase()}]${el.cn}`);
+        try {
+          el.cn.forEach((item: string[] | string, index: number, array: (string | string[])[]) => {
+            // 將 item 處理為字串，並進行括號處理
+            let currentItem = Array.isArray(item) ? item.join(',') : item;
+
+            // 替換全形括號為半形括號
+            currentItem = currentItem.replace(/（/g, '(').replace(/）/g, ')');
+
+            // 如果有不匹配的括號，則移除
+            if (currentItem.includes('(') && !currentItem.includes(')')) {
+              currentItem = currentItem.replace('(', '');
+            } else if (currentItem.includes(')') && !currentItem.includes('(')) {
+              currentItem = currentItem.replace(')', '');
+            }
+
+            // 更新陣列元素
+            array[index] = currentItem;
+          });
+
+          let cn = el.cn.join(',');
+
+          if (this.searchChineseObj.word.match(new RegExp(el.cn, 'i')) || cn.match(new RegExp(this.searchChineseObj.word, 'i'))) {
+            temp.push(`[${el.en.toLowerCase()}]${el.cn}`);
+          }
+
+        } catch (e) {
+          console.error(e);
         }
       });
 
@@ -1276,7 +1300,7 @@ export class WordupImproveComponent {
   viewIframeImg = false;
   openIframe(urlFirst: string, urlLast: string = '') {
     // https://stackoverflow.com/questions/8700636/how-to-show-google-com-in-an-iframe
-    this.imgSearchUrl = this.urlSafePipe.transform(`${urlFirst}${this.searchWord.word??this.card.en}${urlLast}`, 'resourceUrl');
+    this.imgSearchUrl = this.urlSafePipe.transform(`${urlFirst}${this.searchWord.word ?? this.card.en}${urlLast}`, 'resourceUrl');
     this.viewIframeImg = true;
   }
 
