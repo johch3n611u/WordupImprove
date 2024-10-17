@@ -258,7 +258,10 @@ export class WordupImproveComponent {
     if (this.config.drawMode === 'errorFirst') {
       // 依照分數與答題時間排序
       this.cardslinkScore();
-      this.cards?.sort((a: any, b: any) => this.unfamiliarSorting(a, b));
+      const top100 = this.cards?.sort((a: any, b: any) => a.score - b.score).slice(0, 30);
+      top100.sort((a: any, b: any) => this.unfamiliarSorting(a, b));
+      this.cards = top100.concat(this.cards.slice(30));
+      console.log(this.cards);
     }
 
     this.debug = { thresholdScore: 0, list: [] };
@@ -372,8 +375,22 @@ export class WordupImproveComponent {
       return a?.score - b?.score;
     } else {
 
-      let tempSortA = a?.score - a.sentences?.length - a?.updateTime?.days - a?.updateTime?.hours - a?.updateTime?.minutes;
-      let tempSortB = b?.score - b.sentences?.length - b?.updateTime?.days - b?.updateTime?.hours - b?.updateTime?.minutes;
+      const daysA = a?.updateTime?.days || 0;
+      const daysB = b?.updateTime?.days || 0;
+
+      // 先處理 days <= 7 的優先級
+      if (daysA <= 7 && daysB > 7) {
+        return -1
+      } else if (daysB <= 7 && daysA > 7) {
+        return 1;
+      } else if (daysA <= 7 && daysB <= 7) {
+        return daysB - daysA;
+      };
+
+      // 計算 tempSort 並進行排序
+      const tempSortA = a?.score - (a.sentences?.length || 0) - daysA - (a?.updateTime?.hours || 0) - (a?.updateTime?.minutes || 0);
+      const tempSortB = b?.score - (b.sentences?.length || 0) - daysB - (b?.updateTime?.hours || 0) - (b?.updateTime?.minutes || 0);
+
       return tempSortA - tempSortB;
 
       let aH = a?.updateTime?.days == 0 && a?.updateTime?.hours >= (this.config?.unfamiliarSortingHours ?? 1);
