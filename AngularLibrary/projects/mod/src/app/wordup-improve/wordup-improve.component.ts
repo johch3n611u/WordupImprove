@@ -258,10 +258,26 @@ export class WordupImproveComponent {
     if (this.config.drawMode === 'errorFirst') {
       // 依照分數與答題時間排序
       this.cardslinkScore();
-      const top100 = this.cards?.sort((a: any, b: any) => a.score - b.score).slice(0, 30);
+
+      const preprocessCards = this.cards.reduce((acc: { nonRecent: Card[]; recent: Card[]; }, card) => {
+
+        let days = card.updateTime.days;
+        let hours = card.updateTime.hours;
+        let minutes = card.updateTime.minutes;
+
+        if (days === 0 && hours < 7) {
+          // 將符合條件的抽出
+          acc.recent.push(card);
+        } else {
+          // 將其他卡片保持
+          acc.nonRecent.push(card);
+        }
+        return acc;
+      }, { nonRecent: [], recent: [] });
+
+      const top100 = preprocessCards.nonRecent.sort((a: any, b: any) => a.score - b.score).slice(0, 30);
       top100.sort((a: any, b: any) => this.unfamiliarSorting(a, b));
-      this.cards = top100.concat(this.cards.slice(30));
-      console.log(this.cards);
+      this.cards = top100.concat(preprocessCards.nonRecent.slice(30)).concat(preprocessCards.recent);
     }
 
     this.debug = { thresholdScore: 0, list: [] };
@@ -383,7 +399,7 @@ export class WordupImproveComponent {
         return -1
       } else if (daysB <= 7 && daysA > 7) {
         return 1;
-      } else if (daysA <= 7 && daysB <= 7) {
+      } else if ((daysA !== daysB) && (daysA <= 7 && daysB <= 7)) {
         return daysB - daysA;
       };
 
@@ -777,7 +793,7 @@ export class WordupImproveComponent {
       this.debounceBeSub$?.next([this.speak, this.searchWord.display ?? this.searchWord.word]);
       this.unfamiliarReflash();
     }
-    // this.commonService.goToAnchor(this.searchWordInput);
+    this.commonService.goToAnchor(this.copySelectedDOM);
   }
 
   theme = Theme;
@@ -1014,6 +1030,7 @@ export class WordupImproveComponent {
       }
 
       for (let i = 1; i <= this.config.speakTimes; i++) {
+        this.synth?.cancel();
         this.synth?.speak(speechSynthesisUtterance);
         this.tempSpeakMsg = msg;
       }

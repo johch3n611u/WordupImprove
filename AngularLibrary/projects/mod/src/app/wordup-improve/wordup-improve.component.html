@@ -1,3 +1,5 @@
+<button *ngIf="deviceCheckService.isMobile" class="cantR" (click)="searchWordMark()">CR</button>
+
 <!-- <mod-chinese-model></mod-chinese-model> -->
 
 <div class="box" [style.display]="(editedCards.displayAddNewCard || firebaseAuth.isEnterRegistPage) ? 'none' : 'flex'"
