@@ -265,7 +265,7 @@ export class WordupImproveComponent {
         let hours = card.updateTime.hours;
         let minutes = card.updateTime.minutes;
 
-        if (days === 0 && hours < 7) {
+        if (days === 0 && hours < (this.config?.unfamiliarSortingHours ?? 7)) {
           // 將符合條件的抽出
           acc.recent.push(card);
         } else {
@@ -443,7 +443,9 @@ export class WordupImproveComponent {
 
     let word = this.answerScore.find((word: any) => word.en.toLowerCase() == this.card.en.toLowerCase());
     this.notFamiliarScore = this.notFamiliarScoreCalculations(word);
-    this.familiarScore = 70 - this.glgorithmsService.mapScore(this.seconds, 120, 1, 50);
+    // this.familiarScore = 70 - this.glgorithmsService.mapScore(this.seconds, 120, 1, 50);
+    let cS = Math.floor(this.card.score/7) * -1;
+    this.familiarScore = cS - this.glgorithmsService.mapScore(this.seconds, cS, 1, cS-30);
 
     let speakWords = '';
     this.config.seeAnswerSpeak ? speakWords = this.sentence?.en.toLowerCase() : speakWords = this.card.en.toLowerCase();
@@ -914,7 +916,9 @@ export class WordupImproveComponent {
       self.seconds++;
       // 每 5 秒檢查得分數
       if (self.seconds % 5 === 0) {
-        self.familiarScore = 70 - self.glgorithmsService.mapScore(self.seconds, 120, 1, 50);
+        // self.familiarScore = 70 - self.glgorithmsService.mapScore(self.seconds, 120, 1, 50);
+        let cS = Math.floor(self.card.score/7) * -1;
+        self.familiarScore = cS - self.glgorithmsService.mapScore(self.seconds, cS, 1, cS-30);
       }
     }, 1000);
   }
@@ -1009,6 +1013,7 @@ export class WordupImproveComponent {
   * @param msg 訊息
   */
   speak(msg: string): void {
+    this.synth?.cancel();
     if (this.synth && !this.commonService.containsChinese(msg)) {
       this.voices = this.synth?.getVoices();
       let voice: any = this.voices?.find(
@@ -1030,11 +1035,14 @@ export class WordupImproveComponent {
       }
 
       for (let i = 1; i <= this.config.speakTimes; i++) {
-        this.synth?.cancel();
         this.synth?.speak(speechSynthesisUtterance);
         this.tempSpeakMsg = msg;
       }
     }
+  }
+
+  preventStuck() {
+    this.synth?.cancel();
   }
 
   /**
