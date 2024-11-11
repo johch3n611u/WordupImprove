@@ -62,7 +62,7 @@ export class WordupImproveComponent {
     private glgorithmsService: GlgorithmsService,
     private serviceWorkerService: ServiceWorkerService,
     private datePipe: DatePipe,
-    private commonService: CommonService,
+    public commonService: CommonService,
     private urlSafePipe: UrlSafePipe,
     public deviceCheckService: DeviceCheckService,
   ) {
@@ -1040,10 +1040,6 @@ export class WordupImproveComponent {
     }
   }
 
-  preventStuck() {
-    this.synth?.cancel();
-  }
-
   /**
   * 開啟朗讀模式
   */
@@ -1065,7 +1061,7 @@ export class WordupImproveComponent {
     if (!(this.debounceSub$ && !this.debounceSub$.closed)) {
       this.debounceHandler();
     }
-
+    this.synth?.cancel();
     this.debounceBeSub$.next([this.speak, msg]);
   }
 
@@ -1345,9 +1341,11 @@ export class WordupImproveComponent {
     this.viewIframeImg = true;
   }
 
-  @ViewChild('searchWordInput',
+  @ViewChild('backToTop',
     // { static: true } 動態加載的不能用此參數尋找元素
-  ) copySelectedDOM!: ElementRef;
+  ) backToTopDOM!: ElementRef;
+
+  @ViewChild('searchWordInput',) copySelectedDOM!: ElementRef;
   copySelectedText(type: string) {
     this.copySelectedDOM.nativeElement.value = `${type} ${this.searchWord.word}`;
     this.copySelectedDOM.nativeElement.select();

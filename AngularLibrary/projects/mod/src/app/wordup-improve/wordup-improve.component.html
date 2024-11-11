@@ -1,9 +1,13 @@
-<button *ngIf="deviceCheckService.isMobile" class="cantR" (click)="searchWordMark()">CR</button>
+<button class="quickBtn CR" (click)="searchWordMark()">懵</button>
+<button class="quickBtn CB" (click)="openBlankUrl('https://dictionary.cambridge.org/dictionary/english-chinese-traditional/')">劍</button>
+<button class="quickBtn EP" (click)="copySelectedText('逐字解釋')">解</button>
+<button class="quickBtn RM" (click)="copySelectedText('如何記憶單字')">記</button>
+<button class="quickBtn BT" (click)="commonService.goToAnchor(backToTopDOM)">🔝</button>
 
 <!-- <mod-chinese-model></mod-chinese-model> -->
 
 <div class="box" [style.display]="(editedCards.displayAddNewCard || firebaseAuth.isEnterRegistPage) ? 'none' : 'flex'"
-  (window:resize)="onResize($event)">
+  (window:resize)="onResize($event)" #backToTop>
   <div class="toolBox">
     <button class="answerScoreResetBtn" *ngIf="displayMode !== DisplayMode.Answer" (click)="seeAnswer()">
       <span class="userCantSelect">{{ displayMode }}</span>
@@ -70,19 +74,21 @@
             <lib-svg [src]="'./assets/enHelper/edit.svg'"
               (click)="editedCards.notEditMode = !editedCards.notEditMode"></lib-svg>
           </p>
-          <details>
-            <summary class="subInfo userCantSelect" style="cursor: pointer;">英文相似單字</summary>
-            <ul *ngFor="let i of this.findSameWordsObj.en">
-              <li>[{{i.en}}]{{i.cn}}</li>
-            </ul>
-          </details>
+          <div style="display:flex;">
+            <details style="width: 50%;">
+              <summary class="subInfo userCantSelect" style="cursor: pointer;">英文相似單字</summary>
+              <ul *ngFor="let i of this.findSameWordsObj.en">
+                <li>[{{i.en}}]{{i.cn}}</li>
+              </ul>
+            </details>
+            <details style="width: 50%;">
+              <summary class="subInfo userCantSelect" style="cursor: pointer;">中文相似單字</summary>
+              <ul *ngFor="let i of this.findSameWordsObj.cn">
+                <li>[{{i.en}}]{{i.cn}}</li>
+              </ul>
+            </details>
+          </div>
         </ng-container>
-        <!-- <details>
-          <summary class="subInfo userCantSelect" style="cursor: pointer;">中文相似單字</summary>
-          <ul *ngFor="let i of this.findSameWordsObj.cn">
-            <li>[{{i.en}}]{{i.cn}}</li>
-          </ul>
-        </details> -->
       </ng-container>
 
       <hr />
@@ -352,9 +358,6 @@
       <p>
         Config：<button class="unobviousBtn" (click)="importConfig()">
           更改設定檔
-        </button>
-        <button class="unobviousBtn" (click)="preventStuck()">
-          語音卡死重置
         </button>
       </p>
       <!-- <textarea [(ngModel)]="configDisplay"></textarea> -->

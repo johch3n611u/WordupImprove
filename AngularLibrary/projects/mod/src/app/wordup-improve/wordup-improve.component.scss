@@ -119,6 +119,38 @@ lib-svg {
   width: 30px;
 }
 
+.quickBtn {
+  border-radius: 50%;
+  height: 5rem;
+  width: 5rem;
+  min-width: unset;
+  margin: unset;
+  position: fixed;
+  right: 1rem;
+  z-index: 1;
+  opacity: 0.3;
+
+  &.CR {
+    top: 1rem;
+  }
+
+  &.CB {
+    top: 6rem;
+  }
+
+  &.EP {
+    top: 11rem;
+  }
+
+  &.RM {
+    top: 16rem;
+  }
+
+  &.BT {
+    top: 21rem;
+  }
+}
+
 @include LargeDevices {
   .box {
     margin-top: 10vh;
@@ -215,14 +247,5 @@ lib-svg {
 
   .trackingInfo > *{
     font-size: 1.1rem;
-  }
-
-  .cantR {
-    border-radius: 30px;
-    min-width: unset;
-    margin: unset;
-    position: fixed;
-    right: 10px;
-    top: 10px;
   }
 }
