@@ -382,6 +382,9 @@
         <input [(ngModel)]="config.drawMode" id="completelyRandom" type="radio" name="drawMode"
           value="completelyRandom" />
         <label for="completelyRandom">完全隨機</label>
+        <input [(ngModel)]="config.drawMode" id="unfamiliarFirst" type="radio" name="drawMode"
+        value="unfamiliarFirst" />
+        <label for="unfamiliarFirst">沒看過優先</label>
       </div>
       <label for="unfamiliarSortingHours">排序無視時間 (-1 => 無, 0 = 無視 1 小時)</label>
       <input id="unfamiliarSortingHours" type="number" [(ngModel)]="config.unfamiliarSortingHours" />

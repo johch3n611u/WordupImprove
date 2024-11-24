@@ -280,6 +280,14 @@ export class WordupImproveComponent {
       this.cards = top100.concat(preprocessCards.nonRecent.slice(30)).concat(preprocessCards.recent);
     }
 
+    // 沒看過優先
+    if (this.config.drawMode === 'unfamiliarFirst') {
+      this.cardslinkScore();
+      let zero = this.cards.filter((card) => card.score == 0);
+      let familiar = this.cards.filter((card) => card.score != 0);
+      this.cards = zero.concat(familiar);
+    }
+
     this.debug = { thresholdScore: 0, list: [] };
     const totalScore = this.cards.reduce(
       (sum: any, obj: any) => sum + obj?.sentences?.length,
@@ -298,7 +306,7 @@ export class WordupImproveComponent {
       let drawNumber = 0;
       let answerInfo = this.answerScore.find((res: any) => res.en.toLowerCase() === this.cards[drawNumber].en.toLowerCase());
 
-      if (this.config.drawMode !== 'errorFirst') {
+      if (this.config.drawMode !== 'errorFirst'&& this.config.drawMode !== 'unfamiliarFirst') {
         drawNumber = this.glgorithmsService.getRandomNum(this.cards?.length - 1);
         answerInfo = this.answerScore.find((res: any) => res.en.toLowerCase() === this.cards[drawNumber].en.toLowerCase());
         let preCumulativeScore = cumulativeScore;
@@ -348,7 +356,7 @@ export class WordupImproveComponent {
 
       // 累積分數超過臨界值則得獎
       if (
-        (thresholdScore <= cumulativeScore && this.cards[drawNumber]?.en.toLowerCase() !== this.card?.en.toLowerCase()) || this.config.drawMode === 'errorFirst'
+        (thresholdScore <= cumulativeScore && this.cards[drawNumber]?.en.toLowerCase() !== this.card?.en.toLowerCase()) || this.config.drawMode === 'errorFirst' || this.config.drawMode === 'unfamiliarFirst'
       ) {
         this.card = JSON.parse(JSON.stringify(this.cards[drawNumber]));
         this.card.score = answerInfo?.score;
