@@ -1,4 +1,5 @@
 import { ElementRef, Injectable } from '@angular/core';
+import { BehaviorSubject, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -31,4 +32,11 @@ export class CommonService {
     return /[\u4E00-\u9FFF]/.test(str);
   }
 
+  /**
+   * 載入中
+   */
+  private isLoadingSubject = new BehaviorSubject<boolean>(true);
+  isLoading$ = this.isLoadingSubject.asObservable();
+  loadingOn() { this.isLoadingSubject.next(true); }
+  loadingOff() { this.isLoadingSubject.next(false); }
 }

@@ -14,12 +14,12 @@
       <span *ngIf="config?.keyboardControl?.seeAnswer">({{config.keyboardControl?.seeAnswer}})</span>
     </button>
     <ng-container *ngIf="displayMode === DisplayMode.Answer">
-      <button (click)="answerScoreReset(true)">
+      <button (click)="interposer(true)">
         <span class="userCantSelect">會 + {{ familiarScore }}</span>
         <span
           *ngIf="config?.keyboardControl?.answerScoreResetTrue">({{config.keyboardControl?.answerScoreResetTrue}})</span>
       </button>
-      <button (click)="answerScoreReset(false)">
+      <button (click)="interposer(false)">
         <span class="userCantSelect">不會 {{ notFamiliarScore }}</span>
         <span
           *ngIf="config?.keyboardControl?.answerScoreResetFalse">({{config.keyboardControl?.answerScoreResetFalse}})</span>

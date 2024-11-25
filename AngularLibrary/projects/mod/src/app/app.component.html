@@ -1,1 +1,10 @@
-<router-outlet></router-outlet>
+<div [hidden]="!(commonService.isLoading$ | async)">
+  <div style="display: flex;justify-content: center;align-items: center;padding-top: 20rem;flex-direction: column;">
+    <p style="font-size: 5rem;">Loading...</p>
+    <lib-svg class="rotate" [src]="'./assets/icons/loading.svg'" height="40vh"></lib-svg>
+  </div>
+</div>
+
+<div [hidden]="commonService.isLoading$ | async">
+  <router-outlet></router-outlet>
+</div>

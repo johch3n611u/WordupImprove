@@ -1,14 +1,17 @@
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, HostListener, ViewChild, isDevMode } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, NgZone, ViewChild, isDevMode } from '@angular/core';
 import {
   Subscription,
   combineLatest,
   debounce,
+  delay,
   filter,
+  of,
   switchMap,
   take,
   tap,
+  timeout,
   timer,
 } from 'rxjs';
 import Chart from 'chart.js/auto';
@@ -65,6 +68,8 @@ export class WordupImproveComponent {
     public commonService: CommonService,
     private urlSafePipe: UrlSafePipe,
     public deviceCheckService: DeviceCheckService,
+    private ngZone: NgZone,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {
     this.initCards();
 
@@ -73,6 +78,9 @@ export class WordupImproveComponent {
     // if (!isDevMode()) {
     //   this.autoUpdateLog();
     // }
+  }
+
+  ngOnInit(): void {
   }
 
   ngOnDestroy() {
@@ -84,7 +92,11 @@ export class WordupImproveComponent {
     }
   }
 
+  ngAfterContentInit(): void {
+  }
+
   ngAfterViewInit() {
+    this.commonService.loadingOn();
     this.serviceWorkerService.judgmentUpdate();
   }
 
@@ -213,6 +225,7 @@ export class WordupImproveComponent {
       )
       .subscribe((res: any) => {
         this.drawCard();
+        this.commonService.loadingOff();
       });
   }
 
@@ -306,7 +319,7 @@ export class WordupImproveComponent {
       let drawNumber = 0;
       let answerInfo = this.answerScore.find((res: any) => res.en.toLowerCase() === this.cards[drawNumber].en.toLowerCase());
 
-      if (this.config.drawMode !== 'errorFirst'&& this.config.drawMode !== 'unfamiliarFirst') {
+      if (this.config.drawMode !== 'errorFirst' && this.config.drawMode !== 'unfamiliarFirst') {
         drawNumber = this.glgorithmsService.getRandomNum(this.cards?.length - 1);
         answerInfo = this.answerScore.find((res: any) => res.en.toLowerCase() === this.cards[drawNumber].en.toLowerCase());
         let preCumulativeScore = cumulativeScore;
@@ -453,8 +466,8 @@ export class WordupImproveComponent {
     let word = this.answerScore.find((word: any) => word.en.toLowerCase() == this.card.en.toLowerCase());
     this.notFamiliarScore = this.notFamiliarScoreCalculations(word);
     // this.familiarScore = 70 - this.glgorithmsService.mapScore(this.seconds, 120, 1, 50);
-    let cS = Math.floor(this.card.score/7) * -1;
-    this.familiarScore = cS - this.glgorithmsService.mapScore(this.seconds, cS, 1, cS-30);
+    let cS = Math.floor(this.card.score / 7) * -1;
+    this.familiarScore = cS - this.glgorithmsService.mapScore(this.seconds, cS, 1, cS - 30);
 
     let speakWords = '';
     this.config.seeAnswerSpeak ? speakWords = this.sentence?.en.toLowerCase() : speakWords = this.card.en.toLowerCase();
@@ -496,6 +509,20 @@ export class WordupImproveComponent {
     }
 
     this.searchWord = {};
+  }
+
+  /**
+  * 用於 Loading 裝飾會卡住的地方，delay 一旦拿掉就會造成 loadingOn 與 loadingOff 幾乎黏再一起
+  */
+  interposer(answer: boolean) {
+    of(true).pipe(
+      tap(() => this.commonService.loadingOn()),
+      delay(1),
+      tap(() => this.answerScoreReset(answer)),
+      take(1),
+    ).subscribe(() => {
+      this.commonService.loadingOff();
+    });
   }
 
   /**
@@ -926,8 +953,8 @@ export class WordupImproveComponent {
       // 每 5 秒檢查得分數
       if (self.seconds % 5 === 0) {
         // self.familiarScore = 70 - self.glgorithmsService.mapScore(self.seconds, 120, 1, 50);
-        let cS = Math.floor(self.card.score/7) * -1;
-        self.familiarScore = cS - self.glgorithmsService.mapScore(self.seconds, cS, 1, cS-30);
+        let cS = Math.floor(self.card.score / 7) * -1;
+        self.familiarScore = cS - self.glgorithmsService.mapScore(self.seconds, cS, 1, cS - 30);
       }
     }, 1000);
   }
@@ -1412,6 +1439,8 @@ export class WordupImproveComponent {
   async updateLog(direct: boolean = false): Promise<void> {
     if (direct || confirm('確定要更新雲端紀錄嗎？(此動作不可逆)')) {
       user(this.auth).pipe(
+        tap(() => this.commonService.loadingOn()),
+        delay(1),
         take(1),
         tap(async (user) => {
           if (user) {
@@ -1432,7 +1461,7 @@ export class WordupImproveComponent {
           }
         }),
         take(1),
-      ).subscribe();
+      ).subscribe(() => this.commonService.loadingOff());
     }
   }
 
@@ -1442,6 +1471,8 @@ export class WordupImproveComponent {
         this.user$,
         collectionData(collection(this.firestore, 'Logs'))
       ]).pipe(
+        tap(() => this.commonService.loadingOn()),
+        delay(1),
         take(1),
         tap(async ([user, logs]) => {
           const log: any = logs.find((log: any) => log.email === user?.email);
@@ -1469,7 +1500,7 @@ export class WordupImproveComponent {
           }
         }),
         take(1),
-      ).subscribe();
+      ).subscribe(() => this.commonService.loadingOff());
     }
   }
 }
