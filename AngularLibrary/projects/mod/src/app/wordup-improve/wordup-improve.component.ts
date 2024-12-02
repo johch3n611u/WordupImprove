@@ -467,7 +467,8 @@ export class WordupImproveComponent {
     this.notFamiliarScore = this.notFamiliarScoreCalculations(word);
     // this.familiarScore = 70 - this.glgorithmsService.mapScore(this.seconds, 120, 1, 50);
     let cS = Math.floor(this.card.score / 7) * -1;
-    this.familiarScore = cS - this.glgorithmsService.mapScore(this.seconds, cS, 1, cS - 30);
+    let FamiliarScore = cS - this.glgorithmsService.mapScore(this.seconds, cS, 1, cS - 30);
+    this.familiarScore = Number.isNaN(FamiliarScore) ? 20: FamiliarScore;
 
     let speakWords = '';
     this.config.seeAnswerSpeak ? speakWords = this.sentence?.en.toLowerCase() : speakWords = this.card.en.toLowerCase();
@@ -954,7 +955,8 @@ export class WordupImproveComponent {
       if (self.seconds % 5 === 0) {
         // self.familiarScore = 70 - self.glgorithmsService.mapScore(self.seconds, 120, 1, 50);
         let cS = Math.floor(self.card.score / 7) * -1;
-        self.familiarScore = cS - self.glgorithmsService.mapScore(self.seconds, cS, 1, cS - 30);
+        let FamiliarScore = cS - self.glgorithmsService.mapScore(self.seconds, cS, 1, cS - 30);
+        self.familiarScore = Number.isNaN(FamiliarScore) ? 20: FamiliarScore;
       }
     }, 1000);
   }
