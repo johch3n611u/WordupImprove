@@ -241,6 +241,7 @@ export class WordupImproveComponent {
     // this.answerScoreAverage = Math.floor(sum / negativeScores?.length);
 
     const negativeScores = this.answerScore?.filter((item: any) => item.score < 0);
+    console.log(negativeScores.sort((a:any, b:any) => a.score - b.score))
     if (negativeScores.length > 0) {
       const sum = negativeScores.reduce((total: number, item: any) => total + item.score, 0);
       this.answerScoreAverage = Math.floor(sum / negativeScores.length);
@@ -400,6 +401,8 @@ export class WordupImproveComponent {
 
     this.openIframe('https://www.google.com/search?sca_esv=1ddba70af590f790&sca_upv=1&igu=1&q=', '&udm=2&fbs=AEQNm0DVrIRjdA3gRKfJJ-deMT8ZtYOjoIt1NWOMRkEKym4u5PkAZgxJOmIgPx6WieMhF6q1Hq7W6nME2Vp0eHuijF3ZElaTgD0zbj1gkQrti2r6HpgEQJ__FI2P2zVbzOTQnx-xQGuWfPA7_LjHL8X54xCjPigLtLX638JLYGhCvRlpvvGBo-fNpc7q_rU8dgffCadMYeMgxPqmupqDpgcFpVxKo2EBMA&sa=X&ved=2ahUKEwj91ZGlkuCIAxU4cPUHHd29CMAQtKgLegQIEhAB&biw=1920&bih=919&dpr=1');
     // ,' definition'
+
+    console.log(this.cards.find(card => card.en == 'uneven'));
   }
 
   /**
@@ -1276,7 +1279,7 @@ export class WordupImproveComponent {
       let repeatCards: any = [];
       const tempCards = this.cards.map(({ cn, en, sentences }) => {
         if (!seenWords.has(en)) {
-          seenWords.add(en);
+          seenWords.add(en.replace(/\s+/g, ""));
 
           let newCn = Array.from(new Set(cn.join(",")
             .replace(/，|；|;/g, ",")
@@ -1284,7 +1287,7 @@ export class WordupImproveComponent {
             .trim()
             .split(",")));
 
-          return { cn: newCn, en: en.toLowerCase(), sentences };
+          return { cn: newCn, en: en.replace(/\s+/g, "").toLowerCase(), sentences };
         } else {
           console.log('重複卡片', { cn, en, sentences: sentences });
           repeatCards.push({ cn, en, sentences: sentences });
