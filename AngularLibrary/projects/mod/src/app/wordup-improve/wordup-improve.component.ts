@@ -231,6 +231,7 @@ export class WordupImproveComponent {
 
   answerScoreAverage = 0;
   maxNegativeScore = 0;
+  maxNegativeScoreIndex = 0;
   /**
   * 計算平均負分
   */
@@ -241,7 +242,6 @@ export class WordupImproveComponent {
     // this.answerScoreAverage = Math.floor(sum / negativeScores?.length);
 
     const negativeScores = this.answerScore?.filter((item: any) => item.score < 0);
-    // console.log(negativeScores.sort((a:any, b:any) => a.score - b.score))
     if (negativeScores.length > 0) {
       const sum = negativeScores.reduce((total: number, item: any) => total + item.score, 0);
       this.answerScoreAverage = Math.floor(sum / negativeScores.length);
@@ -264,6 +264,7 @@ export class WordupImproveComponent {
 
   debug: any;
   card: Card = new Card();
+  test = '';
   /**
   * 根據邏輯抽取卡片資料
   */
@@ -292,6 +293,7 @@ export class WordupImproveComponent {
       const top100 = preprocessCards.nonRecent.sort((a: any, b: any) => a.score - b.score).slice(0, 30);
       top100.sort((a: any, b: any) => this.unfamiliarSorting(a, b));
       this.cards = top100.concat(preprocessCards.nonRecent.slice(30)).concat(preprocessCards.recent);
+      console.log(this.cards)
     }
 
     // 沒看過優先
@@ -377,6 +379,8 @@ export class WordupImproveComponent {
         this.card.updateTime = this.calculateTime(answerInfo?.updateTime);
         isLocked = false;
         this.record.drawCountRecord.push(drawCount);
+
+        this.maxNegativeScoreIndex = this.cards.filter(card=> card.updateTime.days != 0 && card.updateTime.days <= 7).length;
       }
     }
 
@@ -552,7 +556,7 @@ export class WordupImproveComponent {
         word.score += this.familiarScore;
       } else {
         word.score += this.notFamiliarScore;
-        if (word.score < this.maxNegativeScore || this.card.updateTime.days > 50) {
+        if (this.maxNegativeScore < -50 && (word.score < this.maxNegativeScore || this.card.updateTime.days > 50)) {
           word.score = this.maxNegativeScore;
         }
       }
@@ -801,7 +805,7 @@ export class WordupImproveComponent {
           this.searchWord.notFamiliarScore = this.notFamiliarScoreCalculations(word);
           const time = this.calculateTime(word?.updateTime);
           word.score += this.searchWord.notFamiliarScore > 0 ? this.searchWord.notFamiliarScore * -1 : this.searchWord.notFamiliarScore;
-          if (word.score < this.maxNegativeScore - 50) {
+          if (this.maxNegativeScore < -50 && (word.score < this.maxNegativeScore || this.card.updateTime.days > 50)) {
             word.score = this.maxNegativeScore;
           }
           this.searchWord.updateTime = time;
