@@ -29,7 +29,7 @@
   <div class="cardBox">
     <div *ngIf="card">
       <span class="subInfo userCantSelect">
-        Score：{{ card.score }},
+        Score：{{ card.score }} ({{maxNegativeScoreIndex + 1}}),
         <span>
           {{ card.updateTime.days }} d / {{ card.updateTime.hours }} h /{{ card.updateTime.minutes }} m,
         </span>
@@ -104,7 +104,7 @@
           (每日 {{ config.answerCountToday?.count }} / 最大 {{ config.answerCountAll }} ) 答題
         </p>
         <p class="subInfo userCantSelect">
-          (平均 {{ answerScoreAverage }} /最大 {{ maxNegativeScore }} ) 錯誤分數 ({{maxNegativeScoreIndex + 1}})
+          (平均 {{ answerScoreAverage }} /最大 {{ maxNegativeScore }} ) 錯誤分數
         </p>
       </div>
 

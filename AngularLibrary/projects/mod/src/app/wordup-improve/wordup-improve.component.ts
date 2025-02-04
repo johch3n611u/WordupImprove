@@ -217,8 +217,6 @@ export class WordupImproveComponent {
           this.answerScore = JSON.parse(
             localStorage.getItem('answerScore') ?? '[]'
           );
-          this.calculateAverageNegativeScore();
-          this.cardslinkScore();
           this.configInit();
           this.editedCardsInit();
         })
@@ -241,18 +239,40 @@ export class WordupImproveComponent {
     // const sum = negativeScores?.reduce((total: number, item: any) => total + item.score, 0);
     // this.answerScoreAverage = Math.floor(sum / negativeScores?.length);
 
-    const negativeScores = this.answerScore?.filter((item: any) => item.score < 0);
+    this.cardslinkScore();
+    const negativeScores = this.cards?.filter((item: any) => item.score < 0);
     if (negativeScores.length > 0) {
       const sum = negativeScores.reduce((total: number, item: any) => total + item.score, 0);
       this.answerScoreAverage = Math.floor(sum / negativeScores.length);
       this.maxNegativeScore = Math.min(...negativeScores.map((item: any) => item.score));
     }
+
+    const result = this.cards?.reduce((acc: any, card) => {
+      // 如果該 score 尚未存在於 accumulator，則初始化為 0
+      acc[card.score] = (acc[card.score] || 0) + 1;
+      return acc;
+    }, {});
+
+    console.log(result);
   }
 
   /**
   * 將卡片資料與分數資料關聯，cards 資料太大包，是固定 json 檔案，搭配 firebase 上記錄分數的檔案
   */
   cardslinkScore(): void {
+    // 檢查 answerScore
+    this.answerScore.forEach((s: any) => {
+      if (!this.cards.find(c => c.en === s.en)) {
+        let c = this.cards.find(c => c.en.toLowerCase() === s.en.toLowerCase());
+        if (c) {
+          // console.log('c', c);
+          // console.log('s', s);
+        } else {
+          // console.log(`answerScore.${s.en} 在 cards 找不到`)
+        }
+      }
+    });
+
     this.cards.forEach((card: Card) => {
       let findAnswer = this.answerScore?.find(
         (word: any) => word?.en.toLowerCase() === card?.en.toLowerCase()
@@ -269,11 +289,10 @@ export class WordupImproveComponent {
   * 根據邏輯抽取卡片資料
   */
   drawCard(): void {
+    this.calculateAverageNegativeScore();
+
     // 錯誤優先模式
     if (this.config.drawMode === 'errorFirst') {
-      // 依照分數與答題時間排序
-      this.cardslinkScore();
-
       const preprocessCards = this.cards.reduce((acc: { nonRecent: Card[]; recent: Card[]; }, card) => {
 
         let days = card.updateTime.days;
@@ -290,15 +309,15 @@ export class WordupImproveComponent {
         return acc;
       }, { nonRecent: [], recent: [] });
 
-      const top100 = preprocessCards.nonRecent.sort((a: any, b: any) => a.score - b.score).slice(0, 30);
-      top100.sort((a: any, b: any) => this.unfamiliarSorting(a, b));
-      this.cards = top100.concat(preprocessCards.nonRecent.slice(30)).concat(preprocessCards.recent);
-      console.log(this.cards)
+      // const top100 = preprocessCards.nonRecent.sort((a: any, b: any) => a.score - b.score).slice(0, 30);
+      // top100.sort((a: any, b: any) => this.unfamiliarSorting(a, b));
+      // this.cards = top100.concat(preprocessCards.nonRecent.slice(30)).concat(preprocessCards.recent);
+
+      this.cards = preprocessCards.nonRecent.sort((a: any, b: any) => a.score - b.score).concat(preprocessCards.recent);
     }
 
     // 沒看過優先
     if (this.config.drawMode === 'unfamiliarFirst') {
-      this.cardslinkScore();
       let zero = this.cards.filter((card) => card.score == 0);
       let familiar = this.cards.filter((card) => card.score != 0);
       this.cards = zero.concat(familiar);
@@ -380,7 +399,7 @@ export class WordupImproveComponent {
         isLocked = false;
         this.record.drawCountRecord.push(drawCount);
 
-        this.maxNegativeScoreIndex = this.cards.filter(card=> card.updateTime.days != 0 && card.updateTime.days <= 7).length;
+        this.maxNegativeScoreIndex = this.cards.filter(c => this.card.score == c.score).length;
       }
     }
 
@@ -420,44 +439,54 @@ export class WordupImproveComponent {
       return a?.score - b?.score;
     } else {
 
-      const daysA = a?.updateTime?.days || 0;
-      const daysB = b?.updateTime?.days || 0;
-
-      // 先處理 days <= 7 的優先級
-      if (daysA <= 7 && daysB > 7) {
-        return -1
-      } else if (daysB <= 7 && daysA > 7) {
-        return 1;
-      } else if ((daysA !== daysB) && (daysA <= 7 && daysB <= 7)) {
-        return daysB - daysA;
-      };
-
-      // 計算 tempSort 並進行排序
-      const tempSortA = a?.score - (a.sentences?.length || 0) - daysA - (a?.updateTime?.hours || 0) - (a?.updateTime?.minutes || 0);
-      const tempSortB = b?.score - (b.sentences?.length || 0) - daysB - (b?.updateTime?.hours || 0) - (b?.updateTime?.minutes || 0);
-
-      return tempSortA - tempSortB;
-
-      let aH = a?.updateTime?.days == 0 && a?.updateTime?.hours >= (this.config?.unfamiliarSortingHours ?? 1);
-      let aM = a?.updateTime?.minutes >= (this.config?.unfamiliarSortingMinutes ?? 0);
-      let bH = b?.updateTime?.days == 0 && b?.updateTime?.hours >= (this.config?.unfamiliarSortingHours ?? 1);
-      let bM = b?.updateTime?.minutes >= (this.config?.unfamiliarSortingMinutes ?? 0);
-
-      if (aH) {
-        if (aM) {
-          return -1;
+      if (a?.score == b?.score) {
+        if (b?.updateTime?.days == a?.updateTime?.days) {
+          return a?.updateTime?.minutes - b?.updateTime?.minutes;
         } else {
-          return 1;
-        }
-      } else if (bH) {
-        if (bM) {
-          return 1;
-        } else {
-          return -1;
+          return a?.updateTime?.days - b?.updateTime?.days;
         }
       } else {
-        return tempSortA - tempSortB;
+        return b?.score - a?.score;
       }
+
+      // const daysA = a?.updateTime?.days || 0;
+      // const daysB = b?.updateTime?.days || 0;
+
+      // // 先處理 days <= 7 的優先級
+      // if (daysA <= 7 && daysB > 7) {
+      //   return -1
+      // } else if (daysB <= 7 && daysA > 7) {
+      //   return 1;
+      // } else if ((daysA !== daysB) && (daysA <= 7 && daysB <= 7)) {
+      //   return daysB - daysA;
+      // };
+
+      // // 計算 tempSort 並進行排序
+      // const tempSortA = a?.score - (a.sentences?.length || 0) - daysA - (a?.updateTime?.hours || 0) - (a?.updateTime?.minutes || 0);
+      // const tempSortB = b?.score - (b.sentences?.length || 0) - daysB - (b?.updateTime?.hours || 0) - (b?.updateTime?.minutes || 0);
+
+      // return tempSortA - tempSortB;
+
+      // let aH = a?.updateTime?.days == 0 && a?.updateTime?.hours >= (this.config?.unfamiliarSortingHours ?? 1);
+      // let aM = a?.updateTime?.minutes >= (this.config?.unfamiliarSortingMinutes ?? 0);
+      // let bH = b?.updateTime?.days == 0 && b?.updateTime?.hours >= (this.config?.unfamiliarSortingHours ?? 1);
+      // let bM = b?.updateTime?.minutes >= (this.config?.unfamiliarSortingMinutes ?? 0);
+
+      // if (aH) {
+      //   if (aM) {
+      //     return -1;
+      //   } else {
+      //     return 1;
+      //   }
+      // } else if (bH) {
+      //   if (bM) {
+      //     return 1;
+      //   } else {
+      //     return -1;
+      //   }
+      // } else {
+      //   return tempSortA - tempSortB;
+      // }
     }
   }
 
@@ -475,7 +504,7 @@ export class WordupImproveComponent {
     // this.familiarScore = 70 - this.glgorithmsService.mapScore(this.seconds, 120, 1, 50);
     let cS = Math.floor(this.card.score / 7) * -1;
     let FamiliarScore = cS - this.glgorithmsService.mapScore(this.seconds, cS, 1, cS - 30);
-    this.familiarScore = Number.isNaN(FamiliarScore) ? 20: FamiliarScore;
+    this.familiarScore = Number.isNaN(FamiliarScore) ? 20 : FamiliarScore;
 
     let speakWords = '';
     this.config.seeAnswerSpeak ? speakWords = this.sentence?.en.toLowerCase() : speakWords = this.card.en.toLowerCase();
@@ -556,7 +585,7 @@ export class WordupImproveComponent {
         word.score += this.familiarScore;
       } else {
         word.score += this.notFamiliarScore;
-        if (this.maxNegativeScore < -50 && (word.score < this.maxNegativeScore || this.card.updateTime.days > 50)) {
+        if (this.maxNegativeScore < -50 && (word.score < this.maxNegativeScore || this.card.updateTime.days > 7)) {
           word.score = this.maxNegativeScore;
         }
       }
@@ -574,7 +603,6 @@ export class WordupImproveComponent {
 
     localStorage.setItem('answerScore', JSON.stringify(this.answerScore));
     this.calculateAnswerCountToday(word?.en);
-    this.calculateAverageNegativeScore();
     this.drawCard();
   }
 
@@ -805,7 +833,7 @@ export class WordupImproveComponent {
           this.searchWord.notFamiliarScore = this.notFamiliarScoreCalculations(word);
           const time = this.calculateTime(word?.updateTime);
           word.score += this.searchWord.notFamiliarScore > 0 ? this.searchWord.notFamiliarScore * -1 : this.searchWord.notFamiliarScore;
-          if (this.maxNegativeScore < -50 && (word.score < this.maxNegativeScore || this.card.updateTime.days > 50)) {
+          if (this.maxNegativeScore < -50 && (word.score < this.maxNegativeScore || this.card.updateTime.days > 7)) {
             word.score = this.maxNegativeScore;
           }
           this.searchWord.updateTime = time;
@@ -963,7 +991,7 @@ export class WordupImproveComponent {
         // self.familiarScore = 70 - self.glgorithmsService.mapScore(self.seconds, 120, 1, 50);
         let cS = Math.floor(self.card.score / 7) * -1;
         let FamiliarScore = cS - self.glgorithmsService.mapScore(self.seconds, cS, 1, cS - 30);
-        self.familiarScore = Number.isNaN(FamiliarScore) ? 20: FamiliarScore;
+        self.familiarScore = Number.isNaN(FamiliarScore) ? 20 : FamiliarScore;
       }
     }, 1000);
   }
@@ -1502,7 +1530,6 @@ export class WordupImproveComponent {
             alert('更新成功');
             this.refreshCnEdited();
             this.firebaseAuth.isEnterRegistPage = false;
-            this.cardslinkScore();
             this.drawCard();
           } else {
             alert('未找到紀錄');
