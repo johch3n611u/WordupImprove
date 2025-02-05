@@ -1,6 +1,8 @@
 <button class="quickBtn CR" (click)="searchWordMark()">懵</button>
-<button class="quickBtn CB" (click)="openBlankUrl('https://dictionary.cambridge.org/dictionary/english-chinese-traditional/')">劍</button>
-<button class="quickBtn EP" (click)="copySelectedText('你現在要扮演一位英文導師，需要用中文解釋接下來提問的句子，最好是可以拆解句子文法辭源，以及為何要這樣使用語句，並且提供發音及技巧。')">解</button>
+<button class="quickBtn CB"
+  (click)="openBlankUrl('https://dictionary.cambridge.org/dictionary/english-chinese-traditional/')">劍</button>
+<button class="quickBtn EP"
+  (click)="copySelectedText('你現在要扮演一位英文導師，需要用中文解釋接下來提問的句子，最好是可以拆解句子文法辭源，以及為何要這樣使用語句，並且提供發音及技巧。')">解</button>
 <button class="quickBtn BT" (click)="commonService.goToAnchor(backToTopDOM)">🔝</button>
 
 <!-- <mod-chinese-model></mod-chinese-model> -->
@@ -31,17 +33,19 @@
       <span class="subInfo userCantSelect">
         Score：{{ card.score }} ({{maxNegativeScoreIndex + 1}}),
         <span>
-          {{ card.updateTime.days }} d / {{ card.updateTime.hours }} h /{{ card.updateTime.minutes }} m,
+          {{ card.updateTime.days }} d / {{ card.updateTime.hours }} h /{{ card.updateTime.minutes }} m
         </span>
       </span>
+      <br>
       <span>
         (單)
         <lib-svg [src]="'./assets/enHelper/audio.svg'" (click)="speakMsg(card.en)"></lib-svg>
         <span *ngIf="config?.keyboardControl?.speakMsgWord">({{config.keyboardControl?.speakMsgWord}})</span>
         (句)
         <lib-svg [src]="'./assets/enHelper/audio.svg'" (click)="speakMsg(sentence?.en)"></lib-svg>
-        <span *ngIf="config?.keyboardControl?.speakMsgSentence">({{config.keyboardControl?.speakMsgSentence}})</span>
+        <span *ngIf="config?.keyboardControl?.speakMsgSentence">({{config.keyboardControl?.speakMsgSentence}})</span>,
       </span>
+      <span>within7d ({{withinDays.within7d}})</span>
       <hr />
       <p [innerHtml]="sentence?.en | highlight : card.en : REGEXP_TYPE.First"></p>
       <ng-container *ngIf="displayMode === DisplayMode.Answer">
@@ -104,7 +108,7 @@
           (每日 {{ config.answerCountToday?.count }} / 最大 {{ config.answerCountAll }} ) 答題
         </p>
         <p class="subInfo userCantSelect">
-          (平均 {{ answerScoreAverage }} /最大 {{ maxNegativeScore }} ) 錯誤分數
+          (平均 {{ answerScoreAverage }} /最大 {{ maxNegativeScore }} ) 錯誤分數 ({{maxNegativeScore * (6 / 7)}})
         </p>
       </div>
 
@@ -124,8 +128,17 @@
         <p [innerHTML]="searchWord?.display"></p>
         <p>{{ searchWord?.explain }}</p>
         <p *ngIf="searchWord?.score">
-          Score： ( {{ searchWord?.score - searchWord.notFamiliarScore }} {{searchWord.notFamiliarScore}} ) = {{
-          searchWord?.score }}
+          Score：
+          <ng-container *ngIf="(searchWord?.score - searchWord.notFamiliarScore) > 0">
+            ( {{ searchWord?.score }} - {{ searchWord?.score - searchWord.notFamiliarScore }} )
+            = {{searchWord.notFamiliarScore}}
+          </ng-container>
+
+          <ng-container *ngIf="(searchWord?.score - searchWord.notFamiliarScore) < 0">
+            ( {{ searchWord?.score - searchWord.notFamiliarScore }} {{searchWord.notFamiliarScore}} )
+            = {{ searchWord?.score }}
+          </ng-container>
+
           <span> ,
             {{ searchWord?.updateTime?.days }} d /
             {{ searchWord?.updateTime?.hours }} h /
@@ -382,7 +395,7 @@
           value="completelyRandom" />
         <label for="completelyRandom">完全隨機</label>
         <input [(ngModel)]="config.drawMode" id="unfamiliarFirst" type="radio" name="drawMode"
-        value="unfamiliarFirst" />
+          value="unfamiliarFirst" />
         <label for="unfamiliarFirst">沒看過優先</label>
       </div>
       <label for="unfamiliarSortingHours">排序無視時間 (-1 => 無, 0 = 無視 1 小時)</label>
