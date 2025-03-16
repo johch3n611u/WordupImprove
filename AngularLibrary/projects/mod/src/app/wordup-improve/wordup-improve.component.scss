@@ -146,8 +146,12 @@ lib-svg {
     top: 16rem;
   }
 
+  &.NC {
+    bottom: 6rem;
+  }
+  
   &.BT {
-    top: 21rem;
+    bottom: 1rem;
   }
 }
 
@@ -245,7 +249,7 @@ lib-svg {
     }
   }
 
-  .trackingInfo > *{
+  .trackingInfo>* {
     font-size: 1.1rem;
   }
 }

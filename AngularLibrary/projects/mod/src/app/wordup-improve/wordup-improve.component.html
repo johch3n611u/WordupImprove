@@ -1,8 +1,8 @@
 <button class="quickBtn CR" (click)="searchWordMark()">懵</button>
 <button class="quickBtn CB"
   (click)="openBlankUrl('https://dictionary.cambridge.org/dictionary/english-chinese-traditional/')">劍</button>
-<button class="quickBtn EP"
-  (click)="copySelectedText('你現在要扮演一位英文導師，需要用中文解釋接下來提問的句子，最好是可以拆解句子文法辭源，以及為何要這樣使用語句，並且提供發音及技巧。')">解</button>
+<button class="quickBtn EP" (click)="copySelectedText(config.prompt)">解</button>
+<button class="quickBtn NC" (click)="editedCards.displayAddNewCard = !editedCards.displayAddNewCard;keyboardControl = false;">新</button>
 <button class="quickBtn BT" (click)="commonService.goToAnchor(backToTopDOM)">🔝</button>
 
 <!-- <mod-chinese-model></mod-chinese-model> -->
@@ -45,16 +45,20 @@
         <lib-svg [src]="'./assets/enHelper/audio.svg'" (click)="speakMsg(sentence?.en)"></lib-svg>
         <span *ngIf="config?.keyboardControl?.speakMsgSentence">({{config.keyboardControl?.speakMsgSentence}})</span>,
       </span>
-      <span>within7d ({{withinDays.within7d}})</span>
       <hr />
       <p [innerHtml]="sentence?.en | highlight : card.en : REGEXP_TYPE.First"></p>
+      <button *ngIf="displayMode !== DisplayMode.Answer && card.sentences.length > 1" (click)="drawSentence()">
+        更多例句 ({{ card.sentences.length }})
+        <span *ngIf="config?.keyboardControl?.drawSentence">({{config.keyboardControl?.drawSentence}})</span>
+      </button>
       <ng-container *ngIf="displayMode === DisplayMode.Answer">
         <p>
           <ng-container *ngIf="sentenceAnswerDisplay">
             <p [innerHtml]="sentence?.cn"></p>
           </ng-container>
         </p>
-        <button *ngIf="sentenceAnswerDisplay && card.sentences.length > 1" (click)="drawSentence()">
+        <button *ngIf="(displayMode !== DisplayMode.Answer || sentenceAnswerDisplay) && card.sentences.length > 1"
+          (click)="drawSentence()">
           更多例句 ({{ card.sentences.length }})
           <span *ngIf="config?.keyboardControl?.drawSentence">({{config.keyboardControl?.drawSentence}})</span>
         </button>
@@ -95,8 +99,12 @@
       </ng-container>
 
       <hr />
+      <p (click)="trackingInfoSwitch = !trackingInfoSwitch">
+        <ng-container *ngIf="!trackingInfoSwitch">⬇ ⬇ trackingInfo ⬇ ⬇</ng-container>
+        <ng-container *ngIf="trackingInfoSwitch">⬆ ⬆ trackingInfo ⬆ ⬆</ng-container>
+      </p>
 
-      <div class="trackingInfo">
+      <div class="trackingInfo" *ngIf="trackingInfoSwitch">
         <p class="subInfo userCantSelect">
           經過 {{ seconds }} 秒，未複習：{{this.familiarity.notReviewed}}
           <lib-svg [src]="'./assets/enHelper/audio.svg'" (click)="setSpeakSelection()"></lib-svg>
@@ -105,12 +113,28 @@
           平均答題速度： {{this.record?.avgAnswerSpeedDisplay}} /s
         </p>
         <p class="subInfo userCantSelect">
-          (每日 {{ config.answerCountToday?.count }} / 最大 {{ config.answerCountAll }} ) 答題
+          (每日 {{ config.answerCountToday?.count }} / 最大 {{ config.answerCountAll }} ) 答題 ( new
+          {{errorModeDisplay.notReviewdCount}})
         </p>
         <p class="subInfo userCantSelect">
           (平均 {{ answerScoreAverage }} /最大 {{ maxNegativeScore }} ) 錯誤分數 ({{maxNegativeScore * (6 / 7)}})
         </p>
+        <p>
+          <span>winningArray:({{errorModeDisplay.winningArray}}),</span>
+          <span>recent:({{errorModeDisplay.recent}}),</span>
+          <span>remain:({{errorModeDisplay.remain}}),</span>
+          <span>notReviewed:({{errorModeDisplay.notReviewed}}),</span>
+          <span>maxNegativeScore:({{errorModeDisplay.maxNegativeScore + 1}}),</span>
+          <span>positive:({{errorModeDisplay.positive}})</span>
+          <br>
+          <span>within1d:({{errorModeDisplay.within1d}})</span>
+          <span>within2d:({{errorModeDisplay.within2d}})</span>
+          <span>within6d:({{errorModeDisplay.within6d}})</span>
+          <span>within31d:({{errorModeDisplay.within31d}})</span>
+        </p>
       </div>
+
+      <hr />
 
       <div class="iframeContainer" *ngIf="viewIframeImg">
         <iframe class="iframeResponsive" [src]="imgSearchUrl" target="_parent"></iframe>
@@ -387,6 +411,8 @@
       <input id="dayScore" [(ngModel)]="config.dayScore" />
       <label for="questionsScore">錯誤加權分數</label>
       <input id="questionsScore" [(ngModel)]="config.questionsScore" />
+      <label for="prompt">提示詞</label>
+      <input id="prompt" [(ngModel)]="config.prompt" />
       <label>抽籤模式</label>
       <div class="drawMode">
         <input [(ngModel)]="config.drawMode" id="errorFirst" type="radio" name="drawMode" value="errorFirst" />

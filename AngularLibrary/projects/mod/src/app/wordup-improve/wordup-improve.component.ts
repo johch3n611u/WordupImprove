@@ -58,6 +58,7 @@ export class WordupImproveComponent {
   displayMode = DisplayMode.Questions;
   REGEXP_TYPE = REGEXP_TYPE;
   imgSearchUrl: SafeHtml | undefined;
+  trackingInfoSwitch: boolean = false;
 
   constructor(
     private httpClient: HttpClient,
@@ -123,6 +124,8 @@ export class WordupImproveComponent {
 
     this.lastUpdateLogTime = localStorage.getItem('lastUpdateLogTime') ?? '';
     this.lastdownloadLogTime = localStorage.getItem('lastdownloadLogTime') ?? '';
+
+    this.errorModeDisplay.notReviewdCount = 0;
   }
 
   /**
@@ -230,7 +233,8 @@ export class WordupImproveComponent {
   answerScoreAverage = 0;
   maxNegativeScore = 0;
   maxNegativeScoreIndex = 0;
-  withinDays: any = {};
+  errorModeDisplay: any = {};
+
   /**
   * 計算平均負分
   */
@@ -253,8 +257,6 @@ export class WordupImproveComponent {
       acc[card.score] = (acc[card.score] || 0) + 1;
       return acc;
     }, {});
-
-    console.log(result);
   }
 
   /**
@@ -294,59 +296,186 @@ export class WordupImproveComponent {
 
     // 錯誤優先模式
     if (this.config.drawMode === 'errorFirst') {
-      // const preprocessCards = this.cards.reduce((acc: { nonRecent: Card[]; recent: Card[]; }, card) => {
 
-      //   let days = card.updateTime.days;
-      //   let hours = card.updateTime.hours;
-      //   let minutes = card.updateTime.minutes;
+      // this.unfamiliarSorting();
+      // this.cards = randomArray.concat();
 
-      //   if (days === 0 && hours < (this.config?.unfamiliarSortingHours ?? 7)) {
-      //     // 將符合條件的抽出
-      //     acc.recent.push(card);
-      //   } else {
-      //     // 將其他卡片保持
-      //     acc.nonRecent.push(card);
-      //   }
-      //   return acc;
-      // }, { nonRecent: [], recent: [] });
-
-      const preprocessCards = this.cards.reduce((acc: { nonRecent: Card[]; recent: Card[]; within7d: Card[]; within30d: Card[] }, card) => {
-
+      const preprocessCards = this.cards.reduce((acc: {
+        positive: Card[]; recent: Card[]; remain: Card[]; notReviewed: Card[]; maxNegativeScore: Card[];
+        within1d: Card[]; within2d: Card[]; within6d: Card[]; within31d: Card[];
+      }, card) => {
         let days = card.updateTime.days;
         let hours = card.updateTime.hours;
         let minutes = card.updateTime.minutes;
 
-        if (days === 0 && hours < (this.config?.unfamiliarSortingHours ?? 7)) {
-          // 將符合條件的抽出
+        // 順序不能變
+        if (card.score > 0) {
+          acc.positive.push(card);
+        } else if (days == 0 && hours == 0 && minutes == 0 && card.score == 0) { // 未複習過的
+          acc.notReviewed.push(card);
+        } else if (days === 0 && hours < (this.config?.unfamiliarSortingHours ?? 7)) {// 小於 1 小時不抽出
           acc.recent.push(card);
-        } else if (days <= 7 && card.score < (this.maxNegativeScore * (6 / 7))) {
-          acc.within7d.push(card);
+        } else if (card.score == this.maxNegativeScore) { // 扣最多分的
+          acc.maxNegativeScore.push(card);
+        } else if (days > 0 && days <= 1) { // 最近 1 天內的
+          acc.within1d.push(card);
+        } else if (days > 0 && days <= 2) { // 最近 2 天內的
+          acc.within2d.push(card);
+        } else if (days > 0 && days <= 6) { // 最近 6 天內的
+          acc.within6d.push(card);
+        } else if (days > 0 && days <= 31) { // 最近 31 天內的
+          acc.within31d.push(card);
+        } else {
+          acc.remain.push(card);
         }
-        // else if (days <= 30 && card.score < (this.maxNegativeScore + 50)) {
-        //   acc.within30d.push(card);
-        // }
-        else {
-          // 將其他卡片保持
-          acc.nonRecent.push(card);
-        }
+
         return acc;
-      }, { nonRecent: [], recent: [], within7d: [], within30d: [] });
+      }, {
+        recent: [], remain: [], notReviewed: [], maxNegativeScore: [],
+        within1d: [], within2d: [], within6d: [], within31d: [],
+        positive: []
+      });
 
-      console.log(this.maxNegativeScore * (6 / 7))
+      this.errorModeDisplay.recent = preprocessCards.recent.length;
+      this.errorModeDisplay.remain = preprocessCards.remain.length;
+      this.errorModeDisplay.notReviewed = preprocessCards.notReviewed.length;
+      this.errorModeDisplay.maxNegativeScore = preprocessCards.maxNegativeScore.length;
+      this.errorModeDisplay.within1d = preprocessCards.within1d.length;
+      this.errorModeDisplay.within2d = preprocessCards.within2d.length;
+      this.errorModeDisplay.within6d = preprocessCards.within6d.length;
+      this.errorModeDisplay.within31d = preprocessCards.within31d.length;
+      this.errorModeDisplay.positive = preprocessCards.positive.length;
 
-      // const top100 = preprocessCards.nonRecent.sort((a: any, b: any) => a.score - b.score).slice(0, 30);
-      // top100.sort((a: any, b: any) => this.unfamiliarSorting(a, b));
-      // this.cards = top100.concat(preprocessCards.nonRecent.slice(30)).concat(preprocessCards.recent);
+      // 先背最多扣分的，如果都跑進一小時內，沒了就接續最近七天的，七天的都進一小時內，換最近三十天的跟新的抽
 
-      // 小於 7, 30 天優先以分數低的排序，接續分數低的排序
+      console.log(preprocessCards.maxNegativeScore.length)
 
-      const within7d = preprocessCards.within7d.sort((a: any, b: any) => a.score - b.score);
-      this.withinDays.within7d = within7d.length;
-      // const within30d = preprocessCards.within30d.sort((a: any, b: any) => a.score - b.score);
-      // this.withinDays.within30d = within30d.length;
-      const nonRecent = preprocessCards.nonRecent.sort((a: any, b: any) => a.score - b.score);
-      this.withinDays.nonRecent = nonRecent.length;
-      this.cards = within7d.concat(nonRecent).concat(preprocessCards.recent);
+      if (this.errorModeDisplay.notReviewdCount <= 5) {
+        this.errorModeDisplay.winningArray = 'notReviewd';
+        this.errorModeDisplay.notReviewdCount += 1;
+        preprocessCards.notReviewed.sort((a, b) => b.sentences?.length - a.sentences?.length);
+        this.cards = preprocessCards.notReviewed
+          .concat(preprocessCards.recent)
+          .concat(preprocessCards.remain)
+          .concat(preprocessCards.maxNegativeScore)
+          .concat(preprocessCards.within1d)
+          .concat(preprocessCards.within2d)
+          .concat(preprocessCards.within6d)
+          .concat(preprocessCards.within31d)
+          .concat(preprocessCards.positive)
+      } else {
+        if (preprocessCards.maxNegativeScore.length != 0) {
+          this.errorModeDisplay.winningArray = 'maxNegativeScore';
+          if (preprocessCards.maxNegativeScore.length > 30) {
+            preprocessCards.maxNegativeScore.sort((a, b) => {
+              if (a.updateTime.days == b.updateTime.days) {
+                return b.updateTime.hours - a.updateTime.hours
+              } else {
+                return a.updateTime.days - b.updateTime.days
+              }
+            }
+
+            );
+          } else {
+            preprocessCards.maxNegativeScore.sort((a, b) => b.updateTime.days - a.updateTime.days);
+          }
+          this.cards = preprocessCards.maxNegativeScore
+            .concat(preprocessCards.recent)
+            .concat(preprocessCards.remain)
+            .concat(preprocessCards.notReviewed)
+            .concat(preprocessCards.within1d)
+            .concat(preprocessCards.within2d)
+            .concat(preprocessCards.within6d)
+            .concat(preprocessCards.within31d)
+            .concat(preprocessCards.positive)
+        } else {
+          if (preprocessCards.within6d.length != 0) {
+            this.errorModeDisplay.winningArray = 'within6d';
+            preprocessCards.within6d.sort((a, b) => a.score - b.score);
+            this.cards = preprocessCards.within6d
+              .concat(preprocessCards.recent)
+              .concat(preprocessCards.remain)
+              .concat(preprocessCards.maxNegativeScore)
+              .concat(preprocessCards.notReviewed)
+              .concat(preprocessCards.within2d)
+              .concat(preprocessCards.within1d)
+              .concat(preprocessCards.within31d)
+              .concat(preprocessCards.positive)
+          } else {
+            if (preprocessCards.within2d.length != 0) {
+              this.errorModeDisplay.winningArray = 'within2d';
+              preprocessCards.within2d.sort((a, b) => a.score - b.score);
+              this.cards = preprocessCards.within2d
+                .concat(preprocessCards.recent)
+                .concat(preprocessCards.remain)
+                .concat(preprocessCards.maxNegativeScore)
+                .concat(preprocessCards.notReviewed)
+                .concat(preprocessCards.within1d)
+                .concat(preprocessCards.within6d)
+                .concat(preprocessCards.within31d)
+                .concat(preprocessCards.positive)
+            } else {
+              if (preprocessCards.within31d.length != 0) {
+                this.errorModeDisplay.winningArray = 'within31d';
+                preprocessCards.within31d.sort((a, b) => a.score - b.score);
+                this.cards = preprocessCards.within31d
+                  .concat(preprocessCards.recent)
+                  .concat(preprocessCards.remain)
+                  .concat(preprocessCards.maxNegativeScore)
+                  .concat(preprocessCards.notReviewed)
+                  .concat(preprocessCards.within1d)
+                  .concat(preprocessCards.within2d)
+                  .concat(preprocessCards.within6d)
+                  .concat(preprocessCards.positive)
+              } else {
+                if (preprocessCards.within1d.length != 0) {
+                  this.errorModeDisplay.winningArray = 'within1d';
+                  preprocessCards.within1d.sort((a, b) => a.score - b.score);
+                  this.cards = preprocessCards.within6d
+                    .concat(preprocessCards.recent)
+                    .concat(preprocessCards.remain)
+                    .concat(preprocessCards.maxNegativeScore)
+                    .concat(preprocessCards.notReviewed)
+                    .concat(preprocessCards.within31d)
+                    .concat(preprocessCards.within2d)
+                    .concat(preprocessCards.within6d)
+                    .concat(preprocessCards.positive)
+                } else {
+                  const n = preprocessCards.notReviewed.concat(preprocessCards.remain);
+                  const r1 = Math.floor(Math.random() * n.length);
+                  const [item] = n.splice(r1, 1); // 移除該元素
+                  n.unshift(item); // 放到最前面
+
+                  this.cards = n.concat(preprocessCards.recent).concat(preprocessCards.maxNegativeScore)
+                    .concat(preprocessCards.within1d).concat(preprocessCards.within2d).concat(preprocessCards.within6d).concat(preprocessCards.within31d);
+                  this.errorModeDisplay.winningArray = 'notReviewed/remain';
+                }
+              }
+            }
+          }
+        }
+
+        console.log(this.cards)
+      }
+
+      // const nonEmptyArrays = [{
+      //   name: 'notReviewed', items: preprocessCards.notReviewed,
+      // }, {
+      //   name: 'maxNegativeScore', items: preprocessCards.maxNegativeScore,
+      // }, {
+      //   name: 'within7d', items: preprocessCards.within7d
+      // }].filter(arr => arr.items.length > 0);
+
+      // if (nonEmptyArrays.length > 0) {
+      //   // 隨機選擇一個非空陣列
+      //   const r1 = Math.floor(Math.random() * nonEmptyArrays.length);
+      //   const randomArray = nonEmptyArrays[r1];
+      //   const r2 = Math.floor(Math.random() * randomArray.items.length);
+      //   const winning = randomArray.items[r2];
+      //   const winningIndex = this.cards.findIndex((card: Card) => card.en.toLowerCase() === winning.en.toLowerCase());
+      //   const [item] = this.cards.splice(winningIndex, 1); // 移除該元素
+      //   this.cards.unshift(item); // 放到最前面
+      // }
     }
 
     // 沒看過優先
@@ -457,8 +586,6 @@ export class WordupImproveComponent {
 
     this.openIframe('https://www.google.com/search?sca_esv=1ddba70af590f790&sca_upv=1&igu=1&q=', '&udm=2&fbs=AEQNm0DVrIRjdA3gRKfJJ-deMT8ZtYOjoIt1NWOMRkEKym4u5PkAZgxJOmIgPx6WieMhF6q1Hq7W6nME2Vp0eHuijF3ZElaTgD0zbj1gkQrti2r6HpgEQJ__FI2P2zVbzOTQnx-xQGuWfPA7_LjHL8X54xCjPigLtLX638JLYGhCvRlpvvGBo-fNpc7q_rU8dgffCadMYeMgxPqmupqDpgcFpVxKo2EBMA&sa=X&ved=2ahUKEwj91ZGlkuCIAxU4cPUHHd29CMAQtKgLegQIEhAB&biw=1920&bih=919&dpr=1');
     // ,' definition'
-
-    // console.log(this.cards.find(card => card.en == 'uneven'));
   }
 
   /**
@@ -537,7 +664,7 @@ export class WordupImproveComponent {
     // this.familiarScore = 70 - this.glgorithmsService.mapScore(this.seconds, 120, 1, 50);
     let cS = Math.floor(this.card.score / 7) * -1;
     let FamiliarScore = cS - this.glgorithmsService.mapScore(this.seconds, cS, 1, cS - 30);
-    this.familiarScore = Number.isNaN(FamiliarScore) ? 20 : FamiliarScore;
+    this.familiarScore = Number.isNaN(FamiliarScore) || FamiliarScore <= 0 ? 20 : FamiliarScore;
 
     let speakWords = '';
     this.config.seeAnswerSpeak ? speakWords = this.sentence?.en.toLowerCase() : speakWords = this.card.en.toLowerCase();
@@ -855,11 +982,16 @@ export class WordupImproveComponent {
         .map((obj: any) => `[${obj.en.toLowerCase()}]${obj.cn}`)
         .join('，')}`;
 
-      const pattern = new RegExp(`\\b${this.searchWord.word}\\b`, 'gi');
-      const searched = this.cards.find((card: any) => card.en.toLowerCase().match(pattern));
+      const exactPattern = new RegExp(`^${this.searchWord.word}$`, "i"); // 完全匹配
+      const loosePattern = new RegExp(`^${this.searchWord.word}-`, "i"); // 允許 - 但優先完全匹配
+
+      let searched = this.cards.find((item) => exactPattern.test(item.en.toLowerCase()))
+        || this.cards.find((item) => loosePattern.test(item.en.toLowerCase()));
+
       if (searched) {
-        let word = this.answerScore.find((word: any) =>
-          word.en.toLowerCase().match(pattern)
+        let word = this.answerScore.find((w: any) =>
+          // word.en.toLowerCase().match(pattern)
+          w.en.toLowerCase().match(exactPattern) || w.en.toLowerCase().match(loosePattern)
         );
         if (word) {
           this.searchWord.score = word?.score;
@@ -1024,7 +1156,7 @@ export class WordupImproveComponent {
         // self.familiarScore = 70 - self.glgorithmsService.mapScore(self.seconds, 120, 1, 50);
         let cS = Math.floor(self.card.score / 7) * -1;
         let FamiliarScore = cS - self.glgorithmsService.mapScore(self.seconds, cS, 1, cS - 30);
-        self.familiarScore = Number.isNaN(FamiliarScore) ? 20 : FamiliarScore;
+        self.familiarScore = Number.isNaN(FamiliarScore) || FamiliarScore <= 0 ? 20 : FamiliarScore;
       }
     }, 1000);
   }
@@ -1617,7 +1749,8 @@ export class Config {
     showExanpleAnswers: 'g',
     speakMsgWord: 'q',
     speakMsgSentence: 'w',
-  }
+  };
+  prompt: string = '你現在要扮演一位英文導師，需要用中文解釋接下來提問的句子，拆解句子文法，以及為何要這樣使用語句，並拆解單字原形與單字常用的意思與單字辭源與單字字根，並且提供單字與同義字差異與單字反義字與單字記憶技巧，並在最後做列項總結。總結後出一題選擇題考我幫助我記憶，並在我回答後詳解，詳解後繼續出下一題。';
 }
 
 export class Card {
