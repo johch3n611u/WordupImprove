@@ -1,6 +1,6 @@
 # WordupImprove
 
-<img align="left" src="https://github.com/johch3n611u/WordupImprove/blob/main/assets/257544.jpg?raw=true" width="50%">
+<img align="left" src="https://github.com/johch3n611u/WordupImprove/blob/master/assets/257544.jpg?raw=true" width="50%">
 
 由於急需背單字，但某款 APP 問題頻繁且修復速度極慢，甚至連簡單功能的開發也拖延許久，感覺更專注於銷售課程。因此，身為工程師的我，索性購買了單字數據並進行爬取與客製化改造。
 
@@ -12,7 +12,7 @@
 
 ## Video
 
-[![Video](https://github.com/johch3n611u/WordupImprove/blob/main/assets/6.png?raw=true)](https://www.youtube.com/watch?v=Uf0c-erquEg&ab_channel=yochenLiu)
+[![Video](https://github.com/johch3n611u/WordupImprove/blob/master/assets/6.png?raw=true)](https://www.youtube.com/watch?v=Uf0c-erquEg&ab_channel=yochenLiu)
 
 ## Feature
 
@@ -37,12 +37,12 @@
 
 <br><br><br>
 
-![](https://github.com/johch3n611u/WordupImprove/blob/main/assets/1.png?raw=true)
+![](https://github.com/johch3n611u/WordupImprove/blob/master/assets/1.png?raw=true)
 
-![](https://github.com/johch3n611u/WordupImprove/blob/main/assets/2.png?raw=true)
+![](https://github.com/johch3n611u/WordupImprove/blob/master/assets/2.png?raw=true)
 
-![](https://github.com/johch3n611u/WordupImprove/blob/main/assets/3.png?raw=true)
+![](https://github.com/johch3n611u/WordupImprove/blob/master/assets/3.png?raw=true)
 
-![](https://github.com/johch3n611u/WordupImprove/blob/main/assets/4.png?raw=true)
+![](https://github.com/johch3n611u/WordupImprove/blob/master/assets/4.png?raw=true)
 
-![](https://github.com/johch3n611u/WordupImprove/blob/main/assets/5.png?raw=true)
+![](https://github.com/johch3n611u/WordupImprove/blob/master/assets/5.png?raw=true)
