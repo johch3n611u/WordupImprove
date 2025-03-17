@@ -16,25 +16,25 @@ Since the primary goal is vocabulary retention, I extracted only the necessary l
 
 ## Feature
 
-|Feature||
+|||
 |-|-|
-|1. 註冊登入（同步）	Account Registration & Sync|Uses Firebase for account management, tracks vocabulary learning progress, syncs across PC & Mobile, supports PWA offline mode, and allows manual upload/download to save data usage.|
-|2. 可控制的抽卡邏輯	Customizable Flashcard Logic|Offers multiple study modes: Mistake Priority (familiarity-based & forgetting curve), Random Selection, and New Words First to match learning needs.|
-|3. 卡片熟悉度機制	Adaptive Learning System|Adjusts familiarity level based on response speed: Fast response → Fewer reinforcement cycles, Slow or incorrect response → Increased repetition.|
-|4. 例句背誦單字	Contextual Sentence-Based Learning|Displays vocabulary with example sentences to enhance understanding and application.|
-|5. 自動朗誦選取單字	Automated Word Pronunciation|Reads aloud selected words/sentences with adjustable accent, speed, and volume, using debounce & throttle to optimize pronunciation repetition.|
-|6. 專心鍵盤快捷模式	Keyboard Shortcut Mode|Enables quick navigation using keyboard shortcuts for flipping cards, answering, and playback, minimizing mouse usage.|
-|7. 額外單字扣分	Penalty for Unfamiliar Words|Deduct points for unrecognized words within sentences to reinforce learning.|
-|8. 不熟悉榜單	Difficult Words List|Automatically tracks frequently missed words, generating a high-priority study list for targeted learning.|
-|9. 激勵與檢討數據分析顯示	Performance Analytics & Progress Tracking|Displays: Daily quiz attempts, Average score & response time, Mistake rate, Last review date for each word.|
-|10. 本地設定檔案	Local Settings Configuration|Allows customization of learning mode, UI themes, volume, and speech settings.|
-|11. 黑白護眼主題	Eye-Friendly Themes|Provides Dark Mode and Low Blue Light Mode to reduce eye strain during long study sessions.|
-|12. 自動抽卡刷題	Automated Flashcard Practice|Dynamically selects words from the database based on progress & familiarity weight.|
-|13. 客製化新增單字與句子	Custom Word & Sentence Addition|Allows users to add personalized words and example sentences for a more tailored study experience.|
-|14. 同義詞與反義詞學習	Synonyms & Antonyms Learning|Displays common synonyms & antonyms on vocabulary cards to expand word knowledge.|
-|🔹 15. 劍橋字典直連	Cambridge Dictionary Integration|One-click access to detailed definitions, pronunciations, and usage examples.|
-|🔹 16. OpenAI 軟串接 prompt	OpenAI Prompt Integration|Uses AI to generate example sentences, part-of-speech analysis, and contextual usage.|
-|🔹 17. Google 圖片幫助記憶	Google Images for Memory Aid|Uses Google Image Search API to provide visual representations of words for visual learners.|
+|1. 註冊登入（同步）<be>Account Registration & Sync|Uses Firebase for account management, tracks vocabulary learning progress, syncs across PC & Mobile, supports PWA offline mode, and allows manual upload/download to save data usage.|
+|2. 可控制的抽卡邏輯<be>Customizable Flashcard Logic|Offers multiple study modes: Mistake Priority (familiarity-based & forgetting curve), Random Selection, and New Words First to match learning needs.|
+|3. 卡片熟悉度機制<be>Adaptive Learning System|Adjusts familiarity level based on response speed: Fast response → Fewer reinforcement cycles, Slow or incorrect response → Increased repetition.|
+|4. 例句背誦單字<be>Contextual Sentence-Based Learning|Displays vocabulary with example sentences to enhance understanding and application.|
+|5. 自動朗誦選取單字<be>Automated Word Pronunciation|Reads aloud selected words/sentences with adjustable accent, speed, and volume, using debounce & throttle to optimize pronunciation repetition.|
+|6. 專心鍵盤快捷模式<be>Keyboard Shortcut Mode|Enables quick navigation using keyboard shortcuts for flipping cards, answering, and playback, minimizing mouse usage.|
+|7. 額外單字扣分<be>Penalty for Unfamiliar Words|Deduct points for unrecognized words within sentences to reinforce learning.|
+|8. 不熟悉榜單<be>Difficult Words List|Automatically tracks frequently missed words, generating a high-priority study list for targeted learning.|
+|9. 激勵與檢討數據分析顯示<be>Performance Analytics & Progress Tracking|Displays: Daily quiz attempts, Average score & response time, Mistake rate, Last review date for each word.|
+|10. 本地設定檔案<be>Local Settings Configuration|Allows customization of learning mode, UI themes, volume, and speech settings.|
+|11. 黑白護眼主題<be>Eye-Friendly Themes|Provides Dark Mode and Low Blue Light Mode to reduce eye strain during long study sessions.|
+|12. 自動抽卡刷題<be>Automated Flashcard Practice|Dynamically selects words from the database based on progress & familiarity weight.|
+|13. 客製化新增單字與句子<be>Custom Word & Sentence Addition|Allows users to add personalized words and example sentences for a more tailored study experience.|
+|14. 同義詞與反義詞學習<be>Synonyms & Antonyms Learning|Displays common synonyms & antonyms on vocabulary cards to expand word knowledge.|
+|🔹 15. 劍橋字典直連<be>Cambridge Dictionary Integration|One-click access to detailed definitions, pronunciations, and usage examples.|
+|🔹 16. OpenAI 軟串接<be>prompt	OpenAI Prompt Integration|Uses AI to generate example sentences, part-of-speech analysis, and contextual usage.|
+|🔹 17. Google 圖片幫助記憶<be>Google Images for Memory Aid|Uses Google Image Search API to provide visual representations of words for visual learners.|
 
 <!-- 1. 註冊登入（同步） - 使用 Firebase 進行帳號管理，記錄單字學習進度，可在不同裝置 PC / Mobile 間同步，並支援 PWA 離線學習，透過手動上傳/下載減少流量消耗。
 2. 可控制的抽卡邏輯 - 提供 錯誤優先（透過回答熟悉度、遺忘曲線記憶計算）、完全隨機、完全陌生 等抽卡模式，確保學習符合個人需求。
