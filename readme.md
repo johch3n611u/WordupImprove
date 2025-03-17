@@ -33,7 +33,7 @@ Since the primary goal is vocabulary retention, I extracted only the necessary l
 |13. 客製化新增單字與句子<br>Custom Word & Sentence Addition|Allows users to add personalized words and example sentences for a more tailored study experience.|
 |14. 同義詞與反義詞學習<br>Synonyms & Antonyms Learning|Displays common synonyms & antonyms on vocabulary cards to expand word knowledge.|
 |🔹 15. 劍橋字典直連<br>Cambridge Dictionary Integration|One-click access to detailed definitions, pronunciations, and usage examples.|
-|🔹 16. OpenAI 軟串接<br>prompt	OpenAI Prompt Integration|Uses AI to generate example sentences, part-of-speech analysis, and contextual usage.|
+|🔹 16. OpenAI 軟串接 prompt<br>OpenAI Prompt Integration|Uses AI to generate example sentences, part-of-speech analysis, and contextual usage.|
 |🔹 17. Google 圖片幫助記憶<br>Google Images for Memory Aid|Uses Google Image Search API to provide visual representations of words for visual learners.|
 
 <!-- 1. 註冊登入（同步） - 使用 Firebase 進行帳號管理，記錄單字學習進度，可在不同裝置 PC / Mobile 間同步，並支援 PWA 離線學習，透過手動上傳/下載減少流量消耗。
