@@ -16,7 +16,7 @@ Since the primary goal is vocabulary retention, I extracted only the necessary l
 
 ## Feature
 
-1. 註冊登入（同步） - 使用 Firebase 進行帳號管理，記錄單字學習進度，可在不同裝置 PC / Mobile 間同步，並支援 PWA 離線學習，透過手動上傳/下載減少流量消耗。
+<!-- 1. 註冊登入（同步） - 使用 Firebase 進行帳號管理，記錄單字學習進度，可在不同裝置 PC / Mobile 間同步，並支援 PWA 離線學習，透過手動上傳/下載減少流量消耗。
 2. 可控制的抽卡邏輯 - 提供 錯誤優先（透過回答熟悉度、遺忘曲線記憶計算）、完全隨機、完全陌生 等抽卡模式，確保學習符合個人需求。
 3. 卡片熟悉度機制 - 根據回答速度決定熟悉度變化，回答快則減少記憶強化次數，回答慢或錯誤則增加重複次數，自動調整學習頻率。
 4. 例句背誦單字 - 使用「語境記憶」，單字搭配例句展示，加強理解並提高單字運用能力。
@@ -34,6 +34,8 @@ Since the primary goal is vocabulary retention, I extracted only the necessary l
 🔹 15. 劍橋字典直連 - 提供單字的「一鍵查詢」功能，直接連接劍橋字典，獲取詳細解釋、發音與用法範例。 <br>
 🔹 16. OpenAI 軟串接 prompt - 透過 AI 生成例句、詞性分析，幫助理解單字的更多應用方式。 <br>
 🔹 17. Google 圖片幫助記憶 - 使用 Google 圖片 API 自動搜尋單字相關圖片，幫助視覺型學習者加強記憶。<br>
+
+-->
 
 <br><br><br>
 
