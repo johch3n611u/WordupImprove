@@ -2,11 +2,11 @@
 
 <img align="left" src="https://github.com/johch3n611u/WordupImprove/blob/master/assets/257544.jpg?raw=true" width="50%">
 
-由於急需背單字，但某款 APP 問題頻繁且修復速度極慢，甚至連簡單功能的開發也拖延許久，感覺更專注於銷售課程。因此，身為工程師的我，索性購買了單字數據並進行爬取與客製化改造。
+Frustrated by the need for efficient vocabulary learning, I found an existing app riddled with issues and painfully slow in both bug fixes and feature development—seemingly more focused on selling courses than improving functionality. As an engineer, I decided to take matters into my own hands by purchasing vocabulary datasets, scraping the data, and customizing it to fit my needs.
 
-架構採用了較為熟悉的 AG Multi Project 方式，詳細實作可參考 [UrWebApp/ComponentLibrary](https://github.com/UrWebApp/ComponentLibrary) 專案。
+The architecture follows the AG Multi-Project approach, a familiar structure for me, with implementation details available in the [UrWebApp/ComponentLibrary](https://github.com/UrWebApp/ComponentLibrary) repository.
 
-由於主要目標是記憶英文單字，因此僅拆分出 Library 以共用程式碼，其他部分則以開發效率為優先，採用最快速的方式撰寫程式碼 [Codes](https://github.com/UrWebApp/ComponentLibrary/blob/master/AngularLibrary/projects/mod/src/app/wordup-improve/wordup-improve.component.ts)。
+Since the primary goal is vocabulary retention, I extracted only the necessary library for shared code while prioritizing development speed for other components, ensuring the most efficient coding workflow. ([Codes](https://github.com/UrWebApp/ComponentLibrary/blob/master/AngularLibrary/projects/mod/src/app/wordup-improve/wordup-improve.component.ts))
 
 <br><br><br>
 
